@@ -8,7 +8,7 @@
 import UIKit
 import Feed
 
-final class AppCoordinator {
+public final class AppCoordinator {
 
     // MARK: - Properties
 
@@ -16,13 +16,13 @@ final class AppCoordinator {
 
     // MARK: - Lifecycle
 
-    init(window: UIWindow) {
+    public init(window: UIWindow) {
         self.window = window
     }
 
     // MARK: - Public methods
 
-    func start() {
+    public func start() {
         window.makeKeyAndVisible()
         showFeed()
     }

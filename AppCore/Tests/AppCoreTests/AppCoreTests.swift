@@ -1,11 +1,11 @@
 import XCTest
-@testable import Feed
+@testable import AppCore
 
-final class FeedTests: XCTestCase {
+final class AppCoreTests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        XCTAssertEqual(Feed().text, "Hello, World!")
+        XCTAssertEqual(AppCore().text, "Hello, World!")
     }
 }

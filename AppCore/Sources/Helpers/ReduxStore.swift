@@ -1,75 +1,25 @@
 //
-//  FeedStore.swift
+//  ReduxStore.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 13.06.2022.
 //
 
 import Combine
-import Foundation
-
-public extension FeedViewController {
-
-    typealias Store = ReduxStore<State, Action>
-
-    struct State: Equatable {
-
-    }
-
-    enum Action {
-
-    }
-
-    enum Route {
-
-    }
-
-    struct Dependencies {
-        public init() {
-
-        }
-    }
-
-    static func makeStore(dependencies: Dependencies) -> Store {
-        return Store(
-            initialState: makeInitialState(dependencies: dependencies),
-            reducer: reduce,
-            middlewares: []
-        )
-    }
-
-    private static func makeInitialState(dependencies: Dependencies) -> State {
-        return State()
-    }
-}
-
-extension FeedViewController {
-    static func reduce(state: State, action: Action) -> State {
-
-        let newState = state
-
-        switch action {
-
-        }
-
-        return newState
-    }
-}
-
 
 public final class ReduxStore<State, Action> {
-    typealias Reducer = (State, Action) -> State
-    typealias Dispatch = (Action) -> Void
-    typealias StateProvider = () -> State
-    typealias Middleware = (@escaping Dispatch, @escaping () -> State) -> (@escaping Dispatch) -> Dispatch
+    public typealias Reducer = (State, Action) -> State
+    public typealias Dispatch = (Action) -> Void
+    public typealias StateProvider = () -> State
+    public typealias Middleware = (@escaping Dispatch, @escaping () -> State) -> (@escaping Dispatch) -> Dispatch
 
-    let state: AnyPublisher<State, Never>
+    public let state: AnyPublisher<State, Never>
 
     private let reducer: Reducer
     private let stateVariable: CurrentValueSubject<State, Never>
     private var dispatchFunction: Dispatch!
 
-    init(
+    public init(
         initialState: State,
         reducer: @escaping Reducer,
         middlewares: [Middleware]
@@ -92,12 +42,11 @@ public final class ReduxStore<State, Action> {
             }
     }
 
-    func dispatch(action: Action) {
+    public func dispatch(action: Action) {
         dispatchFunction?(action)
     }
 
-    static func makeMiddleware(worker: @escaping (@escaping Dispatch, StateProvider, Dispatch, Action) -> Void) -> Middleware {
+    public static func makeMiddleware(worker: @escaping (@escaping Dispatch, StateProvider, Dispatch, Action) -> Void) -> Middleware {
         return { dispatch, getState in { next in { action in worker(dispatch, getState, next, action) } } }
     }
 }
-
