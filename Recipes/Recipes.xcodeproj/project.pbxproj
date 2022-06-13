@@ -11,6 +11,10 @@
 		8666B4C82848EF790071CDDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8666B4C72848EF790071CDDA /* Assets.xcassets */; };
 		8666B4CB2848EF790071CDDA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8666B4C92848EF790071CDDA /* LaunchScreen.storyboard */; };
 		8666B4D62848EF790071CDDA /* RecipesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8666B4D52848EF790071CDDA /* RecipesTests.swift */; };
+		868C58FA28577E4000D0C8C8 /* Feed in Resources */ = {isa = PBXBuildFile; fileRef = 868C58F928577E4000D0C8C8 /* Feed */; };
+		868C58FD285789CE00D0C8C8 /* ReduxStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868C58FC285789CE00D0C8C8 /* ReduxStore.swift */; };
+		868C590128578B4600D0C8C8 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868C590028578B4600D0C8C8 /* AppCoordinator.swift */; };
+		868C590428578DC600D0C8C8 /* Feed in Frameworks */ = {isa = PBXBuildFile; productRef = 868C590328578DC600D0C8C8 /* Feed */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +35,9 @@
 		8666B4CC2848EF790071CDDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8666B4D12848EF790071CDDA /* RecipesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecipesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8666B4D52848EF790071CDDA /* RecipesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesTests.swift; sourceTree = "<group>"; };
+		868C58F928577E4000D0C8C8 /* Feed */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Feed; sourceTree = "<group>"; };
+		868C58FC285789CE00D0C8C8 /* ReduxStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReduxStore.swift; sourceTree = "<group>"; };
+		868C590028578B4600D0C8C8 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				868C590428578DC600D0C8C8 /* Feed in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,6 +65,7 @@
 				8666B4BD2848EF780071CDDA /* Recipes */,
 				8666B4D42848EF790071CDDA /* RecipesTests */,
 				8666B4BC2848EF780071CDDA /* Products */,
+				868C590228578DC600D0C8C8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,6 +82,9 @@
 			isa = PBXGroup;
 			children = (
 				8666B4EE2848EF9B0071CDDA /* Application */,
+				868C58FE28578B3200D0C8C8 /* Library */,
+				868C58F828577DE000D0C8C8 /* Screens */,
+				868C58FB285789C000D0C8C8 /* Utilities */,
 			);
 			path = Recipes;
 			sourceTree = "<group>";
@@ -104,6 +116,45 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		868C58F828577DE000D0C8C8 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				868C58F928577E4000D0C8C8 /* Feed */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		868C58FB285789C000D0C8C8 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				868C58FC285789CE00D0C8C8 /* ReduxStore.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		868C58FE28578B3200D0C8C8 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				868C58FF28578B3F00D0C8C8 /* Coordinators */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		868C58FF28578B3F00D0C8C8 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				868C590028578B4600D0C8C8 /* AppCoordinator.swift */,
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		868C590228578DC600D0C8C8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -120,6 +171,9 @@
 			dependencies = (
 			);
 			name = Recipes;
+			packageProductDependencies = (
+				868C590328578DC600D0C8C8 /* Feed */,
+			);
 			productName = Recipes;
 			productReference = 8666B4BB2848EF780071CDDA /* Recipes.app */;
 			productType = "com.apple.product-type.application";
@@ -185,6 +239,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				868C58FA28577E4000D0C8C8 /* Feed in Resources */,
 				8666B4CB2848EF790071CDDA /* LaunchScreen.storyboard in Resources */,
 				8666B4C82848EF790071CDDA /* Assets.xcassets in Resources */,
 			);
@@ -204,6 +259,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				868C590128578B4600D0C8C8 /* AppCoordinator.swift in Sources */,
+				868C58FD285789CE00D0C8C8 /* ReduxStore.swift in Sources */,
 				8666B4BF2848EF780071CDDA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -288,7 +345,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -342,7 +399,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -366,8 +423,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -377,6 +433,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.uptech.recipes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -397,8 +456,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -408,6 +466,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.uptech.recipes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -485,6 +546,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		868C590328578DC600D0C8C8 /* Feed */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Feed;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8666B4B32848EF780071CDDA /* Project object */;
 }
