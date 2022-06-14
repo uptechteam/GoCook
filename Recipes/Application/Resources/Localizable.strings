@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  Recipes
+
+  Created by Oleksii Andriushchenko on 14.06.2022.
+  
+*/
+
+// MARK: - Feed
+
+"feed.title" = "Feed";

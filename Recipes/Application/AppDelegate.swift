@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Library
+import Routing
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
