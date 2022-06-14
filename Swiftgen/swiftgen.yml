@@ -1,0 +1,18 @@
+input_dir: ../Recipes/Application/Resources/
+output_dir: ../AppCore/Sources/Library/Generated
+
+xcassets:
+  - inputs: Assets.xcassets
+    outputs:
+      - templatePath: swiftgen_images_template.stencil
+        output: UIImage+Generated.swift
+  - inputs: Colors.xcassets
+    outputs:
+      - templatePath: swiftgen_colors_template.stencil
+        output: UIColor+Generated.swift
+
+strings:
+  inputs: Localizable.strings
+  outputs:
+    - templatePath: swiftgen_strings_template.stencil
+      output: String+Generated.swift
