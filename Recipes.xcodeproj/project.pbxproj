@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		8621B46228589D8D00A3881A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8621B46128589D8D00A3881A /* Localizable.strings */; };
 		8621B46428589EE700A3881A /* Routing in Frameworks */ = {isa = PBXBuildFile; productRef = 8621B46328589EE700A3881A /* Routing */; };
+		8621B4712858B2A800A3881A /* Library in Frameworks */ = {isa = PBXBuildFile; productRef = 8621B4702858B2A800A3881A /* Library */; };
 		8628A98B285897E300C8C2E0 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8628A98A285897E300C8C2E0 /* Colors.xcassets */; };
 		8666B4BF2848EF780071CDDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8666B4BE2848EF780071CDDA /* AppDelegate.swift */; };
 		8666B4C82848EF790071CDDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8666B4C72848EF790071CDDA /* Assets.xcassets */; };
 		8666B4CB2848EF790071CDDA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8666B4C92848EF790071CDDA /* LaunchScreen.storyboard */; };
 		869E69852857C0550000FA94 /* AppCore in Resources */ = {isa = PBXBuildFile; fileRef = 869E69842857C0550000FA94 /* AppCore */; };
-		869E69872857C19F0000FA94 /* AppCore in Frameworks */ = {isa = PBXBuildFile; productRef = 869E69862857C19F0000FA94 /* AppCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				869E69872857C19F0000FA94 /* AppCore in Frameworks */,
+				8621B4712858B2A800A3881A /* Library in Frameworks */,
 				8621B46428589EE700A3881A /* Routing in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -112,8 +112,8 @@
 			);
 			name = Recipes;
 			packageProductDependencies = (
-				869E69862857C19F0000FA94 /* AppCore */,
 				8621B46328589EE700A3881A /* Routing */,
+				8621B4702858B2A800A3881A /* Library */,
 			);
 			productName = Recipes;
 			productReference = 8666B4BB2848EF780071CDDA /* Recipes.app */;
@@ -398,9 +398,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Routing;
 		};
-		869E69862857C19F0000FA94 /* AppCore */ = {
+		8621B4702858B2A800A3881A /* Library */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AppCore;
+			productName = Library;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

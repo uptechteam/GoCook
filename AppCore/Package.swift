@@ -14,10 +14,19 @@ let package = Package(
     ],
     dependencies: [],
     targets: [
-        .target(name: "AppCore", dependencies: ["Library"]),
+        .target(name: "AppCore", dependencies: []),
         .testTarget(name: "AppCoreTests", dependencies: ["AppCore"]),
         .target(name: "Helpers", dependencies: []),
-        .target(name: "Library", dependencies: []),
+        .target(
+            name: "Library",
+            dependencies: [],
+            resources: [
+                .copy("Resources/RedHatDisplay-Bold.otf"),
+                .copy("Resources/RedHatDisplay-Medium.otf"),
+                .copy("Resources/RedHatDisplay-Regular.otf"),
+                .copy("Resources/RedHatText-Medium.otf")
+            ]
+        ),
         .target(name: "Feed", dependencies: ["Helpers"], path: "Sources/Screens"),
         .target(name: "Routing", dependencies: ["Feed"])
     ]
