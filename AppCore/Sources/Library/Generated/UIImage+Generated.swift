@@ -9,5 +9,9 @@ import UIKit
 
 extension UIImage {
 
+  @nonobjc public class var filters: UIImage {
+    return UIImage(named: "filters")!
+  }
+
 }
 // swiftlint:enable file_length
