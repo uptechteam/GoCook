@@ -46,7 +46,7 @@ public final class InputTextField: UITextField {
     }
 
     private func setupLoopImageView() {
-        loopImageView.image = .filters
+        loopImageView.image = .search
         addSubview(loopImageView, constraints: [
             loopImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             loopImageView.centerYAnchor.constraint(equalTo: centerYAnchor)

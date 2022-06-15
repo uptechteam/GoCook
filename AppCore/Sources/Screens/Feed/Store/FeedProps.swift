@@ -9,6 +9,6 @@ import Foundation
 
 extension FeedViewController {
     static func makeProps(from state: State) -> FeedView.Props {
-        .init()
+        .init(items: [])
     }
 }

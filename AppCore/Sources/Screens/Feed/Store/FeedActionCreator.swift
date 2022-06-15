@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  FeedActionCreator.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 13.06.2022.

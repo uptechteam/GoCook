@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  IconButton.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 14.06.2022.
