@@ -46,6 +46,6 @@ let package = Package(
 
         // MARK: - Screens
 
-        .target(name: "Feed", dependencies: ["Helpers"], path: "Sources/Screens")
+        .target(name: "Feed", dependencies: ["DomainModels", "Helpers"], path: "Sources/Screens")
     ]
 )

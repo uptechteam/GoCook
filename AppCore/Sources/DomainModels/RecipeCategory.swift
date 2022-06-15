@@ -7,7 +7,17 @@
 
 import Foundation
 
-struct RecipeCategory: Equatable {
-    let category: String
-    let recipes: [Recipe]
+public struct RecipeCategory: Equatable {
+
+    // MARK: - Properties
+
+    public let category: String
+    public let recipes: [Recipe]
+
+    // MARK: - Lifecycle
+
+    public init(category: String, recipes: [Recipe]) {
+        self.category = category
+        self.recipes = recipes
+    }
 }

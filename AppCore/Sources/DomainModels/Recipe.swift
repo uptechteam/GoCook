@@ -7,11 +7,23 @@
 
 import Helpers
 
-struct Recipe: Equatable {
-    typealias ID = Tagged<Recipe, String>
+public struct Recipe: Equatable {
 
-    let id: ID
-    let name: String
-    let avatarImageSource: ImageSource
-    let rating: Double
+    // MARK: - Properties
+
+    public typealias ID = Tagged<Recipe, String>
+
+    public let id: ID
+    public let name: String
+    public let recipeImageSource: ImageSource
+    public let rating: Double
+
+    // MARK: - Lifecycle
+
+    public init(id: Recipe.ID, name: String, recipeImageSource: ImageSource, rating: Double) {
+        self.id = id
+        self.name = name
+        self.recipeImageSource = recipeImageSource
+        self.rating = rating
+    }
 }
