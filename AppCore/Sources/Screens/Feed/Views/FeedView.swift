@@ -83,6 +83,7 @@ final class FeedView: UIView {
     private func setupCollectionView() {
         collectionView.backgroundColor = nil
         collectionView.delegate = self
+        collectionView.contentInset.bottom = 41
         collectionView.register(cell: RecipeCategoryCell.self)
     }
 
@@ -91,12 +92,11 @@ final class FeedView: UIView {
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.spacing = 24
-        addSubview(
-            stackView,
-            withEdgeInsets: UIEdgeInsets(top: 16, left: 0, bottom: 41, right: 0),
-            isSafeAreaRequired: true
-        )
-        NSLayoutConstraint.activate([
+        addSubview(stackView, constraints: [
+            stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             topStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
             collectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor)
         ])
