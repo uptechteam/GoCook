@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 13.06.2022.
 //
 
+import AppTabBar
 import Library
 import Feed
 import UIKit
@@ -14,11 +15,13 @@ public final class AppCoordinator {
     // MARK: - Properties
 
     private let window: UIWindow
+    private var childCoordinators: [Coordinating]
 
     // MARK: - Lifecycle
 
     public init(window: UIWindow) {
         self.window = window
+        self.childCoordinators = []
         loadResources()
     }
 
@@ -26,7 +29,7 @@ public final class AppCoordinator {
 
     public func start() {
         window.makeKeyAndVisible()
-        showFeed()
+        showTabBar()
     }
 
     // MARK: - Private methods
@@ -35,17 +38,22 @@ public final class AppCoordinator {
         FontFamily.registerFonts()
     }
 
-    private func showFeed() {
-        let dependencies = FeedViewController.Dependencies()
-        let viewController = FeedViewController(
-            store: FeedViewController.makeStore(dependencies: dependencies),
-            actionCreator: FeedViewController.ActionCreator(dependencies: dependencies),
+    private func showTabBar() {
+        let dependencies = AppTabBarController.Dependencies()
+        let appTabBarController = AppTabBarController(
+            store: AppTabBarController.makeStore(dependencies: dependencies),
+            actionCreator: AppTabBarController.ActionCreator(dependencies: dependencies),
             coordinator: self
         )
-        window.rootViewController = viewController
+        let coordinator = AppTabBarCoordinator(tabBarController: appTabBarController)
+        coordinator.start()
+        childCoordinators.append(coordinator)
+        window.rootViewController = coordinator.rootViewController
     }
 }
 
-extension AppCoordinator: FeedCoordinating {
+// MARK: - Extensions
+
+extension AppCoordinator: AppTabBarCoordinating {
 
 }
