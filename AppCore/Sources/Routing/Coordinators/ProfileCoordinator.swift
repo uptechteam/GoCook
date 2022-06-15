@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
+import Library
 import Profile
 import UIKit
 
@@ -22,6 +23,7 @@ final class ProfileCoordinator: Coordinating {
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        setupUI()
     }
 
     // MARK: - Lifecycle
@@ -32,6 +34,13 @@ final class ProfileCoordinator: Coordinating {
     }
 
     // MARK: - Private methods
+
+    private func setupUI() {
+        navigationController.navigationBar.titleTextAttributes = [
+            .font: Typography.subtitleTwo.font,
+            .foregroundColor: UIColor.textMain
+        ]
+    }
 
     private func makeViewController() -> ProfileViewController {
         let dependencies = ProfileViewController.Dependencies()
