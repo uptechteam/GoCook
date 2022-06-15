@@ -6,29 +6,18 @@ let package = Package(
     name: "AppCore",
     platforms: [.iOS(.v15)],
     products: [
-        .library(name: "AppCore", targets: ["AppCore"]),
-        .library(name: "Helpers", targets: ["Helpers"]),
-        .library(name: "Library", targets: ["Library"]),
-        .library(name: "Routing", targets: ["Routing"]),
-        .library(name: "Feed", targets: ["Feed"])
+        .library(name: "Routing", targets: ["Routing"])
     ],
     dependencies: [.package(url: "https://github.com/onevcat/Kingfisher", from: "7.2.0")],
     targets: [
         // MARK: - App Core
-
         .target(name: "AppCore", dependencies: []),
         .testTarget(name: "AppCoreTests", dependencies: ["AppCore"]),
-
         // MARK: - Domain models
-
         .target(name: "DomainModels", dependencies: ["Helpers"]),
-
         // MARK: - Heleprs
-
         .target(name: "Helpers", dependencies: [.product(name: "Kingfisher", package: "Kingfisher")]),
-
         // MARK: - Library
-
         .target(
             name: "Library",
             dependencies: [],
@@ -39,13 +28,10 @@ let package = Package(
                 .copy("Resources/RedHatText-Medium.otf")
             ]
         ),
-
         // MARK: - Routing
-
-        .target(name: "Routing", dependencies: ["Feed"]),
-
+        .target(name: "Routing", dependencies: ["AppTabBar", "Feed"]),
         // MARK: - Screens
-
-        .target(name: "Feed", dependencies: ["DomainModels", "Helpers"], path: "Sources/Screens")
+        .target(name: "AppTabBar", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/AppTabBar"),
+        .target(name: "Feed", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Feed")
     ]
 )

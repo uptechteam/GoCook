@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 13.06.2022.
 //
 
+import AppTabBar
 import Library
 import Feed
 import UIKit
@@ -42,10 +43,23 @@ public final class AppCoordinator {
             actionCreator: FeedViewController.ActionCreator(dependencies: dependencies),
             coordinator: self
         )
-        window.rootViewController = viewController
+
+        let tabBarDependencies = AppTabBarController.Dependencies()
+        let tabBarController = AppTabBarController(
+            store: AppTabBarController.makeStore(dependencies: tabBarDependencies),
+            actionCreator: AppTabBarController.ActionCreator(dependencies: tabBarDependencies),
+            coordinator: self
+        )
+        tabBarController.viewControllers = [viewController]
+
+        window.rootViewController = tabBarController
     }
 }
 
 extension AppCoordinator: FeedCoordinating {
+
+}
+
+extension AppCoordinator: AppTabBarCoordinating {
 
 }
