@@ -29,9 +29,10 @@ let package = Package(
             ]
         ),
         // MARK: - Routing
-        .target(name: "Routing", dependencies: ["AppTabBar", "Feed"]),
+        .target(name: "Routing", dependencies: ["AppTabBar", "Feed", "Favorites"]),
         // MARK: - Screens
         .target(name: "AppTabBar", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/AppTabBar"),
+        .target(name: "Favorites", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Favorites"),
         .target(name: "Feed", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Feed")
     ]
 )

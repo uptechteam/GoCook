@@ -1,27 +1,25 @@
 //
-//  AppTabBarView.swift
+//  File.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
 import Combine
-import Helpers
-import Library
 import UIKit
 
-public protocol AppTabBarCoordinating: AnyObject {
+public protocol FavoritesCoordinating: AnyObject {
 
 }
 
-public final class AppTabBarController: UITabBarController {
+public final class FavoritesViewController: UIViewController {
 
     // MARK: - Properties
 
     private let store: Store
     private let actionCreator: ActionCreator
-    private let contentView = AppTabBarView()
-    private unowned let coordinator: AppTabBarCoordinating
+    private let contentView = FavoritesView()
+    private unowned let coordinator: FavoritesCoordinating
     private var cancellables = [AnyCancellable]()
 
     // MARK: - Lifecycle
@@ -29,7 +27,7 @@ public final class AppTabBarController: UITabBarController {
     public init(
         store: Store,
         actionCreator: ActionCreator,
-        coordinator: AppTabBarCoordinating
+        coordinator: FavoritesCoordinating
     ) {
         self.store = store
         self.actionCreator = actionCreator
@@ -45,21 +43,16 @@ public final class AppTabBarController: UITabBarController {
         print("Deinit \(self)")
     }
 
+    public override func loadView() {
+        view = contentView
+    }
+
     public override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
         setupBinding()
     }
 
     // MARK: - Private methods
-
-    private func setupUI() {
-        view.addSubview(contentView, constraints: [
-            contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -21),
-            contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
-        tabBar.isHidden = true
-    }
 
     private func setupBinding() {
 
