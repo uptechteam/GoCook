@@ -6,6 +6,7 @@
 //
 
 import Favorites
+import Library
 import UIKit
 
 final class FavoritesCoordinator: Coordinating {
@@ -22,6 +23,7 @@ final class FavoritesCoordinator: Coordinating {
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        setupUI()
     }
 
     // MARK: - Public methods
@@ -32,6 +34,13 @@ final class FavoritesCoordinator: Coordinating {
     }
 
     // MARK: - Private methods
+
+    private func setupUI() {
+        navigationController.navigationBar.titleTextAttributes = [
+            .font: Typography.subtitleTwo.font,
+            .foregroundColor: UIColor.textMain
+        ]
+    }
 
     private func makeViewController() -> FavoritesViewController {
         let dependencies = FavoritesViewController.Dependencies()

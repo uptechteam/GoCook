@@ -49,5 +49,9 @@ extension UIImage {
     return UIImage(named: "profileTabBarIconSelected")!
   }
 
+  @nonobjc public class var backButton: UIImage {
+    return UIImage(named: "backButton")!
+  }
+
 }
 // swiftlint:enable file_length

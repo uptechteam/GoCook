@@ -5,7 +5,11 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
+import DomainModels
+import Filters
 import Home
+import Library
+import Recipe
 import UIKit
 
 final class HomeCoordinator: Coordinating {
@@ -20,18 +24,52 @@ final class HomeCoordinator: Coordinating {
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        setupUI()
     }
 
     // MARK: - Public methods
 
     func start() {
-        let viewController = makeViewController()
+        let viewController = makeHomeViewController()
         navigationController.pushViewController(viewController, animated: false)
     }
 
     // MARK: - Private methods
 
-    private func makeViewController() -> HomeViewController {
+    private func setupUI() {
+        navigationController.navigationBar.titleTextAttributes = [
+            .font: Typography.subtitleTwo.font,
+            .foregroundColor: UIColor.textMain
+        ]
+    }
+}
+
+// MARK: - Coordinating extensions
+
+extension HomeCoordinator: HomeCoordinating {
+    func showFilters() {
+        let viewController = makeFiltersViewController()
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
+    func show(recipe: Recipe) {
+        let viewController = makeRecipeViewController()
+        navigationController.pushViewController(viewController, animated: true)
+    }
+}
+
+extension HomeCoordinator: FiltersCoordinating {
+    
+}
+
+extension HomeCoordinator: RecipeCoordinating {
+
+}
+
+// MARK: - View controller factory
+
+private extension HomeCoordinator {
+    private func makeHomeViewController() -> UIViewController {
         let dependencies = HomeViewController.Dependencies()
         return HomeViewController(
             store: HomeViewController.makeStore(dependencies: dependencies),
@@ -39,10 +77,22 @@ final class HomeCoordinator: Coordinating {
             coordinator: self
         )
     }
-}
 
-// MARK: - Extensions
+    private func makeFiltersViewController() -> UIViewController {
+        let dependencies = FiltersViewController.Dependencies()
+        return FiltersViewController(
+            store: FiltersViewController.makeStore(dependencies: dependencies),
+            actionCreator: FiltersViewController.ActionCreator(dependencies: dependencies),
+            coordinator: self
+        )
+    }
 
-extension HomeCoordinator: HomeCoordinating {
-
+    private func makeRecipeViewController() -> UIViewController {
+        let dependencies = RecipeViewController.Dependencies()
+        return RecipeViewController(
+            store: RecipeViewController.makeStore(dependencies: dependencies),
+            actionCreator: RecipeViewController.ActionCreator(dependencies: dependencies),
+            coordinator: self
+        )
+    }
 }

@@ -6,10 +6,12 @@
 //
 
 import Combine
+import DomainModels
 import UIKit
 
 public protocol HomeCoordinating: AnyObject {
-
+    func showFilters()
+    func show(recipe: Recipe)
 }
 
 public final class HomeViewController: UIViewController {
@@ -49,10 +51,20 @@ public final class HomeViewController: UIViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
         setupBinding()
     }
 
     // MARK: - Private methods
+
+    private func setupUI() {
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            image: .backButton,
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+    }
 
     private func setupBinding() {
         contentView.onDidChangeSearchQuery = { [store] query in
@@ -95,10 +107,10 @@ public final class HomeViewController: UIViewController {
     private func navigate(by route: Route) {
         switch route {
         case .filters:
-            print("Show filters")
+            coordinator.showFilters()
 
         case .itemDetails(let recipe):
-            print("Show recipe details: \(recipe)")
+            coordinator.show(recipe: recipe)
 
         case .recipeCategory(let category):
             print("Show category: \(category)")

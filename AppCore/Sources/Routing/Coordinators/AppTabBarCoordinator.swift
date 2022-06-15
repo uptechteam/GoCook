@@ -6,6 +6,7 @@
 //
 
 import AppTabBar
+import Library
 import UIKit
 
 final class AppTabBarCoordinator: Coordinating {
@@ -40,17 +41,17 @@ final class AppTabBarCoordinator: Coordinating {
     // MARK: - Private methods
 
     private func makeFavoritesCoordinator() {
-        let coordinator = FavoritesCoordinator(navigationController: UINavigationController())
+        let coordinator = FavoritesCoordinator(navigationController: BaseNavigationController())
         childCoordinators.append(coordinator)
     }
 
     private func makeHomeCoordinator() {
-        let coordinator = HomeCoordinator(navigationController: UINavigationController())
+        let coordinator = HomeCoordinator(navigationController: BaseNavigationController())
         childCoordinators.append(coordinator)
     }
 
     private func makeProfileCoordinator() {
-        let coordinator = ProfileCoordinator(navigationController: UINavigationController())
+        let coordinator = ProfileCoordinator(navigationController: BaseNavigationController())
         childCoordinators.append(coordinator)
     }
 }
