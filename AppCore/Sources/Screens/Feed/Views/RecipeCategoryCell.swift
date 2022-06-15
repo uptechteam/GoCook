@@ -75,19 +75,28 @@ final class RecipeCategoryCell: UICollectionViewCell, ReusableCell {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumLineSpacing = 16
+        flowLayout.itemSize = CGSize(width: 180, height: 264)
         collectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
 
     private func setupCollectionView() {
         collectionView.backgroundColor = .clear
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(cell: RecipeCell.self)
     }
 
     private func setupStackView() {
         let stackView = UIStackView(arrangedSubviews: [topStackView, collectionView])
         stackView.axis = .vertical
+        stackView.alignment = .center
         stackView.spacing = 24
+        contentView.addSubview(stackView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            topStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
+            collectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            collectionView.heightAnchor.constraint(equalToConstant: 264)
+        ])
     }
 
     // MARK: - Public methods

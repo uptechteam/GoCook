@@ -45,10 +45,14 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
     // MARK: - Set up
 
     private func setup() {
-
+        setupRecipeImageView()
+        setupLikeButton()
+        setupNameLabel()
+        setupStackView()
     }
 
     private func setupRecipeImageView() {
+        recipeImageView.backgroundColor = .gray100
         NSLayoutConstraint.activate([
             recipeImageView.widthAnchor.constraint(equalTo: recipeImageView.heightAnchor)
         ])
@@ -57,9 +61,9 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
     private func setupLikeButton() {
         likeButton.set(image: .likeDisabled)
         likeButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapLike() }), for: .touchUpInside)
-        contentView.addSubview(likeButton, constraints: [
-            likeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            likeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 8)
+        recipeImageView.addSubview(likeButton, constraints: [
+            likeButton.topAnchor.constraint(equalTo: recipeImageView.topAnchor, constant: 8),
+            likeButton.trailingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: -8)
         ])
     }
 
@@ -72,13 +76,14 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
         let stackView = UIStackView(arrangedSubviews: [recipeImageView, nameLabel, ratingView])
         stackView.axis = .vertical
         stackView.spacing = 8
+        contentView.addSubview(stackView, withEdgeInsets: .zero)
     }
 
     // MARK: - Public methods
 
     func render(props: Props) {
         recipeImageView.image = props.recipeImage
-        nameLabel.text = props.name
+        nameLabel.render(title: props.name, color: .appBlack, typography: .subtitleTwo)
         ratingView.render(props: props.ratingViewProps)
     }
 }

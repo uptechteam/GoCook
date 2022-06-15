@@ -5,8 +5,9 @@
 //  Created by Oleksii Andriushchenko on 13.06.2022.
 //
 
-import UIKit
+import Library
 import Feed
+import UIKit
 
 public final class AppCoordinator {
 
@@ -18,6 +19,7 @@ public final class AppCoordinator {
 
     public init(window: UIWindow) {
         self.window = window
+        loadResources()
     }
 
     // MARK: - Public methods
@@ -28,6 +30,10 @@ public final class AppCoordinator {
     }
 
     // MARK: - Private methods
+
+    private func loadResources() {
+        FontFamily.registerFonts()
+    }
 
     private func showFeed() {
         let dependencies = FeedViewController.Dependencies()

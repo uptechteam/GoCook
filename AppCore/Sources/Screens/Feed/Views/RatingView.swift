@@ -40,6 +40,11 @@ final class RatingView: UIView {
 
     private func setupStarImageView() {
         starImageView.image = .star
+        starImageView.contentMode = .center
+        NSLayoutConstraint.activate([
+            starImageView.widthAnchor.constraint(equalToConstant: 20),
+            starImageView.heightAnchor.constraint(equalToConstant: 20)
+        ])
     }
 
     private func setupTextLabel() {

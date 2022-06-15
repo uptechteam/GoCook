@@ -69,6 +69,9 @@ final class FeedView: UIView {
     private func setupFiltersButton() {
         filtersButton.set(image: .filters)
         filtersButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapFilters() }), for: .touchUpInside)
+        NSLayoutConstraint.activate([
+            filtersButton.widthAnchor.constraint(equalToConstant: 24)
+        ])
     }
 
     private func setupLayout() {
@@ -79,18 +82,24 @@ final class FeedView: UIView {
 
     private func setupCollectionView() {
         collectionView.backgroundColor = nil
+        collectionView.delegate = self
         collectionView.register(cell: RecipeCategoryCell.self)
     }
 
     private func setupStackView() {
         let stackView = UIStackView(arrangedSubviews: [topStackView, collectionView])
         stackView.axis = .vertical
+        stackView.alignment = .center
         stackView.spacing = 24
         addSubview(
             stackView,
-            withEdgeInsets: UIEdgeInsets(top: 16, left: 24, bottom: 41, right: 24),
+            withEdgeInsets: UIEdgeInsets(top: 16, left: 0, bottom: 41, right: 0),
             isSafeAreaRequired: true
         )
+        NSLayoutConstraint.activate([
+            topStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
+            collectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor)
+        ])
     }
 
     // MARK: - Public methods
@@ -121,5 +130,17 @@ private extension FeedView {
                 return cell
             }
         )
+    }
+}
+
+// MARK: - Delegate
+
+extension FeedView: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        CGSize(width: collectionView.bounds.width, height: 324)
     }
 }
