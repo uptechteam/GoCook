@@ -6,10 +6,12 @@
 //
 
 import Combine
+import DomainModels
 import UIKit
 
 public protocol HomeCoordinating: AnyObject {
     func showFilters()
+    func show(recipe: Recipe)
 }
 
 public final class HomeViewController: UIViewController {
@@ -108,7 +110,7 @@ public final class HomeViewController: UIViewController {
             coordinator.showFilters()
 
         case .itemDetails(let recipe):
-            print("Show recipe details: \(recipe)")
+            coordinator.show(recipe: recipe)
 
         case .recipeCategory(let category):
             print("Show category: \(category)")
