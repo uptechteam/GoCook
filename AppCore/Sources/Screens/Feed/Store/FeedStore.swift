@@ -13,7 +13,7 @@ public extension FeedViewController {
     typealias Store = ReduxStore<State, Action>
 
     struct State: Equatable {
-
+        
     }
 
     enum Action {
