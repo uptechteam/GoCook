@@ -25,8 +25,10 @@ final class FeedView: UIView {
     private lazy var dataSource = makeDataSource()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     // callbacks
+    var onDidChangeSearchQuery: (String) -> Void = { _ in }
     var onDidTapFilters: () -> Void = { }
     var onDidTapViewAll: (IndexPath) -> Void = { _ in }
+    var onDidTapItem: (IndexPath) -> Void = { _ in }
     var onDidTapLike: (IndexPath) -> Void = { _ in }
 
     // MARK: - Lifecycle
@@ -64,6 +66,7 @@ final class FeedView: UIView {
 
     private func setupInputTextField() {
         inputTextField.placeholder = .feedSearchPlaceholder
+        inputTextField.delegate = self
     }
 
     private func setupFiltersButton() {
@@ -124,8 +127,11 @@ private extension FeedView {
                 cell.onDidTapViewAll = { [weak self] in
                     self?.onDidTapViewAll(indexPath)
                 }
+                cell.onDidTapItem = { [weak self] itemIndexPath in
+                    self?.onDidTapItem(IndexPath(item: itemIndexPath.item, section: indexPath.item))
+                }
                 cell.onDidTapLike = { [weak self] likeIndexPath in
-                    self?.onDidTapLike(IndexPath(row: likeIndexPath.row, section: indexPath.row))
+                    self?.onDidTapLike(IndexPath(item: likeIndexPath.item, section: indexPath.item))
                 }
                 return cell
             }
@@ -134,6 +140,28 @@ private extension FeedView {
 }
 
 // MARK: - Delegate
+
+extension FeedView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        let oldText = textField.text ?? ""
+        let newText = oldText.replacingCharacters(in: Range(range, in: oldText)!, with: string)
+        guard newText.count <= 30 else {
+            return false
+        }
+
+        onDidChangeSearchQuery(newText)
+        return true
+    }
+}
 
 extension FeedView: UICollectionViewDelegateFlowLayout {
     func collectionView(

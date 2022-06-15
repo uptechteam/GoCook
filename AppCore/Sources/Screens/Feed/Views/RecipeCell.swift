@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
@@ -12,7 +13,7 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
 
     struct Props: Hashable {
         let id: String
-        let recipeImage: UIImage?
+        let recipeImageSource: ImageSource
         let isLiked: Bool
         let name: String
         let ratingViewProps: RatingView.Props
@@ -46,24 +47,17 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
 
     private func setup() {
         setupRecipeImageView()
-        setupLikeButton()
         setupNameLabel()
         setupStackView()
+        setupLikeButton()
     }
 
     private func setupRecipeImageView() {
+        recipeImageView.clipsToBounds = true
         recipeImageView.backgroundColor = .gray100
+        recipeImageView.contentMode = .scaleAspectFill
         NSLayoutConstraint.activate([
             recipeImageView.widthAnchor.constraint(equalTo: recipeImageView.heightAnchor)
-        ])
-    }
-
-    private func setupLikeButton() {
-        likeButton.set(image: .likeDisabled)
-        likeButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapLike() }), for: .touchUpInside)
-        recipeImageView.addSubview(likeButton, constraints: [
-            likeButton.topAnchor.constraint(equalTo: recipeImageView.topAnchor, constant: 8),
-            likeButton.trailingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: -8)
         ])
     }
 
@@ -79,10 +73,19 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
         contentView.addSubview(stackView, withEdgeInsets: .zero)
     }
 
+    private func setupLikeButton() {
+        likeButton.set(image: .likeDisabled)
+        likeButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapLike() }), for: .touchUpInside)
+        contentView.addSubview(likeButton, constraints: [
+            likeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            likeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)
+        ])
+    }
+
     // MARK: - Public methods
 
     func render(props: Props) {
-        recipeImageView.image = props.recipeImage
+        recipeImageView.set(props.recipeImageSource)
         nameLabel.render(title: props.name, color: .appBlack, typography: .subtitleTwo)
         ratingView.render(props: props.ratingViewProps)
     }

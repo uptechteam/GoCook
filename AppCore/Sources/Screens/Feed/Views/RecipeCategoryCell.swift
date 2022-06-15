@@ -31,6 +31,7 @@ final class RecipeCategoryCell: UICollectionViewCell, ReusableCell {
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     // callbacks
     var onDidTapViewAll: () -> Void = { }
+    var onDidTapItem: (IndexPath) -> Void = { _ in }
     var onDidTapLike: (IndexPath) -> Void = { _ in }
 
     // MARK: - Lifecycle
@@ -84,6 +85,7 @@ final class RecipeCategoryCell: UICollectionViewCell, ReusableCell {
         collectionView.backgroundColor = .clear
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.delegate = self
         collectionView.register(cell: RecipeCell.self)
     }
 
@@ -132,5 +134,13 @@ private extension RecipeCategoryCell {
                 return cell
             }
         )
+    }
+}
+
+// MARK: - Delegate
+
+extension RecipeCategoryCell: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        onDidTapItem(indexPath)
     }
 }
