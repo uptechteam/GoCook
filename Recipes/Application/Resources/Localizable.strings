@@ -9,3 +9,5 @@
 // MARK: - Feed
 
 "feed.title" = "Feed";
+"feed.search.placeholder" = "Search...";
+"feed.category.view.all" = "View all";

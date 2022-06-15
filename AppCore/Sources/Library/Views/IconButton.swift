@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  IconButton.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 14.06.2022.
@@ -27,15 +27,7 @@ public final class IconButton: UIControl {
     // MARK: - Set up
 
     private func setup() {
-        setupContentView()
         setupImageView()
-    }
-
-    private func setupContentView() {
-        NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: 24),
-            heightAnchor.constraint(equalToConstant: 24)
-        ])
     }
 
     private func setupImageView() {

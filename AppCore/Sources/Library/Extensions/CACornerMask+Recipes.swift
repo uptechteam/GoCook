@@ -8,7 +8,7 @@
 import UIKit
 
 extension CACornerMask {
-    static let all: CACornerMask = [
+    public static let all: CACornerMask = [
         CACornerMask.layerMaxXMaxYCorner,
         CACornerMask.layerMinXMaxYCorner,
         CACornerMask.layerMaxXMinYCorner,

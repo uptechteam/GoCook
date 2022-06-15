@@ -23,11 +23,11 @@ public enum FontFamily {
     }
 
     public enum RedHatText {
-        public static let bold = FontConvertible(name: "RedHatText-Medium")
+        public static let medium = FontConvertible(name: "RedHatText-Medium")
     }
 
     public static func registerFonts() {
-        [RedHatDisplay.bold, RedHatDisplay.medium, RedHatDisplay.regular, RedHatText.bold]
+        [RedHatDisplay.bold, RedHatDisplay.medium, RedHatDisplay.regular, RedHatText.medium]
             .map(\.name)
             .compactMap { Bundle.module.url(forResource: $0, withExtension: "otf") }
             .map { $0 as CFURL }
