@@ -1,14 +1,14 @@
 //
-//  File.swift
+//  HomeCoordinator.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
-import Feed
+import Home
 import UIKit
 
-final class FeedCoordinator: Coordinating {
+final class HomeCoordinator: Coordinating {
 
     private let navigationController: UINavigationController
 
@@ -31,11 +31,11 @@ final class FeedCoordinator: Coordinating {
 
     // MARK: - Private methods
 
-    private func makeViewController() -> FeedViewController {
-        let dependencies = FeedViewController.Dependencies()
-        return FeedViewController(
-            store: FeedViewController.makeStore(dependencies: dependencies),
-            actionCreator: FeedViewController.ActionCreator(dependencies: dependencies),
+    private func makeViewController() -> HomeViewController {
+        let dependencies = HomeViewController.Dependencies()
+        return HomeViewController(
+            store: HomeViewController.makeStore(dependencies: dependencies),
+            actionCreator: HomeViewController.ActionCreator(dependencies: dependencies),
             coordinator: self
         )
     }
@@ -43,6 +43,6 @@ final class FeedCoordinator: Coordinating {
 
 // MARK: - Extensions
 
-extension FeedCoordinator: FeedCoordinating {
+extension HomeCoordinator: HomeCoordinating {
 
 }

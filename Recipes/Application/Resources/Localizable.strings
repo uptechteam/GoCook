@@ -6,8 +6,7 @@
   
 */
 
-// MARK: - Feed
+// MARK: - Home
 
-"feed.title" = "Feed";
-"feed.search.placeholder" = "Search...";
-"feed.category.view.all" = "View all";
+"Home.search.placeholder" = "Search...";
+"Home.category.view.all" = "View all";

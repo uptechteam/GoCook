@@ -10,14 +10,11 @@ import Foundation
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 extension String {
 
-  /// Feed
-  public static let feedTitle = L10n.tr("Localizable", "feed.title")
-
   /// View all
-  public static let feedCategoryViewAll = L10n.tr("Localizable", "feed.category.view.all")
+  public static let homeCategoryViewAll = L10n.tr("Localizable", "Home.category.view.all")
 
   /// Search...
-  public static let feedSearchPlaceholder = L10n.tr("Localizable", "feed.search.placeholder")
+  public static let homeSearchPlaceholder = L10n.tr("Localizable", "Home.search.placeholder")
 }
 // swiftlint:enable function_parameter_count identifier_name line_length type_body_length
 

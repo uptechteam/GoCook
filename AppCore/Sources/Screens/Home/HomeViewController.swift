@@ -1,5 +1,5 @@
 //
-//  FeedViewController.swift
+//  HomeViewController.swift
 //  Recipes
 //
 //  Created by Oleksii Andriushchenko on 02.06.2022.
@@ -8,18 +8,18 @@
 import Combine
 import UIKit
 
-public protocol FeedCoordinating: AnyObject {
+public protocol HomeCoordinating: AnyObject {
 
 }
 
-public final class FeedViewController: UIViewController {
+public final class HomeViewController: UIViewController {
 
     // MARK: - Properties
 
     private let store: Store
     private let actionCreator: ActionCreator
-    private let contentView = FeedView()
-    private unowned let coordinator: FeedCoordinating
+    private let contentView = HomeView()
+    private unowned let coordinator: HomeCoordinating
     private var cancellables = [AnyCancellable]()
 
     // MARK: - Lifecycle
@@ -27,7 +27,7 @@ public final class FeedViewController: UIViewController {
     public init(
         store: Store,
         actionCreator: ActionCreator,
-        coordinator: FeedCoordinating
+        coordinator: HomeCoordinating
     ) {
         self.store = store
         self.actionCreator = actionCreator
@@ -78,7 +78,7 @@ public final class FeedViewController: UIViewController {
         let state = store.state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
-        state.map(FeedViewController.makeProps(from:))
+        state.map(HomeViewController.makeProps(from:))
             .sink { [contentView] props in
                 contentView.render(props: props)
             }

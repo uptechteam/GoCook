@@ -1,5 +1,5 @@
 //
-//  FeedProps.swift
+//  HomeProps.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 13.06.2022.
@@ -7,8 +7,8 @@
 
 import DomainModels
 
-extension FeedViewController {
-    static func makeProps(from state: State) -> FeedView.Props {
+extension HomeViewController {
+    static func makeProps(from state: State) -> HomeView.Props {
         .init(items: state.recipeCategories.map(makeRecipeCategoryCellProps))
     }
 

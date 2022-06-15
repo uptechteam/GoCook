@@ -1,5 +1,5 @@
 //
-//  FeedView.swift
+//  HomeView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 13.06.2022.
@@ -8,7 +8,7 @@
 import Library
 import UIKit
 
-final class FeedView: UIView {
+final class HomeView: UIView {
 
     struct Props: Equatable {
         let items: [RecipeCategoryCell.Props]
@@ -65,7 +65,7 @@ final class FeedView: UIView {
     }
 
     private func setupInputTextField() {
-        inputTextField.placeholder = .feedSearchPlaceholder
+        inputTextField.placeholder = .homeSearchPlaceholder
         inputTextField.delegate = self
     }
 
@@ -117,7 +117,7 @@ final class FeedView: UIView {
 
 // MARK: - Data Source
 
-private extension FeedView {
+private extension HomeView {
     func makeDataSource() -> DataSource {
         return DataSource(
             collectionView: collectionView,
@@ -141,7 +141,7 @@ private extension FeedView {
 
 // MARK: - Delegate
 
-extension FeedView: UITextFieldDelegate {
+extension HomeView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -163,7 +163,7 @@ extension FeedView: UITextFieldDelegate {
     }
 }
 
-extension FeedView: UICollectionViewDelegateFlowLayout {
+extension HomeView: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
