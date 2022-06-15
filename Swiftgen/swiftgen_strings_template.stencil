@@ -27,13 +27,13 @@ import Foundation
   /// {{string.translation}}
   {% endif %}
   {% if string.types %}
-  static func {{string.key|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}}({% call parametersBlock string.types %}) -> String {
+  public static func {{string.key|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}}({% call parametersBlock string.types %}) -> String {
     return L10n.tr("{{table}}", "{{string.key}}", {% call argumentsBlock string.types %})
   }
   {% elif param.lookupFunction %}
-  static var {{string.key|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}}: String { return {L10n.tr("{{table}}", "{{string.key}}") }
+  public static var {{string.key|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}}: String { return {L10n.tr("{{table}}", "{{string.key}}") }
   {% else %}
-  static let {{string.key|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}} = L10n.tr("{{table}}", "{{string.key}}")
+  public static let {{string.key|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}} = L10n.tr("{{table}}", "{{string.key}}")
   {% endif %}
   {% endfor %}
   {% for child in item.children %}

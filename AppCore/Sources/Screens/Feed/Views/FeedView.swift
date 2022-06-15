@@ -63,7 +63,7 @@ final class FeedView: UIView {
     }
 
     private func setupInputTextField() {
-        inputTextField.placeholder = "Search..."
+        inputTextField.placeholder = .feedSearchPlaceholder
     }
 
     private func setupFiltersButton() {
