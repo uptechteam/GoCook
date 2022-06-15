@@ -51,6 +51,12 @@ public final class AppTabBarController: UITabBarController {
         setupBinding()
     }
 
+    // MARK: - Public methods
+
+    public func selectInitialIndex() {
+        store.dispatch(action: .selectInitialItem)
+    }
+
     // MARK: - Private methods
 
     private func setupUI() {
@@ -62,6 +68,23 @@ public final class AppTabBarController: UITabBarController {
     }
 
     private func setupBinding() {
+        contentView.onDidTapItem = { [store] index in
+            store.dispatch(action: .itemTapped(index))
+        }
 
+        let state = store.state.removeDuplicates()
+            .subscribe(on: DispatchQueue.main)
+
+        state
+            .sink { [weak self] state in
+                self?.selectedIndex = state.activeIndex
+            }
+            .store(in:&cancellables)
+
+        state.map(AppTabBarController.makeProps(from:))
+            .sink { [contentView] props in
+                contentView.render(props: props)
+            }
+            .store(in: &cancellables)
     }
 }

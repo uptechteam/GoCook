@@ -34,7 +34,7 @@ final class AppTabBarCoordinator: Coordinating {
         makeProfileCoordinator()
         childCoordinators.forEach { $0.start() }
         tabBarController.viewControllers = childCoordinators.map(\.rootViewController)
-        tabBarController.selectedIndex = 1
+        tabBarController.selectInitialIndex()
     }
 
     // MARK: - Private methods

@@ -9,6 +9,6 @@ import Foundation
 
 extension AppTabBarController {
     static func makeProps(from state: State) -> AppTabBarView.Props {
-        .init(activeIndex: 0)
+        .init(activeIndex: state.activeIndex)
     }
 }

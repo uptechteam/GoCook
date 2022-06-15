@@ -11,12 +11,13 @@ extension AppTabBarController {
 
     public typealias Store = ReduxStore<State, Action>
 
-    public struct State {
-
+    public struct State: Equatable {
+        var activeIndex: Int
     }
 
     public enum Action {
-
+        case itemTapped(Int)
+        case selectInitialItem
     }
 
     enum Route {
@@ -38,7 +39,9 @@ extension AppTabBarController {
     }
 
     private static func makeInitialState(dependencies: Dependencies) -> State {
-        return State()
+        return State(
+            activeIndex: 0
+        )
     }
 }
 
@@ -48,7 +51,11 @@ extension AppTabBarController {
         var newState = state
 
         switch action {
+        case .itemTapped(let index):
+            newState.activeIndex = index
 
+        case .selectInitialItem:
+            newState.activeIndex = 1
         }
 
         return newState

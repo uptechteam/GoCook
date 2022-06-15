@@ -25,5 +25,29 @@ extension UIImage {
     return UIImage(named: "star")!
   }
 
+  @nonobjc public class var favoritesTabBarIconDeselected: UIImage {
+    return UIImage(named: "favoritesTabBarIconDeselected")!
+  }
+
+  @nonobjc public class var favoritesTabBarIconSelected: UIImage {
+    return UIImage(named: "favoritesTabBarIconSelected")!
+  }
+
+  @nonobjc public class var homeTabBarIconDeselected: UIImage {
+    return UIImage(named: "homeTabBarIconDeselected")!
+  }
+
+  @nonobjc public class var homeTabBarIconSelected: UIImage {
+    return UIImage(named: "homeTabBarIconSelected")!
+  }
+
+  @nonobjc public class var profileTabBarIconDeselected: UIImage {
+    return UIImage(named: "profileTabBarIconDeselected")!
+  }
+
+  @nonobjc public class var profileTabBarIconSelected: UIImage {
+    return UIImage(named: "profileTabBarIconSelected")!
+  }
+
 }
 // swiftlint:enable file_length
