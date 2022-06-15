@@ -30,7 +30,7 @@ final class AppTabBarCoordinator: Coordinating {
 
     func start() {
         makeFavoritesCoordinator()
-        makeFeedCoordinator()
+        makeHomeCoordinator()
         makeProfileCoordinator()
         childCoordinators.forEach { $0.start() }
         tabBarController.viewControllers = childCoordinators.map(\.rootViewController)
@@ -44,8 +44,8 @@ final class AppTabBarCoordinator: Coordinating {
         childCoordinators.append(coordinator)
     }
 
-    private func makeFeedCoordinator() {
-        let coordinator = FeedCoordinator(navigationController: UINavigationController())
+    private func makeHomeCoordinator() {
+        let coordinator = HomeCoordinator(navigationController: UINavigationController())
         childCoordinators.append(coordinator)
     }
 

@@ -66,7 +66,7 @@ final class RecipeCategoryCell: UICollectionViewCell, ReusableCell {
     }
 
     private func setupViewAllButton() {
-        viewAllButton.setTitle(.feedCategoryViewAll, for: .normal)
+        viewAllButton.setTitle(.homeCategoryViewAll, for: .normal)
         viewAllButton.setTitleColor(.primaryMain, for: .normal)
         viewAllButton.setTitleColor(.primaryPressed, for: .highlighted)
         viewAllButton.titleLabel?.render(typography: .buttonLarge)

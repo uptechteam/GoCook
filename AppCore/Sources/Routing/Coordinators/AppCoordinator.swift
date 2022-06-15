@@ -7,7 +7,7 @@
 
 import AppTabBar
 import Library
-import Feed
+import Home
 import UIKit
 
 public final class AppCoordinator {

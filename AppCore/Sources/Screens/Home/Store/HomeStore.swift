@@ -1,5 +1,5 @@
 //
-//  FeedStore.swift
+//  HomeStore.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 13.06.2022.
@@ -9,7 +9,7 @@ import DomainModels
 import Foundation
 import Helpers
 
-public extension FeedViewController {
+public extension HomeViewController {
 
     typealias Store = ReduxStore<State, Action>
 
@@ -62,7 +62,7 @@ public extension FeedViewController {
     }
 }
 
-extension FeedViewController {
+extension HomeViewController {
     static func reduce(state: State, action: Action) -> State {
 
         var newState = state
