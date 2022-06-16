@@ -66,7 +66,9 @@ extension HomeCoordinator: FiltersCoordinating {
 }
 
 extension HomeCoordinator: RecipeCoordinating {
-
+    func didTapBack() {
+        navigationController.popViewController(animated: true)
+    }
 }
 
 // MARK: - UINavigationControllerdelegate
@@ -77,7 +79,7 @@ extension HomeCoordinator: UINavigationControllerDelegate {
         willShow viewController: UIViewController,
         animated: Bool
     ) {
-        let isHidden = viewController is HomeViewController
+        let isHidden = viewController is HomeViewController || viewController is RecipeViewController
         navigationController.setNavigationBarHidden(isHidden, animated: false)
     }
 }

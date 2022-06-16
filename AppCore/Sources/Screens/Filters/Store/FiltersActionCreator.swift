@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  FiltersActionCreator.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 15.06.2022.

@@ -31,6 +31,7 @@ public final class IconButton: UIControl {
     }
 
     private func setupImageView() {
+        imageView.contentMode = .center
         addSubview(imageView, withEdgeInsets: .zero)
     }
 

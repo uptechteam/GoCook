@@ -10,7 +10,7 @@ import Helpers
 import UIKit
 
 public protocol RecipeCoordinating: AnyObject {
-
+    func didTapBack()
 }
 
 public final class RecipeViewController: UIViewController {
@@ -62,6 +62,10 @@ public final class RecipeViewController: UIViewController {
     }
 
     private func setupBinding() {
+        contentView.onDidTapBack = { [store] in
+            store.dispatch(action: .backTapped)
+        }
+
         let state = store.state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
@@ -70,5 +74,19 @@ public final class RecipeViewController: UIViewController {
                 contentView.render(props: props)
             }
             .store(in: &cancellables)
+
+        state.compactMap(\.route).removeDuplicates()
+            .map(\.value)
+            .sink { [unowned self] route in
+                navigate(by: route)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func navigate(by route: Route) {
+        switch route {
+        case .back:
+            coordinator.didTapBack()
+        }
     }
 }

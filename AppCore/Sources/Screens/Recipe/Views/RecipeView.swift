@@ -6,17 +6,21 @@
 //
 
 import Library
+import Helpers
 import UIKit
 
 final class RecipeView: UIView {
 
     struct Props: Equatable {
-
+        let recipeImageSource: ImageSource
     }
 
     // MARK: - Properties
 
-    private let textLabel = UILabel()
+    private let recipeImageView = UIImageView()
+    private let backButton = IconButton()
+    // callbacks
+    var onDidTapBack: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -33,24 +37,40 @@ final class RecipeView: UIView {
 
     private func setup() {
         setupContentView()
-        setupTextLabel()
+        setupRecipeImageView()
+        setupBackButton()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
     }
 
-    private func setupTextLabel() {
-        textLabel.text = "Recipe"
-        addSubview(textLabel, constraints: [
-            textLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            textLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+    private func setupRecipeImageView() {
+        recipeImageView.contentMode = .scaleAspectFill
+        addSubview(recipeImageView, constraints: [
+            recipeImageView.topAnchor.constraint(equalTo: topAnchor),
+            recipeImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            recipeImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            recipeImageView.widthAnchor.constraint(equalTo: recipeImageView.heightAnchor)
+        ])
+    }
+
+    private func setupBackButton() {
+        backButton.backgroundColor = .appWhite
+        backButton.layer.roundCornersContinuosly(radius: 22)
+        backButton.set(image: .backButton)
+        backButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapBack() }), for: .touchUpInside)
+        recipeImageView.addSubview(backButton, constraints: [
+            backButton.topAnchor.constraint(equalTo: recipeImageView.topAnchor, constant: 46),
+            backButton.leadingAnchor.constraint(equalTo: recipeImageView.leadingAnchor, constant: 12),
+            backButton.widthAnchor.constraint(equalToConstant: 44),
+            backButton.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
 
     // MARK: - Public methods
 
     func render(props: Props) {
-
+        recipeImageView.set(props.recipeImageSource)
     }
 }
