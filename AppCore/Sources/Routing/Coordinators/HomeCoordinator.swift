@@ -7,12 +7,13 @@
 
 import DomainModels
 import Filters
+import Foundation
 import Home
 import Library
 import Recipe
 import UIKit
 
-final class HomeCoordinator: Coordinating {
+final class HomeCoordinator: NSObject, Coordinating {
 
     private let navigationController: UINavigationController
 
@@ -24,6 +25,7 @@ final class HomeCoordinator: Coordinating {
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        super.init()
         setupUI()
     }
 
@@ -37,6 +39,7 @@ final class HomeCoordinator: Coordinating {
     // MARK: - Private methods
 
     private func setupUI() {
+        navigationController.delegate = self
         navigationController.navigationBar.titleTextAttributes = [
             .font: Typography.subtitleTwo.font,
             .foregroundColor: UIColor.textMain
@@ -64,6 +67,19 @@ extension HomeCoordinator: FiltersCoordinating {
 
 extension HomeCoordinator: RecipeCoordinating {
 
+}
+
+// MARK: - UINavigationControllerdelegate
+
+extension HomeCoordinator: UINavigationControllerDelegate {
+    func navigationController(
+        _ navigationController: UINavigationController,
+        willShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        let isHidden = viewController is HomeViewController
+        navigationController.setNavigationBarHidden(isHidden, animated: false)
+    }
 }
 
 // MARK: - View controller factory
