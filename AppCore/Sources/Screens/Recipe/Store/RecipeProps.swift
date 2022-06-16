@@ -11,15 +11,23 @@ import Library
 extension RecipeViewController {
     static func makeProps(from state: State) -> RecipeView.Props {
         return .init(
+            headerViewProps: makeHeaderViewProps(state: state),
             recipeImageSource: state.recipe.recipeImageSource,
             isLiked: false,
             recipeDetailsViewProps: makeRecipeDetailsViewProps(state: state)
         )
     }
 
+    private static func makeHeaderViewProps(state: State) -> RecipeHeaderView.Props {
+        return .init(
+            title: state.recipe.name,
+            isLiked: false
+        )
+    }
+
     private static func makeRecipeDetailsViewProps(state: State) -> RecipeDetailsView.Props {
         return .init(
-            headerViewProps: makeHeaderViewProps(state: state),
+            headerViewProps: makeDetailsHeaderViewProps(state: state),
             ingredientsViewProps: makeIngredientsViewProps(state: state),
             instructionsViewProps: makeInstructionsViewProps(state: state),
             feedbackViewProps: makeFeedbackViewProps(state: state),
@@ -27,7 +35,7 @@ extension RecipeViewController {
         )
     }
 
-    private static func makeHeaderViewProps(state: State) -> RecipeDetailsHeaderView.Props {
+    private static func makeDetailsHeaderViewProps(state: State) -> RecipeDetailsHeaderView.Props {
         return .init(
             name: state.recipe.name,
             authorViewProps: RecipeAuthorView.Props(avatarImageSource: .asset(nil), username: "Monica Adams"),

@@ -12,6 +12,7 @@ import UIKit
 final class RecipeView: UIView {
 
     struct Props: Equatable {
+        let headerViewProps: RecipeHeaderView.Props
         let recipeImageSource: ImageSource
         let isLiked: Bool
         let recipeDetailsViewProps: RecipeDetailsView.Props
@@ -19,6 +20,7 @@ final class RecipeView: UIView {
 
     // MARK: - Properties
 
+    let headerView = RecipeHeaderView()
     private let recipeImageView = UIImageView()
     private let backButton = IconButton()
     private let likeButton = IconButton()
@@ -56,6 +58,7 @@ final class RecipeView: UIView {
         setupBackButton()
         setupLikeButton()
         setupDetailsView()
+        setupHeaderView()
     }
 
     private func setupContentView() {
@@ -96,6 +99,7 @@ final class RecipeView: UIView {
         scrollView.addSubview(detailsView, withEdgeInsets: .zero)
         scrollView.delegate = self
         scrollView.contentInsetAdjustmentBehavior = .never
+        scrollView.showsVerticalScrollIndicator = false
         scrollViewTopConstraint = scrollView.topAnchor.constraint(equalTo: topAnchor, constant: 0)
         addSubview(scrollView, constraints: [
             scrollViewTopConstraint,
@@ -107,12 +111,29 @@ final class RecipeView: UIView {
         ])
     }
 
+    private func setupHeaderView() {
+        headerView.isHidden = true
+        addSubview(headerView, constraints: [
+            headerView.topAnchor.constraint(equalTo: topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            headerView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 56)
+        ])
+    }
+
     // MARK: - Public methods
 
     func render(props: Props) {
+        headerView.render(props: props.headerViewProps)
         recipeImageView.set(props.recipeImageSource)
-        likeButton.set(image: props.isLiked ? .likeEnabled : .likeDisabled)
+        likeButton.set(image: props.isLiked ? .circleFavoriteFilled : .circleFavoriteEmpty)
         detailsView.render(props: props.recipeDetailsViewProps)
+    }
+
+    // MARK: - Private methods
+
+    private func renderHeaderVisibility() {
+        headerView.isHidden = scrollViewTopConstraint.constant > 0
     }
 }
 
@@ -126,5 +147,6 @@ extension RecipeView: UIScrollViewDelegate {
         if delta != 0 {
             scrollView.contentOffset = CGPoint(x: 0, y: offset + delta)
         }
+        renderHeaderVisibility()
     }
 }

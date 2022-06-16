@@ -62,6 +62,10 @@ public final class RecipeViewController: UIViewController {
     }
 
     private func setupBinding() {
+        contentView.headerView.onDidTapBack = { [store] in
+            store.dispatch(action: .backTapped)
+        }
+
         contentView.onDidTapBack = { [store] in
             store.dispatch(action: .backTapped)
         }

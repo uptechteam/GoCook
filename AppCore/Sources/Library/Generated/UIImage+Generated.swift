@@ -9,16 +9,16 @@ import UIKit
 
 extension UIImage {
 
+  @nonobjc public class var circleFavoriteEmpty: UIImage {
+    return UIImage(named: "circleFavoriteEmpty")!
+  }
+
+  @nonobjc public class var circleFavoriteFilled: UIImage {
+    return UIImage(named: "circleFavoriteFilled")!
+  }
+
   @nonobjc public class var filters: UIImage {
     return UIImage(named: "filters")!
-  }
-
-  @nonobjc public class var likeDisabled: UIImage {
-    return UIImage(named: "likeDisabled")!
-  }
-
-  @nonobjc public class var likeEnabled: UIImage {
-    return UIImage(named: "likeEnabled")!
   }
 
   @nonobjc public class var search: UIImage {
@@ -43,6 +43,14 @@ extension UIImage {
 
   @nonobjc public class var edit: UIImage {
     return UIImage(named: "edit")!
+  }
+
+  @nonobjc public class var favoriteEmpty: UIImage {
+    return UIImage(named: "favoriteEmpty")!
+  }
+
+  @nonobjc public class var favoriteFilled: UIImage {
+    return UIImage(named: "favoriteFilled")!
   }
 
   @nonobjc public class var share: UIImage {
