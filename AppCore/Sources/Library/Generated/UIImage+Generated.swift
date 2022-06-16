@@ -29,6 +29,10 @@ extension UIImage {
     return UIImage(named: "star")!
   }
 
+  @nonobjc public class var time: UIImage {
+    return UIImage(named: "time")!
+  }
+
   @nonobjc public class var favoritesTabBarIconDeselected: UIImage {
     return UIImage(named: "favoritesTabBarIconDeselected")!
   }

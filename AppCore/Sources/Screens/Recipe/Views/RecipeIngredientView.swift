@@ -1,0 +1,77 @@
+//
+//  RecipeIngredientView.swift
+//  
+//
+//  Created by Oleksii Andriushchenko on 16.06.2022.
+//
+
+import Library
+import UIKit
+
+final class RecipeIngredientView: UIView {
+
+    struct Props: Equatable {
+        let name: String
+        let weightDescription: String
+    }
+
+    // MARK: - Properties
+
+    private let pointView = UIView()
+    private let nameLabel = UILabel()
+    private let weightLabel = UILabel()
+
+    // MARK: - Lifecycle
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Set up
+
+    private func setup() {
+        setupPointView()
+        setupNameLabel()
+        setupWeightLabel()
+        setupStackView()
+    }
+
+    private func setupPointView() {
+        pointView.backgroundColor = .textMain
+        pointView.layer.roundCornersContinuosly(radius: 2)
+        addSubview(pointView, constraints: [
+            pointView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            pointView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            pointView.widthAnchor.constraint(equalToConstant: 4),
+            pointView.heightAnchor.constraint(equalTo: pointView.widthAnchor)
+        ])
+    }
+
+    private func setupNameLabel() {
+        nameLabel.numberOfLines = 0
+    }
+
+    private func setupWeightLabel() {
+        weightLabel.render(typography: .body)
+        weightLabel.textColor = .textMain
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [nameLabel, UIView(), weightLabel])
+        stackView.alignment = .top
+        stackView.setCustomSpacing(10, after: nameLabel)
+        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 0))
+    }
+
+    // MARK: - Public methods
+
+    func render(props: Props) {
+        nameLabel.render(title: props.name, color: .textMain, typography: .body)
+        weightLabel.text = props.weightDescription
+    }
+}

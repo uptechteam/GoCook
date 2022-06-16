@@ -6,13 +6,43 @@
 //
 
 import Foundation
+import Library
 
 extension RecipeViewController {
     static func makeProps(from state: State) -> RecipeView.Props {
         return .init(
             recipeImageSource: state.recipe.recipeImageSource,
             isLiked: false,
-            recipeDetailsViewProps: RecipeDetailsView.Props()
+            recipeDetailsViewProps: makeRecipeDetailsViewProps(state: state)
+        )
+    }
+
+    private static func makeRecipeDetailsViewProps(state: State) -> RecipeDetailsView.Props {
+        return .init(
+            headerViewProps: makeHeaderViewProps(state: state),
+            ingredientsViewProps: makeIngredientsViewProps(state: state)
+        )
+    }
+
+    private static func makeHeaderViewProps(state: State) -> RecipeDetailsHeaderView.Props {
+        return .init(
+            name: state.recipe.name,
+            authorViewProps: RecipeAuthorView.Props(avatarImageSource: .asset(nil), username: "Monica Adams"),
+            ratingViewProps: RatingView.Props(ratingText: "4.8"),
+            timeViewProps: RecipeTimeView.Props(timeDescription: "30 min")
+        )
+    }
+
+    private static func makeIngredientsViewProps(state: State) -> RecipeIngredientsView.Props {
+        return .init(
+            servingsDescription: "4 servings",
+            ingredientsProps: [
+                RecipeIngredientView.Props(name: "Sliced avocado", weightDescription: "200g"),
+                RecipeIngredientView.Props(name: "Tortilla chips", weightDescription: "300g"),
+                RecipeIngredientView.Props(name: "Romaine lettuce", weightDescription: "400g"),
+                RecipeIngredientView.Props(name: "Red cabbage and radishes", weightDescription: "150g"),
+                RecipeIngredientView.Props(name: "A little\nlove", weightDescription: "100g")
+            ]
         )
     }
 }

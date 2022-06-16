@@ -59,7 +59,7 @@ final class RecipeView: UIView {
     }
 
     private func setupContentView() {
-        backgroundColor = .appWhite
+        backgroundColor = .gray100
     }
 
     private func setupRecipeImageView() {
@@ -92,8 +92,10 @@ final class RecipeView: UIView {
 
     private func setupDetailsView() {
         let scrollView = UIScrollView()
+        scrollView.clipsToBounds = false
         scrollView.addSubview(detailsView, withEdgeInsets: .zero)
         scrollView.delegate = self
+        scrollView.contentInsetAdjustmentBehavior = .never
         scrollViewTopConstraint = scrollView.topAnchor.constraint(equalTo: topAnchor, constant: 0)
         addSubview(scrollView, constraints: [
             scrollViewTopConstraint,
@@ -117,9 +119,10 @@ final class RecipeView: UIView {
 extension RecipeView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.y
-        let adjustedConstraint = max(0, min(bounds.width, scrollViewTopConstraint.constant - offset))
-        let delta = adjustedConstraint - scrollViewTopConstraint.constant
-        scrollViewTopConstraint.constant = adjustedConstraint
+        let minimumConstant = max(0, min(bounds.width, bounds.height - scrollView.contentSize.height + 1))
+        let adjustedConstant = max(minimumConstant, min(bounds.width, scrollViewTopConstraint.constant - offset))
+        let delta = adjustedConstant - scrollViewTopConstraint.constant
+        scrollViewTopConstraint.constant = adjustedConstant
         if delta != 0 {
             scrollView.contentOffset = CGPoint(x: 0, y: offset + delta)
         }

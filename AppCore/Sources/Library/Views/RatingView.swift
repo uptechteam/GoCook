@@ -5,13 +5,16 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
-import Library
 import UIKit
 
-final class RatingView: UIView {
+public final class RatingView: UIView {
 
-    struct Props: Equatable {
-        let ratingText: String
+    public struct Props: Equatable {
+        public let ratingText: String
+
+        public init(ratingText: String) {
+            self.ratingText = ratingText
+        }
     }
 
     // MARK: - Properties
@@ -59,7 +62,7 @@ final class RatingView: UIView {
 
     // MARK: - Public methods
 
-    func render(props: Props) {
+    public func render(props: Props) {
         textLabel.text = props.ratingText
     }
 }

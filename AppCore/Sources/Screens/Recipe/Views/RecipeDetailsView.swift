@@ -11,12 +11,14 @@ import UIKit
 final class RecipeDetailsView: UIView {
 
     struct Props: Equatable {
-
+        let headerViewProps: RecipeDetailsHeaderView.Props
+        let ingredientsViewProps: RecipeIngredientsView.Props
     }
 
     // MARK: - Properties
 
-
+    private let headerView = RecipeDetailsHeaderView()
+    private let ingredientsView = RecipeIngredientsView()
 
     // MARK: - Lifecycle
 
@@ -33,15 +35,24 @@ final class RecipeDetailsView: UIView {
 
     private func setup() {
         setupContentView()
+        setupStackView()
     }
 
     private func setupContentView() {
-        backgroundColor = .appWhite
+        backgroundColor = .gray100
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [headerView, ingredientsView, UIView()])
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     // MARK: - Public methods
 
     func render(props: Props) {
-
+        headerView.render(props: props.headerViewProps)
+        ingredientsView.render(props: props.ingredientsViewProps)
     }
 }
