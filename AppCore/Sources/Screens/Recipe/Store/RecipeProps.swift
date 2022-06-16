@@ -22,7 +22,8 @@ extension RecipeViewController {
             headerViewProps: makeHeaderViewProps(state: state),
             ingredientsViewProps: makeIngredientsViewProps(state: state),
             instructionsViewProps: makeInstructionsViewProps(state: state),
-            feedbackViewProps: makeFeedbackViewProps(state: state)
+            feedbackViewProps: makeFeedbackViewProps(state: state),
+            manageViewProps: makeManageViewProps(state: state)
         )
     }
 
@@ -69,5 +70,12 @@ extension RecipeViewController {
 
     private static func makeFeedbackViewProps(state: State) -> RecipeFeedbackView.Props {
         .init(text: "How would you rate Grilled Corn With Chaat Masala?", rating: 3)
+    }
+
+    private static func makeManageViewProps(state: State) -> RecipeManageView.Props {
+        return .init(
+            isEditButtonVisible: true,
+            isDeleteButtonVisible: true
+        )
     }
 }
