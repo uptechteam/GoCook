@@ -9,6 +9,9 @@ import Foundation
 
 extension RecipeViewController {
     static func makeProps(from state: State) -> RecipeView.Props {
-        .init(recipeImageSource: state.recipe.recipeImageSource)
+        return .init(
+            recipeImageSource: state.recipe.recipeImageSource,
+            isLiked: false
+        )
     }
 }

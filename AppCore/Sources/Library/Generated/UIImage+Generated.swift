@@ -17,6 +17,10 @@ extension UIImage {
     return UIImage(named: "likeDisabled")!
   }
 
+  @nonobjc public class var likeEnabled: UIImage {
+    return UIImage(named: "likeEnabled")!
+  }
+
   @nonobjc public class var search: UIImage {
     return UIImage(named: "search")!
   }
@@ -51,6 +55,10 @@ extension UIImage {
 
   @nonobjc public class var backButton: UIImage {
     return UIImage(named: "backButton")!
+  }
+
+  @nonobjc public class var circleBackButton: UIImage {
+    return UIImage(named: "circleBackButton")!
   }
 
 }

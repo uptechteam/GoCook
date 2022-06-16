@@ -13,14 +13,17 @@ final class RecipeView: UIView {
 
     struct Props: Equatable {
         let recipeImageSource: ImageSource
+        let isLiked: Bool
     }
 
     // MARK: - Properties
 
     private let recipeImageView = UIImageView()
     private let backButton = IconButton()
+    private let likeButton = IconButton()
     // callbacks
     var onDidTapBack: () -> Void = { }
+    var onDidTapLike: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -39,6 +42,7 @@ final class RecipeView: UIView {
         setupContentView()
         setupRecipeImageView()
         setupBackButton()
+        setupLikeButton()
     }
 
     private func setupContentView() {
@@ -46,6 +50,7 @@ final class RecipeView: UIView {
     }
 
     private func setupRecipeImageView() {
+        recipeImageView.clipsToBounds = true
         recipeImageView.contentMode = .scaleAspectFill
         addSubview(recipeImageView, constraints: [
             recipeImageView.topAnchor.constraint(equalTo: topAnchor),
@@ -56,15 +61,19 @@ final class RecipeView: UIView {
     }
 
     private func setupBackButton() {
-        backButton.backgroundColor = .appWhite
-        backButton.layer.roundCornersContinuosly(radius: 22)
-        backButton.set(image: .backButton)
+        backButton.set(image: .circleBackButton)
         backButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapBack() }), for: .touchUpInside)
-        recipeImageView.addSubview(backButton, constraints: [
+        addSubview(backButton, constraints: [
             backButton.topAnchor.constraint(equalTo: recipeImageView.topAnchor, constant: 46),
-            backButton.leadingAnchor.constraint(equalTo: recipeImageView.leadingAnchor, constant: 12),
-            backButton.widthAnchor.constraint(equalToConstant: 44),
-            backButton.heightAnchor.constraint(equalToConstant: 44)
+            backButton.leadingAnchor.constraint(equalTo: recipeImageView.leadingAnchor, constant: 12)
+        ])
+    }
+
+    private func setupLikeButton() {
+        likeButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapLike() }), for: .touchUpInside)
+        addSubview(likeButton, constraints: [
+            likeButton.topAnchor.constraint(equalTo: recipeImageView.topAnchor, constant: 46),
+            likeButton.trailingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: -12)
         ])
     }
 
@@ -72,5 +81,6 @@ final class RecipeView: UIView {
 
     func render(props: Props) {
         recipeImageView.set(props.recipeImageSource)
+        likeButton.set(image: props.isLiked ? .likeEnabled : .likeDisabled)
     }
 }
