@@ -20,7 +20,8 @@ extension RecipeViewController {
     private static func makeRecipeDetailsViewProps(state: State) -> RecipeDetailsView.Props {
         return .init(
             headerViewProps: makeHeaderViewProps(state: state),
-            ingredientsViewProps: makeIngredientsViewProps(state: state)
+            ingredientsViewProps: makeIngredientsViewProps(state: state),
+            instructionsViewProps: makeInstructionsViewProps(state: state)
         )
     }
 
@@ -42,6 +43,25 @@ extension RecipeViewController {
                 RecipeIngredientView.Props(name: "Romaine lettuce", weightDescription: "400g"),
                 RecipeIngredientView.Props(name: "Red cabbage and radishes", weightDescription: "150g"),
                 RecipeIngredientView.Props(name: "A little\nlove", weightDescription: "100g")
+            ]
+        )
+    }
+
+    private static func makeInstructionsViewProps(state: State) -> RecipeInstructionsView.Props {
+        return .init(
+            instructionsProps: [
+                RecipeInstructionView.Props(
+                    title: "1 step",
+                    description: "Eleifend tristique duis laoreet phasellus praesent. Nulla sed vitae sed id."
+                ),
+                RecipeInstructionView.Props(
+                    title: "2 step",
+                    description: "Eleifend tristique duis laoreet phasellus praesent. Nulla sed vitae sed id."
+                ),
+                RecipeInstructionView.Props(
+                    title: "3 step",
+                    description: "Eleifend tristique duis laoreet phasellus praesent. Nulla sed vitae sed id."
+                )
             ]
         )
     }

@@ -13,12 +13,14 @@ final class RecipeDetailsView: UIView {
     struct Props: Equatable {
         let headerViewProps: RecipeDetailsHeaderView.Props
         let ingredientsViewProps: RecipeIngredientsView.Props
+        let instructionsViewProps: RecipeInstructionsView.Props
     }
 
     // MARK: - Properties
 
     private let headerView = RecipeDetailsHeaderView()
     private let ingredientsView = RecipeIngredientsView()
+    private let instructionsView = RecipeInstructionsView()
 
     // MARK: - Lifecycle
 
@@ -43,7 +45,7 @@ final class RecipeDetailsView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [headerView, ingredientsView, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [headerView, ingredientsView, instructionsView, UIView()])
         stackView.axis = .vertical
         stackView.spacing = 8
         addSubview(stackView, withEdgeInsets: .zero)
@@ -54,5 +56,6 @@ final class RecipeDetailsView: UIView {
     func render(props: Props) {
         headerView.render(props: props.headerViewProps)
         ingredientsView.render(props: props.ingredientsViewProps)
+        instructionsView.render(props: props.instructionsViewProps)
     }
 }
