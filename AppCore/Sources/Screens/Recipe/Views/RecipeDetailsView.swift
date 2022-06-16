@@ -14,6 +14,7 @@ final class RecipeDetailsView: UIView {
         let headerViewProps: RecipeDetailsHeaderView.Props
         let ingredientsViewProps: RecipeIngredientsView.Props
         let instructionsViewProps: RecipeInstructionsView.Props
+        let feedbackViewProps: RecipeFeedbackView.Props
     }
 
     // MARK: - Properties
@@ -21,6 +22,7 @@ final class RecipeDetailsView: UIView {
     private let headerView = RecipeDetailsHeaderView()
     private let ingredientsView = RecipeIngredientsView()
     private let instructionsView = RecipeInstructionsView()
+    private let feedbackView = RecipeFeedbackView()
 
     // MARK: - Lifecycle
 
@@ -45,7 +47,7 @@ final class RecipeDetailsView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [headerView, ingredientsView, instructionsView, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [headerView, ingredientsView, instructionsView, feedbackView])
         stackView.axis = .vertical
         stackView.spacing = 8
         addSubview(stackView, withEdgeInsets: .zero)
@@ -57,5 +59,6 @@ final class RecipeDetailsView: UIView {
         headerView.render(props: props.headerViewProps)
         ingredientsView.render(props: props.ingredientsViewProps)
         instructionsView.render(props: props.instructionsViewProps)
+        feedbackView.render(props: props.feedbackViewProps)
     }
 }

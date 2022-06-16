@@ -21,7 +21,8 @@ extension RecipeViewController {
         return .init(
             headerViewProps: makeHeaderViewProps(state: state),
             ingredientsViewProps: makeIngredientsViewProps(state: state),
-            instructionsViewProps: makeInstructionsViewProps(state: state)
+            instructionsViewProps: makeInstructionsViewProps(state: state),
+            feedbackViewProps: makeFeedbackViewProps(state: state)
         )
     }
 
@@ -64,5 +65,9 @@ extension RecipeViewController {
                 )
             ]
         )
+    }
+
+    private static func makeFeedbackViewProps(state: State) -> RecipeFeedbackView.Props {
+        .init(text: "How would you rate Grilled Corn With Chaat Masala?", rating: 3)
     }
 }

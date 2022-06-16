@@ -29,6 +29,14 @@ extension UIImage {
     return UIImage(named: "star")!
   }
 
+  @nonobjc public class var bigEmptyStar: UIImage {
+    return UIImage(named: "bigEmptyStar")!
+  }
+
+  @nonobjc public class var bigFilledStar: UIImage {
+    return UIImage(named: "bigFilledStar")!
+  }
+
   @nonobjc public class var time: UIImage {
     return UIImage(named: "time")!
   }
