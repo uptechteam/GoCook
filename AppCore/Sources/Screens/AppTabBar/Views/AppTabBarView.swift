@@ -38,7 +38,7 @@ final class AppTabBarView: UIView {
     private func setup() {
         setupContentView()
         setupFavoritesButton()
-        setupHomesButton()
+        setupHomeButton()
         setupProfileButton()
         setupStackView()
     }
@@ -57,7 +57,7 @@ final class AppTabBarView: UIView {
         favoritesButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapItem(0) }), for: .touchUpInside)
     }
 
-    private func setupHomesButton() {
+    private func setupHomeButton() {
         homeButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapItem(1) }), for: .touchUpInside)
     }
 

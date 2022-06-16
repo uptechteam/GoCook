@@ -23,8 +23,6 @@ public final class AppTabBarController: UITabBarController {
     private let contentView = AppTabBarView()
     private unowned let coordinator: AppTabBarCoordinating
     private var cancellables = [AnyCancellable]()
-    /// Observe visibility of tab bar to sync it with custom tab bar.
-    var observation: NSKeyValueObservation?
 
     // MARK: - Lifecycle
 
@@ -44,7 +42,6 @@ public final class AppTabBarController: UITabBarController {
     }
 
     deinit {
-        observation = nil
         print("Deinit \(self)")
     }
 
@@ -60,13 +57,14 @@ public final class AppTabBarController: UITabBarController {
         store.dispatch(action: .selectInitialItem)
     }
 
+    public func toggleTabBarVisibility(on: Bool) {
+        contentView.isHidden = !on
+    }
+
     // MARK: - Private methods
 
     private func setupUI() {
-        tabBar.isUserInteractionEnabled = false
-        observation = tabBar.observe(\.isHidden, changeHandler: { [contentView, tabBar] object, change in
-            contentView.isHidden = tabBar.isHidden
-        })
+        tabBar.isHidden = true
         view.addSubview(contentView, constraints: [
             contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -21),
             contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor)

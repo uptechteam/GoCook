@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
+import AppTabBar
 import DomainModels
 import Filters
 import Foundation
@@ -81,6 +82,15 @@ extension HomeCoordinator: UINavigationControllerDelegate {
     ) {
         let isHidden = viewController is HomeViewController || viewController is RecipeViewController
         navigationController.setNavigationBarHidden(isHidden, animated: false)
+    }
+
+    func navigationController(
+        _ navigationController: UINavigationController,
+        didShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        let isTabBarVisible = viewController is HomeViewController
+        (navigationController.tabBarController as? AppTabBarController)?.toggleTabBarVisibility(on: isTabBarVisible)
     }
 }
 
