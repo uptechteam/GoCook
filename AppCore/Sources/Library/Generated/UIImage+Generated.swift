@@ -9,12 +9,16 @@ import UIKit
 
 extension UIImage {
 
-  @nonobjc public class var filters: UIImage {
-    return UIImage(named: "filters")!
+  @nonobjc public class var circleFavoriteEmpty: UIImage {
+    return UIImage(named: "circleFavoriteEmpty")!
   }
 
-  @nonobjc public class var likeDisabled: UIImage {
-    return UIImage(named: "likeDisabled")!
+  @nonobjc public class var circleFavoriteFilled: UIImage {
+    return UIImage(named: "circleFavoriteFilled")!
+  }
+
+  @nonobjc public class var filters: UIImage {
+    return UIImage(named: "filters")!
   }
 
   @nonobjc public class var search: UIImage {
@@ -23,6 +27,38 @@ extension UIImage {
 
   @nonobjc public class var star: UIImage {
     return UIImage(named: "star")!
+  }
+
+  @nonobjc public class var bigEmptyStar: UIImage {
+    return UIImage(named: "bigEmptyStar")!
+  }
+
+  @nonobjc public class var bigFilledStar: UIImage {
+    return UIImage(named: "bigFilledStar")!
+  }
+
+  @nonobjc public class var delete: UIImage {
+    return UIImage(named: "delete")!
+  }
+
+  @nonobjc public class var edit: UIImage {
+    return UIImage(named: "edit")!
+  }
+
+  @nonobjc public class var favoriteEmpty: UIImage {
+    return UIImage(named: "favoriteEmpty")!
+  }
+
+  @nonobjc public class var favoriteFilled: UIImage {
+    return UIImage(named: "favoriteFilled")!
+  }
+
+  @nonobjc public class var share: UIImage {
+    return UIImage(named: "share")!
+  }
+
+  @nonobjc public class var time: UIImage {
+    return UIImage(named: "time")!
   }
 
   @nonobjc public class var favoritesTabBarIconDeselected: UIImage {
@@ -51,6 +87,10 @@ extension UIImage {
 
   @nonobjc public class var backButton: UIImage {
     return UIImage(named: "backButton")!
+  }
+
+  @nonobjc public class var circleBackButton: UIImage {
+    return UIImage(named: "circleBackButton")!
   }
 
 }

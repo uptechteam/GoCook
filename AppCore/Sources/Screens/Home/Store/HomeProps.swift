@@ -6,6 +6,7 @@
 //
 
 import DomainModels
+import Library
 
 extension HomeViewController {
     static func makeProps(from state: State) -> HomeView.Props {

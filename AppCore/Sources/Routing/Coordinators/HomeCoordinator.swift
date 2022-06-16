@@ -5,14 +5,16 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
+import AppTabBar
 import DomainModels
 import Filters
+import Foundation
 import Home
 import Library
 import Recipe
 import UIKit
 
-final class HomeCoordinator: Coordinating {
+final class HomeCoordinator: NSObject, Coordinating {
 
     private let navigationController: UINavigationController
 
@@ -24,6 +26,7 @@ final class HomeCoordinator: Coordinating {
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        super.init()
         setupUI()
     }
 
@@ -37,6 +40,7 @@ final class HomeCoordinator: Coordinating {
     // MARK: - Private methods
 
     private func setupUI() {
+        navigationController.delegate = self
         navigationController.navigationBar.titleTextAttributes = [
             .font: Typography.subtitleTwo.font,
             .foregroundColor: UIColor.textMain
@@ -63,7 +67,31 @@ extension HomeCoordinator: FiltersCoordinating {
 }
 
 extension HomeCoordinator: RecipeCoordinating {
+    func didTapBack() {
+        navigationController.popViewController(animated: true)
+    }
+}
 
+// MARK: - UINavigationControllerdelegate
+
+extension HomeCoordinator: UINavigationControllerDelegate {
+    func navigationController(
+        _ navigationController: UINavigationController,
+        willShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        let isHidden = viewController is HomeViewController || viewController is RecipeViewController
+        navigationController.setNavigationBarHidden(isHidden, animated: false)
+    }
+
+    func navigationController(
+        _ navigationController: UINavigationController,
+        didShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        let isTabBarVisible = viewController is HomeViewController
+        (navigationController.tabBarController as? AppTabBarController)?.toggleTabBarVisibility(on: isTabBarVisible)
+    }
 }
 
 // MARK: - View controller factory

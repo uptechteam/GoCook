@@ -74,7 +74,7 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
     }
 
     private func setupLikeButton() {
-        likeButton.set(image: .likeDisabled)
+        likeButton.set(image: .circleFavoriteEmpty)
         likeButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapLike() }), for: .touchUpInside)
         contentView.addSubview(likeButton, constraints: [
             likeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
