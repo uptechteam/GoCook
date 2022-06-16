@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 16.06.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
@@ -17,9 +18,15 @@ final class RecipeManageView: UIView {
 
     // MARK: - Properties
 
-    let shareButton = UIButton()
-    let editButton = UIButton()
-    let deleteButton = UIButton()
+    let shareButton = Button()
+    let editButton = Button(config: ButtonConfig(isBackgroundVisible: false, isBorderVisible: true))
+    let deleteButton = Button(
+        config: ButtonConfig(
+            colorConfig: ColorConfig(main: .errorMain, secondary: .errorPressed),
+            isBackgroundVisible: false,
+            isBorderVisible: true
+        )
+    )
     // callbacks
     var onDidTapShare: () -> Void = { }
     var onDidTapEdit: () -> Void = { }
@@ -51,8 +58,8 @@ final class RecipeManageView: UIView {
     }
 
     private func setupShareButton() {
-        shareButton.setTitle("Share", for: .normal)
-        shareButton.setTitleColor(.textMain, for: .normal)
+        shareButton.setTitle("Share")
+        shareButton.setImage(.share)
         shareButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapShare() }),
             for: .touchUpInside
@@ -60,8 +67,8 @@ final class RecipeManageView: UIView {
     }
 
     private func setupEditButton() {
-        editButton.setTitle("Edit", for: .normal)
-        editButton.setTitleColor(.textMain, for: .normal)
+        editButton.setTitle("Edit")
+        editButton.setImage(.edit)
         editButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapEdit() }),
             for: .touchUpInside
@@ -69,8 +76,8 @@ final class RecipeManageView: UIView {
     }
 
     private func setupDeleteButton() {
-        deleteButton.setTitle("Delete", for: .normal)
-        deleteButton.setTitleColor(.textMain, for: .normal)
+        deleteButton.setTitle("Delete")
+        deleteButton.setImage(.delete)
         deleteButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapDelete() }),
             for: .touchUpInside

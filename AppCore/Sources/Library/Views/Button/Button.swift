@@ -21,6 +21,7 @@ public final class Button: UIControl {
             backgroundColor = config.backgroundColor(for: isHighlighted ? .highlighted : .normal)
             layer.borderColor = config.borderColor(for: isHighlighted ? .highlighted : .normal).cgColor
             titleLabel.textColor = config.titleColor(for: isHighlighted ? .highlighted : .normal)
+            imageView.tintColor = config.titleColor(for: isHighlighted ? .highlighted : .normal)
         }
     }
 
@@ -29,6 +30,7 @@ public final class Button: UIControl {
             backgroundColor = config.backgroundColor(for: isEnabled ? .normal : .disabled)
             layer.borderColor = config.borderColor(for: isEnabled ? .normal : .disabled).cgColor
             titleLabel.textColor = config.titleColor(for: isEnabled ? .normal : .disabled)
+            imageView.tintColor = config.titleColor(for: isEnabled ? .normal : .disabled)
         }
     }
 
@@ -49,6 +51,8 @@ public final class Button: UIControl {
     private func setup() {
         setupContentView()
         setupImageView()
+        setupTitleLabel()
+        setupStackView()
     }
 
     private func setupContentView() {
@@ -62,10 +66,13 @@ public final class Button: UIControl {
     }
 
     private func setupImageView() {
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.isHidden = true
+        imageView.tintColor = config.titleColor(for: .normal)
     }
 
     private func setupTitleLabel() {
+        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
         titleLabel.textColor = config.titleColor(for: .normal)
         switch config.buttonSize {
         case .large, .medium:
@@ -105,7 +112,8 @@ public final class Button: UIControl {
         titleLabel.text = title
     }
 
-    public func setImageSource(_ imageSource: ImageSource) {
-        imageView.set(imageSource)
+    public func setImage(_ image: UIImage?) {
+        imageView.image = image
+        imageView.isHidden = image == nil
     }
 }

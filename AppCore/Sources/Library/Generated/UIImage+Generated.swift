@@ -37,6 +37,18 @@ extension UIImage {
     return UIImage(named: "bigFilledStar")!
   }
 
+  @nonobjc public class var delete: UIImage {
+    return UIImage(named: "delete")!
+  }
+
+  @nonobjc public class var edit: UIImage {
+    return UIImage(named: "edit")!
+  }
+
+  @nonobjc public class var share: UIImage {
+    return UIImage(named: "share")!
+  }
+
   @nonobjc public class var time: UIImage {
     return UIImage(named: "time")!
   }
