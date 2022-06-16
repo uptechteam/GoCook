@@ -14,6 +14,7 @@ final class RecipeView: UIView {
     struct Props: Equatable {
         let recipeImageSource: ImageSource
         let isLiked: Bool
+        let recipeDetailsViewProps: RecipeDetailsView.Props
     }
 
     // MARK: - Properties
@@ -21,6 +22,9 @@ final class RecipeView: UIView {
     private let recipeImageView = UIImageView()
     private let backButton = IconButton()
     private let likeButton = IconButton()
+    private let detailsView = RecipeDetailsView()
+    private var isFirstLayoutFinished = false
+    private var scrollViewTopConstraint: NSLayoutConstraint!
     // callbacks
     var onDidTapBack: () -> Void = { }
     var onDidTapLike: () -> Void = { }
@@ -36,6 +40,14 @@ final class RecipeView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if !isFirstLayoutFinished {
+            isFirstLayoutFinished = true
+            scrollViewTopConstraint.constant = bounds.width
+        }
+    }
+
     // MARK: - Set up
 
     private func setup() {
@@ -43,6 +55,7 @@ final class RecipeView: UIView {
         setupRecipeImageView()
         setupBackButton()
         setupLikeButton()
+        setupDetailsView()
     }
 
     private func setupContentView() {
@@ -77,10 +90,38 @@ final class RecipeView: UIView {
         ])
     }
 
+    private func setupDetailsView() {
+        let scrollView = UIScrollView()
+        scrollView.addSubview(detailsView, withEdgeInsets: .zero)
+        scrollView.delegate = self
+        scrollViewTopConstraint = scrollView.topAnchor.constraint(equalTo: topAnchor, constant: 0)
+        addSubview(scrollView, constraints: [
+            scrollViewTopConstraint,
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            scrollView.widthAnchor.constraint(equalTo: widthAnchor),
+            detailsView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+    }
+
     // MARK: - Public methods
 
     func render(props: Props) {
         recipeImageView.set(props.recipeImageSource)
         likeButton.set(image: props.isLiked ? .likeEnabled : .likeDisabled)
+        detailsView.render(props: props.recipeDetailsViewProps)
+    }
+}
+
+extension RecipeView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offset = scrollView.contentOffset.y
+        let adjustedConstraint = max(0, min(bounds.width, scrollViewTopConstraint.constant - offset))
+        let delta = adjustedConstraint - scrollViewTopConstraint.constant
+        scrollViewTopConstraint.constant = adjustedConstraint
+        if delta != 0 {
+            scrollView.contentOffset = CGPoint(x: 0, y: offset + delta)
+        }
     }
 }

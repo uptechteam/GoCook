@@ -11,7 +11,8 @@ extension RecipeViewController {
     static func makeProps(from state: State) -> RecipeView.Props {
         return .init(
             recipeImageSource: state.recipe.recipeImageSource,
-            isLiked: false
+            isLiked: false,
+            recipeDetailsViewProps: RecipeDetailsView.Props()
         )
     }
 }
