@@ -8,11 +8,16 @@ let package = Package(
     products: [
         .library(name: "Routing", targets: ["Routing"])
     ],
-    dependencies: [.package(url: "https://github.com/onevcat/Kingfisher", from: "7.2.0")],
+    dependencies: [
+        .package(url: "https://github.com/onevcat/Kingfisher", from: "7.2.0"),
+        .package(url: "https://github.com/Moya/Moya", from: "15.0.0")
+    ],
     targets: [
         // MARK: - App Core
         .target(name: "AppCore", dependencies: []),
         .testTarget(name: "AppCoreTests", dependencies: ["AppCore"]),
+        // MARK: - Business logic
+        .target(name: "BusinessLogic", dependencies: ["DomainModels", "Helpers", "Moya"]),
         // MARK: - Domain models
         .target(name: "DomainModels", dependencies: ["Helpers"]),
         // MARK: - Heleprs
