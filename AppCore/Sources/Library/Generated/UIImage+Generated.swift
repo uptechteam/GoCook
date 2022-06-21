@@ -29,6 +29,18 @@ extension UIImage {
     return UIImage(named: "star")!
   }
 
+  @nonobjc public class var avatarPlaceholder: UIImage {
+    return UIImage(named: "avatarPlaceholder")!
+  }
+
+  @nonobjc public class var profileBackground: UIImage {
+    return UIImage(named: "profileBackground")!
+  }
+
+  @nonobjc public class var settings: UIImage {
+    return UIImage(named: "settings")!
+  }
+
   @nonobjc public class var bigEmptyStar: UIImage {
     return UIImage(named: "bigEmptyStar")!
   }
