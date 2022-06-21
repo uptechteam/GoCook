@@ -33,23 +33,17 @@ extension RecipeViewController {
         }
     }
 
-    public static func makeStore(dependencies: Dependencies) -> Store {
+    public static func makeStore(dependencies: Dependencies, envelope: RecipeEnvelope) -> Store {
         return Store(
-            initialState: makeInitialState(dependencies: dependencies),
+            initialState: makeInitialState(dependencies: dependencies, envelope: envelope),
             reducer: reduce,
             middlewares: []
         )
     }
 
-    private static func makeInitialState(dependencies: Dependencies) -> State {
-        let url = URL(string: "https://i2.wp.com/www.downshiftology.com/wp-content/uploads/2018/12/Shakshuka-19.jpg")!
+    private static func makeInitialState(dependencies: Dependencies, envelope: RecipeEnvelope) -> State {
         return State(
-            recipe: Recipe(
-                id: .init(rawValue: UUID().uuidString),
-                name: "Green Hummus with sizzled dolmades",
-                recipeImageSource: .remote(url: url),
-                rating: 4.8
-            ),
+            recipe: envelope.recipe,
             recipeDetails: nil,
             route: nil
         )

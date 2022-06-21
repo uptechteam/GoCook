@@ -16,3 +16,9 @@ extension Array {
         return self[index]
     }
 }
+
+extension Array: EmptyDomainModel {
+    public static var empty: [Element] {
+        []
+    }
+}

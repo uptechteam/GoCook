@@ -16,7 +16,7 @@ extension FavoritesViewController {
     }
 
     public enum Action {
-
+        case mock
     }
 
     enum Route {
@@ -45,10 +45,11 @@ extension FavoritesViewController {
 extension FavoritesViewController {
     static func reduce(state: State, action: Action) -> State {
 
-        var newState = state
+        let newState = state
 
         switch action {
-
+        case .mock:
+            break
         }
 
         return newState

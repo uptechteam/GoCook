@@ -55,7 +55,7 @@ final class AppTabBarCoordinator: Coordinating {
     }
 
     private func makeProfileCoordinator() {
-        let coordinator = ProfileCoordinator(navigationController: BaseNavigationController())
+        let coordinator = ProfileCoordinator(container: container, navigationController: BaseNavigationController())
         childCoordinators.append(coordinator)
     }
 }

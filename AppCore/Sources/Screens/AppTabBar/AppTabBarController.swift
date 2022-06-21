@@ -76,7 +76,8 @@ public final class AppTabBarController: UITabBarController {
             store.dispatch(action: .itemTapped(index))
         }
 
-        let state = store.state.removeDuplicates()
+        let state = store.$state
+            .removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
         state

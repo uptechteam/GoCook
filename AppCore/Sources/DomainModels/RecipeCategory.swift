@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Helpers
 
 public struct RecipeCategory: Equatable {
 
@@ -19,5 +20,11 @@ public struct RecipeCategory: Equatable {
     public init(category: String, recipes: [Recipe]) {
         self.category = category
         self.recipes = recipes
+    }
+}
+
+extension RecipeCategory: EmptyDomainModel {
+    public static var empty: RecipeCategory {
+        RecipeCategory(category: "", recipes: [])
     }
 }

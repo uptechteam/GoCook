@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
+import Dip
 import Library
 import Profile
 import UIKit
@@ -13,6 +14,7 @@ final class ProfileCoordinator: Coordinating {
 
     // MARK: - Properties
 
+    private let container: DependencyContainer
     private let navigationController: UINavigationController
 
     var rootViewController: UIViewController {
@@ -21,7 +23,8 @@ final class ProfileCoordinator: Coordinating {
 
     // MARK: - Lifecycle
 
-    init(navigationController: UINavigationController) {
+    init(container: DependencyContainer, navigationController: UINavigationController) {
+        self.container = container
         self.navigationController = navigationController
         setupUI()
     }
@@ -29,7 +32,7 @@ final class ProfileCoordinator: Coordinating {
     // MARK: - Lifecycle
 
     func start() {
-        let viewController = makeViewController()
+        let viewController: ProfileViewController = try! container.resolve(arguments: self as ProfileCoordinating)
         navigationController.pushViewController(viewController, animated: false)
     }
 
@@ -40,15 +43,6 @@ final class ProfileCoordinator: Coordinating {
             .font: Typography.subtitleTwo.font,
             .foregroundColor: UIColor.textMain
         ]
-    }
-
-    private func makeViewController() -> ProfileViewController {
-        let dependencies = ProfileViewController.Dependencies()
-        return ProfileViewController(
-            store: ProfileViewController.makeStore(dependencies: dependencies),
-            actionCreator: ProfileViewController.ActionCreator(dependencies: dependencies),
-            coordinator: self
-        )
     }
 }
 

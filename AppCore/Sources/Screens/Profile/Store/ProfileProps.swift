@@ -8,6 +8,7 @@
 import Foundation
 
 extension ProfileViewController {
+    @MainActor
     static func makeProps(from state: State) -> ProfileView.Props {
         .init()
     }

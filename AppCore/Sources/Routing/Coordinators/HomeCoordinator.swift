@@ -63,7 +63,10 @@ extension HomeCoordinator: HomeCoordinating {
     }
 
     func show(recipe: Recipe) {
-        let viewController: RecipeViewController = try! container.resolve(arguments: self as RecipeCoordinating)
+        let envelope = RecipeEnvelope(recipe: recipe)
+        let viewController: RecipeViewController = try! container.resolve(
+            arguments: envelope, self as RecipeCoordinating
+        )
         navigationController.pushViewController(viewController, animated: true)
     }
 }
