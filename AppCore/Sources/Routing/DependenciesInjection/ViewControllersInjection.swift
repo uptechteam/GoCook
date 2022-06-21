@@ -113,16 +113,18 @@ extension DependencyContainer {
         container.register(
             .unique,
             type: RecipeViewController.Store.self,
-            factory: RecipeViewController.makeStore
+            factory: { envelope in
+                RecipeViewController.makeStore(dependencies: try container.resolve(), envelope: envelope)
+            }
         )
         container.register(
             .unique,
             type: RecipeViewController.ActionCreator.self,
             factory: RecipeViewController.ActionCreator.init
         )
-        container.register(.unique, type: RecipeViewController.self) { coordinator in
+        container.register(.unique, type: RecipeViewController.self) { (envelope: RecipeEnvelope, coordinator) in
             return RecipeViewController(
-                store: try container.resolve(),
+                store: try container.resolve(arguments: envelope),
                 actionCreator: try container.resolve(),
                 coordinator: coordinator
             )
