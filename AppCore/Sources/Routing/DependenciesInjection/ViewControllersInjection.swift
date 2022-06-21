@@ -10,6 +10,7 @@ import Dip
 import Filters
 import Home
 import Recipe
+import Profile
 
 extension DependencyContainer {
     public static func injectViewControllers(container: DependencyContainer) {
@@ -17,6 +18,7 @@ extension DependencyContainer {
         injectHomeViewController(container: container)
         injectFiltersViewController(container: container)
         injectRecipeViewController(container: container)
+        injectProfileViewController(container: container)
     }
 
     // MARK: - App Tab Bar
@@ -37,7 +39,7 @@ extension DependencyContainer {
             type: AppTabBarController.ActionCreator.self,
             factory: AppTabBarController.ActionCreator.init
         )
-        container.register(.unique, type: AppTabBarController.self) { (coordinator: AppTabBarCoordinating) in
+        container.register(.unique, type: AppTabBarController.self) { coordinator in
             return AppTabBarController(
                 store: try container.resolve(),
                 actionCreator: try container.resolve(),
@@ -64,7 +66,7 @@ extension DependencyContainer {
             type: FiltersViewController.ActionCreator.self,
             factory: FiltersViewController.ActionCreator.init
         )
-        container.register(.unique, type: FiltersViewController.self) { (coordinator: FiltersCoordinating) in
+        container.register(.unique, type: FiltersViewController.self) { coordinator in
             return FiltersViewController(
                 store: try container.resolve(),
                 actionCreator: try container.resolve(),
@@ -91,7 +93,7 @@ extension DependencyContainer {
             type: HomeViewController.ActionCreator.self,
             factory: HomeViewController.ActionCreator.init
         )
-        container.register(.unique, type: HomeViewController.self) { (coordinator: HomeCoordinating) in
+        container.register(.unique, type: HomeViewController.self) { coordinator in
             return HomeViewController(
                 store: try container.resolve(),
                 actionCreator: try container.resolve(),
@@ -118,8 +120,35 @@ extension DependencyContainer {
             type: RecipeViewController.ActionCreator.self,
             factory: RecipeViewController.ActionCreator.init
         )
-        container.register(.unique, type: RecipeViewController.self) { (coordinator: RecipeCoordinating) in
+        container.register(.unique, type: RecipeViewController.self) { coordinator in
             return RecipeViewController(
+                store: try container.resolve(),
+                actionCreator: try container.resolve(),
+                coordinator: coordinator
+            )
+        }
+    }
+
+    // MARK: - Profile
+
+    private static func injectProfileViewController(container: DependencyContainer) {
+        container.register(
+            .shared,
+            type: ProfileViewController.Dependencies.self,
+            factory: ProfileViewController.Dependencies.init
+        )
+        container.register(
+            .unique,
+            type: ProfileViewController.Store.self,
+            factory: ProfileViewController.makeStore
+        )
+        container.register(
+            .unique,
+            type: ProfileViewController.ActionCreator.self,
+            factory: ProfileViewController.ActionCreator.init
+        )
+        container.register(.unique, type: ProfileViewController.self) { @MainActor coordinator in
+            return ProfileViewController(
                 store: try container.resolve(),
                 actionCreator: try container.resolve(),
                 coordinator: coordinator

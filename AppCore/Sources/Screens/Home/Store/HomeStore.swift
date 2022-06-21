@@ -15,7 +15,7 @@ public extension HomeViewController {
     typealias Store = ReduxStore<State, Action>
 
     struct State: Equatable {
-        var recipeCategories: [RecipeCategory]
+        var recipeCategories: DomainModelState<[RecipeCategory]>
         var searchQuery: String
         var route: AnyIdentifiable<Route>?
     }
@@ -26,6 +26,7 @@ public extension HomeViewController {
         case didTapLike(IndexPath)
         case didTapViewAll(IndexPath)
         case didChangeSearchQuery(String)
+        case getFeed(DomainModelAction<[RecipeCategory]>)
     }
 
     enum Route {
@@ -43,16 +44,17 @@ public extension HomeViewController {
     }
 
     static func makeStore(dependencies: Dependencies) -> Store {
+        let getFeedMiddleware = makeGetFeedMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
             reducer: reduce,
-            middlewares: []
+            middlewares: [getFeedMiddleware]
         )
     }
 
     private static func makeInitialState(dependencies: Dependencies) -> State {
         return State(
-            recipeCategories: [],
+            recipeCategories: .init(),
             searchQuery: "",
             route: nil
         )
@@ -94,6 +96,9 @@ extension HomeViewController {
 
         case .didChangeSearchQuery(let query):
             newState.searchQuery = query
+
+        case .getFeed(let modelAction):
+            newState.recipeCategories.handle(action: modelAction)
         }
 
         return newState

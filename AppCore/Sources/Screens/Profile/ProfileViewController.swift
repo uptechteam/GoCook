@@ -13,6 +13,7 @@ public protocol ProfileCoordinating: AnyObject {
 
 }
 
+@MainActor
 public final class ProfileViewController: UIViewController {
 
     // MARK: - Properties
@@ -56,10 +57,13 @@ public final class ProfileViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupBinding() {
-        let state = store.state.removeDuplicates()
+        let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
-        state.map(ProfileViewController.makeProps(from:))
+        state
+            .map { state in
+                return ProfileViewController.makeProps(from: state)
+            }
             .sink { [contentView] props in
                 contentView.render(props: props)
             }

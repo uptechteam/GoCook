@@ -69,7 +69,7 @@ public final class RecipeViewController: UIViewController {
             store.dispatch(action: .backTapped)
         }
 
-        let state = store.state.removeDuplicates()
+        let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
         state.map(RecipeViewController.makeProps(from:))

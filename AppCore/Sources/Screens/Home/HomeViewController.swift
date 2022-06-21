@@ -54,9 +54,7 @@ public final class HomeViewController: UIViewController {
         setupUI()
         setupBinding()
 
-        Task.detached { [actionCreator] in
-            await actionCreator.getFeed()
-        }
+        store.dispatch(action: .getFeed(.trigger))
     }
 
     // MARK: - Private methods
@@ -91,7 +89,7 @@ public final class HomeViewController: UIViewController {
             store.dispatch(action: .didTapLike(indexPath))
         }
 
-        let state = store.state.removeDuplicates()
+        let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
         state.map(HomeViewController.makeProps(from:))

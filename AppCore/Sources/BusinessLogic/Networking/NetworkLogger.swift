@@ -10,11 +10,11 @@ import Helpers
 
 struct NetworkLogger {
     func log(error: Error) {
-        Helpers.log.info("HTTP Request failed", metadata: ["Error description": .string(error.localizedDescription)])
+        Helpers.log.info("HTTP Request failed.", metadata: ["Error description": .string(error.localizedDescription)])
     }
 
     func log(request description: String) {
-        Helpers.log.info("Sending HTTP Request", metadata: ["Request": .string(description)])
+        Helpers.log.info("Sending HTTP Request.", metadata: ["Request": .string(description)])
     }
 
     func log(response data: Data, request: AppRequest) {
@@ -26,10 +26,10 @@ struct NetworkLogger {
         ?? String(data: data, encoding: .utf8)
         ?? "unknown"
         Helpers.log.info(
-            "Received HTTP Response",
+            "Received HTTP Response.",
             metadata: [
-                "1. Size": .string("\(responseSize) B"),
-                "2. Response": .string("\(requestDescription) \(formattedData.prefix(5000))")
+                "Size": .string("\(responseSize) B"),
+                "Response": .string("\(requestDescription) \(formattedData.prefix(5000))")
             ]
         )
     }

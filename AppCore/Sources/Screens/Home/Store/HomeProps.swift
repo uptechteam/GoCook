@@ -10,7 +10,7 @@ import Library
 
 extension HomeViewController {
     static func makeProps(from state: State) -> HomeView.Props {
-        .init(items: state.recipeCategories.map(makeRecipeCategoryCellProps))
+        .init(items: state.recipeCategories.items.map(makeRecipeCategoryCellProps))
     }
 
     private static func makeRecipeCategoryCellProps(recipeCategory: RecipeCategory) -> RecipeCategoryCell.Props {

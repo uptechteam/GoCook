@@ -62,7 +62,7 @@ public final class FiltersViewController: UIViewController {
     }
 
     private func setupBinding() {
-        let state = store.state.removeDuplicates()
+        let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
         state.map(FiltersViewController.makeProps(from:))
