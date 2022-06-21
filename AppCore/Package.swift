@@ -9,23 +9,39 @@ let package = Package(
         .library(name: "Routing", targets: ["Routing"])
     ],
     dependencies: [
+        .package(url: "https://github.com/Alamofire/Alamofire", from: "5.6.0"),
+        .package(url: "https://github.com/AliSoftware/Dip", from: "7.1.0"),
         .package(url: "https://github.com/onevcat/Kingfisher", from: "7.2.0"),
-        .package(url: "https://github.com/Moya/Moya", from: "15.0.0")
+        .package(url: "https://github.com/apple/swift-log", from: "1.4.0")
     ],
     targets: [
         // MARK: - App Core
         .target(name: "AppCore", dependencies: []),
         .testTarget(name: "AppCoreTests", dependencies: ["AppCore"]),
         // MARK: - Business logic
-        .target(name: "BusinessLogic", dependencies: ["DomainModels", "Helpers", "Moya"]),
+        .target(
+            name: "BusinessLogic",
+            dependencies: [
+                .product(name: "Alamofire", package: "Alamofire"),
+                "DomainModels",
+                "Helpers"
+            ]
+        ),
         // MARK: - Domain models
         .target(name: "DomainModels", dependencies: ["Helpers"]),
         // MARK: - Heleprs
-        .target(name: "Helpers", dependencies: [.product(name: "Kingfisher", package: "Kingfisher")]),
+        .target(
+            name: "Helpers",
+            dependencies: [
+                .product(name: "Dip", package: "Dip"),
+                .product(name: "Kingfisher", package: "Kingfisher"),
+                .product(name: "Logging", package: "swift-log")
+            ]
+        ),
         // MARK: - Library
         .target(
             name: "Library",
-            dependencies: [],
+            dependencies: ["Helpers"],
             resources: [
                 .copy("Resources/RedHatDisplay-Bold.otf"),
                 .copy("Resources/RedHatDisplay-Medium.otf"),
@@ -34,12 +50,19 @@ let package = Package(
             ]
         ),
         // MARK: - Routing
-        .target(name: "Routing", dependencies: ["AppTabBar", "Favorites", "Filters", "Home", "Profile", "Recipe"]),
+        .target(
+            name: "Routing",
+            dependencies: ["AppTabBar", "BusinessLogic", "Favorites", "Filters", "Home", "Profile", "Recipe"]
+        ),
         // MARK: - Screens
         .target(name: "AppTabBar", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/AppTabBar"),
         .target(name: "Favorites", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Favorites"),
         .target(name: "Filters", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Filters"),
-        .target(name: "Home", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Home"),
+        .target(
+            name: "Home",
+            dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
+            path: "Sources/Screens/Home"
+        ),
         .target(name: "Profile", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Profile"),
         .target(name: "Recipe", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Recipe")
     ]
