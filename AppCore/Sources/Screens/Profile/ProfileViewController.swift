@@ -13,7 +13,6 @@ public protocol ProfileCoordinating: AnyObject {
 
 }
 
-@MainActor
 public final class ProfileViewController: UIViewController {
 
     // MARK: - Properties

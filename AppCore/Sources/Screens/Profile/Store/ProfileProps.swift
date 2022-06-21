@@ -8,8 +8,15 @@
 import Foundation
 
 extension ProfileViewController {
-    @MainActor
     static func makeProps(from state: State) -> ProfileView.Props {
-        .init()
+        .init(headerViewProps: makeHeaderViewProps(state: state))
+    }
+
+    private static func makeHeaderViewProps(state: State) -> ProfileHeaderView.Props {
+        return .init(
+            avatarImageSource: .asset(.avatarPlaceholder),
+            isNameLabelVisible: false,
+            isSignInButtonVisible: true
+        )
     }
 }

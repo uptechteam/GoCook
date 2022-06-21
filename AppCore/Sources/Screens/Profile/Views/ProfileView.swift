@@ -11,12 +11,12 @@ import UIKit
 final class ProfileView: UIView {
 
     struct Props: Equatable {
-
+        let headerViewProps: ProfileHeaderView.Props
     }
 
     // MARK: - Properties
 
-    private let textLabel = UILabel()
+    let headerView = ProfileHeaderView()
 
     // MARK: - Lifecycle
 
@@ -33,24 +33,22 @@ final class ProfileView: UIView {
 
     private func setup() {
         setupContentView()
-        setupTextLabel()
+        setupStackView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
     }
 
-    private func setupTextLabel() {
-        textLabel.text = "Profile"
-        addSubview(textLabel, constraints: [
-            textLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            textLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ])
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [headerView, UIView()])
+        stackView.axis = .vertical
+        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     // MARK: - Public methods
 
     func render(props: Props) {
-
+        headerView.render(props: props.headerViewProps)
     }
 }
