@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 13.06.2022.
 //
 
+import BusinessLogic
 import DomainModels
 import Foundation
 import Helpers
@@ -34,8 +35,10 @@ public extension HomeViewController {
     }
 
     struct Dependencies {
-        public init() {
+        let recipesClient: RecipesClienting
 
+        public init(recipesClient: RecipesClienting) {
+            self.recipesClient = recipesClient
         }
     }
 
@@ -49,13 +52,7 @@ public extension HomeViewController {
 
     private static func makeInitialState(dependencies: Dependencies) -> State {
         return State(
-            recipeCategories: [
-                RecipeCategory(category: "Trending", recipes: [createRecipe(), createRecipe(), createRecipe(), createRecipe(), createRecipe()]),
-                RecipeCategory(category: "Breakfast", recipes: [createRecipe(), createRecipe(), createRecipe(), createRecipe(), createRecipe()]),
-                RecipeCategory(category: "Lunch", recipes: [createRecipe(), createRecipe(), createRecipe(), createRecipe(), createRecipe()]),
-                RecipeCategory(category: "Dinner", recipes: [createRecipe(), createRecipe(), createRecipe(), createRecipe(), createRecipe()]),
-                RecipeCategory(category: "Drinks", recipes: [createRecipe(), createRecipe(), createRecipe(), createRecipe(), createRecipe()])
-            ],
+            recipeCategories: [],
             searchQuery: "",
             route: nil
         )
@@ -101,9 +98,4 @@ extension HomeViewController {
 
         return newState
     }
-}
-
-private let url = URL(string: "https://i2.wp.com/www.downshiftology.com/wp-content/uploads/2018/12/Shakshuka-19.jpg")!
-private func createRecipe() -> Recipe {
-    Recipe(id: .init(rawValue: UUID().uuidString), name: "Green Hummus with sizzled dolmades", recipeImageSource: .remote(url: url), rating: 4.8)
 }

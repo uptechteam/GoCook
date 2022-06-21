@@ -6,7 +6,9 @@
 //
 
 import AppTabBar
+import BusinessLogic
 import DomainModels
+import Dip
 import Filters
 import Foundation
 import Home
@@ -16,6 +18,9 @@ import UIKit
 
 final class HomeCoordinator: NSObject, Coordinating {
 
+    // MARK: - Properties
+
+    private let container: DependencyContainer
     private let navigationController: UINavigationController
 
     var rootViewController: UIViewController {
@@ -24,7 +29,8 @@ final class HomeCoordinator: NSObject, Coordinating {
 
     // MARK: - Lifecycle
 
-    init(navigationController: UINavigationController) {
+    init(container: DependencyContainer, navigationController: UINavigationController) {
+        self.container = container
         self.navigationController = navigationController
         super.init()
         setupUI()
@@ -33,7 +39,7 @@ final class HomeCoordinator: NSObject, Coordinating {
     // MARK: - Public methods
 
     func start() {
-        let viewController = makeHomeViewController()
+        let viewController: HomeViewController = try! container.resolve(arguments: self as HomeCoordinating)
         navigationController.pushViewController(viewController, animated: false)
     }
 
@@ -52,12 +58,12 @@ final class HomeCoordinator: NSObject, Coordinating {
 
 extension HomeCoordinator: HomeCoordinating {
     func showFilters() {
-        let viewController = makeFiltersViewController()
+        let viewController: FiltersViewController = try! container.resolve(arguments: self as FiltersCoordinating)
         navigationController.pushViewController(viewController, animated: true)
     }
 
     func show(recipe: Recipe) {
-        let viewController = makeRecipeViewController()
+        let viewController: RecipeViewController = try! container.resolve(arguments: self as RecipeCoordinating)
         navigationController.pushViewController(viewController, animated: true)
     }
 }
@@ -91,36 +97,5 @@ extension HomeCoordinator: UINavigationControllerDelegate {
     ) {
         let isTabBarVisible = viewController is HomeViewController
         (navigationController.tabBarController as? AppTabBarController)?.toggleTabBarVisibility(on: isTabBarVisible)
-    }
-}
-
-// MARK: - View controller factory
-
-private extension HomeCoordinator {
-    private func makeHomeViewController() -> UIViewController {
-        let dependencies = HomeViewController.Dependencies()
-        return HomeViewController(
-            store: HomeViewController.makeStore(dependencies: dependencies),
-            actionCreator: HomeViewController.ActionCreator(dependencies: dependencies),
-            coordinator: self
-        )
-    }
-
-    private func makeFiltersViewController() -> UIViewController {
-        let dependencies = FiltersViewController.Dependencies()
-        return FiltersViewController(
-            store: FiltersViewController.makeStore(dependencies: dependencies),
-            actionCreator: FiltersViewController.ActionCreator(dependencies: dependencies),
-            coordinator: self
-        )
-    }
-
-    private func makeRecipeViewController() -> UIViewController {
-        let dependencies = RecipeViewController.Dependencies()
-        return RecipeViewController(
-            store: RecipeViewController.makeStore(dependencies: dependencies),
-            actionCreator: RecipeViewController.ActionCreator(dependencies: dependencies),
-            coordinator: self
-        )
     }
 }
