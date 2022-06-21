@@ -6,6 +6,8 @@
 //
 
 import AppTabBar
+import BusinessLogic
+import Dip
 import Library
 import Home
 import UIKit
@@ -14,12 +16,14 @@ public final class AppCoordinator {
 
     // MARK: - Properties
 
+    private let container: DependencyContainer
     private let window: UIWindow
     private var childCoordinators: [Coordinating]
 
     // MARK: - Lifecycle
 
     public init(window: UIWindow) {
+        self.container = .configure()
         self.window = window
         self.childCoordinators = []
         loadResources()
@@ -39,13 +43,8 @@ public final class AppCoordinator {
     }
 
     private func showTabBar() {
-        let dependencies = AppTabBarController.Dependencies()
-        let appTabBarController = AppTabBarController(
-            store: AppTabBarController.makeStore(dependencies: dependencies),
-            actionCreator: AppTabBarController.ActionCreator(dependencies: dependencies),
-            coordinator: self
-        )
-        let coordinator = AppTabBarCoordinator(tabBarController: appTabBarController)
+        let appTabBarController: AppTabBarController = try! container.resolve(arguments: self as AppTabBarCoordinating)
+        let coordinator = AppTabBarCoordinator(container: container, tabBarController: appTabBarController)
         coordinator.start()
         childCoordinators.append(coordinator)
         window.rootViewController = coordinator.rootViewController

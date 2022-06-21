@@ -10,13 +10,24 @@ import Foundation
 
 public extension HomeViewController {
 
-    final class ActionCreator {
+    actor ActionCreator {
 
         private let dependencies: Dependencies
         private let cancellables = [AnyCancellable]()
 
         public init(dependencies: Dependencies) {
             self.dependencies = dependencies
+        }
+
+        // MARK: - Public methods
+
+        func getFeed() async {
+            do {
+                let recipes = try await dependencies.recipesClient.getRecipes()
+                print(recipes)
+            } catch {
+
+            }
         }
     }
 }

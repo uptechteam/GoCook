@@ -53,6 +53,10 @@ public final class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupBinding()
+
+        Task.detached { [actionCreator] in
+            await actionCreator.getFeed()
+        }
     }
 
     // MARK: - Private methods
