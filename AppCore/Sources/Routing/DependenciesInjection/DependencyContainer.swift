@@ -16,7 +16,13 @@ extension DependencyContainer {
             // MARK: - Networking
 
             container.register(.singleton, type: NetworkClient.self, factory: NetworkClientImpl.init)
+
+            container.register(.singleton, type: ProfileClienting.self, factory: ProfileClient.init)
             container.register(.singleton, type: RecipesClienting.self, factory: RecipesClient.init)
+
+            // MARK: - Facades
+
+            container.register(.singleton, type: ProfileFacading.self, factory: ProfileFacade.init)
 
             // MARK: - View controllers injection
 

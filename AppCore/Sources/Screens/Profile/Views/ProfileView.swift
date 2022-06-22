@@ -12,11 +12,16 @@ final class ProfileView: UIView {
 
     struct Props: Equatable {
         let headerViewProps: ProfileHeaderView.Props
+        let recipesHeaderViewProps: ProfileRecipesHeaderView.Props
+        let infoViewProps: ProfileInfoView.Props
     }
 
     // MARK: - Properties
 
     let headerView = ProfileHeaderView()
+    let recipesHeaderView = ProfileRecipesHeaderView()
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
+    let infoView = ProfileInfoView()
 
     // MARK: - Lifecycle
 
@@ -41,14 +46,23 @@ final class ProfileView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [headerView, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [headerView, recipesHeaderView, infoView])
         stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.setCustomSpacing(24, after: headerView)
         addSubview(stackView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            headerView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            recipesHeaderView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
+            infoView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -140)
+        ])
     }
 
     // MARK: - Public methods
 
     func render(props: Props) {
         headerView.render(props: props.headerViewProps)
+        recipesHeaderView.render(props: props.recipesHeaderViewProps)
+        infoView.render(props: props.infoViewProps)
     }
 }

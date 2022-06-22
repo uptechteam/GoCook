@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  TargetBuilder.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 20.06.2022.
@@ -33,6 +33,18 @@ struct TargetBuilder {
             url: baseURL.appendingPathExtension(path),
             method: .get,
             headers: [.defaultAcceptEncoding, .defaultAcceptLanguage, .defaultUserAgent, .authorization("Basic dXNlcm5hbWU6c2VjcmV0")]
+        )
+        return try URLEncodedFormParameterEncoder.default.encode(parameters, into: request)
+    }
+
+    func makePostTarget(
+        path: String,
+        parameters: [String: String]
+    ) throws -> AppRequest {
+        let request = try URLRequest(
+            url: baseURL.appendingPathExtension(path),
+            method: .post,
+            headers: [.defaultAcceptEncoding, .defaultAcceptLanguage, .defaultUserAgent, .authorization("Basic some_credentials")]
         )
         return try URLEncodedFormParameterEncoder.default.encode(parameters, into: request)
     }

@@ -29,6 +29,10 @@ extension UIImage {
     return UIImage(named: "star")!
   }
 
+  @nonobjc public class var addIcon: UIImage {
+    return UIImage(named: "addIcon")!
+  }
+
   @nonobjc public class var avatarPlaceholder: UIImage {
     return UIImage(named: "avatarPlaceholder")!
   }
