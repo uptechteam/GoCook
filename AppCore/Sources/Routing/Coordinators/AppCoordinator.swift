@@ -12,6 +12,7 @@ import Library
 import Home
 import UIKit
 
+@MainActor
 public final class AppCoordinator {
 
     // MARK: - Properties

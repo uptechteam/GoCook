@@ -19,6 +19,7 @@ extension ProfileViewController {
 
     public enum Action {
         case login
+        case logout
         case updateProfile(Profile?)
     }
 
@@ -40,10 +41,12 @@ extension ProfileViewController {
     }
 
     public static func makeStore(dependencies: Dependencies) -> Store {
+        let loginMiddleware = makeLoginMiddleware(dependencies: dependencies)
+        let logoutMiddleware = makeLogoutMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
             reducer: reduce,
-            middlewares: []
+            middlewares: [loginMiddleware, logoutMiddleware]
         )
     }
 
@@ -61,6 +64,9 @@ extension ProfileViewController {
 
         switch action {
         case .login:
+            break
+
+        case .logout:
             break
 
         case .updateProfile(let profile):

@@ -21,13 +21,13 @@ public protocol ProfileStoraging {
     /// Store `Profile` in storage. It will update existing model if there is.
     ///
     /// - Parameter profile: `Profile` object.
-    func store(profile: Profile)
+    func store(profile: Profile) async
     /// Retrieve `Profile` from storage.
     ///
     /// - Returns: `Profile` or nil if storage doesn't have the object.
-    func getProfile() -> Profile?
+    func getProfile() async -> Profile?
     /// Remove `Profile` object from storage.
-    func clear()
+    func clear() async
 }
 
 public final class ProfileStorage: ProfileStoraging {
@@ -44,17 +44,17 @@ public final class ProfileStorage: ProfileStoraging {
 
     // MARK: - Public methods
 
-    public func store(profile: Profile) {
-        persistenceManager.clear()
-        persistenceManager.store(models: [profile])
+    public func store(profile: Profile) async {
+        await persistenceManager.clear()
+        await persistenceManager.store(models: [profile])
     }
 
-    public func getProfile() -> Profile? {
-        persistenceManager.getModels().first
+    public func getProfile() async -> Profile? {
+        await persistenceManager.getModels().first
     }
 
-    public func clear() {
-        persistenceManager.clear()
+    public func clear() async {
+        await persistenceManager.clear()
     }
 }
 

@@ -58,6 +58,22 @@ public final class ProfileViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupBinding() {
+        contentView.headerView.onDidTapSettings = { [store] in
+            store.dispatch(action: .logout)
+        }
+
+        contentView.headerView.onDidTapSignIn = { [store] in
+            store.dispatch(action: .login)
+        }
+
+        contentView.recipesHeaderView.onDidTapAddNew = {
+
+        }
+
+        contentView.infoView.onDidTapAddRecipe = {
+
+        }
+
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 

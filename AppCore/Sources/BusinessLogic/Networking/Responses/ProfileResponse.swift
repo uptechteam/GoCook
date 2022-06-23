@@ -1,13 +1,14 @@
 //
-//  UserResponse.swift
+//  ProfileResponse.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 23.06.2022.
 //
 
 import DomainModels
+import Library
 
-struct UserResponse: Decodable {
+struct ProfileResponse: Decodable {
     let id: String
     let username: String
 

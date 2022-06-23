@@ -9,7 +9,7 @@ import DomainModels
 import Foundation
 
 public protocol ProfileClienting {
-    func login() async throws -> String
+    func login(username: String, password: String) async throws -> String
     func logout() async throws
     func refreshProfile() async throws -> Profile
 }
@@ -30,20 +30,20 @@ public final class ProfileClient: ProfileClienting {
 
     // MARK: - Public methods
 
-    public func login() async throws -> String {
-        let appRequest = try api.makeLoginTarget()
-        let response: String = try await networkClient.request(appRequest)
-        return response
+    public func login(username: String, password: String) async throws -> String {
+        let appRequest = try api.makeLoginTarget(username: username, password: password)
+        let response: TokenResponse = try await networkClient.request(appRequest)
+        return response.token
     }
 
     public func logout() async throws {
         let appRequest = try api.makeLogoutTarget()
-        let _: String = try await networkClient.request(appRequest)
+        let _: EmptyResponse = try await networkClient.request(appRequest)
     }
 
     public func refreshProfile() async throws -> Profile {
         let appRequest = try api.makeRefreshProfileTarget()
-        let response: UserResponse = try await networkClient.request(appRequest)
+        let response: ProfileResponse = try await networkClient.request(appRequest)
         return response.domainModel
     }
 }

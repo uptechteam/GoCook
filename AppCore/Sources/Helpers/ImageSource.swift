@@ -38,13 +38,21 @@ public enum ImageSource: Equatable {
 // MARK: - UIImageView + ImageSource
 
 extension UIImageView {
-    public func set(_ imageSource: ImageSource, resizeTo newSize: CGSize? = nil, completion: ((Bool) -> Void)? = nil) {
+    public func set(
+        _ imageSource: ImageSource,
+        placeholder: UIImage? = nil,
+        resizeTo newSize: CGSize? = nil,
+        completion: ((Bool) -> Void)? = nil
+    ) {
         switch imageSource {
         case .asset(let image):
-            self.image = image
+            self.image = image ?? placeholder
             completion?(true)
 
         case .remote(let url):
+            if self.image == nil {
+                self.image = placeholder
+            }
             let options = makeOptions(with: newSize)
             kf.setImage(with: url, options: options)
         }

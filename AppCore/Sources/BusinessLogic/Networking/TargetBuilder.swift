@@ -26,36 +26,42 @@ struct TargetBuilder {
     // MARK: - Public methods
 
     func makeDeleteTarget(
-        path: String
+        path: String,
+        authorisation: Authorisation = .basic
     ) throws -> AppRequest {
-        return try URLRequest(
-            url: baseURL.appendingPathExtension(path),
+        let request = try URLRequest(
+            url: baseURL.appendingPathComponent(path),
             method: .delete,
             headers: .default
         )
+        return AppRequest(urlRequest: request, authorisation: authorisation)
     }
 
     func makeGetTarget(
         path: String,
-        parameters: [String: String]
+        parameters: [String: String] = [:],
+        authorisation: Authorisation = .basic
     ) throws -> AppRequest {
-        let request = try URLRequest(
-            url: baseURL.appendingPathExtension(path),
+        var request = try URLRequest(
+            url: baseURL.appendingPathComponent(path),
             method: .get,
-            headers: [.defaultAcceptEncoding, .defaultAcceptLanguage, .defaultUserAgent, .authorization("Basic dXNlcm5hbWU6c2VjcmV0")]
+            headers: .default
         )
-        return try URLEncodedFormParameterEncoder.default.encode(parameters, into: request)
+        request = try URLEncodedFormParameterEncoder.default.encode(parameters, into: request)
+        return AppRequest(urlRequest: request, authorisation: authorisation)
     }
 
     func makePostTarget(
         path: String,
-        parameters: [String: String]
+        parameters: [String: String] = [:],
+        authorisation: Authorisation = .basic
     ) throws -> AppRequest {
-        let request = try URLRequest(
-            url: baseURL.appendingPathExtension(path),
+        var request = try URLRequest(
+            url: baseURL.appendingPathComponent(path),
             method: .post,
             headers: .default
         )
-        return try URLEncodedFormParameterEncoder.default.encode(parameters, into: request)
+        request = try URLEncodedFormParameterEncoder.default.encode(parameters, into: request)
+        return AppRequest(urlRequest: request, authorisation: authorisation)
     }
 }

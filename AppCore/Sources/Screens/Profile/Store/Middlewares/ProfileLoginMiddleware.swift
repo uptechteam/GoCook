@@ -15,6 +15,10 @@ extension ProfileViewController {
 
             await next(action)
 
+            guard case .login = action else {
+                return
+            }
+
             do {
                 try await dependencies.profileFacade.login(username: "Master Chief", password: "password")
             } catch {

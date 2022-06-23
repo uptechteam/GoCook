@@ -18,9 +18,10 @@ extension ProfileViewController {
 
     private static func makeHeaderViewProps(state: State) -> ProfileHeaderView.Props {
         return .init(
-            avatarImageSource: .asset(.avatarPlaceholder),
-            isNameLabelVisible: false,
-            isSignInButtonVisible: true
+            avatarImageSource: state.profile?.avatar ?? .asset(.avatarPlaceholder),
+            isSignInButtonVisible: state.profile == nil,
+            isNameLabelVisible: state.profile != nil,
+            name: state.profile?.username ?? ""
         )
     }
 
@@ -31,8 +32,8 @@ extension ProfileViewController {
     private static func makeInfoViewProps(state: State) -> ProfileInfoView.Props {
         return .init(
             isVisible: true,
-            description: .profileNotSignedInTitle,
-            isAddRecipeButtonVisible: false
+            description: state.profile == nil ? .profileNotSignedInTitle : .profileEmptyContentTitle,
+            isAddRecipeButtonVisible: state.profile != nil
         )
     }
 }

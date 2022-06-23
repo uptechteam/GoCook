@@ -13,8 +13,9 @@ final class ProfileHeaderView: UIView {
 
     struct Props: Equatable {
         let avatarImageSource: ImageSource
-        let isNameLabelVisible: Bool
         let isSignInButtonVisible: Bool
+        let isNameLabelVisible: Bool
+        let name: String
     }
 
     // MARK: - Properties
@@ -91,6 +92,8 @@ final class ProfileHeaderView: UIView {
 
     private func setupNameLabel() {
         nameLabel.isHidden = true
+        nameLabel.render(typography: .headerTwo)
+        nameLabel.textColor = .appWhite
     }
 
     private func setupStackView() {
@@ -108,8 +111,9 @@ final class ProfileHeaderView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        avatarImageView.set(props.avatarImageSource)
+        avatarImageView.set(props.avatarImageSource, placeholder: .avatarPlaceholder)
         signInButton.isHidden = !props.isSignInButtonVisible
         nameLabel.isHidden = !props.isNameLabelVisible
+        nameLabel.text = props.name
     }
 }

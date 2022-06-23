@@ -18,7 +18,7 @@ struct NetworkLogger {
     }
 
     func log(response data: Data, request: AppRequest) {
-        let requestDescription = request.urlRequest?.description ?? "Unknown request"
+        let requestDescription = request.urlRequest.urlRequest?.description ?? "Unknown request"
         let responseSize = data.count
         let formattedData = (try? JSONSerialization.jsonObject(with: data, options: []))
             .flatMap { try? JSONSerialization.data(withJSONObject: $0, options: [.prettyPrinted]) }

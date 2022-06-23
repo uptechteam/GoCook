@@ -11,6 +11,7 @@ import DomainModels
 import Foundation
 
 extension DependencyContainer {
+    @MainActor
     public static func configure() -> DependencyContainer {
         return DependencyContainer { container in
 

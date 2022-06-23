@@ -10,24 +10,23 @@ import DomainModels
 import Foundation
 import Helpers
 
+@MainActor
 public protocol PersistenceManaging<DomainModel> {
     associatedtype DomainModel: PersistenceModel
 
-    func store(models: [DomainModel])
-    func getModels() -> [DomainModel]
-    func clear(filter: Filter)
+    func store(models: [DomainModel]) async
+    func getModels() async -> [DomainModel]
+    func clear(filter: Filter) async
 }
 
 extension PersistenceManaging {
-    func clear() {
-        clear(filter: Filter(predicates: []))
+    func clear() async  {
+        await clear(filter: Filter(predicates: []))
     }
 }
 
-public final class PersistenceManager<DModel: PersistenceModel>: PersistenceManaging {
-
-    public typealias DomainModel = DModel
-
+@MainActor
+public final class PersistenceManager<DomainModel: PersistenceModel>: PersistenceManaging {
 
     // MARK: - Properties
 
@@ -51,7 +50,7 @@ public final class PersistenceManager<DModel: PersistenceModel>: PersistenceMana
 
     // MARK: - Public methods
 
-    public func store(models: [DModel]) {
+    public func store(models: [DomainModel]) async {
         guard Thread.isMainThread else {
             log.error("Can't store models on background thread.")
             return
@@ -69,7 +68,7 @@ public final class PersistenceManager<DModel: PersistenceModel>: PersistenceMana
         }
     }
 
-    public func getModels() -> [DModel] {
+    public func getModels() async -> [DomainModel] {
         guard Thread.isMainThread else {
             log.error("Can't fetch models on background thread.")
             return []
@@ -86,7 +85,7 @@ public final class PersistenceManager<DModel: PersistenceModel>: PersistenceMana
         }
     }
 
-    public func clear(filter: Filter) {
+    public func clear(filter: Filter) async {
         guard Thread.isMainThread else {
             log.error("Can't clear data on background thread.")
             return

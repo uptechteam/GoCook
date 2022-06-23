@@ -21,15 +21,18 @@ struct UsersAPI {
 
     // MARK: - Public methods
 
-    func makeLoginTarget() throws -> AppRequest {
-        try targetBuilder.makePostTarget(path: "login", parameters: [:])
+    func makeLoginTarget(username: String, password: String) throws -> AppRequest {
+        try targetBuilder.makePostTarget(
+            path: "login",
+            authorisation: .login(username: username, password: password)
+        )
     }
 
     func makeLogoutTarget() throws -> AppRequest {
-        try targetBuilder.makeDeleteTarget(path: "logout")
+        try targetBuilder.makeDeleteTarget(path: "logout", authorisation: .bearer)
     }
 
     func makeRefreshProfileTarget() throws -> AppRequest {
-        try targetBuilder.makeGetTarget(path: "me", parameters: [:])
+        try targetBuilder.makeGetTarget(path: "me", authorisation: .bearer)
     }
 }

@@ -29,7 +29,7 @@ let package = Package(
                 "Helpers"
             ],
             resources: [
-                .process("Persistence/Profile/PersistentProfile.xcdatamodel")
+                .process("PersistentProfile")
             ]
         ),
         // MARK: - Domain models
@@ -44,16 +44,7 @@ let package = Package(
             ]
         ),
         // MARK: - Library
-        .target(
-            name: "Library",
-            dependencies: ["Helpers"],
-            resources: [
-                .copy("Resources/RedHatDisplay-Bold.otf"),
-                .copy("Resources/RedHatDisplay-Medium.otf"),
-                .copy("Resources/RedHatDisplay-Regular.otf"),
-                .copy("Resources/RedHatText-Medium.otf")
-            ]
-        ),
+        .target(name: "Library", dependencies: ["Helpers"], resources: [.process("Resources")]),
         // MARK: - Routing
         .target(
             name: "Routing",
