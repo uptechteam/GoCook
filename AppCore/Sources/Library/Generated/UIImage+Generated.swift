@@ -109,5 +109,9 @@ extension UIImage {
     return UIImage(named: "circleBackButton")!
   }
 
+  @nonobjc public class var close: UIImage {
+    return UIImage(named: "close")!
+  }
+
 }
 // swiftlint:enable file_length

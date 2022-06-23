@@ -9,7 +9,7 @@ import Combine
 import UIKit
 
 public protocol CreateRecipeCoordinating: AnyObject {
-
+    func didTapClose()
 }
 
 public final class CreateRecipeViewController: UIViewController {
@@ -33,6 +33,7 @@ public final class CreateRecipeViewController: UIViewController {
         self.actionCreator = actionCreator
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
+        setupUI()
     }
 
     required init?(coder: NSCoder) {
@@ -54,7 +55,37 @@ public final class CreateRecipeViewController: UIViewController {
 
     // MARK: - Private methods
 
-    private func setupBinding() {
+    private func setupUI() {
+        navigationItem.title = "Create recipe"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: .close,
+            primaryAction: UIAction(handler: { [store] _ in store.dispatch(action: .closeTapped) })
+        )
+    }
 
+    private func setupBinding() {
+        let state = store.$state.removeDuplicates()
+            .subscribe(on: DispatchQueue.main)
+
+        state
+            .map { CreateRecipeViewController.makeProps(from: $0) }
+            .sink { [contentView] props in
+                contentView.render(props: props)
+            }
+            .store(in: &cancellables)
+
+        state.compactMap(\.route).removeDuplicates()
+            .map(\.value)
+            .sink { [unowned self] route in
+                navigate(by: route)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func navigate(by route: Route) {
+        switch route {
+        case .close:
+            coordinator.didTapClose()
+        }
     }
 }

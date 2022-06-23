@@ -17,6 +17,7 @@ final class ProfileCoordinator: NSObject, Coordinating {
 
     // MARK: - Properties
 
+    private var childCoordinators: [Coordinating]
     private let container: DependencyContainer
     private let navigationController: UINavigationController
 
@@ -27,6 +28,7 @@ final class ProfileCoordinator: NSObject, Coordinating {
     // MARK: - Lifecycle
 
     init(container: DependencyContainer, navigationController: UINavigationController) {
+        self.childCoordinators = []
         self.container = container
         self.navigationController = navigationController
         super.init()
@@ -55,14 +57,16 @@ final class ProfileCoordinator: NSObject, Coordinating {
 
 extension ProfileCoordinator: ProfileCoordinating {
     func didTapCreateRecipe() {
-        let viewController: CreateRecipeViewController = try! container.resolve(arguments: self as CreateRecipeCoordinating)
-        viewController.modalPresentationStyle = .overFullScreen
-        navigationController.present(viewController, animated: true)
+        let coordinator = CreateRecipeCoordinator(container: container, presentingViewController: navigationController)
+        childCoordinators.append(coordinator)
+        coordinator.start()
     }
 }
 
-extension ProfileCoordinator: CreateRecipeCoordinating {
-
+extension ProfileCoordinator: CreateRecipeCoordinatorDelegate {
+    func didFinish(_ coordinator: CreateRecipeCoordinator) {
+        childCoordinators.removeAll(where: { $0 === coordinator })
+    }
 }
 
 // MARK: - UINavigationControllerdelegate

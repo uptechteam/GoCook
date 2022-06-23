@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol Coordinating {
+protocol Coordinating: AnyObject {
     var rootViewController: UIViewController { get }
 
     func start()

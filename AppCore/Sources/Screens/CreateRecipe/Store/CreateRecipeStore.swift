@@ -11,16 +11,16 @@ extension CreateRecipeViewController {
 
     public typealias Store = ReduxStore<State, Action>
 
-    public struct State {
-
+    public struct State: Equatable {
+        var route: AnyIdentifiable<Route>?
     }
 
     public enum Action {
-        case mock
+        case closeTapped
     }
 
     enum Route {
-
+        case close
     }
 
     public struct Dependencies {
@@ -38,18 +38,20 @@ extension CreateRecipeViewController {
     }
 
     private static func makeInitialState(dependencies: Dependencies) -> State {
-        return State()
+        return State(
+            route: nil
+        )
     }
 }
 
 extension CreateRecipeViewController {
     static func reduce(state: State, action: Action) -> State {
 
-        let newState = state
+        var newState = state
 
         switch action {
-        case .mock:
-            break
+        case .closeTapped:
+            newState.route = .init(value: .close)
         }
 
         return newState
