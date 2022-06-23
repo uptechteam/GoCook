@@ -48,10 +48,11 @@ let package = Package(
         // MARK: - Routing
         .target(
             name: "Routing",
-            dependencies: ["AppTabBar", "BusinessLogic", "Favorites", "Filters", "Home", "Profile", "Recipe"]
+            dependencies: ["AppTabBar", "BusinessLogic", "CreateRecipe", "Favorites", "Filters", "Home", "Profile", "Recipe"]
         ),
         // MARK: - Screens
         .target(name: "AppTabBar", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/AppTabBar"),
+        .target(name: "CreateRecipe", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/CreateRecipe"),
         .target(name: "Favorites", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Favorites"),
         .target(name: "Filters", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Filters"),
         .target(
