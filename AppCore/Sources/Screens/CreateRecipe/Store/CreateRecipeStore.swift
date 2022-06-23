@@ -12,11 +12,14 @@ extension CreateRecipeViewController {
     public typealias Store = ReduxStore<State, Action>
 
     public struct State: Equatable {
+        var step: Int
         var route: AnyIdentifiable<Route>?
     }
 
     public enum Action {
+        case backTapped
         case closeTapped
+        case nextTapped
     }
 
     enum Route {
@@ -39,6 +42,7 @@ extension CreateRecipeViewController {
 
     private static func makeInitialState(dependencies: Dependencies) -> State {
         return State(
+            step: 0,
             route: nil
         )
     }
@@ -50,8 +54,14 @@ extension CreateRecipeViewController {
         var newState = state
 
         switch action {
+        case .backTapped:
+            newState.step = max(0, newState.step - 1)
+
         case .closeTapped:
             newState.route = .init(value: .close)
+
+        case .nextTapped:
+            newState.step = min(3, newState.step + 1)
         }
 
         return newState

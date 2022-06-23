@@ -7,6 +7,12 @@
 
 extension CreateRecipeViewController {
     static func makeProps(from state: State) -> CreateRecipeView.Props {
-        .init()
+        return .init(
+            stepsViewProps: makeStepsViewProps(state: state)
+        )
+    }
+
+    private static func makeStepsViewProps(state: State) -> CreateRecipeStepsView.Props {
+        return .init(title: "\(state.step + 1) / 4")
     }
 }

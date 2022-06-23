@@ -11,12 +11,12 @@ import UIKit
 final class CreateRecipeView: UIView {
 
     struct Props: Equatable {
-
+        let stepsViewProps: CreateRecipeStepsView.Props
     }
 
     // MARK: - Properties
 
-
+    let stepsView = CreateRecipeStepsView()
 
     // MARK: - Lifecycle
 
@@ -33,15 +33,30 @@ final class CreateRecipeView: UIView {
 
     private func setup() {
         setupContentView()
+        setupStepsView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
     }
 
+    private func setupStepsView() {
+        addSubview(stepsView, constraints: [
+            stepsView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -56),
+            stepsView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stepsView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stepsView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [UIView()])
+        addSubview(stackView, withEdgeInsets: .zero)
+    }
+
     // MARK: - Public methods
 
     func render(props: Props) {
-
+        stepsView.render(props: props.stepsViewProps)
     }
 }

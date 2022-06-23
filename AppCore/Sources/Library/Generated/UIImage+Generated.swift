@@ -9,6 +9,14 @@ import UIKit
 
 extension UIImage {
 
+  @nonobjc public class var arrowBack: UIImage {
+    return UIImage(named: "arrowBack")!
+  }
+
+  @nonobjc public class var arrowForward: UIImage {
+    return UIImage(named: "arrowForward")!
+  }
+
   @nonobjc public class var circleFavoriteEmpty: UIImage {
     return UIImage(named: "circleFavoriteEmpty")!
   }

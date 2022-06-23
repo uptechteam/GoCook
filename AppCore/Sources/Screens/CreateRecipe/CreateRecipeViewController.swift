@@ -64,6 +64,14 @@ public final class CreateRecipeViewController: UIViewController {
     }
 
     private func setupBinding() {
+        contentView.stepsView.onDidTapBack = { [store] in
+            store.dispatch(action: .backTapped)
+        }
+
+        contentView.stepsView.onDidTapNext = { [store] in
+            store.dispatch(action: .nextTapped)
+        }
+
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
