@@ -27,6 +27,9 @@ let package = Package(
                 .product(name: "KeychainAccess", package: "KeychainAccess"),
                 "DomainModels",
                 "Helpers"
+            ],
+            resources: [
+                .process("Persistence/Profile/PersistentProfile.xcdatamodel")
             ]
         ),
         // MARK: - Domain models
@@ -65,7 +68,11 @@ let package = Package(
             dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
             path: "Sources/Screens/Home"
         ),
-        .target(name: "Profile", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Profile"),
+        .target(
+            name: "Profile",
+            dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
+            path: "Sources/Screens/Profile"
+        ),
         .target(name: "Recipe", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Recipe")
     ]
 )

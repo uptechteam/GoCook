@@ -22,6 +22,7 @@ public final class ProfileFacade: ProfileFacading {
     // MARK: - Properties
 
     private let profileClient: ProfileClienting
+    private let profileStorage: ProfileStoraging
     private let userCredentialsStorage: UserCredentialsStoraging
     private let profileSubject: CurrentValueSubject<Profile?, Never>
 
@@ -31,10 +32,16 @@ public final class ProfileFacade: ProfileFacading {
 
     // MARK: - Lifecycle
 
-    public init(profileClient: ProfileClienting, userCredentialsStorage: UserCredentialsStoraging) {
+    public init(
+        profileClient: ProfileClienting,
+        profileStorage: ProfileStoraging,
+        userCredentialsStorage: UserCredentialsStoraging
+    ) {
         self.profileClient = profileClient
+        self.profileStorage = profileStorage
         self.userCredentialsStorage = userCredentialsStorage
         self.profileSubject = CurrentValueSubject(nil)
+        loadProfile()
     }
 
     // MARK: - Public methods
@@ -46,11 +53,22 @@ public final class ProfileFacade: ProfileFacading {
     public func login(username: String, password: String) async throws {
         let token = try await profileClient.login()
         userCredentialsStorage.store(accessKey: token)
-        print(token)
+        let profile = try await profileClient.refreshProfile()
+        profileStorage.store(profile: profile)
     }
 
     public func logout() async throws {
         try await profileClient.logout()
         userCredentialsStorage.clear()
+    }
+
+    // MARK: - Private methods
+
+    private func loadProfile() {
+        guard let profile = profileStorage.getProfile() else {
+            return
+        }
+
+        profileSubject.send(profile)
     }
 }

@@ -23,6 +23,16 @@ public enum ImageSource: Equatable {
             return nil
         }
     }
+
+    public var url: URL? {
+        switch self {
+        case .asset:
+            return nil
+
+        case .remote(let url):
+            return url
+        }
+    }
 }
 
 // MARK: - UIImageView + ImageSource

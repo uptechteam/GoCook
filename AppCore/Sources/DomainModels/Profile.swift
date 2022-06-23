@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 22.06.2022.
 //
 
+import CoreData
 import Helpers
 
 public struct Profile: Equatable {

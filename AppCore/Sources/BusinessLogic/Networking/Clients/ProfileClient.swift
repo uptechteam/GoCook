@@ -11,6 +11,7 @@ import Foundation
 public protocol ProfileClienting {
     func login() async throws -> String
     func logout() async throws
+    func refreshProfile() async throws -> Profile
 }
 
 public final class ProfileClient: ProfileClienting {
@@ -38,5 +39,11 @@ public final class ProfileClient: ProfileClienting {
     public func logout() async throws {
         let appRequest = try api.makeLogoutTarget()
         let _: String = try await networkClient.request(appRequest)
+    }
+
+    public func refreshProfile() async throws -> Profile {
+        let appRequest = try api.makeRefreshProfileTarget()
+        let response: UserResponse = try await networkClient.request(appRequest)
+        return response.domainModel
     }
 }

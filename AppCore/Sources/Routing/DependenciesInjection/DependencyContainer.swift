@@ -7,6 +7,7 @@
 
 import BusinessLogic
 import Dip
+import DomainModels
 import Foundation
 
 extension DependencyContainer {
@@ -29,6 +30,12 @@ extension DependencyContainer {
             container.register(.singleton, type: UserCredentialsStoraging.self, factory: UserCredentialsStorage.init)
             container.register(.singleton, type: SecureStorage.self, factory: KeychainStorage.init)
             container.register(.singleton, type: Storage.self, factory: { UserDefaults.standard })
+            container.register(.singleton, type: ProfileStoraging.self) {
+                ProfileStorage(persistenceManager: try container.resolve() as PersistenceManager<Profile>)
+            }
+            container.register(.singleton, type: PersistenceManager<Profile>.self) {
+                PersistenceManager<Profile>(containerName: "PersistentProfile", entityName: "PersistentProfile")
+            }
 
             // MARK: - View controllers injection
 

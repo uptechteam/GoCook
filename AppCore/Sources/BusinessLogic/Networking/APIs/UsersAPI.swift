@@ -28,4 +28,8 @@ struct UsersAPI {
     func makeLogoutTarget() throws -> AppRequest {
         try targetBuilder.makeDeleteTarget(path: "logout")
     }
+
+    func makeRefreshProfileTarget() throws -> AppRequest {
+        try targetBuilder.makeGetTarget(path: "me", parameters: [:])
+    }
 }
