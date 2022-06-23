@@ -15,16 +15,18 @@ extension ProfileViewController {
 
     public struct State: Equatable {
         var profile: Profile?
+        var route: AnyIdentifiable<Route>?
     }
 
     public enum Action {
+        case addNewRecipeTapped
         case login
         case logout
         case updateProfile(Profile?)
     }
 
     enum Route {
-
+        case createRecipe
     }
 
     public struct Dependencies {
@@ -52,7 +54,8 @@ extension ProfileViewController {
 
     private static func makeInitialState(dependencies: Dependencies) -> State {
         return State(
-            profile: nil
+            profile: nil,
+            route: nil
         )
     }
 }
@@ -63,6 +66,9 @@ extension ProfileViewController {
         var newState = state
 
         switch action {
+        case .addNewRecipeTapped:
+            newState.route = .init(value: .createRecipe)
+
         case .login:
             break
 

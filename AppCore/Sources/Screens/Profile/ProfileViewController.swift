@@ -10,7 +10,7 @@ import Helpers
 import UIKit
 
 public protocol ProfileCoordinating: AnyObject {
-
+    func didTapCreateRecipe()
 }
 
 public final class ProfileViewController: UIViewController {
@@ -66,12 +66,12 @@ public final class ProfileViewController: UIViewController {
             store.dispatch(action: .login)
         }
 
-        contentView.recipesHeaderView.onDidTapAddNew = {
-
+        contentView.recipesHeaderView.onDidTapAddNew = { [store] in
+            store.dispatch(action: .addNewRecipeTapped)
         }
 
-        contentView.infoView.onDidTapAddRecipe = {
-
+        contentView.infoView.onDidTapAddRecipe = { [store] in
+            store.dispatch(action: .addNewRecipeTapped)
         }
 
         let state = store.$state.removeDuplicates()
@@ -85,5 +85,19 @@ public final class ProfileViewController: UIViewController {
                 contentView.render(props: props)
             }
             .store(in: &cancellables)
+
+        state.compactMap(\.route).removeDuplicates()
+            .map(\.value)
+            .sink { [unowned self] route in
+                navigate(by: route)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func navigate(by route: Route) {
+        switch route {
+        case .createRecipe:
+            coordinator.didTapCreateRecipe()
+        }
     }
 }

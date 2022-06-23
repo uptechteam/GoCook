@@ -5,6 +5,8 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
+import AppTabBar
+import CreateRecipe
 import Dip
 import Foundation
 import Library
@@ -52,6 +54,14 @@ final class ProfileCoordinator: NSObject, Coordinating {
 // MARK: - Extensions
 
 extension ProfileCoordinator: ProfileCoordinating {
+    func didTapCreateRecipe() {
+        let viewController: CreateRecipeViewController = try! container.resolve(arguments: self as CreateRecipeCoordinating)
+        viewController.modalPresentationStyle = .overFullScreen
+        navigationController.present(viewController, animated: true)
+    }
+}
+
+extension ProfileCoordinator: CreateRecipeCoordinating {
 
 }
 
@@ -65,5 +75,14 @@ extension ProfileCoordinator: UINavigationControllerDelegate {
     ) {
         let isHidden = viewController is ProfileViewController
         navigationController.setNavigationBarHidden(isHidden, animated: false)
+    }
+
+    func navigationController(
+        _ navigationController: UINavigationController,
+        didShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        let isTabBarVisible = viewController is ProfileViewController
+        (navigationController.tabBarController as? AppTabBarController)?.toggleTabBarVisibility(on: isTabBarVisible)
     }
 }

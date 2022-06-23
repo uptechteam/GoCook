@@ -32,11 +32,11 @@ final class CreateRecipeView: UIView {
     // MARK: - Set up
 
     private func setup() {
-
+        setupContentView()
     }
 
     private func setupContentView() {
-
+        backgroundColor = .appWhite
     }
 
     // MARK: - Public methods
