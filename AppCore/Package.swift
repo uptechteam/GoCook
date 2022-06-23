@@ -11,6 +11,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.6.0"),
         .package(url: "https://github.com/AliSoftware/Dip", from: "7.1.0"),
+        .package(url: "https://github.com/kishikawakatsumi/KeychainAccess", from: "4.2.0"),
         .package(url: "https://github.com/onevcat/Kingfisher", from: "7.2.0"),
         .package(url: "https://github.com/apple/swift-log", from: "1.4.0")
     ],
@@ -23,8 +24,12 @@ let package = Package(
             name: "BusinessLogic",
             dependencies: [
                 .product(name: "Alamofire", package: "Alamofire"),
+                .product(name: "KeychainAccess", package: "KeychainAccess"),
                 "DomainModels",
                 "Helpers"
+            ],
+            resources: [
+                .process("PersistentProfile")
             ]
         ),
         // MARK: - Domain models
@@ -39,16 +44,7 @@ let package = Package(
             ]
         ),
         // MARK: - Library
-        .target(
-            name: "Library",
-            dependencies: ["Helpers"],
-            resources: [
-                .copy("Resources/RedHatDisplay-Bold.otf"),
-                .copy("Resources/RedHatDisplay-Medium.otf"),
-                .copy("Resources/RedHatDisplay-Regular.otf"),
-                .copy("Resources/RedHatText-Medium.otf")
-            ]
-        ),
+        .target(name: "Library", dependencies: ["Helpers"], resources: [.process("Resources")]),
         // MARK: - Routing
         .target(
             name: "Routing",
@@ -63,7 +59,11 @@ let package = Package(
             dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
             path: "Sources/Screens/Home"
         ),
-        .target(name: "Profile", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Profile"),
+        .target(
+            name: "Profile",
+            dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
+            path: "Sources/Screens/Profile"
+        ),
         .target(name: "Recipe", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Recipe")
     ]
 )

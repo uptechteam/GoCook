@@ -149,7 +149,7 @@ extension DependencyContainer {
             type: ProfileViewController.ActionCreator.self,
             factory: ProfileViewController.ActionCreator.init
         )
-        container.register(.unique, type: ProfileViewController.self) { @MainActor coordinator in
+        container.register(.unique, type: ProfileViewController.self) { coordinator in
             return ProfileViewController(
                 store: try container.resolve(),
                 actionCreator: try container.resolve(),

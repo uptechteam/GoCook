@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  TargetBuilder.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 20.06.2022.
@@ -25,15 +25,43 @@ struct TargetBuilder {
 
     // MARK: - Public methods
 
-    func makeGetTarget(
+    func makeDeleteTarget(
         path: String,
-        parameters: [String: String]
+        authorisation: Authorisation = .basic
     ) throws -> AppRequest {
         let request = try URLRequest(
-            url: baseURL.appendingPathExtension(path),
-            method: .get,
-            headers: [.defaultAcceptEncoding, .defaultAcceptLanguage, .defaultUserAgent, .authorization("Basic dXNlcm5hbWU6c2VjcmV0")]
+            url: baseURL.appendingPathComponent(path),
+            method: .delete,
+            headers: .default
         )
-        return try URLEncodedFormParameterEncoder.default.encode(parameters, into: request)
+        return AppRequest(urlRequest: request, authorisation: authorisation)
+    }
+
+    func makeGetTarget(
+        path: String,
+        parameters: [String: String] = [:],
+        authorisation: Authorisation = .basic
+    ) throws -> AppRequest {
+        var request = try URLRequest(
+            url: baseURL.appendingPathComponent(path),
+            method: .get,
+            headers: .default
+        )
+        request = try URLEncodedFormParameterEncoder.default.encode(parameters, into: request)
+        return AppRequest(urlRequest: request, authorisation: authorisation)
+    }
+
+    func makePostTarget(
+        path: String,
+        parameters: [String: String] = [:],
+        authorisation: Authorisation = .basic
+    ) throws -> AppRequest {
+        var request = try URLRequest(
+            url: baseURL.appendingPathComponent(path),
+            method: .post,
+            headers: .default
+        )
+        request = try URLEncodedFormParameterEncoder.default.encode(parameters, into: request)
+        return AppRequest(urlRequest: request, authorisation: authorisation)
     }
 }

@@ -22,6 +22,6 @@ struct FeedAPI {
     // MARK: - Public methods
 
     func makeGetRecipesTarget() throws -> AppRequest {
-        try targetBuilder.makeGetTarget(path: "", parameters: [:])
+        try targetBuilder.makeGetTarget(path: "")
     }
 }

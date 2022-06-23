@@ -6,11 +6,12 @@
 //
 
 import Dip
+import Foundation
 import Library
 import Profile
 import UIKit
 
-final class ProfileCoordinator: Coordinating {
+final class ProfileCoordinator: NSObject, Coordinating {
 
     // MARK: - Properties
 
@@ -26,6 +27,7 @@ final class ProfileCoordinator: Coordinating {
     init(container: DependencyContainer, navigationController: UINavigationController) {
         self.container = container
         self.navigationController = navigationController
+        super.init()
         setupUI()
     }
 
@@ -39,6 +41,7 @@ final class ProfileCoordinator: Coordinating {
     // MARK: - Private methods
 
     private func setupUI() {
+        navigationController.delegate = self
         navigationController.navigationBar.titleTextAttributes = [
             .font: Typography.subtitleTwo.font,
             .foregroundColor: UIColor.textMain
@@ -50,4 +53,17 @@ final class ProfileCoordinator: Coordinating {
 
 extension ProfileCoordinator: ProfileCoordinating {
 
+}
+
+// MARK: - UINavigationControllerdelegate
+
+extension ProfileCoordinator: UINavigationControllerDelegate {
+    func navigationController(
+        _ navigationController: UINavigationController,
+        willShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        let isHidden = viewController is ProfileViewController
+        navigationController.setNavigationBarHidden(isHidden, animated: false)
+    }
 }

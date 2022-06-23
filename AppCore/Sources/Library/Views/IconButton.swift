@@ -13,6 +13,12 @@ public final class IconButton: UIControl {
 
     private let imageView = UIImageView()
 
+    public override var isHighlighted: Bool {
+        didSet {
+            alpha = isHighlighted ? 0.7 : 1
+        }
+    }
+
     // MARK: - Lifecycle
 
     override init(frame: CGRect) {

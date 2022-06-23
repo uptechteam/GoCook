@@ -11,11 +11,24 @@ extension ProfileViewController {
 
     public final class ActionCreator {
 
+        // MARK: - Properties
+
         private let dependencies: Dependencies
-        private let cancellables = [AnyCancellable]()
+        private var cancellables = [AnyCancellable]()
+
+        // MARK: - Lifecycle
 
         public init(dependencies: Dependencies) {
             self.dependencies = dependencies
+        }
+
+        // MARK: - Public methods
+
+        func subscribeToProfile(handler: @escaping (Action) -> Void) {
+            dependencies.profileFacade.profile
+                .map(Action.updateProfile)
+                .sink(receiveValue: handler)
+                .store(in: &cancellables)
         }
     }
 }

@@ -8,4 +8,13 @@
 import Alamofire
 import Foundation
 
-public typealias AppRequest = URLRequestConvertible
+public struct AppRequest {
+    public let urlRequest: URLRequestConvertible
+    public let authorisation: Authorisation
+}
+
+public enum Authorisation {
+    case basic
+    case bearer
+    case login(username: String, password: String)
+}
