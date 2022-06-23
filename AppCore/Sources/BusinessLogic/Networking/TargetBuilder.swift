@@ -25,6 +25,16 @@ struct TargetBuilder {
 
     // MARK: - Public methods
 
+    func makeDeleteTarget(
+        path: String
+    ) throws -> AppRequest {
+        return try URLRequest(
+            url: baseURL.appendingPathExtension(path),
+            method: .delete,
+            headers: .default
+        )
+    }
+
     func makeGetTarget(
         path: String,
         parameters: [String: String]
@@ -44,7 +54,7 @@ struct TargetBuilder {
         let request = try URLRequest(
             url: baseURL.appendingPathExtension(path),
             method: .post,
-            headers: [.defaultAcceptEncoding, .defaultAcceptLanguage, .defaultUserAgent, .authorization("Basic some_credentials")]
+            headers: .default
         )
         return try URLEncodedFormParameterEncoder.default.encode(parameters, into: request)
     }

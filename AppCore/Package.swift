@@ -11,6 +11,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.6.0"),
         .package(url: "https://github.com/AliSoftware/Dip", from: "7.1.0"),
+        .package(url: "https://github.com/kishikawakatsumi/KeychainAccess", from: "4.2.0"),
         .package(url: "https://github.com/onevcat/Kingfisher", from: "7.2.0"),
         .package(url: "https://github.com/apple/swift-log", from: "1.4.0")
     ],
@@ -23,6 +24,7 @@ let package = Package(
             name: "BusinessLogic",
             dependencies: [
                 .product(name: "Alamofire", package: "Alamofire"),
+                .product(name: "KeychainAccess", package: "KeychainAccess"),
                 "DomainModels",
                 "Helpers"
             ]

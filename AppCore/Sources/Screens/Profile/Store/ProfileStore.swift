@@ -5,6 +5,8 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
+import BusinessLogic
+import DomainModels
 import Helpers
 
 extension ProfileViewController {
@@ -12,11 +14,12 @@ extension ProfileViewController {
     public typealias Store = ReduxStore<State, Action>
 
     public struct State: Equatable {
-
+        var profile: Profile?
     }
 
     public enum Action {
-        case mock
+        case login
+        case updateProfile(Profile?)
     }
 
     enum Route {
@@ -24,8 +27,15 @@ extension ProfileViewController {
     }
 
     public struct Dependencies {
-        public init() {
 
+        // MARK: - Properties
+
+        public let profileFacade: ProfileFacading
+
+        // MARK: - Lifecycle
+
+        public init(profileFacade: ProfileFacading) {
+            self.profileFacade = profileFacade
         }
     }
 
@@ -38,18 +48,23 @@ extension ProfileViewController {
     }
 
     private static func makeInitialState(dependencies: Dependencies) -> State {
-        return State()
+        return State(
+            profile: nil
+        )
     }
 }
 
 extension ProfileViewController {
     static func reduce(state: State, action: Action) -> State {
 
-        let newState = state
+        var newState = state
 
         switch action {
-        case .mock:
+        case .login:
             break
+
+        case .updateProfile(let profile):
+            newState.profile = profile
         }
 
         return newState

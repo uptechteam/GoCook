@@ -38,8 +38,8 @@ public class ReduxStore<State, Action> {
             }
     }
 
-    public func dispatch(action: Action) {
-        Task {
+    nonisolated public func dispatch(action: Action) {
+        Task { @MainActor in
             await dispatchFunction?(action)
         }
     }

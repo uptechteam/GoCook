@@ -13,7 +13,7 @@ public protocol ProfileFacading {
     var profile: AnyPublisher<Profile?, Never> { get }
 
     func getProfile() -> Profile
-    func login() async throws
+    func login(username: String, password: String) async throws
     func logout() async throws
 }
 
@@ -22,6 +22,7 @@ public final class ProfileFacade: ProfileFacading {
     // MARK: - Properties
 
     private let profileClient: ProfileClienting
+    private let userCredentialsStorage: UserCredentialsStoraging
     private let profileSubject: CurrentValueSubject<Profile?, Never>
 
     public var profile: AnyPublisher<Profile?, Never> {
@@ -30,8 +31,9 @@ public final class ProfileFacade: ProfileFacading {
 
     // MARK: - Lifecycle
 
-    public init(profileClient: ProfileClienting) {
+    public init(profileClient: ProfileClienting, userCredentialsStorage: UserCredentialsStoraging) {
         self.profileClient = profileClient
+        self.userCredentialsStorage = userCredentialsStorage
         self.profileSubject = CurrentValueSubject(nil)
     }
 
@@ -41,12 +43,14 @@ public final class ProfileFacade: ProfileFacading {
         profileSubject.value!
     }
 
-    public func login() async throws {
+    public func login(username: String, password: String) async throws {
         let token = try await profileClient.login()
+        userCredentialsStorage.store(accessKey: token)
         print(token)
     }
 
     public func logout() async throws {
         try await profileClient.logout()
+        userCredentialsStorage.clear()
     }
 }

@@ -22,10 +22,10 @@ struct UsersAPI {
     // MARK: - Public methods
 
     func makeLoginTarget() throws -> AppRequest {
-        try targetBuilder.makePostTarget(path: "", parameters: [:])
+        try targetBuilder.makePostTarget(path: "login", parameters: [:])
     }
 
     func makeLogoutTarget() throws -> AppRequest {
-        try targetBuilder.makePostTarget(path: "", parameters: [:])
+        try targetBuilder.makeDeleteTarget(path: "logout")
     }
 }

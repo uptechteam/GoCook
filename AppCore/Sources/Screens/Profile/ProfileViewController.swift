@@ -51,6 +51,8 @@ public final class ProfileViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
+
+        actionCreator.subscribeToProfile(handler: store.dispatch)
     }
 
     // MARK: - Private methods

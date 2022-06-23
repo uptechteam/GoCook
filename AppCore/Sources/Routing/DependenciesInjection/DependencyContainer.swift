@@ -24,6 +24,12 @@ extension DependencyContainer {
 
             container.register(.singleton, type: ProfileFacading.self, factory: ProfileFacade.init)
 
+            // MARK: - Storages
+
+            container.register(.singleton, type: UserCredentialsStoraging.self, factory: UserCredentialsStorage.init)
+            container.register(.singleton, type: SecureStorage.self, factory: KeychainStorage.init)
+            container.register(.singleton, type: Storage.self, factory: { UserDefaults.standard })
+
             // MARK: - View controllers injection
 
             injectViewControllers(container: container)
