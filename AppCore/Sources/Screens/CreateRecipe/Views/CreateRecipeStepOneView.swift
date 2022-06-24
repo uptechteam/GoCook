@@ -16,7 +16,7 @@ final class CreateRecipeStepOneView: UIView {
 
     // MARK: - Properties
 
-    private let textLabel = UILabel()
+    private let imageView = UIImageView()
 
     // MARK: - Lifecycle
 
@@ -33,19 +33,27 @@ final class CreateRecipeStepOneView: UIView {
 
     private func setup() {
         setupContentView()
-        setupTextLabel()
+        setupImageView()
+        setupStackView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
     }
 
-    private func setupTextLabel() {
-        textLabel.text = "Step one"
-        addSubview(textLabel, constraints: [
-            textLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            textLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+    private func setupImageView() {
+        imageView.backgroundColor = .gray100
+        imageView.contentMode = .center
+        imageView.image = .addPhoto
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
         ])
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [imageView, UIView()])
+        stackView.axis = .vertical
+        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
     }
 
     // MARK: - Public methods

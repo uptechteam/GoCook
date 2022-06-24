@@ -9,6 +9,10 @@ import UIKit
 
 extension UIImage {
 
+  @nonobjc public class var addPhoto: UIImage {
+    return UIImage(named: "addPhoto")!
+  }
+
   @nonobjc public class var arrowBack: UIImage {
     return UIImage(named: "arrowBack")!
   }
