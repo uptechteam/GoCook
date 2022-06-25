@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Library
 import UIKit
 
 public protocol CreateRecipeCoordinating: AnyObject {
@@ -19,6 +20,7 @@ public final class CreateRecipeViewController: UIViewController {
     private let store: Store
     private let actionCreator: ActionCreator
     private let contentView = CreateRecipeView()
+    private let imagePicker = ImagePicker()
     private unowned let coordinator: CreateRecipeCoordinating
     private var cancellables = [AnyCancellable]()
 
@@ -64,6 +66,12 @@ public final class CreateRecipeViewController: UIViewController {
     }
 
     private func setupBinding() {
+        contentView.stepOneView.onDidTapImage = { [imagePicker, store] in
+            Task {
+                let image = await imagePicker.pickImage(on: self)
+                store.dispatch(action: .imagePicked(.asset(image)))
+            }
+        }
         contentView.stepsView.onDidTapBack = { [store] in
             store.dispatch(action: .backTapped)
         }
