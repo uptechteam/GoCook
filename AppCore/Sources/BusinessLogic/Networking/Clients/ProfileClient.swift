@@ -7,6 +7,7 @@
 
 import DomainModels
 import Foundation
+import Helpers
 
 public protocol ProfileClienting {
     func login(username: String, password: String) async throws -> String
@@ -24,7 +25,7 @@ public final class ProfileClient: ProfileClienting {
     // MARK: - Lifecycle
 
     public init(networkClient: NetworkClient) {
-        self.api = UsersAPI(baseURL: URL(string: "http://127.0.0.1:8080")!)
+        self.api = UsersAPI(baseURL: AppEnvironment.current.baseURL)
         self.networkClient = networkClient
     }
 

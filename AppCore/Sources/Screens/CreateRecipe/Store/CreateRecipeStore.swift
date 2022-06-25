@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 23.06.2022.
 //
 
+import BusinessLogic
 import Helpers
 
 extension CreateRecipeViewController {
@@ -22,6 +23,7 @@ extension CreateRecipeViewController {
         case closeTapped
         case imagePicked(ImageSource)
         case nextTapped
+        case uploadImage(DomainModelAction<String>)
     }
 
     enum Route {
@@ -29,16 +31,24 @@ extension CreateRecipeViewController {
     }
 
     public struct Dependencies {
-        public init() {
 
+        // MARK: - Properties
+
+        public let fileClient: FileClienting
+
+        // MARK: - Lifecycle
+
+        public init(fileClient: FileClienting) {
+            self.fileClient = fileClient
         }
     }
 
     public static func makeStore(dependencies: Dependencies) -> Store {
+        let uploadImageMiddleware = makeUploadImageMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
             reducer: reduce,
-            middlewares: []
+            middlewares: [uploadImageMiddleware]
         )
     }
 
@@ -68,6 +78,9 @@ extension CreateRecipeViewController {
 
         case .nextTapped:
             newState.step = min(3, newState.step + 1)
+
+        case .uploadImage:
+            break
         }
 
         return newState

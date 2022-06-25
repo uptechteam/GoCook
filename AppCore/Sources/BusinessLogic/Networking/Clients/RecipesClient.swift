@@ -7,6 +7,7 @@
 
 import DomainModels
 import Foundation
+import Helpers
 
 public protocol RecipesClienting {
     func getRecipes() async throws -> [RecipeCategory]
@@ -22,7 +23,7 @@ public final class RecipesClient: RecipesClienting {
     // MARK: - Lifecycle
 
     public init(networkClient: NetworkClient) {
-        self.api = FeedAPI(baseURL: URL(string: "http://127.0.0.1:8080")!)
+        self.api = FeedAPI(baseURL: AppEnvironment.current.baseURL)
         self.networkClient = networkClient
     }
 
