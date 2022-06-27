@@ -39,6 +39,6 @@ public final class FileClient: FileClienting {
     public func uploadRecipeImage(data: Data) async throws -> String {
         let appRequest = try api.makePostRecipeImageTarget(data: data)
         let response: ImageURLResponse = try await networkClient.request(appRequest)
-        return response
+        return response.imageURL
     }
 }

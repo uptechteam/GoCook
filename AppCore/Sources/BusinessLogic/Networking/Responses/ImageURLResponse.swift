@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct ImageURLResponse: Encodable {
+struct ImageURLResponse: Decodable {
     let imageURL: String
 }

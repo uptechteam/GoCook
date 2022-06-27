@@ -52,7 +52,11 @@ let package = Package(
         ),
         // MARK: - Screens
         .target(name: "AppTabBar", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/AppTabBar"),
-        .target(name: "CreateRecipe", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/CreateRecipe"),
+        .target(
+            name: "CreateRecipe",
+            dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
+            path: "Sources/Screens/CreateRecipe"
+        ),
         .target(name: "Favorites", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Favorites"),
         .target(name: "Filters", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Filters"),
         .target(

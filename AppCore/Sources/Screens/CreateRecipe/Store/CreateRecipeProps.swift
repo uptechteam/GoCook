@@ -19,7 +19,8 @@ extension CreateRecipeViewController {
     private static func makeStepOneViewProps(state: State) -> CreateRecipeStepOneView.Props {
         return .init(
             isVisible: state.step == 0,
-            recipeImageSource: state.recipeImageSource
+            isLoaderVisible: state.stepOneState.recipeImageState.isUploading,
+            recipeImageSource: state.stepOneState.recipeImageState.uploadedImageSource
         )
     }
 

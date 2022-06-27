@@ -13,6 +13,7 @@ final class CreateRecipeStepOneView: UIView {
 
     struct Props: Equatable {
         let isVisible: Bool
+        let isLoaderVisible: Bool
         let recipeImageSource: ImageSource?
     }
 
@@ -68,7 +69,13 @@ final class CreateRecipeStepOneView: UIView {
 
     func render(props: Props) {
         isHidden = !props.isVisible
-        imageView.set(props.recipeImageSource ?? .asset(.addPhoto))
+        if let imageSource = props.recipeImageSource {
+            imageView.set(imageSource)
+        } else if !props.isLoaderVisible {
+            imageView.set(.asset(.addPhoto))
+        } else {
+            imageView.set(.asset(nil))
+        }
         imageView.contentMode = props.recipeImageSource == nil ? .center : .scaleAspectFill
     }
 

@@ -98,7 +98,7 @@ public final class ImagePicker: NSObject {
     }
 
     private func showSettings(on viewController: UIViewController) async {
-        await withCheckedContinuation { continuation in
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             let alertController = UIAlertController(
                 title: "Allow camera access",
                 message: "Enable access so you can upload photos.",
