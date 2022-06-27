@@ -20,6 +20,7 @@ final class CreateRecipeStepOneView: UIView {
     // MARK: - Properties
 
     private let imageView = UIImageView()
+    private let spinnerView = SpinnerView()
     // callbacks
     var onDidTapImage: () -> Void = { }
 
@@ -39,6 +40,7 @@ final class CreateRecipeStepOneView: UIView {
     private func setup() {
         setupContentView()
         setupImageView()
+        setupSpinnerView()
         setupStackView()
     }
 
@@ -56,6 +58,15 @@ final class CreateRecipeStepOneView: UIView {
         imageView.addGestureRecognizer(tapGesture)
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
+        ])
+    }
+
+    private func setupSpinnerView() {
+        imageView.addSubview(spinnerView, constraints: [
+            spinnerView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+            spinnerView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
+            spinnerView.widthAnchor.constraint(equalToConstant: 48),
+            spinnerView.heightAnchor.constraint(equalTo: spinnerView.widthAnchor)
         ])
     }
 
@@ -77,6 +88,7 @@ final class CreateRecipeStepOneView: UIView {
             imageView.set(.asset(nil))
         }
         imageView.contentMode = props.recipeImageSource == nil ? .center : .scaleAspectFill
+        spinnerView.toggle(isAnimating: props.isLoaderVisible)
     }
 
     // MARK: - Private methods
