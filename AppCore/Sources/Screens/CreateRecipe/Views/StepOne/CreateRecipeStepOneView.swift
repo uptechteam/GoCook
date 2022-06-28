@@ -1,5 +1,5 @@
 //
-//  CreateRecipeStepOneView.swift
+//  StepOneView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 24.06.2022.
@@ -8,11 +8,11 @@
 import Library
 import UIKit
 
-final class CreateRecipeStepOneView: UIView {
+final class StepOneView: UIView {
 
     struct Props: Equatable {
         let isVisible: Bool
-        let recipeImageViewProps: RecipeImageView.Props
+        let recipeViewProps: StepOneRecipeView.Props
         let mealNameInputViewProps: InputView.Props
         let items: [CategoryCell.Props]
         let isCategoryErrorLabelVisible: Bool
@@ -23,7 +23,7 @@ final class CreateRecipeStepOneView: UIView {
 
     // MARK: - Properties
 
-    let recipeImageView = RecipeImageView()
+    let recipeView = StepOneRecipeView()
     let mealNameInputView = InputView()
     private let categoryLabel = UILabel()
     private lazy var dataSource = makeDataSource()
@@ -88,10 +88,10 @@ final class CreateRecipeStepOneView: UIView {
 
     private func setupStackView() {
         let stackView = UIStackView(
-            arrangedSubviews: [recipeImageView, mealNameInputView, categoryLabel, collectionView, categoryErrorLabel]
+            arrangedSubviews: [recipeView, mealNameInputView, categoryLabel, collectionView, categoryErrorLabel]
         )
         stackView.axis = .vertical
-        stackView.setCustomSpacing(48, after: recipeImageView)
+        stackView.setCustomSpacing(48, after: recipeView)
         stackView.setCustomSpacing(20, after: mealNameInputView)
         stackView.setCustomSpacing(24, after: categoryLabel)
         stackView.setCustomSpacing(8, after: collectionView)
@@ -106,7 +106,7 @@ final class CreateRecipeStepOneView: UIView {
 
     func render(props: Props) {
         isHidden = !props.isVisible
-        recipeImageView.render(props: props.recipeImageViewProps)
+        recipeView.render(props: props.recipeViewProps)
         mealNameInputView.render(props: props.mealNameInputViewProps)
         collectionViewHeightConstraint.constant = CGFloat(props.items.count * 24 + (props.items.count - 1) * 20)
         dataSource.apply(sections: [0], items: [props.items])
@@ -116,7 +116,7 @@ final class CreateRecipeStepOneView: UIView {
 
 // MARK: - Data Source
 
-extension CreateRecipeStepOneView {
+extension StepOneView {
     func makeDataSource() -> DataSource {
         return DataSource(
             collectionView: collectionView,

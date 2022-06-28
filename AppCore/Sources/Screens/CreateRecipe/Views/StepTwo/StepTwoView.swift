@@ -1,5 +1,5 @@
 //
-//  CreateRecipeStepTwoView.swift
+//  StepTwoView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 24.06.2022.
@@ -8,7 +8,7 @@
 import Library
 import UIKit
 
-final class CreateRecipeStepTwoView: UIView {
+final class StepTwoView: UIView {
 
     struct Props: Equatable {
         let isVisible: Bool

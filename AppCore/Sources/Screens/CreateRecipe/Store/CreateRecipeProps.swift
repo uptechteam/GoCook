@@ -21,17 +21,17 @@ extension CreateRecipeViewController {
         )
     }
 
-    private static func makeStepOneViewProps(state: State) -> CreateRecipeStepOneView.Props {
+    private static func makeStepOneViewProps(state: State) -> StepOneView.Props {
         return .init(
             isVisible: state.step == 0,
-            recipeImageViewProps: makeRecipeImageViewProps(state: state),
+            recipeViewProps: makeRecipeViewProps(state: state),
             mealNameInputViewProps: makeMealNameInputViewProps(state: state),
             items: makeCategoryItems(state: state),
             isCategoryErrorLabelVisible: !state.stepOneState.areCategoriesValid
         )
     }
 
-    private static func makeRecipeImageViewProps(state: State) -> RecipeImageView.Props {
+    private static func makeRecipeViewProps(state: State) -> StepOneRecipeView.Props {
         return .init(
             recipeImageSource: state.stepOneState.recipeImageState.uploadedImageSource,
             isThreeDostImageViewVisible: state.stepOneState.recipeImageState.uploadedImageSource != nil,
@@ -71,7 +71,7 @@ extension CreateRecipeViewController {
         }
     }
 
-    private static func makeStepTwoViewProps(state: State) -> CreateRecipeStepTwoView.Props {
+    private static func makeStepTwoViewProps(state: State) -> StepTwoView.Props {
         .init(isVisible: state.step == 1)
     }
 

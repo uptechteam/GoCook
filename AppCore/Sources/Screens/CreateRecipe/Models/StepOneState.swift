@@ -37,8 +37,8 @@ struct StepOneState: Equatable {
     // MARK: - Public methods
 
     mutating func validate() {
-        isRecipeImageValid = recipeImageState.uploadedImageSource != nil
-        isMealNameValid = !mealName.isEmpty
-        areCategoriesValid = !categories.isEmpty
+//        isRecipeImageValid = recipeImageState.uploadedImageSource != nil
+//        isMealNameValid = !mealName.isEmpty
+//        areCategoriesValid = !categories.isEmpty
     }
 }

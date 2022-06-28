@@ -1,5 +1,5 @@
 //
-//  RecipeImageView.swift
+//  StepOneRecipeView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 28.06.2022.
@@ -9,7 +9,7 @@ import Helpers
 import Library
 import UIKit
 
-final class RecipeImageView: UIView {
+final class StepOneRecipeView: UIView {
 
     struct Props: Equatable {
         let recipeImageSource: ImageSource?
@@ -90,7 +90,7 @@ final class RecipeImageView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        renderRecipeImageView(props: props)
+        renderImageView(props: props)
         threeDotsImageView.isHidden = !props.isThreeDostImageViewVisible
         spinnerView.toggle(isAnimating: props.isLoaderVisible)
         errorView.render(props: props.errorViewProps)
@@ -98,7 +98,7 @@ final class RecipeImageView: UIView {
 
     // MARK: - Private methods
 
-    private func renderRecipeImageView(props: Props) {
+    private func renderImageView(props: Props) {
         if let imageSource = props.recipeImageSource {
             imageView.set(imageSource)
         } else if !props.isLoaderVisible {

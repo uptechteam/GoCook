@@ -66,7 +66,7 @@ public final class CreateRecipeViewController: UIViewController {
     }
 
     private func setupBinding() {
-        contentView.stepOneView.recipeImageView.onDidTapImage = { [store] in
+        contentView.stepOneView.recipeView.onDidTapImage = { [store] in
             store.dispatch(action: .recipeImageTapped)
         }
 
