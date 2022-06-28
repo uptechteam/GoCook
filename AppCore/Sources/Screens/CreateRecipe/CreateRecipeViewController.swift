@@ -66,9 +66,18 @@ public final class CreateRecipeViewController: UIViewController {
     }
 
     private func setupBinding() {
-        contentView.stepOneView.onDidTapImage = { [store] in
+        contentView.stepOneView.recipeImageView.onDidTapImage = { [store] in
             store.dispatch(action: .recipeImageTapped)
         }
+
+        contentView.stepOneView.mealNameInputView.onDidChangeText = { [store] text in
+            store.dispatch(action: .mealNameChanged(text))
+        }
+
+        contentView.stepOneView.onDidTapCategory = { [store] indexPath in
+            store.dispatch(action: .categoryItemTapped(indexPath))
+        }
+
         contentView.stepsView.onDidTapBack = { [store] in
             store.dispatch(action: .backTapped)
         }
@@ -141,11 +150,13 @@ public final class CreateRecipeViewController: UIViewController {
 
     private func showImagePicker(source: UIImagePickerController.SourceType) {
         Task { [weak self] in
-            guard let self = self else {
+            guard
+                let self = self,
+                let image = await imagePicker.pickImage(source: source, on: self)
+            else {
                 return
             }
 
-            let image = await imagePicker.pickImage(source: source, on: self)
             store.dispatch(action: .imagePicked(.asset(image)))
         }
     }

@@ -60,6 +60,7 @@ public final class ImagePicker: NSObject {
         var configuration = PHPickerConfiguration(photoLibrary: .shared())
         configuration.filter = .images
         let picker = PHPickerViewController(configuration: configuration)
+        picker.modalPresentationStyle = .overFullScreen
         picker.delegate = self
         viewController.present(picker, animated: true)
         return await withCheckedContinuation { continuation in
@@ -102,6 +103,7 @@ public final class ImagePicker: NSObject {
 
 extension ImagePicker: PHPickerViewControllerDelegate {
     public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
         guard
             let result = results.first,
             result.itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier)
@@ -112,10 +114,8 @@ extension ImagePicker: PHPickerViewControllerDelegate {
 
         result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
             DispatchQueue.main.async {
-                picker.dismiss(animated: true) {
-                    let resizedImage = (image as? UIImage)?.resizeImage(targetSize: CGSize(width: 400, height: 400))
-                    self?.completion(resizedImage)
-                }
+                let resizedImage = (image as? UIImage)?.resizeImage(targetSize: CGSize(width: 400, height: 400))
+                self?.completion(resizedImage)
             }
         }
     }

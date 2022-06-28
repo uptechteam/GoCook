@@ -5,7 +5,10 @@
 //  Created by Oleksii Andriushchenko on 23.06.2022.
 //
 
+import DomainModels
+import Helpers
 import Library
+import UIKit
 
 extension CreateRecipeViewController {
     static func makeProps(from state: State) -> CreateRecipeView.Props {
@@ -21,21 +24,50 @@ extension CreateRecipeViewController {
     private static func makeStepOneViewProps(state: State) -> CreateRecipeStepOneView.Props {
         return .init(
             isVisible: state.step == 0,
+            recipeImageViewProps: makeRecipeImageViewProps(state: state),
+            mealNameInputViewProps: makeMealNameInputViewProps(state: state),
+            items: makeCategoryItems(state: state)
+        )
+    }
+
+    private static func makeRecipeImageViewProps(state: State) -> RecipeImageView.Props {
+        return .init(
             recipeImageSource: state.stepOneState.recipeImageState.uploadedImageSource,
             isThreeDostImageViewVisible: state.stepOneState.recipeImageState.uploadedImageSource != nil,
             isLoaderVisible: state.stepOneState.recipeImageState.isUploading,
-            mealNameInputViewProps: makeMealNameInputViewProps(state: state)
+            errorViewProps: ErrorView.Props(isVisible: !state.stepOneState.isRecipeImageValid, message: "Upload meal photo")
         )
     }
 
     private static func makeMealNameInputViewProps(state: State) -> InputView.Props {
+        let isValid = state.stepOneState.isMealNameValid
         return .init(
             title: "MEAL NAME",
-            titleColorSource: .color(.textSecondary),
-            dividerColorSource: .color(.appBlack),
-            errorMessage: "",
-            isErrorMessageVisible: false
+            titleColorSource: .color(isValid ? .textSecondary : .errorMain),
+            dividerColorSource: .color(isValid ? .appBlack : .errorMain),
+            errorMessage: isValid ? "" : "Enter meal name",
+            isErrorMessageVisible: !isValid
         )
+    }
+
+    private static func makeCategoryItems(state: State) -> [CategoryCell.Props] {
+        CategoryType.priorityOrder.map { category in
+            CategoryCell.Props(
+                name: category.name,
+                nameColorSource: .color(state.stepOneState.areCategoriesValid ? .textMain : .errorMain),
+                checkmarkImageSource: makeCheckmarkImageSource(state: state, category: category)
+            )
+        }
+    }
+
+    private static func makeCheckmarkImageSource(state: State, category: CategoryType) -> ImageSource {
+        if state.stepOneState.categories.contains(category) {
+            return .asset(.filledCheckbox)
+        } else if state.stepOneState.areCategoriesValid {
+            return .asset(.emptyCheckbox)
+        } else {
+            return .asset(.errorCheckbox)
+        }
     }
 
     private static func makeStepTwoViewProps(state: State) -> CreateRecipeStepTwoView.Props {

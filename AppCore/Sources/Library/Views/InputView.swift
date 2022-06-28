@@ -83,15 +83,20 @@ public final class InputView: UIView {
 
     private func setupErrorLabel() {
         errorLabel.render(typography: .bodyTwo)
+        errorLabel.textColor = .errorMain
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, textField, dividerView, errorLabel])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, textField, dividerView, errorLabel, UIView()])
         stackView.axis = .vertical
         stackView.setCustomSpacing(16, after: titleLabel)
         stackView.setCustomSpacing(10, after: textField)
         stackView.setCustomSpacing(8, after: dividerView)
         addSubview(stackView, withEdgeInsets: .zero)
+
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: 98)
+        ])
     }
 
     // MARK: - Public methods
@@ -100,7 +105,7 @@ public final class InputView: UIView {
         titleLabel.render(title: props.title, color: props.titleColorSource.color, typography: .bodyTwo)
         dividerView.backgroundColor = props.dividerColorSource.color
         errorLabel.text = props.errorMessage
-        errorLabel.alpha = props.isErrorMessageVisible ? 1 : 0
+        errorLabel.isHidden = !props.isErrorMessageVisible
     }
 }
 

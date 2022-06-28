@@ -6,6 +6,8 @@
 //
 
 import BusinessLogic
+import DomainModels
+import Foundation
 import Helpers
 
 extension CreateRecipeViewController {
@@ -21,9 +23,11 @@ extension CreateRecipeViewController {
 
     public enum Action {
         case backTapped
+        case categoryItemTapped(IndexPath)
         case closeTapped
         case deleteTapped
         case imagePicked(ImageSource)
+        case mealNameChanged(String)
         case nextTapped
         case recipeImageTapped
         case uploadImage(DomainModelAction<String>)
@@ -78,6 +82,17 @@ extension CreateRecipeViewController {
         case .backTapped:
             newState.step = max(0, newState.step - 1)
 
+        case .categoryItemTapped(let indexPath):
+            guard let category = CategoryType.priorityOrder[safe: indexPath.item] else {
+                break
+            }
+
+            if newState.stepOneState.categories.contains(category) {
+                newState.stepOneState.categories.remove(category)
+            } else {
+                newState.stepOneState.categories.insert(category)
+            }
+
         case .closeTapped:
             newState.route = .init(value: .close)
 
@@ -87,8 +102,16 @@ extension CreateRecipeViewController {
         case .imagePicked(let imageSource):
             newState.stepOneState.recipeImageState = .uploading(imageSource)
 
+        case .mealNameChanged(let mealName):
+            newState.stepOneState.mealName = mealName
+
         case .nextTapped:
-            newState.step = min(3, newState.step + 1)
+            if newState.step == 0 {
+                newState.stepOneState.validate()
+                if newState.stepOneState.isDataValid {
+                    newState.step = min(3, newState.step + 1)
+                }
+            }
 
         case .recipeImageTapped:
             let isDeleteButtonPresent = newState.stepOneState.recipeImageState.uploadedImageSource != nil

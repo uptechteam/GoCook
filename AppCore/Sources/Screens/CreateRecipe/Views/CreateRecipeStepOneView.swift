@@ -5,7 +5,6 @@
 //  Created by Oleksii Andriushchenko on 24.06.2022.
 //
 
-import Helpers
 import Library
 import UIKit
 
@@ -13,20 +12,23 @@ final class CreateRecipeStepOneView: UIView {
 
     struct Props: Equatable {
         let isVisible: Bool
-        let recipeImageSource: ImageSource?
-        let isThreeDostImageViewVisible: Bool
-        let isLoaderVisible: Bool
+        let recipeImageViewProps: RecipeImageView.Props
         let mealNameInputViewProps: InputView.Props
+        let items: [CategoryCell.Props]
     }
+
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, CategoryCell.Props>
+    typealias DataSource = UICollectionViewDiffableDataSource<Int, CategoryCell.Props>
 
     // MARK: - Properties
 
-    private let imageView = UIImageView()
-    private let threeDotsImageView = UIImageView()
-    private let spinnerView = SpinnerView()
-    private let mealNameInputView = InputView()
+    let recipeImageView = RecipeImageView()
+    let mealNameInputView = InputView()
+    private let categoryLabel = UILabel()
+    private lazy var dataSource = makeDataSource()
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     // callbacks
-    var onDidTapImage: () -> Void = { }
+    var onDidTapCategory: (IndexPath) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -39,13 +41,18 @@ final class CreateRecipeStepOneView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setupLayout()
+    }
+
     // MARK: - Set up
 
     private func setup() {
         setupContentView()
-        setupImageView()
-        setupThreeDotsImageView()
-        setupSpinnerView()
+        setupCategoryLabel()
+        setupLayout()
+        setupCollectionView()
         setupStackView()
     }
 
@@ -53,68 +60,65 @@ final class CreateRecipeStepOneView: UIView {
         backgroundColor = .appWhite
     }
 
-    private func setupImageView() {
-        imageView.backgroundColor = .gray100
-        imageView.clipsToBounds = true
-        imageView.contentMode = .center
-        imageView.image = .addPhoto
-        imageView.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        imageView.addGestureRecognizer(tapGesture)
-        NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
-        ])
+    private func setupCategoryLabel() {
+        categoryLabel.render(title: "Category", color: .textMain, typography: .subtitle)
     }
 
-    private func setupThreeDotsImageView() {
-        threeDotsImageView.image = .threeDots
-        imageView.addSubview(threeDotsImageView, constraints: [
-            threeDotsImageView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 12),
-            threeDotsImageView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -12)
-        ])
+    private func setupLayout() {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumInteritemSpacing = 20
+        flowLayout.itemSize = CGSize(width: bounds.width - 48, height: 24)
+        collectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
 
-    private func setupSpinnerView() {
-        imageView.addSubview(spinnerView, constraints: [
-            spinnerView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-            spinnerView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
-            spinnerView.widthAnchor.constraint(equalToConstant: 48),
-            spinnerView.heightAnchor.constraint(equalTo: spinnerView.widthAnchor)
-        ])
+    private func setupCollectionView() {
+        collectionView.backgroundColor = nil
+        collectionView.isScrollEnabled = false
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        collectionView.register(cell: CategoryCell.self)
     }
+
+    var collectionViewHeightConstraint: NSLayoutConstraint!
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [imageView, mealNameInputView, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [recipeImageView, mealNameInputView, categoryLabel, collectionView])
         stackView.axis = .vertical
-        stackView.setCustomSpacing(48, after: imageView)
+        stackView.setCustomSpacing(48, after: recipeImageView)
+        stackView.setCustomSpacing(20, after: mealNameInputView)
+        stackView.setCustomSpacing(24, after: categoryLabel)
         addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
+        collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 0)
+        NSLayoutConstraint.activate([
+            collectionViewHeightConstraint
+        ])
     }
 
     // MARK: - Public methods
 
     func render(props: Props) {
         isHidden = !props.isVisible
-        renderRecipeImageView(props: props)
-        threeDotsImageView.isHidden = !props.isThreeDostImageViewVisible
-        spinnerView.toggle(isAnimating: props.isLoaderVisible)
+        recipeImageView.render(props: props.recipeImageViewProps)
+
         mealNameInputView.render(props: props.mealNameInputViewProps)
+        collectionViewHeightConstraint.constant = CGFloat(props.items.count * 24 + (props.items.count - 1) * 20)
+        dataSource.apply(sections: [0], items: [props.items])
     }
+}
 
-    // MARK: - Private methods
+// MARK: - Data Source
 
-    private func renderRecipeImageView(props: Props) {
-        if let imageSource = props.recipeImageSource {
-            imageView.set(imageSource)
-        } else if !props.isLoaderVisible {
-            imageView.set(.asset(.addPhoto))
-        } else {
-            imageView.set(.asset(nil))
-        }
-        imageView.contentMode = props.recipeImageSource == nil ? .center : .scaleAspectFill
-    }
-
-    @objc
-    private func handleTap() {
-        onDidTapImage()
+extension CreateRecipeStepOneView {
+    func makeDataSource() -> DataSource {
+        return DataSource(
+            collectionView: collectionView,
+            cellProvider: { [weak self] collectionView, indexPath, props in
+                let cell: CategoryCell = collectionView.dequeueReusableCell(for: indexPath)
+                cell.render(props: props)
+                cell.onDidTapCheckmark = { [weak self] in
+                    self?.onDidTapCategory(indexPath)
+                }
+                return cell
+            }
+        )
     }
 }

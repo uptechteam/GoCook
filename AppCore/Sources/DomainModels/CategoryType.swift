@@ -40,7 +40,7 @@ public enum CategoryType: Hashable {
         }
     }
 
-    public var priorityOrder: [CategoryType] {
+    public static var priorityOrder: [CategoryType] {
         return [.breakfast, .lunch, .dinner, .desserts, .drinks]
     }
 

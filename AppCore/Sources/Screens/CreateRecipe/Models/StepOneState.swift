@@ -7,51 +7,38 @@
 
 import DomainModels
 import Foundation
-import Helpers
 
 struct StepOneState: Equatable {
-    var recipeImageState: RecipeImageState
-    var mealName: String
-    var categories: Set<CategoryType>
-}
-
-enum RecipeImageState: Equatable {
 
     // MARK: - Properties
 
-    case empty
-    case uploading(ImageSource)
-    case uploaded(ImageSource, imageID: String)
-
-    var isUploading: Bool {
-        switch self {
-        case .uploading:
-            return true
-
-        default:
-            return false
+    var recipeImageState: RecipeImageState {
+        didSet {
+            isRecipeImageValid = true
         }
     }
-
-    var uploadedImageSource: ImageSource? {
-        switch self {
-        case .uploaded(let imageSource, _):
-            return imageSource
-
-        default:
-            return nil
+    var isRecipeImageValid: Bool = true
+    var mealName: String {
+        didSet {
+            isMealNameValid = true
         }
+    }
+    var isMealNameValid: Bool = true
+    var categories: Set<CategoryType> {
+        didSet {
+            areCategoriesValid = true
+        }
+    }
+    var areCategoriesValid: Bool = true
+    var isDataValid: Bool {
+        isRecipeImageValid && isMealNameValid && areCategoriesValid
     }
 
     // MARK: - Public methods
 
-    mutating func upload(with id: String) {
-        switch self {
-        case .uploading(let imageSource):
-            self = .uploaded(imageSource, imageID: id)
-
-        default:
-            self = .empty
-        }
+    mutating func validate() {
+        isRecipeImageValid = recipeImageState.uploadedImageSource != nil
+        isMealNameValid = !mealName.isEmpty
+        areCategoriesValid = !categories.isEmpty
     }
 }

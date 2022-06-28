@@ -62,11 +62,16 @@ final class CreateRecipeView: UIView {
 
     private func setupStackView() {
         let stackView = UIStackView(arrangedSubviews: [stepOneView, stepTwoView, stepThreeView, stepFourView])
-        addSubview(stackView, constraints: [
-            stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: stepsView.topAnchor)
+
+        let scrollView = UIScrollView()
+        scrollView.addSubview(stackView, withEdgeInsets: .zero)
+        addSubview(scrollView, constraints: [
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: stepsView.topAnchor),
+            scrollView.widthAnchor.constraint(equalTo: widthAnchor),
+            stackView.widthAnchor.constraint(equalTo: widthAnchor)
         ])
     }
 
