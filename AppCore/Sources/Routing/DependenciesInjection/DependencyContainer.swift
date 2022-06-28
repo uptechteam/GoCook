@@ -15,6 +15,10 @@ extension DependencyContainer {
     public static func configure() -> DependencyContainer {
         return DependencyContainer { container in
 
+            // MARK: - Apple frameworks
+
+            container.register(.singleton, type: NotificationCenter.self, factory: { .default })
+
             // MARK: - Networking
 
             container.register(.singleton, type: NetworkClient.self, factory: NetworkClientImpl.init)
@@ -26,6 +30,10 @@ extension DependencyContainer {
             // MARK: - Facades
 
             container.register(.singleton, type: ProfileFacading.self, factory: ProfileFacade.init)
+
+            // MARK: - Managers
+
+            container.register(.singleton, type: KeyboardManaging.self, factory: KeyboardManager.init)
 
             // MARK: - Storages
 

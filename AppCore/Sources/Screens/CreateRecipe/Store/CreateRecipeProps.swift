@@ -72,7 +72,29 @@ extension CreateRecipeViewController {
     }
 
     private static func makeStepTwoViewProps(state: State) -> StepTwoView.Props {
-        .init(isVisible: state.step == 1)
+        .init(
+            isVisible: state.step == 1,
+            servingsViewProps: makeServingsViewProps(state: state),
+            ingredientsViewProps: makeIngredientsViewProps(state: state)
+        )
+    }
+
+    private static func makeServingsViewProps(state: State) -> StepTwoServingsView.Props {
+        return .init(
+            servingsText: "Enter amount",
+            servingsColorSource: .color(.textSecondary)
+        )
+    }
+
+    private static func makeIngredientsViewProps(state: State) -> StepTwoIngredientsView.Props {
+        return .init(
+            items: state.stepTwoState.ingredients.map { ingredient in
+                IngredientCell.Props(
+                    id: UUID().uuidString,
+                    isDeleteImageViewVisible: state.stepTwoState.ingredients.count > 1
+                )
+            }
+        )
     }
 
     private static func makeStepThreeViewProps(state: State) -> CreateRecipeStepThreeView.Props {

@@ -17,19 +17,23 @@ extension CreateRecipeViewController {
     public struct State: Equatable {
         var step: Int
         var stepOneState: StepOneState
+        var stepTwoState: StepTwoState
         var alert: AnyIdentifiable<Alert>?
         var route: AnyIdentifiable<Route>?
     }
 
     public enum Action {
+        case addIngredientTapped
         case backTapped
         case categoryItemTapped(IndexPath)
         case closeTapped
+        case deleteIngredientTapped(IndexPath)
         case deleteTapped
         case imagePicked(ImageSource)
         case mealNameChanged(String)
         case nextTapped
         case recipeImageTapped
+        case servingsAmountChanged(Int)
         case uploadImage(DomainModelAction<String>)
     }
 
@@ -67,6 +71,7 @@ extension CreateRecipeViewController {
         return State(
             step: 0,
             stepOneState: StepOneState(recipeImageState: .empty, mealName: "", categories: Set()),
+            stepTwoState: StepTwoState(ingredients: [NewIngredient(id: UUID().uuidString, name: "")]),
             alert: nil,
             route: nil
         )
@@ -79,6 +84,9 @@ extension CreateRecipeViewController {
         var newState = state
 
         switch action {
+        case .addIngredientTapped:
+            newState.stepTwoState.ingredients.append(NewIngredient(id: UUID().uuidString, name: ""))
+
         case .backTapped:
             newState.step = max(0, newState.step - 1)
 
@@ -95,6 +103,13 @@ extension CreateRecipeViewController {
 
         case .closeTapped:
             newState.route = .init(value: .close)
+
+        case .deleteIngredientTapped(let indexPath):
+            guard newState.stepTwoState.ingredients.indices.contains(indexPath.item) else {
+                break
+            }
+
+            newState.stepTwoState.ingredients.remove(at: indexPath.item)
 
         case .deleteTapped:
             newState.stepOneState.recipeImageState = .empty
@@ -116,6 +131,9 @@ extension CreateRecipeViewController {
         case .recipeImageTapped:
             let isDeleteButtonPresent = newState.stepOneState.recipeImageState.uploadedImageSource != nil
             newState.alert = .init(value: .imagePicker(isDeleteButtonPresent: isDeleteButtonPresent))
+
+        case .servingsAmountChanged(let amount):
+            newState.stepTwoState.numberOfServings = amount
 
         case .uploadImage(let modelAction):
             switch modelAction {

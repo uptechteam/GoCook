@@ -12,11 +12,14 @@ final class StepTwoView: UIView {
 
     struct Props: Equatable {
         let isVisible: Bool
+        let servingsViewProps: StepTwoServingsView.Props
+        let ingredientsViewProps: StepTwoIngredientsView.Props
     }
 
     // MARK: - Properties
 
-    private let textLabel = UILabel()
+    let servingsView = StepTwoServingsView()
+    let ingredientsView = StepTwoIngredientsView()
 
     // MARK: - Lifecycle
 
@@ -33,24 +36,25 @@ final class StepTwoView: UIView {
 
     private func setup() {
         setupContentView()
-        setupTextLabel()
+        setupStackView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
     }
 
-    private func setupTextLabel() {
-        textLabel.text = "Step two"
-        addSubview(textLabel, constraints: [
-            textLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            textLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ])
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [servingsView, ingredientsView, UIView()])
+        stackView.axis = .vertical
+        stackView.spacing = 56
+        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
     }
 
     // MARK: - Public methods
 
     func render(props: Props) {
         isHidden = !props.isVisible
+        servingsView.render(props: props.servingsViewProps)
+        ingredientsView.render(props: props.ingredientsViewProps)
     }
 }
