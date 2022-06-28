@@ -64,4 +64,18 @@ struct TargetBuilder {
         request = try URLEncodedFormParameterEncoder.default.encode(parameters, into: request)
         return AppRequest(urlRequest: request, authorisation: authorisation)
     }
+
+    func makePostDataTarget(
+        path: String,
+        data: Data,
+        authorisation: Authorisation = .basic
+    ) throws -> AppRequest {
+        var request = try URLRequest(
+            url: baseURL.appendingPathComponent(path),
+            method: .post,
+            headers: .default
+        )
+        request.httpBody = data
+        return AppRequest(urlRequest: request, authorisation: authorisation)
+    }
 }

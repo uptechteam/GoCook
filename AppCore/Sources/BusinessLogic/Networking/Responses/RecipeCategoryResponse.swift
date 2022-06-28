@@ -14,7 +14,7 @@ struct RecipeCategoryResponse: Decodable {
 
     var domainModel: RecipeCategory {
         RecipeCategory(
-            category: name,
+            category: CategoryType(name: name),
             recipes: recipes.map(\.domainModel)
         )
     }

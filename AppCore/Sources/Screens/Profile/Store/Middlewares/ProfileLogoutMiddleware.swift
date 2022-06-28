@@ -18,11 +18,7 @@ extension ProfileViewController {
                 return
             }
 
-            do {
-                try await dependencies.profileFacade.logout()
-            } catch {
-                log.error("Error: \(error)")
-            }
+            await dependencies.profileFacade.logout()
         }
     }
 }

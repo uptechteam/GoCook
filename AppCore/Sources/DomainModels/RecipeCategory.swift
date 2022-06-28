@@ -12,12 +12,12 @@ public struct RecipeCategory: Equatable {
 
     // MARK: - Properties
 
-    public let category: String
+    public let category: CategoryType
     public let recipes: [Recipe]
 
     // MARK: - Lifecycle
 
-    public init(category: String, recipes: [Recipe]) {
+    public init(category: CategoryType, recipes: [Recipe]) {
         self.category = category
         self.recipes = recipes
     }
@@ -25,6 +25,6 @@ public struct RecipeCategory: Equatable {
 
 extension RecipeCategory: EmptyDomainModel {
     public static var empty: RecipeCategory {
-        RecipeCategory(category: "", recipes: [])
+        RecipeCategory(category: .custom(name: "Trends"), recipes: [])
     }
 }

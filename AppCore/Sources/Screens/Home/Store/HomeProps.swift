@@ -15,7 +15,7 @@ extension HomeViewController {
 
     private static func makeRecipeCategoryCellProps(recipeCategory: RecipeCategory) -> RecipeCategoryCell.Props {
         return .init(
-            title: recipeCategory.category,
+            title: recipeCategory.category.name,
             items: recipeCategory.recipes.map(makeRecipeCellProps)
         )
     }

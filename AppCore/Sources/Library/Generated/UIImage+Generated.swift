@@ -9,6 +9,46 @@ import UIKit
 
 extension UIImage {
 
+  @nonobjc public class var addPhoto: UIImage {
+    return UIImage(named: "addPhoto")!
+  }
+
+  @nonobjc public class var arrowBack: UIImage {
+    return UIImage(named: "arrowBack")!
+  }
+
+  @nonobjc public class var arrowForward: UIImage {
+    return UIImage(named: "arrowForward")!
+  }
+
+  @nonobjc public class var emptyCheckbox: UIImage {
+    return UIImage(named: "emptyCheckbox")!
+  }
+
+  @nonobjc public class var errorCheckbox: UIImage {
+    return UIImage(named: "errorCheckbox")!
+  }
+
+  @nonobjc public class var filledCheckbox: UIImage {
+    return UIImage(named: "filledCheckbox")!
+  }
+
+  @nonobjc public class var threeDots: UIImage {
+    return UIImage(named: "threeDots")!
+  }
+
+  @nonobjc public class var backButton: UIImage {
+    return UIImage(named: "backButton")!
+  }
+
+  @nonobjc public class var circleBackButton: UIImage {
+    return UIImage(named: "circleBackButton")!
+  }
+
+  @nonobjc public class var close: UIImage {
+    return UIImage(named: "close")!
+  }
+
   @nonobjc public class var circleFavoriteEmpty: UIImage {
     return UIImage(named: "circleFavoriteEmpty")!
   }
@@ -99,14 +139,6 @@ extension UIImage {
 
   @nonobjc public class var profileTabBarIconSelected: UIImage {
     return UIImage(named: "profileTabBarIconSelected")!
-  }
-
-  @nonobjc public class var backButton: UIImage {
-    return UIImage(named: "backButton")!
-  }
-
-  @nonobjc public class var circleBackButton: UIImage {
-    return UIImage(named: "circleBackButton")!
   }
 
 }

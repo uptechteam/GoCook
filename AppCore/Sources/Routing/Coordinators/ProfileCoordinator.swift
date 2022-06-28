@@ -5,6 +5,8 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
+import AppTabBar
+import CreateRecipe
 import Dip
 import Foundation
 import Library
@@ -15,6 +17,7 @@ final class ProfileCoordinator: NSObject, Coordinating {
 
     // MARK: - Properties
 
+    private var childCoordinators: [Coordinating]
     private let container: DependencyContainer
     private let navigationController: UINavigationController
 
@@ -25,6 +28,7 @@ final class ProfileCoordinator: NSObject, Coordinating {
     // MARK: - Lifecycle
 
     init(container: DependencyContainer, navigationController: UINavigationController) {
+        self.childCoordinators = []
         self.container = container
         self.navigationController = navigationController
         super.init()
@@ -52,7 +56,17 @@ final class ProfileCoordinator: NSObject, Coordinating {
 // MARK: - Extensions
 
 extension ProfileCoordinator: ProfileCoordinating {
+    func didTapCreateRecipe() {
+        let coordinator = CreateRecipeCoordinator(container: container, presentingViewController: navigationController)
+        childCoordinators.append(coordinator)
+        coordinator.start()
+    }
+}
 
+extension ProfileCoordinator: CreateRecipeCoordinatorDelegate {
+    func didFinish(_ coordinator: CreateRecipeCoordinator) {
+        childCoordinators.removeAll(where: { $0 === coordinator })
+    }
 }
 
 // MARK: - UINavigationControllerdelegate
@@ -65,5 +79,14 @@ extension ProfileCoordinator: UINavigationControllerDelegate {
     ) {
         let isHidden = viewController is ProfileViewController
         navigationController.setNavigationBarHidden(isHidden, animated: false)
+    }
+
+    func navigationController(
+        _ navigationController: UINavigationController,
+        didShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        let isTabBarVisible = viewController is ProfileViewController
+        (navigationController.tabBarController as? AppTabBarController)?.toggleTabBarVisibility(on: isTabBarVisible)
     }
 }

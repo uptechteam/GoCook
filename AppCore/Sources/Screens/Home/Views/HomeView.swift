@@ -20,7 +20,7 @@ final class HomeView: UIView {
     // MARK: - Properties
 
     private let topStackView = UIStackView()
-    let inputTextField = InputTextField()
+    let searchTextField = SearchTextField()
     let filtersButton = IconButton()
     private lazy var dataSource = makeDataSource()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
@@ -47,7 +47,7 @@ final class HomeView: UIView {
     private func setup() {
         setupContentView()
         setupTopStackView()
-        setupInputTextField()
+        setupSearchTextField()
         setupFiltersButton()
         setupLayout()
         setupCollectionView()
@@ -59,14 +59,14 @@ final class HomeView: UIView {
     }
 
     private func setupTopStackView() {
-        [inputTextField, filtersButton].forEach(topStackView.addArrangedSubview)
+        [searchTextField, filtersButton].forEach(topStackView.addArrangedSubview)
         topStackView.alignment = .center
         topStackView.spacing = 16
     }
 
-    private func setupInputTextField() {
-        inputTextField.placeholder = .homeSearchPlaceholder
-        inputTextField.delegate = self
+    private func setupSearchTextField() {
+        searchTextField.placeholder = .homeSearchPlaceholder
+        searchTextField.delegate = self
     }
 
     private func setupFiltersButton() {
