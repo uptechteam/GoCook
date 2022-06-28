@@ -26,7 +26,8 @@ extension CreateRecipeViewController {
             isVisible: state.step == 0,
             recipeImageViewProps: makeRecipeImageViewProps(state: state),
             mealNameInputViewProps: makeMealNameInputViewProps(state: state),
-            items: makeCategoryItems(state: state)
+            items: makeCategoryItems(state: state),
+            isCategoryErrorLabelVisible: !state.stepOneState.areCategoriesValid
         )
     }
 

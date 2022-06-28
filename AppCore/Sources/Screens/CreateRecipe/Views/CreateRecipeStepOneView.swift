@@ -15,6 +15,7 @@ final class CreateRecipeStepOneView: UIView {
         let recipeImageViewProps: RecipeImageView.Props
         let mealNameInputViewProps: InputView.Props
         let items: [CategoryCell.Props]
+        let isCategoryErrorLabelVisible: Bool
     }
 
     typealias Snapshot = NSDiffableDataSourceSnapshot<Int, CategoryCell.Props>
@@ -27,6 +28,8 @@ final class CreateRecipeStepOneView: UIView {
     private let categoryLabel = UILabel()
     private lazy var dataSource = makeDataSource()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
+    private let categoryErrorLabel = UILabel()
+    private var collectionViewHeightConstraint: NSLayoutConstraint!
     // callbacks
     var onDidTapCategory: (IndexPath) -> Void = { _ in }
 
@@ -53,6 +56,7 @@ final class CreateRecipeStepOneView: UIView {
         setupCategoryLabel()
         setupLayout()
         setupCollectionView()
+        setupCategoryErrorLabel()
         setupStackView()
     }
 
@@ -66,7 +70,7 @@ final class CreateRecipeStepOneView: UIView {
 
     private func setupLayout() {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumInteritemSpacing = 20
+        flowLayout.minimumLineSpacing = 20
         flowLayout.itemSize = CGSize(width: bounds.width - 48, height: 24)
         collectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
@@ -78,14 +82,19 @@ final class CreateRecipeStepOneView: UIView {
         collectionView.register(cell: CategoryCell.self)
     }
 
-    var collectionViewHeightConstraint: NSLayoutConstraint!
+    private func setupCategoryErrorLabel() {
+        categoryErrorLabel.render(title: "Select meal category", color: .errorMain, typography: .bodyTwo)
+    }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [recipeImageView, mealNameInputView, categoryLabel, collectionView])
+        let stackView = UIStackView(
+            arrangedSubviews: [recipeImageView, mealNameInputView, categoryLabel, collectionView, categoryErrorLabel]
+        )
         stackView.axis = .vertical
         stackView.setCustomSpacing(48, after: recipeImageView)
         stackView.setCustomSpacing(20, after: mealNameInputView)
         stackView.setCustomSpacing(24, after: categoryLabel)
+        stackView.setCustomSpacing(8, after: collectionView)
         addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
         collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 0)
         NSLayoutConstraint.activate([
@@ -98,10 +107,10 @@ final class CreateRecipeStepOneView: UIView {
     func render(props: Props) {
         isHidden = !props.isVisible
         recipeImageView.render(props: props.recipeImageViewProps)
-
         mealNameInputView.render(props: props.mealNameInputViewProps)
         collectionViewHeightConstraint.constant = CGFloat(props.items.count * 24 + (props.items.count - 1) * 20)
         dataSource.apply(sections: [0], items: [props.items])
+        categoryErrorLabel.isHidden = !props.isCategoryErrorLabelVisible
     }
 }
 
