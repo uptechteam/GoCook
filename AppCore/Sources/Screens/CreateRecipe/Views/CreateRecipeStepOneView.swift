@@ -13,14 +13,18 @@ final class CreateRecipeStepOneView: UIView {
 
     struct Props: Equatable {
         let isVisible: Bool
-        let isLoaderVisible: Bool
         let recipeImageSource: ImageSource?
+        let isThreeDostImageViewVisible: Bool
+        let isLoaderVisible: Bool
+        let mealNameInputViewProps: InputView.Props
     }
 
     // MARK: - Properties
 
     private let imageView = UIImageView()
+    private let threeDotsImageView = UIImageView()
     private let spinnerView = SpinnerView()
+    private let mealNameInputView = InputView()
     // callbacks
     var onDidTapImage: () -> Void = { }
 
@@ -40,6 +44,7 @@ final class CreateRecipeStepOneView: UIView {
     private func setup() {
         setupContentView()
         setupImageView()
+        setupThreeDotsImageView()
         setupSpinnerView()
         setupStackView()
     }
@@ -61,6 +66,14 @@ final class CreateRecipeStepOneView: UIView {
         ])
     }
 
+    private func setupThreeDotsImageView() {
+        threeDotsImageView.image = .threeDots
+        imageView.addSubview(threeDotsImageView, constraints: [
+            threeDotsImageView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 12),
+            threeDotsImageView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -12)
+        ])
+    }
+
     private func setupSpinnerView() {
         imageView.addSubview(spinnerView, constraints: [
             spinnerView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
@@ -71,8 +84,9 @@ final class CreateRecipeStepOneView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [imageView, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [imageView, mealNameInputView, UIView()])
         stackView.axis = .vertical
+        stackView.setCustomSpacing(48, after: imageView)
         addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
     }
 
@@ -80,6 +94,15 @@ final class CreateRecipeStepOneView: UIView {
 
     func render(props: Props) {
         isHidden = !props.isVisible
+        renderRecipeImageView(props: props)
+        threeDotsImageView.isHidden = !props.isThreeDostImageViewVisible
+        spinnerView.toggle(isAnimating: props.isLoaderVisible)
+        mealNameInputView.render(props: props.mealNameInputViewProps)
+    }
+
+    // MARK: - Private methods
+
+    private func renderRecipeImageView(props: Props) {
         if let imageSource = props.recipeImageSource {
             imageView.set(imageSource)
         } else if !props.isLoaderVisible {
@@ -88,10 +111,7 @@ final class CreateRecipeStepOneView: UIView {
             imageView.set(.asset(nil))
         }
         imageView.contentMode = props.recipeImageSource == nil ? .center : .scaleAspectFill
-        spinnerView.toggle(isAnimating: props.isLoaderVisible)
     }
-
-    // MARK: - Private methods
 
     @objc
     private func handleTap() {

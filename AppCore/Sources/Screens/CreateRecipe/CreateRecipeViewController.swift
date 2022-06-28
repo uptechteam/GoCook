@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  CreateRecipeViewController.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 23.06.2022.
@@ -66,11 +66,8 @@ public final class CreateRecipeViewController: UIViewController {
     }
 
     private func setupBinding() {
-        contentView.stepOneView.onDidTapImage = { [imagePicker, store] in
-            Task {
-                let image = await imagePicker.pickImage(on: self)
-                store.dispatch(action: .imagePicked(.asset(image)))
-            }
+        contentView.stepOneView.onDidTapImage = { [store] in
+            store.dispatch(action: .recipeImageTapped)
         }
         contentView.stepsView.onDidTapBack = { [store] in
             store.dispatch(action: .backTapped)
@@ -90,12 +87,67 @@ public final class CreateRecipeViewController: UIViewController {
             }
             .store(in: &cancellables)
 
+        state.compactMap(\.alert).removeDuplicates()
+            .map(\.value)
+            .sink { [unowned self] alert in
+                show(alert: alert)
+            }
+            .store(in: &cancellables)
+
         state.compactMap(\.route).removeDuplicates()
             .map(\.value)
             .sink { [unowned self] route in
                 navigate(by: route)
             }
             .store(in: &cancellables)
+    }
+
+    private func show(alert: Alert) {
+        switch alert {
+        case .imagePicker(let isDeleteButtonPresent):
+            showImagePicker(isDeleteButtonPresent: isDeleteButtonPresent)
+        }
+    }
+
+    private func showImagePicker(isDeleteButtonPresent: Bool) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let cameraAction = UIAlertAction(
+            title: "Take photo",
+            style: .default,
+            handler: { [weak self] _ in self?.showImagePicker(source: .camera) }
+        )
+        alertController.addAction(cameraAction)
+        let galleryAction = UIAlertAction(
+            title: "Choose from library",
+            style: .default,
+            handler: { [weak self] _ in self?.showImagePicker(source: .photoLibrary) }
+        )
+        alertController.addAction(galleryAction)
+        if isDeleteButtonPresent {
+            let deleteAction = UIAlertAction(
+                title: "Remove current photo",
+                style: .default,
+                handler: { [store] _ in store.dispatch(action: .deleteTapped) }
+            )
+            alertController.addAction(deleteAction)
+        }
+        let cancelAction = UIAlertAction(
+            title: "Cancel",
+            style: .cancel
+        )
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true)
+    }
+
+    private func showImagePicker(source: UIImagePickerController.SourceType) {
+        Task { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            let image = await imagePicker.pickImage(source: source, on: self)
+            store.dispatch(action: .imagePicked(.asset(image)))
+        }
     }
 
     private func navigate(by route: Route) {

@@ -125,5 +125,9 @@ extension UIImage {
     return UIImage(named: "close")!
   }
 
+  @nonobjc public class var threeDots: UIImage {
+    return UIImage(named: "threeDots")!
+  }
+
 }
 // swiftlint:enable file_length

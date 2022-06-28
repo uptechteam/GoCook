@@ -1,5 +1,5 @@
 //
-//  InputTextField.swift
+//  SearchTextField.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 14.06.2022.
@@ -7,11 +7,7 @@
 
 import UIKit
 
-public final class InputTextField: UITextField {
-
-    struct Props: Equatable {
-
-    }
+public final class SearchTextField: UITextField {
 
     // MARK: - Properties
 
@@ -54,10 +50,6 @@ public final class InputTextField: UITextField {
     }
 
     // MARK: - Public methods
-
-    func render(props: Props) {
-
-    }
 
     public override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
         CGRect(x: 0, y: 0, width: 41, height: bounds.height)

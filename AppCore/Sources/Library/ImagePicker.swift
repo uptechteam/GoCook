@@ -22,11 +22,11 @@ public final class ImagePicker: NSObject {
 
     // MARK: - Public methods
 
-    public func pickImage(on viewController: UIViewController) async -> UIImage? {
-        guard
-            let source = await chooseSource(on: viewController),
-            await askPermission(on: viewController, source: source)
-        else {
+    public func pickImage(
+        source: UIImagePickerController.SourceType,
+        on viewController: UIViewController
+    ) async -> UIImage? {
+        guard await askPermission(on: viewController, source: source) else {
             return nil
         }
 
@@ -34,36 +34,6 @@ public final class ImagePicker: NSObject {
     }
 
     // MARK: - Private methods
-
-    private func chooseSource(on viewController: UIViewController) async -> UIImagePickerController.SourceType? {
-        return await withCheckedContinuation { (continuation: CheckedContinuation<UIImagePickerController.SourceType?, Never>) in
-            let alertController = UIAlertController(
-                title: nil,
-                message: nil,
-                preferredStyle: .actionSheet
-            )
-
-            let cameraAction = UIAlertAction(
-                title: "Camera",
-                style: .default,
-                handler: { _ in continuation.resume(with: .success(.camera)) }
-            )
-            alertController.addAction(cameraAction)
-            let galleryAction = UIAlertAction(
-                title: "Gallery",
-                style: .default,
-                handler: { _ in continuation.resume(with: .success(.photoLibrary)) }
-            )
-            alertController.addAction(galleryAction)
-            let okAction = UIAlertAction(
-                title: "Cancel",
-                style: .cancel,
-                handler: { _ in continuation.resume(with: .success(nil)) }
-            )
-            alertController.addAction(okAction)
-            viewController.present(alertController, animated: true)
-        }
-    }
 
     private func askPermission(
         on viewController: UIViewController,

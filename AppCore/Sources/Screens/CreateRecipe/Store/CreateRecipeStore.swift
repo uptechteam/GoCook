@@ -15,15 +15,22 @@ extension CreateRecipeViewController {
     public struct State: Equatable {
         var step: Int
         var stepOneState: StepOneState
+        var alert: AnyIdentifiable<Alert>?
         var route: AnyIdentifiable<Route>?
     }
 
     public enum Action {
         case backTapped
         case closeTapped
+        case deleteTapped
         case imagePicked(ImageSource)
         case nextTapped
+        case recipeImageTapped
         case uploadImage(DomainModelAction<String>)
+    }
+
+    enum Alert {
+        case imagePicker(isDeleteButtonPresent: Bool)
     }
 
     enum Route {
@@ -56,6 +63,7 @@ extension CreateRecipeViewController {
         return State(
             step: 0,
             stepOneState: StepOneState(recipeImageState: .empty, mealName: "", categories: Set()),
+            alert: nil,
             route: nil
         )
     }
@@ -73,11 +81,18 @@ extension CreateRecipeViewController {
         case .closeTapped:
             newState.route = .init(value: .close)
 
+        case .deleteTapped:
+            newState.stepOneState.recipeImageState = .empty
+
         case .imagePicked(let imageSource):
             newState.stepOneState.recipeImageState = .uploading(imageSource)
 
         case .nextTapped:
             newState.step = min(3, newState.step + 1)
+
+        case .recipeImageTapped:
+            let isDeleteButtonPresent = newState.stepOneState.recipeImageState.uploadedImageSource != nil
+            newState.alert = .init(value: .imagePicker(isDeleteButtonPresent: isDeleteButtonPresent))
 
         case .uploadImage(let modelAction):
             switch modelAction {

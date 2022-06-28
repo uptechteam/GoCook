@@ -5,6 +5,8 @@
 //  Created by Oleksii Andriushchenko on 23.06.2022.
 //
 
+import Library
+
 extension CreateRecipeViewController {
     static func makeProps(from state: State) -> CreateRecipeView.Props {
         return .init(
@@ -19,8 +21,20 @@ extension CreateRecipeViewController {
     private static func makeStepOneViewProps(state: State) -> CreateRecipeStepOneView.Props {
         return .init(
             isVisible: state.step == 0,
+            recipeImageSource: state.stepOneState.recipeImageState.uploadedImageSource,
+            isThreeDostImageViewVisible: state.stepOneState.recipeImageState.uploadedImageSource != nil,
             isLoaderVisible: state.stepOneState.recipeImageState.isUploading,
-            recipeImageSource: state.stepOneState.recipeImageState.uploadedImageSource
+            mealNameInputViewProps: makeMealNameInputViewProps(state: state)
+        )
+    }
+
+    private static func makeMealNameInputViewProps(state: State) -> InputView.Props {
+        return .init(
+            title: "MEAL NAME",
+            titleColorSource: .color(.textSecondary),
+            dividerColorSource: .color(.appBlack),
+            errorMessage: "",
+            isErrorMessageVisible: false
         )
     }
 

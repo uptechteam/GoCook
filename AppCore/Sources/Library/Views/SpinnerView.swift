@@ -12,6 +12,7 @@ public final class SpinnerView: UIView {
     // MARK: - Properties
 
     private let closeImageView = UIImageView()
+    private var circleLayer: CALayer?
     private var isAnimating = false
 
     // MARK: - Lifecycle
@@ -32,6 +33,7 @@ public final class SpinnerView: UIView {
     }
 
     private func setupCloseImageView() {
+        closeImageView.isHidden = true
         closeImageView.image = .close
         addSubview(closeImageView, constraints: [
             closeImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -47,19 +49,20 @@ public final class SpinnerView: UIView {
         }
 
         isHidden = !isAnimating
+        closeImageView.isHidden = !isAnimating
         self.isAnimating = isAnimating
         if isAnimating {
             layer.speed = 1
-            layer.sublayers = nil
-            setUpAnimation(in: layer, size: bounds.size, color: .secondaryMain)
+            setUpAnimation(size: bounds.size, color: .secondaryMain)
         } else {
-            layer.sublayers?.removeAll()
+            circleLayer?.removeFromSuperlayer()
+            circleLayer = nil
         }
     }
 
     // MARK: - Private methods
 
-    private func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
+    private func setUpAnimation(size: CGSize, color: UIColor) {
         let beginTime: Double = 0.5
         let strokeStartDuration: Double = 1.2
         let strokeEndDuration: Double = 0.7
@@ -88,7 +91,7 @@ public final class SpinnerView: UIView {
         groupAnimation.isRemovedOnCompletion = false
         groupAnimation.fillMode = .forwards
 
-        let circle = layerWith(size: size, color: color)
+        let circleLayer = getLayerWith(size: size, color: color)
         let frame = CGRect(
             x: (layer.bounds.width - size.width) / 2,
             y: (layer.bounds.height - size.height) / 2,
@@ -96,12 +99,13 @@ public final class SpinnerView: UIView {
             height: size.height
         )
 
-        circle.frame = frame
-        circle.add(groupAnimation, forKey: "animation")
-        layer.addSublayer(circle)
+        circleLayer.frame = frame
+        circleLayer.add(groupAnimation, forKey: "animation")
+        layer.addSublayer(circleLayer)
+        self.circleLayer = circleLayer
     }
 
-    private func layerWith(size: CGSize, color: UIColor) -> CALayer {
+    private func getLayerWith(size: CGSize, color: UIColor) -> CALayer {
         let path = UIBezierPath()
         path.addArc(
             withCenter: CGPoint(x: size.width / 2, y: size.height / 2),
