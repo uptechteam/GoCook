@@ -12,8 +12,9 @@ import UIKit
 final class StepTwoServingsView: UIView {
 
     struct Props: Equatable {
-        let servingsText: String
-        let servingsColorSource: ColorSource
+        let amountText: String
+        let amountColorSource: ColorSource
+        let amountTypography: Typography
     }
 
     // MARK: - Properties
@@ -65,8 +66,11 @@ final class StepTwoServingsView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        amountLabel.text = props.servingsText
-        amountLabel.textColor = props.servingsColorSource.color
+        amountLabel.render(
+            title: props.amountText,
+            color: props.amountColorSource.color,
+            typography: props.amountTypography
+        )
     }
 
     // MARK: - Private methods
