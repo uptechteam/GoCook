@@ -6,6 +6,7 @@
 //
 
 import BusinessLogic
+import DomainModels
 import Helpers
 
 extension InputViewController {
@@ -13,6 +14,7 @@ extension InputViewController {
     public typealias Store = ReduxStore<State, Action>
 
     public struct State: Equatable {
+        let inputDetails: InputDetails
         var text: String
         var route: AnyIdentifiable<Route>?
     }
@@ -23,7 +25,7 @@ extension InputViewController {
     }
 
     enum Route {
-        case finish(String)
+        case finish(InputDetails)
     }
 
     public struct Dependencies {
@@ -39,16 +41,17 @@ extension InputViewController {
         }
     }
 
-    public static func makeStore(dependencies: Dependencies) -> Store {
+    public static func makeStore(dependencies: Dependencies, envelope: InputEnvelope) -> Store {
         return Store(
-            initialState: makeInitialState(dependencies: dependencies),
+            initialState: makeInitialState(dependencies: dependencies, envelope: envelope),
             reducer: reduce,
             middlewares: []
         )
     }
 
-    private static func makeInitialState(dependencies: Dependencies) -> State {
+    private static func makeInitialState(dependencies: Dependencies, envelope: InputEnvelope) -> State {
         return State(
+            inputDetails: envelope.details,
             text: "",
             route: nil
         )
@@ -62,7 +65,13 @@ extension InputViewController {
 
         switch action {
         case .saveTapped:
-            newState.route = .init(value: .finish(newState.text))
+            switch newState.inputDetails {
+            case .numberOfServings:
+                newState.route = .init(value: .finish(.numberOfServings(newState.text)))
+
+            default:
+                break
+            }
 
         case .textChanged(let text):
             newState.text = text

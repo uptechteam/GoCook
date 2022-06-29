@@ -24,6 +24,8 @@ extension CreateRecipeViewController {
 
     public enum Action {
         case addIngredientTapped
+        case amountChanged(String)
+        case amountTapped
         case backTapped
         case categoryItemTapped(IndexPath)
         case closeTapped
@@ -43,6 +45,7 @@ extension CreateRecipeViewController {
 
     enum Route {
         case close
+        case inputTapped(InputDetails)
     }
 
     public struct Dependencies {
@@ -86,6 +89,13 @@ extension CreateRecipeViewController {
         switch action {
         case .addIngredientTapped:
             newState.stepTwoState.ingredients.append(NewIngredient(id: UUID().uuidString, name: ""))
+
+        case .amountChanged(let text):
+            newState.stepTwoState.numberOfServings = Int(text)
+
+        case .amountTapped:
+            let number = newState.stepTwoState.numberOfServings.flatMap(String.init) ?? ""
+            newState.route = .init(value: .inputTapped(.numberOfServings(number)))
 
         case .backTapped:
             newState.step = max(0, newState.step - 1)

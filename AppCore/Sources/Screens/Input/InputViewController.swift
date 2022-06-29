@@ -6,6 +6,7 @@
 //
 
 import Combine
+import DomainModels
 import UIKit
 
 public protocol InputCoordinating: AnyObject {
@@ -21,7 +22,7 @@ public final class InputViewController: UIViewController {
     private let contentView = InputView()
     private unowned let coordinator: InputCoordinating
     private var cancellables = [AnyCancellable]()
-    private var completion: (String) -> () = { _ in }
+    private var completion: (InputDetails) -> () = { _ in }
 
     // MARK: - Lifecycle
 
@@ -51,16 +52,16 @@ public final class InputViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
+        contentView.activateTextField()
     }
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        contentView.activateTextField()
     }
 
     // MARK: - Public methods
 
-    public func getResult() async -> String {
+    public func getResult() async -> InputDetails {
         return await withCheckedContinuation { continuation in
             completion = { text in
                 continuation.resume(with: .success(text))
@@ -107,8 +108,8 @@ public final class InputViewController: UIViewController {
 
     private func navigate(by route: Route) {
         switch route {
-        case .finish(let text):
-            completion(text)
+        case .finish(let details):
+            completion(details)
         }
     }
 }

@@ -81,7 +81,7 @@ extension CreateRecipeViewController {
 
     private static func makeServingsViewProps(state: State) -> StepTwoServingsView.Props {
         return .init(
-            servingsText: "Enter amount",
+            servingsText: state.stepTwoState.numberOfServings.flatMap(String.init) ?? "Enter amount",
             servingsColorSource: .color(.textSecondary)
         )
     }

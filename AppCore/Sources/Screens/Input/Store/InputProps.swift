@@ -7,6 +7,29 @@
 
 extension InputViewController {
     static func makeProps(from state: State) -> InputView.Props {
-        .init(title: "Ingredient amount", placeholder: "Amount")
+        return .init(
+            title: makeTitle(state: state),
+            placeholder: makePlaceholder(state: state)
+        )
+    }
+
+    private static func makeTitle(state: State) -> String {
+        switch state.inputDetails {
+        case .numberOfServings:
+            return "Number of serving"
+
+        default:
+            return "Not implemented"
+        }
+    }
+
+    private static func makePlaceholder(state: State) -> String {
+        switch state.inputDetails {
+        case .numberOfServings:
+            return "Amount"
+
+        default:
+            return "Not implemented"
+        }
     }
 }

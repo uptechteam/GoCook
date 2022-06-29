@@ -144,16 +144,18 @@ extension DependencyContainer {
         container.register(
             .unique,
             type: InputViewController.Store.self,
-            factory: InputViewController.makeStore
+            factory: { envelope in
+                InputViewController.makeStore(dependencies: try container.resolve(), envelope: envelope)
+            }
         )
         container.register(
             .unique,
             type: InputViewController.ActionCreator.self,
             factory: InputViewController.ActionCreator.init
         )
-        container.register(.unique, type: InputViewController.self) { coordinator in
+        container.register(.unique, type: InputViewController.self) { (envelope: InputEnvelope, coordinator) in
             return InputViewController(
-                store: try container.resolve(),
+                store: try container.resolve(arguments: envelope),
                 actionCreator: try container.resolve(),
                 coordinator: coordinator
             )

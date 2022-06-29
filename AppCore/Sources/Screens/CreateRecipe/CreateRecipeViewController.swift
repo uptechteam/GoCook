@@ -6,13 +6,14 @@
 //
 
 import Combine
+import DomainModels
 import Helpers
 import Library
 import UIKit
 
 public protocol CreateRecipeCoordinating: AnyObject {
     func didTapClose()
-    func didTapInput() async -> String
+    func didTapInput(details: InputDetails) async -> InputDetails
 }
 
 public final class CreateRecipeViewController: UIViewController {
@@ -80,11 +81,8 @@ public final class CreateRecipeViewController: UIViewController {
             store.dispatch(action: .categoryItemTapped(indexPath))
         }
 
-        contentView.stepTwoView.servingsView.onDidTap = { [coordinator] in
-            Task {
-                let answer = await coordinator.didTapInput()
-                log.debug("DEBUG...Got answer: \(answer)")
-            }
+        contentView.stepTwoView.servingsView.onDidTap = { [store] in
+            store.dispatch(action: .amountTapped)
         }
 
         contentView.stepTwoView.ingredientsView.onDidTapAddIngredient = { [store] in
@@ -182,6 +180,18 @@ public final class CreateRecipeViewController: UIViewController {
         switch route {
         case .close:
             coordinator.didTapClose()
+
+        case .inputTapped(let details):
+            Task { [coordinator, store] in
+                let result = await coordinator.didTapInput(details: details)
+                switch result {
+                case .numberOfServings(let number):
+                    store.dispatch(action: .amountChanged(number))
+
+                default:
+                    break
+                }
+            }
         }
     }
 }
