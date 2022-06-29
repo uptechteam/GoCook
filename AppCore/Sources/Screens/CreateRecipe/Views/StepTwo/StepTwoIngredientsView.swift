@@ -31,8 +31,10 @@ final class StepTwoIngredientsView: UIView {
         )
     )
     // callbacks
-    var onDidTapAddIngredient: () -> Void = { }
+    var onDidTapIngredientName: (IndexPath) -> Void = { _ in }
+    var onDidTapIngredientAmount: (IndexPath) -> Void = { _ in }
     var onDidTapDeleteIngredient: (IndexPath) -> Void = { _ in }
+    var onDidTapAddIngredient: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -113,16 +115,29 @@ final class StepTwoIngredientsView: UIView {
 
 extension StepTwoIngredientsView {
     func makeDataSource() -> DataSource {
-        return DataSource(
+        let dataSource = DataSource(
             collectionView: collectionView,
             cellProvider: { collectionView, indexPath, props in
                 let cell: IngredientCell = collectionView.dequeueReusableCell(for: indexPath)
                 cell.render(props: props)
+                cell.onDidTapName = { [weak self] in
+                    if let indexPath = self?.collectionView.indexPath(for: cell) {
+                        self?.onDidTapIngredientName(indexPath)
+                    }
+                }
+                cell.onDidTapAmount = { [weak self] in
+                    if let indexPath = self?.collectionView.indexPath(for: cell) {
+                        self?.onDidTapIngredientAmount(indexPath)
+                    }
+                }
                 cell.onDidTapDelete = { [weak self] in
-                    self?.onDidTapDeleteIngredient(indexPath)
+                    if let indexPath = self?.collectionView.indexPath(for: cell) {
+                        self?.onDidTapDeleteIngredient(indexPath)
+                    }
                 }
                 return cell
             }
         )
+        return dataSource
     }
 }

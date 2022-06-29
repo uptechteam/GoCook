@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 28.06.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
@@ -15,6 +16,12 @@ final class IngredientCell: UICollectionViewCell, ReusableCell {
         // MARK: - Properties
 
         let id: String
+        let name: String
+        let nameColorSource: ColorSource
+        let nameTypography: Typography
+        let amount: String
+        let amountColorSource: ColorSource
+        let amountTypography: Typography
         let isDeleteImageViewVisible: Bool
 
         // MARK: - Public methods
@@ -26,10 +33,12 @@ final class IngredientCell: UICollectionViewCell, ReusableCell {
 
     // MARK: - Properties
 
-    private let nameTextField = UITextField()
-    private let amountTextField = UITextField()
+    private let nameLabel = UILabel()
+    private let amountLabel = UILabel()
     private let deleteImageView = IconButton()
     // callbacks
+    var onDidTapName: () -> Void = { }
+    var onDidTapAmount: () -> Void = { }
     var onDidTapDelete: () -> Void = { }
 
     // MARK: - Lifecycle
@@ -46,18 +55,22 @@ final class IngredientCell: UICollectionViewCell, ReusableCell {
     // MARK: - Set up
 
     private func setup() {
-        setupNameTextField()
-        setupAmountStackView()
+        setupNameLabel()
+        setupAmountLabel()
         setupDeleteImageView()
         setupStackView()
     }
 
-    private func setupNameTextField() {
-        nameTextField.placeholder = "Ingredient name"
+    private func setupNameLabel() {
+        nameLabel.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleNameLabelTap))
+        nameLabel.addGestureRecognizer(tapGesture)
     }
 
-    private func setupAmountStackView() {
-        amountTextField.placeholder = "Enter amount"
+    private func setupAmountLabel() {
+        amountLabel.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleAmountLabelTap))
+        amountLabel.addGestureRecognizer(tapGesture)
     }
 
     private func setupDeleteImageView() {
@@ -70,15 +83,29 @@ final class IngredientCell: UICollectionViewCell, ReusableCell {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [nameTextField, UIView(), amountTextField, deleteImageView])
+        let stackView = UIStackView(arrangedSubviews: [nameLabel, UIView(), amountLabel, deleteImageView])
         stackView.alignment = .center
-        stackView.setCustomSpacing(16, after: amountTextField)
+        stackView.setCustomSpacing(16, after: amountLabel)
         contentView.addSubview(stackView, withEdgeInsets: .zero)
     }
 
     // MARK: - Public methods
 
     func render(props: Props) {
+        nameLabel.render(title: props.name, color: props.nameColorSource.color, typography: props.nameTypography)
+        amountLabel.render(title: props.amount, color: props.amountColorSource.color, typography: props.amountTypography)
         deleteImageView.isHidden = !props.isDeleteImageViewVisible
+    }
+
+    // MARK: - Private methods
+
+    @objc
+    private func handleNameLabelTap() {
+        onDidTapName()
+    }
+
+    @objc
+    private func handleAmountLabelTap() {
+        onDidTapAmount()
     }
 }

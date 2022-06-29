@@ -15,6 +15,12 @@ extension InputViewController {
 
     private static func makeTitle(state: State) -> String {
         switch state.inputDetails {
+        case .ingredientAmount:
+            return "Ingredient amount"
+
+        case .ingredientName:
+            return "Ingredient name"
+
         case .numberOfServings:
             return "Number of serving"
 
@@ -25,8 +31,11 @@ extension InputViewController {
 
     private static func makePlaceholder(state: State) -> String {
         switch state.inputDetails {
-        case .numberOfServings:
+        case .ingredientAmount, .numberOfServings:
             return "Amount"
+
+        case .ingredientName:
+            return "Name"
 
         default:
             return "Not implemented"

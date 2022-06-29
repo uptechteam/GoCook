@@ -7,7 +7,7 @@
 
 public enum InputDetails: Equatable {
     case cookingTime(String)
-    case ingredientAmount(text: String, unit: IngredientUnit)
-    case ingredientName(String)
+    case ingredientAmount(id: String, amount: String, unit: IngredientUnit)
+    case ingredientName(id: String, name: String)
     case numberOfServings(String)
 }

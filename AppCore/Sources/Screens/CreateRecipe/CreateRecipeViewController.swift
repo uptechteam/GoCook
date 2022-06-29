@@ -62,6 +62,12 @@ public final class CreateRecipeViewController: UIViewController {
 
     public func updateInput(details: InputDetails) {
         switch details {
+        case let .ingredientAmount(id, amount, unit):
+            store.dispatch(action: .ingredientAmountChanged(id: id, amount: amount, unit: unit))
+
+        case let .ingredientName(id, name):
+            store.dispatch(action: .ingredientNameChanged(id: id, name: name))
+
         case .numberOfServings(let number):
             store.dispatch(action: .amountChanged(number))
 
@@ -97,12 +103,20 @@ public final class CreateRecipeViewController: UIViewController {
             store.dispatch(action: .amountTapped)
         }
 
-        contentView.stepTwoView.ingredientsView.onDidTapAddIngredient = { [store] in
-            store.dispatch(action: .addIngredientTapped)
+        contentView.stepTwoView.ingredientsView.onDidTapIngredientName = { [store] indexPath in
+            store.dispatch(action: .ingredientNameTapped(indexPath))
+        }
+
+        contentView.stepTwoView.ingredientsView.onDidTapIngredientAmount = { [store] indexPath in
+            store.dispatch(action: .ingredientAmountTapped(indexPath))
         }
 
         contentView.stepTwoView.ingredientsView.onDidTapDeleteIngredient = { [store] indexPath in
             store.dispatch(action: .deleteIngredientTapped(indexPath))
+        }
+
+        contentView.stepTwoView.ingredientsView.onDidTapAddIngredient = { [store] in
+            store.dispatch(action: .addIngredientTapped)
         }
 
         contentView.stepsView.onDidTapBack = { [store] in

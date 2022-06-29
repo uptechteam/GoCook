@@ -32,6 +32,10 @@ extension CreateRecipeViewController {
         case deleteIngredientTapped(IndexPath)
         case deleteTapped
         case imagePicked(ImageSource)
+        case ingredientAmountTapped(IndexPath)
+        case ingredientAmountChanged(id: String, amount: String, unit: IngredientUnit)
+        case ingredientNameTapped(IndexPath)
+        case ingredientNameChanged(id: String, name: String)
         case mealNameChanged(String)
         case nextTapped
         case recipeImageTapped
@@ -74,7 +78,7 @@ extension CreateRecipeViewController {
         return State(
             step: 0,
             stepOneState: StepOneState(recipeImageState: .empty, mealName: "", categories: Set()),
-            stepTwoState: StepTwoState(ingredients: [NewIngredient(id: UUID().uuidString, name: "", unit: .gram)]),
+            stepTwoState: StepTwoState(ingredients: [.makeNewIngredient()]),
             alert: nil,
             route: nil
         )
@@ -88,7 +92,7 @@ extension CreateRecipeViewController {
 
         switch action {
         case .addIngredientTapped:
-            newState.stepTwoState.ingredients.append(NewIngredient(id: UUID().uuidString, name: "", unit: .gram))
+            newState.stepTwoState.ingredients.append(.makeNewIngredient())
 
         case .amountChanged(let text):
             newState.stepTwoState.numberOfServings = Int(text)
@@ -126,6 +130,40 @@ extension CreateRecipeViewController {
 
         case .imagePicked(let imageSource):
             newState.stepOneState.recipeImageState = .uploading(imageSource)
+
+        case .ingredientAmountTapped(let indexPath):
+            guard let ingredient = newState.stepTwoState.ingredients[safe: indexPath.item] else {
+                break
+            }
+
+            let inputDetails = InputDetails.ingredientAmount(
+                id: ingredient.id,
+                amount: ingredient.amount.flatMap(String.init) ?? "",
+                unit: ingredient.unit
+            )
+            newState.route = .init(value: .inputTapped(inputDetails))
+
+        case let .ingredientAmountChanged(id, amount, unit):
+            guard let index = newState.stepTwoState.ingredients.firstIndex(where: { $0.id == id }) else {
+                break
+            }
+
+            newState.stepTwoState.ingredients[index].amount = Int(amount)
+            newState.stepTwoState.ingredients[index].unit = unit
+
+        case .ingredientNameTapped(let indexPath):
+            guard let ingredient = newState.stepTwoState.ingredients[safe: indexPath.item] else {
+                break
+            }
+
+            newState.route = .init(value: .inputTapped(.ingredientName(id: ingredient.id, name: ingredient.name)))
+
+        case let .ingredientNameChanged(id, name):
+            guard let index = newState.stepTwoState.ingredients.firstIndex(where: { $0.id == id }) else {
+                break
+            }
+
+            newState.stepTwoState.ingredients[index].name = name
 
         case .mealNameChanged(let mealName):
             newState.stepOneState.mealName = mealName

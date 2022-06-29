@@ -66,6 +66,12 @@ extension InputViewController {
         switch action {
         case .saveTapped:
             switch newState.inputDetails {
+            case let .ingredientAmount(id, _, unit):
+                newState.route = .init(value: .finish(.ingredientAmount(id: id, amount: newState.text, unit: unit)))
+
+            case let .ingredientName(id, _):
+                newState.route = .init(value: .finish(.ingredientName(id: id, name: newState.text)))
+
             case .numberOfServings:
                 newState.route = .init(value: .finish(.numberOfServings(newState.text)))
 

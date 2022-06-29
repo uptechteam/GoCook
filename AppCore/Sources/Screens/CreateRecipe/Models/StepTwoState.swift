@@ -39,10 +39,15 @@ struct StepTwoState: Equatable {
 
 struct NewIngredient: Equatable {
     let id: String
-    let name: String
-    let unit: IngredientUnit
+    var name: String
+    var amount: Int?
+    var unit: IngredientUnit
 
     var isValid: Bool {
         !name.isEmpty
+    }
+
+    static func makeNewIngredient() -> NewIngredient {
+        .init(id: UUID().uuidString, name: "", amount: nil, unit: .gram)
     }
 }
