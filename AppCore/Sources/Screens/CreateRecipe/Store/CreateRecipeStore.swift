@@ -74,7 +74,7 @@ extension CreateRecipeViewController {
         return State(
             step: 0,
             stepOneState: StepOneState(recipeImageState: .empty, mealName: "", categories: Set()),
-            stepTwoState: StepTwoState(ingredients: [NewIngredient(id: UUID().uuidString, name: "")]),
+            stepTwoState: StepTwoState(ingredients: [NewIngredient(id: UUID().uuidString, name: "", unit: .gram)]),
             alert: nil,
             route: nil
         )
@@ -88,7 +88,7 @@ extension CreateRecipeViewController {
 
         switch action {
         case .addIngredientTapped:
-            newState.stepTwoState.ingredients.append(NewIngredient(id: UUID().uuidString, name: ""))
+            newState.stepTwoState.ingredients.append(NewIngredient(id: UUID().uuidString, name: "", unit: .gram))
 
         case .amountChanged(let text):
             newState.stepTwoState.numberOfServings = Int(text)
@@ -131,11 +131,17 @@ extension CreateRecipeViewController {
             newState.stepOneState.mealName = mealName
 
         case .nextTapped:
+            var isDataValid = false
             if newState.step == 0 {
                 newState.stepOneState.validate()
-                if newState.stepOneState.isDataValid {
-                    newState.step = min(3, newState.step + 1)
-                }
+                isDataValid = newState.stepOneState.isDataValid
+            } else if newState.step == 1 {
+                newState.stepTwoState.validate()
+                isDataValid = newState.stepTwoState.isDataValid
+            }
+
+            if isDataValid {
+                newState.step = min(3, newState.step + 1)
             }
 
         case .recipeImageTapped:

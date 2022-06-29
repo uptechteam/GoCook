@@ -82,9 +82,19 @@ extension CreateRecipeViewController {
     private static func makeServingsViewProps(state: State) -> StepTwoServingsView.Props {
         return .init(
             amountText: state.stepTwoState.numberOfServings.flatMap(String.init) ?? "Enter amount",
-            amountColorSource: .color(state.stepTwoState.numberOfServings == nil ? .textSecondary : .textMain),
+            amountColorSource: makeAmountColorSource(state: state),
             amountTypography: state.stepTwoState.numberOfServings == nil ? .body : .subtitleThree
         )
+    }
+
+    private static func makeAmountColorSource(state: State) -> ColorSource {
+        if !state.stepTwoState.isNumberOfServingsValid {
+            return .color(.errorMain)
+        } else if state.stepTwoState.numberOfServings == nil {
+            return .color(.textSecondary)
+        } else {
+            return .color(.textMain)
+        }
     }
 
     private static func makeIngredientsViewProps(state: State) -> StepTwoIngredientsView.Props {
