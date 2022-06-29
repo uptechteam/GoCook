@@ -67,18 +67,22 @@ extension CreateRecipeCoordinator: CreateRecipeCoordinating {
     }
 
     @MainActor
-    func didTapInput(details: InputDetails) async -> InputDetails {
+    func didTapInput(details: InputDetails) {
         let envelope = InputEnvelope(details: details)
         let viewController: InputViewController = try! container.resolve(arguments: envelope, self as InputCoordinating)
         viewController.modalPresentationStyle = .overCurrentContext
         navigationController.present(viewController, animated: true)
-        let result = await viewController.getResult()
-        navigationController.dismiss(animated: true)
-        return result
     }
 }
 
 
 extension CreateRecipeCoordinator: InputCoordinating {
+    func didFinish(inputDetails: InputDetails) {
+        navigationController.dismiss(animated: true)
+        guard let viewController = navigationController.viewControllers.first as? CreateRecipeViewController else {
+            return
+        }
 
+        viewController.updateInput(details: inputDetails)
+    }
 }

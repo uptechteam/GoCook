@@ -13,7 +13,7 @@ import UIKit
 
 public protocol CreateRecipeCoordinating: AnyObject {
     func didTapClose()
-    func didTapInput(details: InputDetails) async -> InputDetails
+    func didTapInput(details: InputDetails)
 }
 
 public final class CreateRecipeViewController: UIViewController {
@@ -56,6 +56,18 @@ public final class CreateRecipeViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
+    }
+
+    // MARK: - Public methods
+
+    public func updateInput(details: InputDetails) {
+        switch details {
+        case .numberOfServings(let number):
+            store.dispatch(action: .amountChanged(number))
+
+        default:
+            break
+        }
     }
 
     // MARK: - Private methods
@@ -182,16 +194,7 @@ public final class CreateRecipeViewController: UIViewController {
             coordinator.didTapClose()
 
         case .inputTapped(let details):
-            Task { [coordinator, store] in
-                let result = await coordinator.didTapInput(details: details)
-                switch result {
-                case .numberOfServings(let number):
-                    store.dispatch(action: .amountChanged(number))
-
-                default:
-                    break
-                }
-            }
+            coordinator.didTapInput(details: details)
         }
     }
 }
