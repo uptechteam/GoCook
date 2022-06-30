@@ -13,7 +13,13 @@ final class InputView: UIView {
     struct Props: Equatable {
         let title: String
         let placeholder: String
+        let keyboardType: KeyboardType
         let unitViewProps: InputUnitView.Props
+
+        enum KeyboardType: Equatable {
+            case defaultType
+            case numpadPad
+        }
     }
 
     // MARK: - Properties
@@ -135,6 +141,7 @@ final class InputView: UIView {
                 .foregroundColor: UIColor.textDisabled
             ]
         )
+        setKeyboardType(to: props.keyboardType)
         unitView.render(props: props.unitViewProps)
     }
 
@@ -147,6 +154,19 @@ final class InputView: UIView {
         UIView.animate(withDuration: 0.2) {
             self.layoutIfNeeded()
         }
+    }
+
+    // MARK: - Private methods
+
+    private func setKeyboardType(to type: Props.KeyboardType) {
+        switch type {
+        case .defaultType:
+            textField.keyboardType = .default
+
+        case .numpadPad:
+            textField.keyboardType = .numberPad
+        }
+        textField.reloadInputViews()
     }
 }
 

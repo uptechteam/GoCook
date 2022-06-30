@@ -12,6 +12,7 @@ extension InputViewController {
         return .init(
             title: makeTitle(state: state),
             placeholder: makePlaceholder(state: state),
+            keyboardType: makeKeyboardType(state: state),
             unitViewProps: makeUnitViewProps(state: state)
         )
     }
@@ -42,6 +43,19 @@ extension InputViewController {
 
         default:
             return "Not implemented"
+        }
+    }
+
+    private static func makeKeyboardType(state: State) -> InputView.Props.KeyboardType {
+        switch state.inputDetails {
+        case .ingredientAmount, .numberOfServings:
+            return .numpadPad
+
+        case .ingredientName:
+            return .defaultType
+
+        default:
+            return .defaultType
         }
     }
 
