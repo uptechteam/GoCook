@@ -12,6 +12,7 @@ final class InputView: UIView {
 
     struct Props: Equatable {
         let title: String
+        let text: String
         let placeholder: String
         let keyboardType: KeyboardType
         let unitViewProps: InputUnitView.Props
@@ -101,6 +102,7 @@ final class InputView: UIView {
         textField.delegate = self
         textField.font = FontFamily.RedHatDisplay.regular.font(size: 30)
         textField.textColor = .textMain
+        textField.tintColor = .primaryMain
     }
 
     private func setupSaveButton() {
@@ -134,6 +136,7 @@ final class InputView: UIView {
 
     func render(props: Props) {
         titleLabel.text = props.title
+        textField.text = props.text
         textField.attributedPlaceholder = NSAttributedString(
             string: props.placeholder,
             attributes: [
@@ -185,6 +188,6 @@ extension InputView: UITextFieldDelegate {
         }
 
         onDidChangeText(newText)
-        return true
+        return false
     }
 }

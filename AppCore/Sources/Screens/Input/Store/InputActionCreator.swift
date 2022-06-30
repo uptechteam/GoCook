@@ -29,6 +29,7 @@ extension InputViewController {
                         return change.frame.height
                     }
                 }
+                .removeDuplicates()
         }
 
         public init(dependencies: Dependencies) {

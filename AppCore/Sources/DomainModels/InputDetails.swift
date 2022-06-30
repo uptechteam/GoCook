@@ -20,4 +20,20 @@ public enum InputDetails: Equatable {
             return false
         }
     }
+
+    public var text: String {
+        switch self {
+        case .cookingTime(let text):
+            return text
+
+        case .ingredientAmount(_, let amount, _):
+            return amount
+
+        case .ingredientName(_, let name):
+            return name
+
+        case .numberOfServings(let text):
+            return text
+        }
+    }
 }

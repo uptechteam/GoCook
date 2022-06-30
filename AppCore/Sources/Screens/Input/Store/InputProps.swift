@@ -11,6 +11,7 @@ extension InputViewController {
     static func makeProps(from state: State) -> InputView.Props {
         return .init(
             title: makeTitle(state: state),
+            text: state.text,
             placeholder: makePlaceholder(state: state),
             keyboardType: makeKeyboardType(state: state),
             unitViewProps: makeUnitViewProps(state: state)
@@ -34,6 +35,10 @@ extension InputViewController {
     }
 
     private static func makePlaceholder(state: State) -> String {
+        guard state.text.isEmpty else {
+            return ""
+        }
+
         switch state.inputDetails {
         case .ingredientAmount, .numberOfServings:
             return "Amount"

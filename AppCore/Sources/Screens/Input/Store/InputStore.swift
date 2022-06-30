@@ -54,7 +54,7 @@ extension InputViewController {
     private static func makeInitialState(dependencies: Dependencies, envelope: InputEnvelope) -> State {
         return State(
             inputDetails: envelope.details,
-            text: "",
+            text: envelope.details.text,
             route: nil
         )
     }
