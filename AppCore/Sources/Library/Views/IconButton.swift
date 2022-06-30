@@ -38,6 +38,7 @@ public final class IconButton: UIControl {
 
     private func setupImageView() {
         imageView.contentMode = .center
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
         addSubview(imageView, withEdgeInsets: .zero)
     }
 

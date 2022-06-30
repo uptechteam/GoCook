@@ -13,11 +13,13 @@ final class StepThreeView: UIView {
     struct Props: Equatable {
         let isVisible: Bool
         let timeViewProps: StepThreeTimeView.Props
+        let instructionsViewProps: StepThreeInstructionsView.Props
     }
 
     // MARK: - Properties
 
     let timeView = StepThreeTimeView()
+    let instructionsView = StepThreeInstructionsView()
 
     // MARK: - Lifecycle
 
@@ -42,8 +44,9 @@ final class StepThreeView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [timeView, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [timeView, instructionsView, UIView()])
         stackView.axis = .vertical
+        stackView.setCustomSpacing(56, after: timeView)
         addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
     }
 
@@ -52,5 +55,6 @@ final class StepThreeView: UIView {
     func render(props: Props) {
         isHidden = !props.isVisible
         timeView.render(props: props.timeViewProps)
+        instructionsView.render(props: props.instructionsViewProps)
     }
 }

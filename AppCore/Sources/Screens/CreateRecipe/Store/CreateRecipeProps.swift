@@ -149,7 +149,8 @@ extension CreateRecipeViewController {
     private static func makeStepThreeViewProps(state: State) -> StepThreeView.Props {
         return .init(
             isVisible: state.step == 2,
-            timeViewProps: makeTimeViewProps(state: state)
+            timeViewProps: makeTimeViewProps(state: state),
+            instructionsViewProps: makeInstructionsViewProps(state: state)
         )
     }
 
@@ -158,6 +159,30 @@ extension CreateRecipeViewController {
             timeText: state.stepThreeState.cookingTime.flatMap(String.init) ?? "Enter amount",
             timeColorSource: makeCookingTimeColorSource(state: state),
             timeTypography: state.stepThreeState.cookingTime == nil ? .body : .subtitleThree
+        )
+    }
+
+    private static func makeInstructionsViewProps(state: State) -> StepThreeInstructionsView.Props {
+        return .init(
+            instructionsProps: state.stepThreeState.instructions
+                .enumerated()
+                .map { index, _ in
+                    return makeInstructionViewProps(state: state, index: index)
+                }
+        )
+    }
+
+    private static func makeInstructionViewProps(state: State, index: Int) -> StepThreeInstructionView.Props {
+        let areInstructionsValid = state.stepThreeState.areInstructionsValid
+        let instruction = state.stepThreeState.instructions[index]
+        return StepThreeInstructionView.Props(
+            title: "STEP \(index + 1)",
+            titleColorSource: .color(areInstructionsValid || !instruction.isEmpty ? .textSecondary : .errorMain),
+            text: instruction,
+            dividerColorSource: .color(areInstructionsValid || !instruction.isEmpty ? .appBlack : .errorMain),
+            errorMessage: "Enter step \(index + 1)",
+            isErrorMessageVisible: !areInstructionsValid && instruction.isEmpty,
+            isDeleteButtonVisible: state.stepThreeState.instructions.count > 1
         )
     }
 

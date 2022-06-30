@@ -9,11 +9,20 @@ import Foundation
 
 extension Array {
     public subscript(safe index: Int) -> Element? {
-        guard index >= 0, index < endIndex else {
-            return nil
-        }
+        get {
+            guard index >= 0, index < endIndex else {
+                return nil
+            }
 
-        return self[index]
+            return self[index]
+        }
+        set {
+            guard let value = newValue, index >= 0, index < endIndex else {
+                return
+            }
+
+            self[index] = value
+        }
     }
 }
 

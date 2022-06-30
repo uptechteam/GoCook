@@ -25,6 +25,7 @@ extension CreateRecipeViewController {
 
     public enum Action {
         case addIngredientTapped
+        case addInstructionTapped
         case amountChanged(String)
         case amountTapped
         case backTapped
@@ -33,12 +34,14 @@ extension CreateRecipeViewController {
         case cookingTimeTapped
         case cookingTimeChanged(amount: String)
         case deleteIngredientTapped(IndexPath)
+        case deleteInstructionTapped(Int)
         case deleteTapped
         case imagePicked(ImageSource)
         case ingredientAmountTapped(IndexPath)
         case ingredientAmountChanged(id: String, amount: String, unit: IngredientUnit)
         case ingredientNameTapped(IndexPath)
         case ingredientNameChanged(id: String, name: String)
+        case instructionChanged(index: Int, text: String)
         case mealNameChanged(String)
         case nextTapped
         case recipeImageTapped
@@ -82,7 +85,7 @@ extension CreateRecipeViewController {
             step: 0,
             stepOneState: StepOneState(recipeImageState: .empty, mealName: "", categories: Set()),
             stepTwoState: StepTwoState(ingredients: [.makeNewIngredient()]),
-            stepThreeState: StepThreeState(),
+            stepThreeState: StepThreeState(instructions: [""]),
             alert: nil,
             route: nil
         )
@@ -97,6 +100,9 @@ extension CreateRecipeViewController {
         switch action {
         case .addIngredientTapped:
             newState.stepTwoState.ingredients.append(.makeNewIngredient())
+
+        case .addInstructionTapped:
+            newState.stepThreeState.instructions.append("")
 
         case .amountChanged(let text):
             newState.stepTwoState.numberOfServings = Int(text)
@@ -136,6 +142,13 @@ extension CreateRecipeViewController {
 
             newState.stepTwoState.ingredients.remove(at: indexPath.item)
 
+        case .deleteInstructionTapped(let index):
+            guard newState.stepThreeState.instructions.indices.contains(index) else {
+                break
+            }
+
+            newState.stepThreeState.instructions.remove(at: index)
+
         case .deleteTapped:
             newState.stepOneState.recipeImageState = .empty
 
@@ -168,6 +181,9 @@ extension CreateRecipeViewController {
             }
 
             newState.route = .init(value: .inputTapped(.ingredientName(id: ingredient.id, name: ingredient.name)))
+
+        case let .instructionChanged(index, text):
+            newState.stepThreeState.instructions[safe: index] = text
 
         case let .ingredientNameChanged(id, name):
             guard let index = newState.stepTwoState.ingredients.firstIndex(where: { $0.id == id }) else {

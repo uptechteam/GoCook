@@ -17,14 +17,21 @@ struct StepThreeState: Equatable {
         }
     }
     var isCookingTimeValid = true
+    var instructions: [String] {
+        didSet {
+            areInstructionsValid = true
+        }
+    }
+    var areInstructionsValid = true
 
     var isDataValid: Bool {
-        isCookingTimeValid
+        isCookingTimeValid && areInstructionsValid
     }
 
     // MARK: - Public methods
 
     mutating func validate() {
         isCookingTimeValid = cookingTime.flatMap { $0 > 0} ?? false
+        areInstructionsValid = !instructions.isEmpty && instructions.allSatisfy { !$0.isEmpty }
     }
 }

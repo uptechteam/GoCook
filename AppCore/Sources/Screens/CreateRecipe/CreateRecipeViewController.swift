@@ -123,6 +123,18 @@ public final class CreateRecipeViewController: UIViewController {
             store.dispatch(action: .cookingTimeTapped)
         }
 
+        contentView.stepThreeView.instructionsView.onDidChangeText = { [store] index, text in
+            store.dispatch(action: .instructionChanged(index: index, text: text))
+        }
+
+        contentView.stepThreeView.instructionsView.onDidTapDelete = { [store] index in
+            store.dispatch(action: .deleteInstructionTapped(index))
+        }
+
+        contentView.stepThreeView.instructionsView.onDidTapAddInstruction = { [store] in
+            store.dispatch(action: .addInstructionTapped)
+        }
+
         contentView.stepsView.onDidTapBack = { [store] in
             store.dispatch(action: .backTapped)
         }
