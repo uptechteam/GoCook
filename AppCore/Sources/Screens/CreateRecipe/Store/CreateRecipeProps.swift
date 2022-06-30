@@ -111,7 +111,7 @@ extension CreateRecipeViewController {
             name: ingredient.name.isEmpty ? "Enter name" : ingredient.name,
             nameColorSource: makeIngredientNameColorSource(state: state, ingredient: ingredient),
             nameTypography: ingredient.name.isEmpty ? .body : .subtitleThree,
-            amount: ingredient.amount.flatMap(String.init) ?? "Enter amount",
+            amount: makeIngredientAmountText(ingredient: ingredient),
             amountColorSource: makeIngredientAmountColorSource(state: state, ingredient: ingredient),
             amountTypography: ingredient.amount == nil ? .body : .subtitleThree,
             isDeleteImageViewVisible: state.stepTwoState.ingredients.count > 1
@@ -126,6 +126,14 @@ extension CreateRecipeViewController {
         } else {
             return .color(.textSecondary)
         }
+    }
+
+    private static func makeIngredientAmountText(ingredient: NewIngredient) -> String {
+        guard let amount = ingredient.amount else {
+            return "Enter amount"
+        }
+
+        return "\(amount) \(ingredient.unit.reduction)"
     }
 
     private static func makeIngredientAmountColorSource(state: State, ingredient: NewIngredient) -> ColorSource {
