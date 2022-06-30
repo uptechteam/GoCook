@@ -63,11 +63,13 @@ extension CreateRecipeViewController {
         // MARK: - Properties
 
         public let fileClient: FileClienting
+        public let keyboardManager: KeyboardManaging
 
         // MARK: - Lifecycle
 
-        public init(fileClient: FileClienting) {
+        public init(fileClient: FileClienting, keyboardManager: KeyboardManaging) {
             self.fileClient = fileClient
+            self.keyboardManager = keyboardManager
         }
     }
 

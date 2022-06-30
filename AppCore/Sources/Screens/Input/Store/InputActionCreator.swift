@@ -14,6 +14,8 @@ extension InputViewController {
 
     public final class ActionCreator {
 
+        // MARK: - Properties
+
         private let dependencies: Dependencies
         private let cancellables = [AnyCancellable]()
 
@@ -31,6 +33,8 @@ extension InputViewController {
                 }
                 .removeDuplicates()
         }
+
+        // MARK: - Lifecycle
 
         public init(dependencies: Dependencies) {
             self.dependencies = dependencies
