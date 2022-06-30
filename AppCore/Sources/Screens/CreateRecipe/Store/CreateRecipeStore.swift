@@ -18,6 +18,7 @@ extension CreateRecipeViewController {
         var step: Int
         var stepOneState: StepOneState
         var stepTwoState: StepTwoState
+        var stepThreeState: StepThreeState
         var alert: AnyIdentifiable<Alert>?
         var route: AnyIdentifiable<Route>?
     }
@@ -29,6 +30,8 @@ extension CreateRecipeViewController {
         case backTapped
         case categoryItemTapped(IndexPath)
         case closeTapped
+        case cookingTimeTapped
+        case cookingTimeChanged(amount: String)
         case deleteIngredientTapped(IndexPath)
         case deleteTapped
         case imagePicked(ImageSource)
@@ -79,6 +82,7 @@ extension CreateRecipeViewController {
             step: 0,
             stepOneState: StepOneState(recipeImageState: .empty, mealName: "", categories: Set()),
             stepTwoState: StepTwoState(ingredients: [.makeNewIngredient()]),
+            stepThreeState: StepThreeState(),
             alert: nil,
             route: nil
         )
@@ -117,6 +121,13 @@ extension CreateRecipeViewController {
 
         case .closeTapped:
             newState.route = .init(value: .close)
+
+        case .cookingTimeTapped:
+            let time = newState.stepThreeState.cookingTime.flatMap(String.init) ?? ""
+            newState.route = .init(value: .inputTapped(.cookingTime(time)))
+
+        case .cookingTimeChanged(let amount):
+            newState.stepThreeState.cookingTime = Int(amount)
 
         case .deleteIngredientTapped(let indexPath):
             guard newState.stepTwoState.ingredients.indices.contains(indexPath.item) else {
@@ -176,6 +187,9 @@ extension CreateRecipeViewController {
             } else if newState.step == 1 {
                 newState.stepTwoState.validate()
                 isDataValid = newState.stepTwoState.isDataValid
+            } else if newState.step == 2 {
+                newState.stepThreeState.validate()
+                isDataValid = newState.stepThreeState.isDataValid
             }
 
             if isDataValid {

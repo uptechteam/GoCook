@@ -1,5 +1,5 @@
 //
-//  CreateRecipeStepThreeView.swift
+//  StepThreeView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 24.06.2022.
@@ -8,15 +8,16 @@
 import Library
 import UIKit
 
-final class CreateRecipeStepThreeView: UIView {
+final class StepThreeView: UIView {
 
     struct Props: Equatable {
         let isVisible: Bool
+        let timeViewProps: StepThreeTimeView.Props
     }
 
     // MARK: - Properties
 
-    private let textLabel = UILabel()
+    let timeView = StepThreeTimeView()
 
     // MARK: - Lifecycle
 
@@ -33,24 +34,23 @@ final class CreateRecipeStepThreeView: UIView {
 
     private func setup() {
         setupContentView()
-        setupTextLabel()
+        setupStackView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
     }
 
-    private func setupTextLabel() {
-        textLabel.text = "Step three"
-        addSubview(textLabel, constraints: [
-            textLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            textLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ])
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [timeView, UIView()])
+        stackView.axis = .vertical
+        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
     }
 
     // MARK: - Public methods
 
     func render(props: Props) {
         isHidden = !props.isVisible
+        timeView.render(props: props.timeViewProps)
     }
 }

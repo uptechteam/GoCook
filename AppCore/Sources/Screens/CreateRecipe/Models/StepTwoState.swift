@@ -32,7 +32,7 @@ struct StepTwoState: Equatable {
     // MARK: - Public methods
 
     mutating func validate() {
-        isNumberOfServingsValid = numberOfServings.flatMap { $0 > 0 } ?? false
-        areIngredientsValid = ingredients.allSatisfy(\.isValid)
+//        isNumberOfServingsValid = numberOfServings.flatMap { $0 > 0 } ?? false
+//        areIngredientsValid = ingredients.allSatisfy(\.isValid)
     }
 }

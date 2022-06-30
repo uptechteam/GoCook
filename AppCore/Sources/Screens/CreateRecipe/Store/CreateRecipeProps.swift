@@ -146,8 +146,29 @@ extension CreateRecipeViewController {
         }
     }
 
-    private static func makeStepThreeViewProps(state: State) -> CreateRecipeStepThreeView.Props {
-        .init(isVisible: state.step == 2)
+    private static func makeStepThreeViewProps(state: State) -> StepThreeView.Props {
+        return .init(
+            isVisible: state.step == 2,
+            timeViewProps: makeTimeViewProps(state: state)
+        )
+    }
+
+    private static func makeTimeViewProps(state: State) -> StepThreeTimeView.Props {
+        return .init(
+            timeText: state.stepThreeState.cookingTime.flatMap(String.init) ?? "Enter amount",
+            timeColorSource: makeCookingTimeColorSource(state: state),
+            timeTypography: state.stepThreeState.cookingTime == nil ? .body : .subtitleThree
+        )
+    }
+
+    private static func makeCookingTimeColorSource(state: State) -> ColorSource {
+        if state.stepThreeState.cookingTime != nil {
+            return .color(.textMain)
+        } else if !state.stepThreeState.isCookingTimeValid {
+            return .color(.errorMain)
+        } else {
+            return .color(.textSecondary)
+        }
     }
 
     private static func makeStepFourViewProps(state: State) -> CreateRecipeStepFourView.Props {

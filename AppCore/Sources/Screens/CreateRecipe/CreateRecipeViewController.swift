@@ -71,8 +71,8 @@ public final class CreateRecipeViewController: UIViewController {
         case .numberOfServings(let number):
             store.dispatch(action: .amountChanged(number))
 
-        default:
-            break
+        case .cookingTime(let amount):
+            store.dispatch(action: .cookingTimeChanged(amount: amount))
         }
     }
 
@@ -117,6 +117,10 @@ public final class CreateRecipeViewController: UIViewController {
 
         contentView.stepTwoView.ingredientsView.onDidTapAddIngredient = { [store] in
             store.dispatch(action: .addIngredientTapped)
+        }
+
+        contentView.stepThreeView.timeView.onDidTap = { [store] in
+            store.dispatch(action: .cookingTimeTapped)
         }
 
         contentView.stepsView.onDidTapBack = { [store] in
