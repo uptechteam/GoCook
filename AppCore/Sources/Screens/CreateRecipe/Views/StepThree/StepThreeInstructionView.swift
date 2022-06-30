@@ -122,7 +122,6 @@ final class StepThreeInstructionView: UIView {
     func updateUI(props: Props) {
         titleLabel.text = props.title
         titleLabel.textColor = props.titleColorSource.color
-        textView.text = props.text
         dividerView.backgroundColor = props.dividerColorSource.color
         errorLabel.text = props.errorMessage
         errorLabel.isHidden = !props.isErrorMessageVisible

@@ -5,14 +5,23 @@
 //  Created by Oleksii Andriushchenko on 16.06.2022.
 //
 
-import Library
 import UIKit
 
-final class RecipeIngredientView: UIView {
+public final class RecipeIngredientView: UIView {
 
-    struct Props: Equatable {
-        let name: String
-        let weightDescription: String
+    public struct Props: Equatable {
+
+        // MARK: - Properties
+
+        public let name: String
+        public let weightDescription: String
+
+        // MARK: - Lifecycle
+
+        public init(name: String, weightDescription: String) {
+            self.name = name
+            self.weightDescription = weightDescription
+        }
     }
 
     // MARK: - Properties
@@ -70,7 +79,7 @@ final class RecipeIngredientView: UIView {
 
     // MARK: - Public methods
 
-    func render(props: Props) {
+    public func render(props: Props) {
         nameLabel.render(title: props.name, color: .textMain, typography: .body)
         weightLabel.text = props.weightDescription
     }

@@ -196,8 +196,32 @@ extension CreateRecipeViewController {
         }
     }
 
-    private static func makeStepFourViewProps(state: State) -> CreateRecipeStepFourView.Props {
-        .init(isVisible: state.step == 3)
+    private static func makeStepFourViewProps(state: State) -> StepFourView.Props {
+        return .init(
+            isVisible: state.step == 3,
+            headerViewProps: makeStepFourHeaderViewProps(state: state),
+            ingredientsViewProps: makeIngredientsViewProps(state: state)
+        )
+    }
+
+    private static func makeStepFourHeaderViewProps(state: State) -> StepFourHeaderView.Props {
+        return .init(
+            recipeImageSource: .asset(state.stepOneState.recipeImageState.uploadedImageSource?.image),
+            name: state.stepOneState.mealName,
+            timeText: ""
+        )
+    }
+
+    private static func makeIngredientsViewProps(state: State) -> RecipeIngredientsView.Props {
+        return .init(
+            servingsDescription: "\(state.stepTwoState.numberOfServings ?? 0) servings",
+            ingredientsProps: state.stepTwoState.ingredients.map { ingredient in
+                RecipeIngredientView.Props(
+                    name: ingredient.name,
+                    weightDescription: "\(ingredient.amount ?? 0) \(ingredient.unit.reduction)"
+                )
+            }
+        )
     }
 
     private static func makeStepsViewProps(state: State) -> CreateRecipeStepsView.Props {

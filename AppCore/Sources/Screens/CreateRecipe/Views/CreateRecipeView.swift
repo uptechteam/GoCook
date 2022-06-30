@@ -14,7 +14,7 @@ final class CreateRecipeView: UIView {
         let stepOneViewProps: StepOneView.Props
         let stepTwoViewProps: StepTwoView.Props
         let stepThreeViewProps: StepThreeView.Props
-        let stepFourViewProps: CreateRecipeStepFourView.Props
+        let stepFourViewProps: StepFourView.Props
         let stepsViewProps: CreateRecipeStepsView.Props
     }
 
@@ -25,7 +25,7 @@ final class CreateRecipeView: UIView {
     let stepOneView = StepOneView()
     let stepTwoView = StepTwoView()
     let stepThreeView = StepThreeView()
-    let stepFourView = CreateRecipeStepFourView()
+    let stepFourView = StepFourView()
     let stepsView = CreateRecipeStepsView()
 
     // MARK: - Lifecycle

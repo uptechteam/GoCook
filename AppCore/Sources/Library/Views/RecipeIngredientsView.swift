@@ -5,14 +5,23 @@
 //  Created by Oleksii Andriushchenko on 16.06.2022.
 //
 
-import Library
 import UIKit
 
-final class RecipeIngredientsView: UIView {
+public final class RecipeIngredientsView: UIView {
 
-    struct Props: Equatable {
-        let servingsDescription: String
-        let ingredientsProps: [RecipeIngredientView.Props]
+    public struct Props: Equatable {
+
+        // MARK: - Properties
+
+        public let servingsDescription: String
+        public let ingredientsProps: [RecipeIngredientView.Props]
+
+        // MARK: - Lifecycle
+
+        public init(servingsDescription: String, ingredientsProps: [RecipeIngredientView.Props]) {
+            self.servingsDescription = servingsDescription
+            self.ingredientsProps = ingredientsProps
+        }
     }
 
     // MARK: - Properties
@@ -77,7 +86,7 @@ final class RecipeIngredientsView: UIView {
 
     // MARK: - Public methods
 
-    func render(props: Props) {
+    public func render(props: Props) {
         servingsLabel.text = props.servingsDescription
         renderIngredients(props: props.ingredientsProps)
     }
@@ -85,7 +94,7 @@ final class RecipeIngredientsView: UIView {
     // MARK: - Private methods
 
     private func renderIngredients(props: [RecipeIngredientView.Props]) {
-        ingredientsStackView.arrangedSubviews.forEach(ingredientsStackView.removeArrangedSubview)
+        ingredientsStackView.arrangedSubviews.forEach { $0.removeFromSuperview()}
         props.map(createIngredientView).forEach(ingredientsStackView.addArrangedSubview)
     }
 
