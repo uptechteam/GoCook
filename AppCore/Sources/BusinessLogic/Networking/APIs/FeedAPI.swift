@@ -21,7 +21,7 @@ struct FeedAPI {
 
     // MARK: - Public methods
 
-    func makeGetRecipesTarget() throws -> AppRequest {
-        try targetBuilder.makeGetTarget(path: "")
+    func makeGetRecipesTarget(newRecipe: NewRe) throws -> AppRequest {
+        try targetBuilder.makePostJSONTarget(path: "", requestData: <#T##Encodable#>)
     }
 }

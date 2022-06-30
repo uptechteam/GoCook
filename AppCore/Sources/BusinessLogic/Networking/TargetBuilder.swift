@@ -78,4 +78,18 @@ struct TargetBuilder {
         request.httpBody = data
         return AppRequest(urlRequest: request, authorisation: authorisation)
     }
+
+    func makePostJSONTarget<Request: Encodable>(
+        path: String,
+        requestData: Request,
+        authorisation: Authorisation = .basic
+    ) throws -> AppRequest {
+        var request = try URLRequest(
+            url: baseURL.appendingPathComponent(path),
+            method: .post,
+            headers: .default
+        )
+        request = try JSONParameterEncoder.default.encode(requestData, into: request)
+        return AppRequest(urlRequest: request, authorisation: authorisation)
+    }
 }
