@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 24.06.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
@@ -27,7 +28,7 @@ final class StepOneView: UIView {
     let mealNameInputView = InputView()
     private let categoryLabel = UILabel()
     private lazy var dataSource = makeDataSource()
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
+    private let collectionView = CollectionView()
     private let categoryErrorLabel = UILabel()
     private var collectionViewHeightConstraint: NSLayoutConstraint!
     // callbacks
@@ -42,11 +43,6 @@ final class StepOneView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        setupLayout()
     }
 
     // MARK: - Set up
@@ -71,7 +67,6 @@ final class StepOneView: UIView {
     private func setupLayout() {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = 20
-        flowLayout.itemSize = CGSize(width: bounds.width - 48, height: 24)
         collectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
 
@@ -79,6 +74,7 @@ final class StepOneView: UIView {
         collectionView.backgroundColor = nil
         collectionView.isScrollEnabled = false
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        collectionView.delegate = self
         collectionView.register(cell: CategoryCell.self)
     }
 
@@ -129,5 +125,15 @@ extension StepOneView {
                 return cell
             }
         )
+    }
+}
+
+extension StepOneView: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        CGSize(width: collectionView.bounds.width - 48, height: 24)
     }
 }

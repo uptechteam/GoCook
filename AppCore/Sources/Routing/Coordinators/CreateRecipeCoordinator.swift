@@ -71,6 +71,7 @@ extension CreateRecipeCoordinator: CreateRecipeCoordinating {
         let envelope = InputEnvelope(details: details)
         let viewController: InputViewController = try! container.resolve(arguments: envelope, self as InputCoordinating)
         viewController.modalPresentationStyle = .overCurrentContext
+        viewController.modalTransitionStyle = .crossDissolve
         navigationController.present(viewController, animated: true)
     }
 }
