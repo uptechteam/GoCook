@@ -45,6 +45,10 @@ extension UIImage {
     return UIImage(named: "backButton")!
   }
 
+  @nonobjc public class var bottomChevron: UIImage {
+    return UIImage(named: "bottomChevron")!
+  }
+
   @nonobjc public class var circleBackButton: UIImage {
     return UIImage(named: "circleBackButton")!
   }

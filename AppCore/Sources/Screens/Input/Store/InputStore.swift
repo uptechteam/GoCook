@@ -16,12 +16,14 @@ extension InputViewController {
     public struct State: Equatable {
         let inputDetails: InputDetails
         var text: String
+        var unit: IngredientUnit?
         var route: AnyIdentifiable<Route>?
     }
 
     public enum Action {
         case saveTapped
         case textChanged(String)
+        case unitSelected(Int)
     }
 
     enum Route {
@@ -67,7 +69,8 @@ extension InputViewController {
         case .saveTapped:
             switch newState.inputDetails {
             case let .ingredientAmount(id, _, unit):
-                newState.route = .init(value: .finish(.ingredientAmount(id: id, amount: newState.text, unit: unit)))
+                let details = InputDetails.ingredientAmount(id: id, amount: newState.text, unit: newState.unit ?? unit)
+                newState.route = .init(value: .finish(details))
 
             case let .ingredientName(id, _):
                 newState.route = .init(value: .finish(.ingredientName(id: id, name: newState.text)))
@@ -81,6 +84,9 @@ extension InputViewController {
 
         case .textChanged(let text):
             newState.text = text
+
+        case .unitSelected(let index):
+            newState.unit = IngredientUnit.priorityOrded[safe: index]
         }
 
         return newState

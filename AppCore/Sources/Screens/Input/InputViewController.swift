@@ -71,6 +71,10 @@ public final class InputViewController: UIViewController {
             store.dispatch(action: .saveTapped)
         }
 
+        contentView.unitView.onDidSelectItem = { [store] index in
+            store.dispatch(action: .unitSelected(index))
+        }
+
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 

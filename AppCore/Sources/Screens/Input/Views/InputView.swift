@@ -13,11 +13,14 @@ final class InputView: UIView {
     struct Props: Equatable {
         let title: String
         let placeholder: String
+        let unitViewProps: InputUnitView.Props
     }
 
     // MARK: - Properties
 
     private let containerView = UIView()
+    /// This view is used to show white background below keyboard, needed when keyboard type is changing.
+    private let bottomBackgroundView = UIView()
     private let titleLabel = UILabel()
     private let textField = UITextField()
     private let saveButton = Button(
@@ -26,6 +29,7 @@ final class InputView: UIView {
             colorConfig: ColorConfig(main: .textMain, secondary: .textSecondary)
         )
     )
+    let unitView = InputUnitView()
     private var bottomConstraint: NSLayoutConstraint!
     // callbacks
     var onDidChangeText: (String) -> Void = { _ in }
@@ -47,10 +51,12 @@ final class InputView: UIView {
     private func setup() {
         setupContentView()
         setupContainerView()
+        setupBottomBackgroundView()
         setupTitleLabel()
         setupTextField()
         setupSaveButton()
         setupStackView()
+        setupUnitView()
     }
 
     private func setupContentView() {
@@ -67,6 +73,17 @@ final class InputView: UIView {
         ])
     }
 
+    private func setupBottomBackgroundView() {
+        bottomBackgroundView.backgroundColor = .appWhite
+        addSubview(bottomBackgroundView, constraints: [
+            bottomBackgroundView.topAnchor.constraint(equalTo: containerView.bottomAnchor),
+            bottomBackgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            bottomBackgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            bottomBackgroundView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+        bringSubviewToFront(containerView)
+    }
+
     private func setupTitleLabel() {
         titleLabel.render(typography: .subtitleTwo)
         titleLabel.textColor = .textMain
@@ -76,6 +93,8 @@ final class InputView: UIView {
         textField.autocorrectionType = .no
         textField.spellCheckingType = .no
         textField.delegate = self
+        textField.font = FontFamily.RedHatDisplay.regular.font(size: 30)
+        textField.textColor = .textMain
     }
 
     private func setupSaveButton() {
@@ -98,11 +117,25 @@ final class InputView: UIView {
         ])
     }
 
+    private func setupUnitView() {
+        containerView.addSubview(unitView, constraints: [
+            unitView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 91),
+            unitView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -24)
+        ])
+    }
+
     // MARK: - Public methods
 
     func render(props: Props) {
         titleLabel.text = props.title
-        textField.placeholder = props.placeholder
+        textField.attributedPlaceholder = NSAttributedString(
+            string: props.placeholder,
+            attributes: [
+                .font: FontFamily.RedHatDisplay.regular.font(size: 30),
+                .foregroundColor: UIColor.textDisabled
+            ]
+        )
+        unitView.render(props: props.unitViewProps)
     }
 
     func activateTextField() {
@@ -111,6 +144,9 @@ final class InputView: UIView {
 
     func updateBottomInset(keyboardHeight: CGFloat) {
         bottomConstraint.constant = -(keyboardHeight)
+        UIView.animate(withDuration: 0.2) {
+            self.layoutIfNeeded()
+        }
     }
 }
 

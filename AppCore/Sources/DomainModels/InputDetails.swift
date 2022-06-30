@@ -10,4 +10,14 @@ public enum InputDetails: Equatable {
     case ingredientAmount(id: String, amount: String, unit: IngredientUnit)
     case ingredientName(id: String, name: String)
     case numberOfServings(String)
+
+    public var isUnitPresent: Bool {
+        switch self {
+        case .ingredientAmount:
+            return true
+
+        default:
+            return false
+        }
+    }
 }

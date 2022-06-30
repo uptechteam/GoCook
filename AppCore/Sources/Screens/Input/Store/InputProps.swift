@@ -5,11 +5,14 @@
 //  Created by Oleksii Andriushchenko on 28.06.2022.
 //
 
+import DomainModels
+
 extension InputViewController {
     static func makeProps(from state: State) -> InputView.Props {
         return .init(
             title: makeTitle(state: state),
-            placeholder: makePlaceholder(state: state)
+            placeholder: makePlaceholder(state: state),
+            unitViewProps: makeUnitViewProps(state: state)
         )
     }
 
@@ -40,5 +43,20 @@ extension InputViewController {
         default:
             return "Not implemented"
         }
+    }
+
+    private static func makeUnitViewProps(state: State) -> InputUnitView.Props {
+        switch state.inputDetails {
+        case .ingredientAmount(_, _, let unit):
+            return .init(
+                isVisible: state.inputDetails.isUnitPresent,
+                text: (state.unit ?? unit).reduction,
+                units: IngredientUnit.priorityOrded.map(\.reduction)
+            )
+
+        default:
+            return .init(isVisible: false, text: "", units: [])
+        }
+
     }
 }
