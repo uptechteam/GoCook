@@ -30,6 +30,7 @@ struct StepOneState: Equatable {
         }
     }
     var areCategoriesValid: Bool = true
+
     var isDataValid: Bool {
         isRecipeImageValid && isMealNameValid && areCategoriesValid
     }
@@ -42,3 +43,4 @@ struct StepOneState: Equatable {
         areCategoriesValid = !categories.isEmpty
     }
 }
+

@@ -7,6 +7,8 @@
 
 import CreateRecipe
 import Dip
+import DomainModels
+import Input
 import Library
 import UIKit
 
@@ -62,5 +64,26 @@ extension CreateRecipeCoordinator: CreateRecipeCoordinating {
         presentingViewController.dismiss(animated: true) { [self] in
             delegate?.didFinish(self)
         }
+    }
+
+    @MainActor
+    func didTapInput(details: InputDetails) {
+        let envelope = InputEnvelope(details: details)
+        let viewController: InputViewController = try! container.resolve(arguments: envelope, self as InputCoordinating)
+        viewController.modalPresentationStyle = .overCurrentContext
+        viewController.modalTransitionStyle = .crossDissolve
+        navigationController.present(viewController, animated: true)
+    }
+}
+
+
+extension CreateRecipeCoordinator: InputCoordinating {
+    func didFinish(inputDetails: InputDetails) {
+        navigationController.dismiss(animated: true)
+        guard let viewController = navigationController.viewControllers.first as? CreateRecipeViewController else {
+            return
+        }
+
+        viewController.updateInput(details: inputDetails)
     }
 }

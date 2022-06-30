@@ -22,7 +22,7 @@ extension ProfileViewController {
             do {
                 try await dependencies.profileFacade.login(username: "Master Chief", password: "password")
             } catch {
-                log.debug("Error: \(error.localizedDescription)")
+                log.error("Error: \(error.localizedDescription)")
             }
         }
     }

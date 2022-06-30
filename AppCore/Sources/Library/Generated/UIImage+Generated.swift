@@ -37,8 +37,16 @@ extension UIImage {
     return UIImage(named: "threeDots")!
   }
 
+  @nonobjc public class var addIcon: UIImage {
+    return UIImage(named: "addIcon")!
+  }
+
   @nonobjc public class var backButton: UIImage {
     return UIImage(named: "backButton")!
+  }
+
+  @nonobjc public class var bottomChevron: UIImage {
+    return UIImage(named: "bottomChevron")!
   }
 
   @nonobjc public class var circleBackButton: UIImage {
@@ -47,6 +55,10 @@ extension UIImage {
 
   @nonobjc public class var close: UIImage {
     return UIImage(named: "close")!
+  }
+
+  @nonobjc public class var closeRed: UIImage {
+    return UIImage(named: "closeRed")!
   }
 
   @nonobjc public class var circleFavoriteEmpty: UIImage {
@@ -67,10 +79,6 @@ extension UIImage {
 
   @nonobjc public class var star: UIImage {
     return UIImage(named: "star")!
-  }
-
-  @nonobjc public class var addIcon: UIImage {
-    return UIImage(named: "addIcon")!
   }
 
   @nonobjc public class var avatarPlaceholder: UIImage {

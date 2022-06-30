@@ -21,7 +21,7 @@ extension CreateRecipeViewController {
             }
 
             guard let data = imageSource.image?.pngData() else {
-                log.debug("Can't get data from picked image")
+                log.info("Can't get data from picked image")
                 return
             }
 

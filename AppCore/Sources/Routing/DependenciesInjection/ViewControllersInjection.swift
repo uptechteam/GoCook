@@ -10,6 +10,7 @@ import CreateRecipe
 import Dip
 import Filters
 import Home
+import Input
 import Recipe
 import Profile
 
@@ -19,6 +20,7 @@ extension DependencyContainer {
         injectCreateRecipeViewController(container: container)
         injectHomeViewController(container: container)
         injectFiltersViewController(container: container)
+        injectInputViewController(container: container)
         injectRecipeViewController(container: container)
         injectProfileViewController(container: container)
     }
@@ -125,6 +127,35 @@ extension DependencyContainer {
         container.register(.unique, type: HomeViewController.self) { coordinator in
             return HomeViewController(
                 store: try container.resolve(),
+                actionCreator: try container.resolve(),
+                coordinator: coordinator
+            )
+        }
+    }
+
+    // MARK: - Input
+
+    private static func injectInputViewController(container: DependencyContainer) {
+        container.register(
+            .shared,
+            type: InputViewController.Dependencies.self,
+            factory: InputViewController.Dependencies.init
+        )
+        container.register(
+            .unique,
+            type: InputViewController.Store.self,
+            factory: { envelope in
+                InputViewController.makeStore(dependencies: try container.resolve(), envelope: envelope)
+            }
+        )
+        container.register(
+            .unique,
+            type: InputViewController.ActionCreator.self,
+            factory: InputViewController.ActionCreator.init
+        )
+        container.register(.unique, type: InputViewController.self) { (envelope: InputEnvelope, coordinator) in
+            return InputViewController(
+                store: try container.resolve(arguments: envelope),
                 actionCreator: try container.resolve(),
                 coordinator: coordinator
             )

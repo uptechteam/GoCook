@@ -11,8 +11,8 @@ import UIKit
 final class CreateRecipeView: UIView {
 
     struct Props: Equatable {
-        let stepOneViewProps: CreateRecipeStepOneView.Props
-        let stepTwoViewProps: CreateRecipeStepTwoView.Props
+        let stepOneViewProps: StepOneView.Props
+        let stepTwoViewProps: StepTwoView.Props
         let stepThreeViewProps: CreateRecipeStepThreeView.Props
         let stepFourViewProps: CreateRecipeStepFourView.Props
         let stepsViewProps: CreateRecipeStepsView.Props
@@ -21,8 +21,8 @@ final class CreateRecipeView: UIView {
     // MARK: - Properties
 
     let dividerView = UIView()
-    let stepOneView = CreateRecipeStepOneView()
-    let stepTwoView = CreateRecipeStepTwoView()
+    let stepOneView = StepOneView()
+    let stepTwoView = StepTwoView()
     let stepThreeView = CreateRecipeStepThreeView()
     let stepFourView = CreateRecipeStepFourView()
     let stepsView = CreateRecipeStepsView()

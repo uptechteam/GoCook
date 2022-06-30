@@ -21,17 +21,17 @@ extension CreateRecipeViewController {
         )
     }
 
-    private static func makeStepOneViewProps(state: State) -> CreateRecipeStepOneView.Props {
+    private static func makeStepOneViewProps(state: State) -> StepOneView.Props {
         return .init(
             isVisible: state.step == 0,
-            recipeImageViewProps: makeRecipeImageViewProps(state: state),
+            recipeViewProps: makeRecipeViewProps(state: state),
             mealNameInputViewProps: makeMealNameInputViewProps(state: state),
             items: makeCategoryItems(state: state),
             isCategoryErrorLabelVisible: !state.stepOneState.areCategoriesValid
         )
     }
 
-    private static func makeRecipeImageViewProps(state: State) -> RecipeImageView.Props {
+    private static func makeRecipeViewProps(state: State) -> StepOneRecipeView.Props {
         return .init(
             recipeImageSource: state.stepOneState.recipeImageState.uploadedImageSource,
             isThreeDostImageViewVisible: state.stepOneState.recipeImageState.uploadedImageSource != nil,
@@ -71,8 +71,79 @@ extension CreateRecipeViewController {
         }
     }
 
-    private static func makeStepTwoViewProps(state: State) -> CreateRecipeStepTwoView.Props {
-        .init(isVisible: state.step == 1)
+    private static func makeStepTwoViewProps(state: State) -> StepTwoView.Props {
+        .init(
+            isVisible: state.step == 1,
+            servingsViewProps: makeServingsViewProps(state: state),
+            ingredientsViewProps: makeIngredientsViewProps(state: state)
+        )
+    }
+
+    private static func makeServingsViewProps(state: State) -> StepTwoServingsView.Props {
+        return .init(
+            amountText: state.stepTwoState.numberOfServings.flatMap(String.init) ?? "Enter amount",
+            amountColorSource: makeAmountColorSource(state: state),
+            amountTypography: state.stepTwoState.numberOfServings == nil ? .body : .subtitleThree
+        )
+    }
+
+    private static func makeAmountColorSource(state: State) -> ColorSource {
+        if !state.stepTwoState.isNumberOfServingsValid {
+            return .color(.errorMain)
+        } else if state.stepTwoState.numberOfServings == nil {
+            return .color(.textSecondary)
+        } else {
+            return .color(.textMain)
+        }
+    }
+
+    private static func makeIngredientsViewProps(state: State) -> StepTwoIngredientsView.Props {
+        return .init(
+            items: state.stepTwoState.ingredients.map { ingredient in
+                makeIngredientCellProps(state: state, ingredient: ingredient)
+            }
+        )
+    }
+
+    private static func makeIngredientCellProps(state: State, ingredient: NewIngredient) -> IngredientCell.Props {
+        return .init(
+            id: ingredient.id,
+            name: ingredient.name.isEmpty ? "Enter name" : ingredient.name,
+            nameColorSource: makeIngredientNameColorSource(state: state, ingredient: ingredient),
+            nameTypography: ingredient.name.isEmpty ? .body : .subtitleThree,
+            amount: makeIngredientAmountText(ingredient: ingredient),
+            amountColorSource: makeIngredientAmountColorSource(state: state, ingredient: ingredient),
+            amountTypography: ingredient.amount == nil ? .body : .subtitleThree,
+            isDeleteImageViewVisible: state.stepTwoState.ingredients.count > 1
+        )
+    }
+
+    private static func makeIngredientNameColorSource(state: State, ingredient: NewIngredient) -> ColorSource {
+        if !ingredient.name.isEmpty {
+            return .color(.textMain)
+        } else if !state.stepTwoState.areIngredientsValid {
+            return .color(.errorMain)
+        } else {
+            return .color(.textSecondary)
+        }
+    }
+
+    private static func makeIngredientAmountText(ingredient: NewIngredient) -> String {
+        guard let amount = ingredient.amount else {
+            return "Enter amount"
+        }
+
+        return "\(amount) \(ingredient.unit.reduction)"
+    }
+
+    private static func makeIngredientAmountColorSource(state: State, ingredient: NewIngredient) -> ColorSource {
+        if ingredient.amount != nil {
+            return .color(.textMain)
+        } else if !state.stepTwoState.areIngredientsValid {
+            return .color(.errorMain)
+        } else {
+            return .color(.textSecondary)
+        }
     }
 
     private static func makeStepThreeViewProps(state: State) -> CreateRecipeStepThreeView.Props {

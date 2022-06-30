@@ -6,11 +6,14 @@
 //
 
 import Combine
+import DomainModels
+import Helpers
 import Library
 import UIKit
 
 public protocol CreateRecipeCoordinating: AnyObject {
     func didTapClose()
+    func didTapInput(details: InputDetails)
 }
 
 public final class CreateRecipeViewController: UIViewController {
@@ -55,6 +58,24 @@ public final class CreateRecipeViewController: UIViewController {
         setupBinding()
     }
 
+    // MARK: - Public methods
+
+    public func updateInput(details: InputDetails) {
+        switch details {
+        case let .ingredientAmount(id, amount, unit):
+            store.dispatch(action: .ingredientAmountChanged(id: id, amount: amount, unit: unit))
+
+        case let .ingredientName(id, name):
+            store.dispatch(action: .ingredientNameChanged(id: id, name: name))
+
+        case .numberOfServings(let number):
+            store.dispatch(action: .amountChanged(number))
+
+        default:
+            break
+        }
+    }
+
     // MARK: - Private methods
 
     private func setupUI() {
@@ -66,7 +87,7 @@ public final class CreateRecipeViewController: UIViewController {
     }
 
     private func setupBinding() {
-        contentView.stepOneView.recipeImageView.onDidTapImage = { [store] in
+        contentView.stepOneView.recipeView.onDidTapImage = { [store] in
             store.dispatch(action: .recipeImageTapped)
         }
 
@@ -76,6 +97,26 @@ public final class CreateRecipeViewController: UIViewController {
 
         contentView.stepOneView.onDidTapCategory = { [store] indexPath in
             store.dispatch(action: .categoryItemTapped(indexPath))
+        }
+
+        contentView.stepTwoView.servingsView.onDidTap = { [store] in
+            store.dispatch(action: .amountTapped)
+        }
+
+        contentView.stepTwoView.ingredientsView.onDidTapIngredientName = { [store] indexPath in
+            store.dispatch(action: .ingredientNameTapped(indexPath))
+        }
+
+        contentView.stepTwoView.ingredientsView.onDidTapIngredientAmount = { [store] indexPath in
+            store.dispatch(action: .ingredientAmountTapped(indexPath))
+        }
+
+        contentView.stepTwoView.ingredientsView.onDidTapDeleteIngredient = { [store] indexPath in
+            store.dispatch(action: .deleteIngredientTapped(indexPath))
+        }
+
+        contentView.stepTwoView.ingredientsView.onDidTapAddIngredient = { [store] in
+            store.dispatch(action: .addIngredientTapped)
         }
 
         contentView.stepsView.onDidTapBack = { [store] in
@@ -165,6 +206,9 @@ public final class CreateRecipeViewController: UIViewController {
         switch route {
         case .close:
             coordinator.didTapClose()
+
+        case .inputTapped(let details):
+            coordinator.didTapInput(details: details)
         }
     }
 }
