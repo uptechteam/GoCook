@@ -13,17 +13,18 @@ final class CreateRecipeView: UIView {
     struct Props: Equatable {
         let stepOneViewProps: StepOneView.Props
         let stepTwoViewProps: StepTwoView.Props
-        let stepThreeViewProps: CreateRecipeStepThreeView.Props
+        let stepThreeViewProps: StepThreeView.Props
         let stepFourViewProps: CreateRecipeStepFourView.Props
         let stepsViewProps: CreateRecipeStepsView.Props
     }
 
     // MARK: - Properties
 
-    let dividerView = UIView()
+    private let scrollView = UIScrollView()
+    private let dividerView = UIView()
     let stepOneView = StepOneView()
     let stepTwoView = StepTwoView()
-    let stepThreeView = CreateRecipeStepThreeView()
+    let stepThreeView = StepThreeView()
     let stepFourView = CreateRecipeStepFourView()
     let stepsView = CreateRecipeStepsView()
 
@@ -44,6 +45,7 @@ final class CreateRecipeView: UIView {
         setupContentView()
         setupStepsView()
         setupStackView()
+        setupScrollView()
         setupDividerView()
     }
 
@@ -62,16 +64,19 @@ final class CreateRecipeView: UIView {
 
     private func setupStackView() {
         let stackView = UIStackView(arrangedSubviews: [stepOneView, stepTwoView, stepThreeView, stepFourView])
-
-        let scrollView = UIScrollView()
         scrollView.addSubview(stackView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+    }
+
+    private func setupScrollView() {
         addSubview(scrollView, constraints: [
             scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: stepsView.topAnchor),
-            scrollView.widthAnchor.constraint(equalTo: widthAnchor),
-            stackView.widthAnchor.constraint(equalTo: widthAnchor)
+            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
         ])
     }
 
@@ -93,5 +98,9 @@ final class CreateRecipeView: UIView {
         stepThreeView.render(props: props.stepThreeViewProps)
         stepFourView.render(props: props.stepFourViewProps)
         stepsView.render(props: props.stepsViewProps)
+    }
+
+    func updateBottomInset(keyboardHeight: CGFloat) {
+        scrollView.contentInset.bottom = keyboardHeight
     }
 }

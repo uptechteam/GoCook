@@ -20,6 +20,9 @@ extension InputViewController {
 
     private static func makeTitle(state: State) -> String {
         switch state.inputDetails {
+        case .cookingTime:
+            return "Cooking time, min"
+
         case .ingredientAmount:
             return "Ingredient amount"
 
@@ -28,9 +31,6 @@ extension InputViewController {
 
         case .numberOfServings:
             return "Number of serving"
-
-        default:
-            return "Not implemented"
         }
     }
 
@@ -40,26 +40,20 @@ extension InputViewController {
         }
 
         switch state.inputDetails {
-        case .ingredientAmount, .numberOfServings:
+        case .cookingTime, .ingredientAmount, .numberOfServings:
             return "Amount"
 
         case .ingredientName:
             return "Name"
-
-        default:
-            return "Not implemented"
         }
     }
 
     private static func makeKeyboardType(state: State) -> InputView.Props.KeyboardType {
         switch state.inputDetails {
-        case .ingredientAmount, .numberOfServings:
+        case .cookingTime, .ingredientAmount, .numberOfServings:
             return .numpadPad
 
         case .ingredientName:
-            return .defaultType
-
-        default:
             return .defaultType
         }
     }
@@ -76,6 +70,5 @@ extension InputViewController {
         default:
             return .init(isVisible: false, text: "", units: [])
         }
-
     }
 }

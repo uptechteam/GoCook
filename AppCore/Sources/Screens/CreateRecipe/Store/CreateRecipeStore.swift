@@ -18,24 +18,30 @@ extension CreateRecipeViewController {
         var step: Int
         var stepOneState: StepOneState
         var stepTwoState: StepTwoState
+        var stepThreeState: StepThreeState
         var alert: AnyIdentifiable<Alert>?
         var route: AnyIdentifiable<Route>?
     }
 
     public enum Action {
         case addIngredientTapped
+        case addInstructionTapped
         case amountChanged(String)
         case amountTapped
         case backTapped
         case categoryItemTapped(IndexPath)
         case closeTapped
+        case cookingTimeTapped
+        case cookingTimeChanged(amount: String)
         case deleteIngredientTapped(IndexPath)
+        case deleteInstructionTapped(Int)
         case deleteTapped
         case imagePicked(ImageSource)
         case ingredientAmountTapped(IndexPath)
         case ingredientAmountChanged(id: String, amount: String, unit: IngredientUnit)
         case ingredientNameTapped(IndexPath)
         case ingredientNameChanged(id: String, name: String)
+        case instructionChanged(index: Int, text: String)
         case mealNameChanged(String)
         case nextTapped
         case recipeImageTapped
@@ -57,11 +63,13 @@ extension CreateRecipeViewController {
         // MARK: - Properties
 
         public let fileClient: FileClienting
+        public let keyboardManager: KeyboardManaging
 
         // MARK: - Lifecycle
 
-        public init(fileClient: FileClienting) {
+        public init(fileClient: FileClienting, keyboardManager: KeyboardManaging) {
             self.fileClient = fileClient
+            self.keyboardManager = keyboardManager
         }
     }
 
@@ -79,6 +87,7 @@ extension CreateRecipeViewController {
             step: 0,
             stepOneState: StepOneState(recipeImageState: .empty, mealName: "", categories: Set()),
             stepTwoState: StepTwoState(ingredients: [.makeNewIngredient()]),
+            stepThreeState: StepThreeState(instructions: [""]),
             alert: nil,
             route: nil
         )
@@ -93,6 +102,9 @@ extension CreateRecipeViewController {
         switch action {
         case .addIngredientTapped:
             newState.stepTwoState.ingredients.append(.makeNewIngredient())
+
+        case .addInstructionTapped:
+            newState.stepThreeState.instructions.append("")
 
         case .amountChanged(let text):
             newState.stepTwoState.numberOfServings = Int(text)
@@ -118,12 +130,26 @@ extension CreateRecipeViewController {
         case .closeTapped:
             newState.route = .init(value: .close)
 
+        case .cookingTimeTapped:
+            let time = newState.stepThreeState.cookingTime.flatMap(String.init) ?? ""
+            newState.route = .init(value: .inputTapped(.cookingTime(time)))
+
+        case .cookingTimeChanged(let amount):
+            newState.stepThreeState.cookingTime = Int(amount)
+
         case .deleteIngredientTapped(let indexPath):
             guard newState.stepTwoState.ingredients.indices.contains(indexPath.item) else {
                 break
             }
 
             newState.stepTwoState.ingredients.remove(at: indexPath.item)
+
+        case .deleteInstructionTapped(let index):
+            guard newState.stepThreeState.instructions.indices.contains(index) else {
+                break
+            }
+
+            newState.stepThreeState.instructions.remove(at: index)
 
         case .deleteTapped:
             newState.stepOneState.recipeImageState = .empty
@@ -158,6 +184,9 @@ extension CreateRecipeViewController {
 
             newState.route = .init(value: .inputTapped(.ingredientName(id: ingredient.id, name: ingredient.name)))
 
+        case let .instructionChanged(index, text):
+            newState.stepThreeState.instructions[safe: index] = text
+
         case let .ingredientNameChanged(id, name):
             guard let index = newState.stepTwoState.ingredients.firstIndex(where: { $0.id == id }) else {
                 break
@@ -176,6 +205,9 @@ extension CreateRecipeViewController {
             } else if newState.step == 1 {
                 newState.stepTwoState.validate()
                 isDataValid = newState.stepTwoState.isDataValid
+            } else if newState.step == 2 {
+                newState.stepThreeState.validate()
+                isDataValid = newState.stepThreeState.isDataValid
             }
 
             if isDataValid {

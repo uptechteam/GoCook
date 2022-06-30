@@ -78,8 +78,8 @@ extension InputViewController {
             case .numberOfServings:
                 newState.route = .init(value: .finish(.numberOfServings(newState.text)))
 
-            default:
-                break
+            case .cookingTime:
+                newState.route = .init(value: .finish(.cookingTime(newState.text)))
             }
 
         case .textChanged(let text):

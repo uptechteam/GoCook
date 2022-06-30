@@ -43,4 +43,3 @@ struct StepOneState: Equatable {
         areCategoriesValid = !categories.isEmpty
     }
 }
-
