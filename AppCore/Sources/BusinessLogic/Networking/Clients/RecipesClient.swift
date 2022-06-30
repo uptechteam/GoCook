@@ -11,7 +11,7 @@ import Helpers
 
 public protocol RecipesClienting {
     func getRecipes() async throws -> [RecipeCategory]
-    func uploadNewRecipe() async throws -> Recipe
+    func upload(newRecipe: NewRecipe) async throws -> Recipe
 }
 
 public final class RecipesClient: RecipesClienting {
@@ -38,8 +38,8 @@ public final class RecipesClient: RecipesClienting {
         return response.map(\.domainModel)
     }
 
-    public func uploadNewRecipe() async throws -> Recipe {
-        let appRequest = try recipesAPI.makePostRecipeTarget(request: fatalError())
+    public func upload(newRecipe: NewRecipe) async throws -> Recipe {
+        let appRequest = try recipesAPI.makePostRecipeTarget(request: NewRecipeRequest(newRecipe: newRecipe))
         let response: RecipeResponse = try await networkClient.request(appRequest)
         return response.domainModel
     }
