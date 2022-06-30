@@ -5,13 +5,21 @@
 //  Created by Oleksii Andriushchenko on 16.06.2022.
 //
 
-import Library
 import UIKit
 
-final class RecipeTimeView: UIView {
+public final class RecipeTimeView: UIView {
 
-    struct Props: Equatable {
-        let timeDescription: String
+    public struct Props: Equatable {
+
+        // MARK: - Properties
+
+        public let timeDescription: String
+
+        // MARK: - Lifecycle
+
+        public init(timeDescription: String) {
+            self.timeDescription = timeDescription
+        }
     }
 
     // MARK: - Properties
@@ -55,7 +63,7 @@ final class RecipeTimeView: UIView {
 
     // MARK: - Public methods
 
-    func render(props: Props) {
+    public func render(props: Props) {
         timeLabel.text = props.timeDescription
     }
 }

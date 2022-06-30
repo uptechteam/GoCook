@@ -200,7 +200,8 @@ extension CreateRecipeViewController {
         return .init(
             isVisible: state.step == 3,
             headerViewProps: makeStepFourHeaderViewProps(state: state),
-            ingredientsViewProps: makeIngredientsViewProps(state: state)
+            ingredientsViewProps: makeIngredientsViewProps(state: state),
+            instructionsViewProps: makeRecipeInstructionsViewProps(state: state)
         )
     }
 
@@ -208,7 +209,7 @@ extension CreateRecipeViewController {
         return .init(
             recipeImageSource: .asset(state.stepOneState.recipeImageState.uploadedImageSource?.image),
             name: state.stepOneState.mealName,
-            timeText: ""
+            timeViewProps: RecipeTimeView.Props(timeDescription: "\(state.stepThreeState.cookingTime ?? 0) min")
         )
     }
 
@@ -222,6 +223,12 @@ extension CreateRecipeViewController {
                 )
             }
         )
+    }
+
+    private static func makeRecipeInstructionsViewProps(state: State) -> RecipeInstructionsView.Props {
+        return .init(instructionsProps: state.stepThreeState.instructions.enumerated().map { index, instruction in
+            return RecipeInstructionView.Props(title: "\(index + 1) Step", description: instruction)
+        })
     }
 
     private static func makeStepsViewProps(state: State) -> CreateRecipeStepsView.Props {

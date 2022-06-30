@@ -14,12 +14,14 @@ final class StepFourView: UIView {
         let isVisible: Bool
         let headerViewProps: StepFourHeaderView.Props
         let ingredientsViewProps: RecipeIngredientsView.Props
+        let instructionsViewProps: RecipeInstructionsView.Props
     }
 
     // MARK: - Properties
 
     private let headerView = StepFourHeaderView()
     private let ingredientsView = RecipeIngredientsView()
+    private let instructionsView = RecipeInstructionsView()
 
     // MARK: - Lifecycle
 
@@ -44,7 +46,7 @@ final class StepFourView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [headerView, ingredientsView, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [headerView, ingredientsView, instructionsView])
         stackView.axis = .vertical
         stackView.spacing = 8
         addSubview(stackView, withEdgeInsets: .zero)
@@ -56,5 +58,6 @@ final class StepFourView: UIView {
         isHidden = !props.isVisible
         headerView.render(props: props.headerViewProps)
         ingredientsView.render(props: props.ingredientsViewProps)
+        instructionsView.render(props: props.instructionsViewProps)
     }
 }

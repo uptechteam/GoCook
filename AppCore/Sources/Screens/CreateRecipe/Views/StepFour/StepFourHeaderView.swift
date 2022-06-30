@@ -14,13 +14,15 @@ final class StepFourHeaderView: UIView {
     struct Props: Equatable {
         let recipeImageSource: ImageSource
         let name: String
-        let timeText: String
+        let timeViewProps: RecipeTimeView.Props
     }
 
     // MARK: - Properties
 
     private let recipeImageView = UIImageView()
     private let nameLabel = UILabel()
+    private let timeStackView = UIStackView()
+    private let timeView = RecipeTimeView()
 
     // MARK: - Lifecycle
 
@@ -39,6 +41,7 @@ final class StepFourHeaderView: UIView {
         setupContentView()
         setupRecipeImageView()
         setupNameLabel()
+        setupTimeStackView()
         setupStackView()
     }
 
@@ -58,15 +61,21 @@ final class StepFourHeaderView: UIView {
         nameLabel.numberOfLines = 0
     }
 
+    private func setupTimeStackView() {
+        [timeView, UIView()].forEach(timeStackView.addArrangedSubview)
+    }
+
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [recipeImageView, nameLabel])
+        let stackView = UIStackView(arrangedSubviews: [recipeImageView, nameLabel, timeStackView])
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.spacing = 32
+        stackView.setCustomSpacing(32, after: recipeImageView)
+        stackView.setCustomSpacing(20, after: nameLabel)
         addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 0, left: 0, bottom: 32, right: 0))
         NSLayoutConstraint.activate([
             recipeImageView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            nameLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48)
+            nameLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
+            timeStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48)
         ])
     }
 
@@ -75,5 +84,6 @@ final class StepFourHeaderView: UIView {
     func render(props: Props) {
         recipeImageView.set(props.recipeImageSource)
         nameLabel.text = props.name
+        timeView.render(props: props.timeViewProps)
     }
 }

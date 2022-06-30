@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 23.06.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
@@ -101,6 +102,9 @@ final class CreateRecipeView: UIView {
     }
 
     func updateBottomInset(keyboardHeight: CGFloat) {
-        scrollView.contentInset.bottom = keyboardHeight
+        if scrollView.contentInset.bottom != keyboardHeight {
+            log.debug("New bottom inset: \(keyboardHeight)")
+            scrollView.contentInset.bottom = keyboardHeight
+        }
     }
 }

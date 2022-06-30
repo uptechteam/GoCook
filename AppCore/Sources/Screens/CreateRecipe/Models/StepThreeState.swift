@@ -13,7 +13,7 @@ struct StepThreeState: Equatable {
 
     var cookingTime: Int? {
         didSet {
-            isCookingTimeValid = false
+            isCookingTimeValid = true
         }
     }
     var isCookingTimeValid = true
