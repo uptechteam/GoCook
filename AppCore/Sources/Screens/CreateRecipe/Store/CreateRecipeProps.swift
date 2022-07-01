@@ -239,7 +239,8 @@ extension CreateRecipeViewController {
         return .init(
             title: "\(state.step + 1) / 4",
             isNextButtonVisible: state.step != 3,
-            isFinishButtonVisible: state.step == 3
+            isFinishButtonVisible: state.step == 3 && !state.isUploadingRecipe,
+            isLoaderVisible: state.isUploadingRecipe
         )
     }
 }

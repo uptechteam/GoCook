@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 27.06.2022.
 //
 
+import Helpers
 import UIKit
 
 public final class SpinnerView: UIView {
@@ -34,7 +35,6 @@ public final class SpinnerView: UIView {
 
     private func setupCloseImageView() {
         closeImageView.isHidden = true
-        closeImageView.image = .close
         addSubview(closeImageView, constraints: [
             closeImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             closeImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
@@ -58,6 +58,10 @@ public final class SpinnerView: UIView {
             circleLayer?.removeFromSuperlayer()
             circleLayer = nil
         }
+    }
+
+    public func set(imageSource: ImageSource) {
+        closeImageView.set(imageSource)
     }
 
     // MARK: - Private methods

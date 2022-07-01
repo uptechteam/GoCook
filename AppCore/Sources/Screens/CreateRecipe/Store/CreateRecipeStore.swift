@@ -263,8 +263,15 @@ extension CreateRecipeViewController {
                 break
             }
 
-        case .uploadRecipe:
+        case .uploadRecipe(let modelAction):
             newState.isUploadingRecipe = false
+            switch modelAction {
+            case .success:
+                newState.route = .init(value: .close)
+
+            default:
+                break
+            }
         }
 
         return newState
