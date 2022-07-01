@@ -180,38 +180,57 @@ public final class CreateRecipeViewController: UIViewController {
 
     private func show(alert: Alert) {
         switch alert {
+        case .deleteProgress:
+            showDeleteProgressAlert()
+
         case .imagePicker(let isDeleteButtonPresent):
             showImagePicker(isDeleteButtonPresent: isDeleteButtonPresent)
         }
     }
 
+    private func showDeleteProgressAlert() {
+        let alertController = UIAlertController(
+            title: "Delete progress?",
+            message: "Closing this page will delete the progress you've made in recipe creation",
+            preferredStyle: .alert
+        )
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alertController.addAction(
+            UIAlertAction(
+                title: "Delete",
+                style: .destructive,
+                handler: { [store] _ in store.dispatch(action: .closeConfirmed) }
+            )
+        )
+        present(alertController, animated: true)
+    }
+
     private func showImagePicker(isDeleteButtonPresent: Bool) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let cameraAction = UIAlertAction(
-            title: "Take photo",
-            style: .default,
-            handler: { [weak self] _ in self?.showImagePicker(source: .camera) }
-        )
-        alertController.addAction(cameraAction)
-        let galleryAction = UIAlertAction(
-            title: "Choose from library",
-            style: .default,
-            handler: { [weak self] _ in self?.showImagePicker(source: .photoLibrary) }
-        )
-        alertController.addAction(galleryAction)
-        if isDeleteButtonPresent {
-            let deleteAction = UIAlertAction(
-                title: "Remove current photo",
+        alertController.addAction(
+            UIAlertAction(
+                title: "Take photo",
                 style: .default,
-                handler: { [store] _ in store.dispatch(action: .deleteTapped) }
+                handler: { [weak self] _ in self?.showImagePicker(source: .camera) }
             )
-            alertController.addAction(deleteAction)
-        }
-        let cancelAction = UIAlertAction(
-            title: "Cancel",
-            style: .cancel
         )
-        alertController.addAction(cancelAction)
+        alertController.addAction(
+            UIAlertAction(
+                title: "Choose from library",
+                style: .default,
+                handler: { [weak self] _ in self?.showImagePicker(source: .photoLibrary) }
+            )
+        )
+        if isDeleteButtonPresent {
+            alertController.addAction(
+                UIAlertAction(
+                    title: "Remove current photo",
+                    style: .default,
+                    handler: { [store] _ in store.dispatch(action: .deleteTapped) }
+                )
+            )
+        }
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(alertController, animated: true)
     }
 

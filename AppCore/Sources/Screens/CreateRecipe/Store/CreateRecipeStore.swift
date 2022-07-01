@@ -31,6 +31,7 @@ extension CreateRecipeViewController {
         case amountTapped
         case backTapped
         case categoryItemTapped(IndexPath)
+        case closeConfirmed
         case closeTapped
         case cookingTimeTapped
         case cookingTimeChanged(amount: String)
@@ -53,6 +54,7 @@ extension CreateRecipeViewController {
     }
 
     enum Alert {
+        case deleteProgress
         case imagePicker(isDeleteButtonPresent: Bool)
     }
 
@@ -140,8 +142,15 @@ extension CreateRecipeViewController {
                 newState.stepOneState.categories.insert(category)
             }
 
-        case .closeTapped:
+        case .closeConfirmed:
             newState.route = .init(value: .close)
+
+        case .closeTapped:
+            if newState.step == 0 && newState.stepOneState.isEmpty {
+                newState.route = .init(value: .close)
+            } else {
+                newState.alert = .init(value: .deleteProgress)
+            }
 
         case .cookingTimeTapped:
             let time = newState.stepThreeState.cookingTime.flatMap(String.init) ?? ""

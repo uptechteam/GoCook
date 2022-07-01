@@ -35,6 +35,10 @@ struct StepOneState: Equatable {
         isRecipeImageValid && isMealNameValid && areCategoriesValid
     }
 
+    var isEmpty: Bool {
+        recipeImageState == .empty && mealName.isEmpty && categories.isEmpty
+    }
+
     // MARK: - Public methods
 
     mutating func validate() {
