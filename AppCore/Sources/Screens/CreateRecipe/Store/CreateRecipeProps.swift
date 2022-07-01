@@ -232,6 +232,10 @@ extension CreateRecipeViewController {
     }
 
     private static func makeStepsViewProps(state: State) -> CreateRecipeStepsView.Props {
-        return .init(title: "\(state.step + 1) / 4")
+        return .init(
+            title: "\(state.step + 1) / 4",
+            isNextButtonVisible: state.step != 3,
+            isFinishButtonVisible: state.step == 3
+        )
     }
 }

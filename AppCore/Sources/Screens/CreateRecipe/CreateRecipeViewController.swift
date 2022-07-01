@@ -149,6 +149,10 @@ public final class CreateRecipeViewController: UIViewController {
             store.dispatch(action: .nextTapped)
         }
 
+        contentView.stepsView.onDidTapFinish = { [store] in
+            store.dispatch(action: .finishTapped)
+        }
+
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 

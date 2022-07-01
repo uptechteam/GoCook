@@ -15,6 +15,16 @@ enum RecipeImageState: Equatable {
     case uploading(ImageSource)
     case uploaded(ImageSource, imageID: String)
 
+    var imageID: String? {
+        switch self {
+        case .uploaded(_, let imageID):
+            return imageID
+
+        default:
+            return nil
+        }
+    }
+
     var isUploading: Bool {
         switch self {
         case .uploading:
