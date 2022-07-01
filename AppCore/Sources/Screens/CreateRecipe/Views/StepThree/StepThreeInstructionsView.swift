@@ -52,7 +52,7 @@ final class StepThreeInstructionsView: UIView {
 
     private func setupTitleLabel() {
         titleLabel.textAlignment = .left
-        titleLabel.render(title: "Instructions", color: .textMain, typography: .subtitle)
+        titleLabel.render(title: .createRecipeStepThreeInstructionsTitle, color: .textMain, typography: .subtitle)
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
@@ -62,7 +62,7 @@ final class StepThreeInstructionsView: UIView {
     }
 
     private func setupAddIngredientButton() {
-        addInstructionButton.setTitle("Add step")
+        addInstructionButton.setTitle(.createRecipeStepThreeAddStep)
         addInstructionButton.setImage(.addIcon)
         addInstructionButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapAddInstruction() }),

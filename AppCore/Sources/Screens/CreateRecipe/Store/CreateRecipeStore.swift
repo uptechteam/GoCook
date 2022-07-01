@@ -31,6 +31,7 @@ extension CreateRecipeViewController {
         case amountTapped
         case backTapped
         case categoryItemTapped(IndexPath)
+        case closeConfirmed
         case closeTapped
         case cookingTimeTapped
         case cookingTimeChanged(amount: String)
@@ -53,6 +54,7 @@ extension CreateRecipeViewController {
     }
 
     enum Alert {
+        case deleteProgress
         case imagePicker(isDeleteButtonPresent: Bool)
     }
 
@@ -140,8 +142,15 @@ extension CreateRecipeViewController {
                 newState.stepOneState.categories.insert(category)
             }
 
-        case .closeTapped:
+        case .closeConfirmed:
             newState.route = .init(value: .close)
+
+        case .closeTapped:
+            if newState.step == 0 && newState.stepOneState.isEmpty {
+                newState.route = .init(value: .close)
+            } else {
+                newState.alert = .init(value: .deleteProgress)
+            }
 
         case .cookingTimeTapped:
             let time = newState.stepThreeState.cookingTime.flatMap(String.init) ?? ""
@@ -231,6 +240,11 @@ extension CreateRecipeViewController {
             }
 
         case .recipeImageTapped:
+            guard !newState.stepOneState.recipeImageState.isUploading else {
+                newState.stepOneState.recipeImageState = .empty
+                break
+            }
+
             let isDeleteButtonPresent = newState.stepOneState.recipeImageState.uploadedImageSource != nil
             newState.alert = .init(value: .imagePicker(isDeleteButtonPresent: isDeleteButtonPresent))
 
@@ -242,12 +256,22 @@ extension CreateRecipeViewController {
             case .success(let imageID):
                 newState.stepOneState.recipeImageState.upload(with: imageID)
 
-            default:
-                newState.stepOneState.recipeImageState = .empty
+            case .failure:
+                newState.stepOneState.recipeImageState = .error(message: .createRecipeStepOneUploadError)
+
+            case .trigger:
+                break
             }
 
-        case .uploadRecipe:
+        case .uploadRecipe(let modelAction):
             newState.isUploadingRecipe = false
+            switch modelAction {
+            case .success:
+                newState.route = .init(value: .close)
+
+            default:
+                break
+            }
         }
 
         return newState

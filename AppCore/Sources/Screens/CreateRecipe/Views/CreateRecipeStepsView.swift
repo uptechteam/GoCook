@@ -14,6 +14,7 @@ final class CreateRecipeStepsView: UIView {
         let title: String
         let isNextButtonVisible: Bool
         let isFinishButtonVisible: Bool
+        let isLoaderVisible: Bool
     }
 
     // MARK: - Properties
@@ -42,6 +43,7 @@ final class CreateRecipeStepsView: UIView {
             isBackgroundVisible: false
         )
     )
+    private let spinnerView = SpinnerView()
     // callbacks
     var onDidTapBack: () -> Void = { }
     var onDidTapNext: () -> Void = { }
@@ -66,6 +68,7 @@ final class CreateRecipeStepsView: UIView {
         setupTitleLabel()
         setupNextButton()
         setupFinishButton()
+        setupSpinnerView()
         setupStackView()
     }
 
@@ -80,7 +83,7 @@ final class CreateRecipeStepsView: UIView {
     }
 
     private func setupBackButton() {
-        backButton.setTitle("Back")
+        backButton.setTitle(.createRecipeNavigationBack)
         backButton.setImage(.arrowBack)
         backButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapBack() }), for: .touchUpInside)
     }
@@ -93,21 +96,28 @@ final class CreateRecipeStepsView: UIView {
     }
 
     private func setupNextButton() {
-        nextButton.setTitle("Next")
+        nextButton.setTitle(.createRecipeNavigationNext)
         nextButton.setImage(.arrowForward)
         nextButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapNext() }), for: .touchUpInside)
     }
 
     private func setupFinishButton() {
-        finishButton.setTitle("Finish")
+        finishButton.setTitle(.createRecipeNavigationFinish)
         finishButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapFinish() }),
             for: .touchUpInside
         )
     }
 
+    private func setupSpinnerView() {
+        NSLayoutConstraint.activate([
+            spinnerView.widthAnchor.constraint(equalToConstant: 20),
+            spinnerView.heightAnchor.constraint(equalTo: spinnerView.widthAnchor)
+        ])
+    }
+
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [backButton, titleLabel, nextButton, finishButton])
+        let stackView = UIStackView(arrangedSubviews: [backButton, titleLabel, nextButton, finishButton, spinnerView])
         stackView.alignment = .center
         addSubview(stackView, constraints: [
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
@@ -122,5 +132,6 @@ final class CreateRecipeStepsView: UIView {
         titleLabel.text = props.title
         nextButton.isHidden = !props.isNextButtonVisible
         finishButton.isHidden = !props.isFinishButtonVisible
+        spinnerView.toggle(isAnimating: props.isLoaderVisible)
     }
 }

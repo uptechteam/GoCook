@@ -71,6 +71,7 @@ final class StepOneRecipeView: UIView {
     }
 
     private func setupSpinnerView() {
+        spinnerView.set(imageSource: .asset(.close))
         imageView.addSubview(spinnerView, constraints: [
             spinnerView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
             spinnerView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
