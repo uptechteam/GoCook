@@ -20,6 +20,7 @@ final class StepThreeView: UIView {
 
     let timeView = StepThreeTimeView()
     let instructionsView = StepThreeInstructionsView()
+    private let spaceView = UIView()
 
     // MARK: - Lifecycle
 
@@ -36,6 +37,7 @@ final class StepThreeView: UIView {
 
     private func setup() {
         setupContentView()
+        setupSpaceView()
         setupStackView()
     }
 
@@ -43,8 +45,12 @@ final class StepThreeView: UIView {
         backgroundColor = .appWhite
     }
 
+    private func setupSpaceView() {
+        spaceView.setContentHuggingPriority(.defaultLow, for: .vertical)
+    }
+
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [timeView, instructionsView, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [timeView, instructionsView, spaceView])
         stackView.axis = .vertical
         stackView.setCustomSpacing(56, after: timeView)
         addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))

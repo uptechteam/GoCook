@@ -63,6 +63,7 @@ public final class RecipeIngredientView: UIView {
 
     private func setupNameLabel() {
         nameLabel.numberOfLines = 0
+        nameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupWeightLabel() {

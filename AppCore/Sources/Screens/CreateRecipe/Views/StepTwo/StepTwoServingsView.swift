@@ -61,6 +61,9 @@ final class StepTwoServingsView: UIView {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, UIView(), amountLabel])
         stackView.alignment = .bottom
         addSubview(stackView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: stackView.topAnchor)
+        ])
     }
 
     // MARK: - Public methods

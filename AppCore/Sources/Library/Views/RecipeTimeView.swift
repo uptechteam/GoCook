@@ -53,6 +53,7 @@ public final class RecipeTimeView: UIView {
     private func setupTimelabel() {
         timeLabel.render(typography: .description)
         timeLabel.textColor = .textMain
+        timeLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupStackView() {

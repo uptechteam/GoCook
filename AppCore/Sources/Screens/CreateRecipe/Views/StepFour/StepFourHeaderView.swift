@@ -59,6 +59,7 @@ final class StepFourHeaderView: UIView {
         nameLabel.render(typography: .headerTwo)
         nameLabel.textColor = .textMain
         nameLabel.numberOfLines = 0
+        nameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupTimeStackView() {

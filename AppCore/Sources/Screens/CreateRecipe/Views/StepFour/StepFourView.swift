@@ -59,5 +59,7 @@ final class StepFourView: UIView {
         headerView.render(props: props.headerViewProps)
         ingredientsView.render(props: props.ingredientsViewProps)
         instructionsView.render(props: props.instructionsViewProps)
+        setNeedsLayout()
+        layoutIfNeeded()
     }
 }

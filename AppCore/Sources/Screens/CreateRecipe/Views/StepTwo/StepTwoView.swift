@@ -20,6 +20,7 @@ final class StepTwoView: UIView {
 
     let servingsView = StepTwoServingsView()
     let ingredientsView = StepTwoIngredientsView()
+    private let spaceView = UIView()
 
     // MARK: - Lifecycle
 
@@ -36,6 +37,7 @@ final class StepTwoView: UIView {
 
     private func setup() {
         setupContentView()
+        setupSpaceView()
         setupStackView()
     }
 
@@ -43,10 +45,19 @@ final class StepTwoView: UIView {
         backgroundColor = .appWhite
     }
 
+    private func setupSpaceView() {
+        spaceView.setContentHuggingPriority(.required, for: .vertical)
+        let constraint = spaceView.heightAnchor.constraint(equalToConstant: 0)
+        constraint.priority = .init(249)
+        NSLayoutConstraint.activate([
+            constraint
+        ])
+    }
+
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [servingsView, ingredientsView, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [servingsView, ingredientsView, spaceView])
         stackView.axis = .vertical
-        stackView.spacing = 56
+        stackView.setCustomSpacing(56, after: servingsView)
         addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
     }
 

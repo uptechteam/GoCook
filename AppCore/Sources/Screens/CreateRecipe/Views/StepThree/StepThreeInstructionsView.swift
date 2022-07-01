@@ -53,6 +53,7 @@ final class StepThreeInstructionsView: UIView {
     private func setupTitleLabel() {
         titleLabel.textAlignment = .left
         titleLabel.render(title: "Instructions", color: .textMain, typography: .subtitle)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupInstructionsStackView() {

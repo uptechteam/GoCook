@@ -60,6 +60,7 @@ final class StepThreeInstructionView: UIView {
     private func setupTitleLabel() {
         titleLabel.font = FontFamily.RedHatDisplay.regular.font(size: 13)
         titleLabel.textAlignment = .left
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupTextView() {
@@ -67,6 +68,7 @@ final class StepThreeInstructionView: UIView {
         textView.textColor = .textMain
         textView.isScrollEnabled = false
         textView.delegate = self
+        textView.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupToolBar() {

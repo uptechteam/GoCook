@@ -59,6 +59,7 @@ public final class RecipeIngredientsView: UIView {
 
     private func setupTitleLabel() {
         titleLabel.render(title: "Ingredients", color: .textMain, typography: .subtitle)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupServingsLabel() {

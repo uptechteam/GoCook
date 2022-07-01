@@ -53,6 +53,7 @@ public final class RecipeInstructionsView: UIView {
 
     private func setupTitleLabel() {
         titleLabel.render(title: "Instructions", color: .textMain, typography: .subtitle)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupInstructionsStackView() {

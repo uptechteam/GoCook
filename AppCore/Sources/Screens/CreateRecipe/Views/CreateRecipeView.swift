@@ -99,6 +99,7 @@ final class CreateRecipeView: UIView {
         stepThreeView.render(props: props.stepThreeViewProps)
         stepFourView.render(props: props.stepFourViewProps)
         stepsView.render(props: props.stepsViewProps)
+        scrollView.layoutIfNeeded()
     }
 
     func updateBottomInset(keyboardHeight: CGFloat) {

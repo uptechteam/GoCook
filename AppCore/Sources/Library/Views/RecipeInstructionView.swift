@@ -52,11 +52,13 @@ public final class RecipeInstructionView: UIView {
         // TODO: Add typography
         titleLabel.font = FontFamily.RedHatDisplay.medium.font(size: 16)
         titleLabel.textColor = .textMain
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupDescriptionLabel() {
         // TODO: Add typography
         descriptionLabel.numberOfLines = 0
+        descriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupStackView() {

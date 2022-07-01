@@ -62,6 +62,7 @@ final class StepOneView: UIView {
 
     private func setupCategoryLabel() {
         categoryLabel.render(title: "Category", color: .textMain, typography: .subtitle)
+        categoryLabel.setContentHuggingPriority(.required, for: .vertical)
     }
 
     private func setupLayout() {
@@ -73,7 +74,6 @@ final class StepOneView: UIView {
     private func setupCollectionView() {
         collectionView.backgroundColor = nil
         collectionView.isScrollEnabled = false
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         collectionView.delegate = self
         collectionView.register(cell: CategoryCell.self)
     }
@@ -134,6 +134,6 @@ extension StepOneView: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        CGSize(width: collectionView.bounds.width - 48, height: 24)
+        CGSize(width: collectionView.bounds.width, height: 24)
     }
 }
