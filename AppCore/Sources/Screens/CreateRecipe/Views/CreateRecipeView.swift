@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 23.06.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
@@ -14,18 +15,17 @@ final class CreateRecipeView: UIView {
         let stepOneViewProps: StepOneView.Props
         let stepTwoViewProps: StepTwoView.Props
         let stepThreeViewProps: StepThreeView.Props
-        let stepFourViewProps: CreateRecipeStepFourView.Props
+        let stepFourViewProps: StepFourView.Props
         let stepsViewProps: CreateRecipeStepsView.Props
     }
 
     // MARK: - Properties
 
-    private let scrollView = UIScrollView()
     private let dividerView = UIView()
     let stepOneView = StepOneView()
     let stepTwoView = StepTwoView()
     let stepThreeView = StepThreeView()
-    let stepFourView = CreateRecipeStepFourView()
+    let stepFourView = StepFourView()
     let stepsView = CreateRecipeStepsView()
 
     // MARK: - Lifecycle
@@ -44,8 +44,10 @@ final class CreateRecipeView: UIView {
     private func setup() {
         setupContentView()
         setupStepsView()
-        setupStackView()
-        setupScrollView()
+        setupStepOneView()
+        setupStepTwoView()
+        setupStepThreeView()
+        setupStepFourView()
         setupDividerView()
     }
 
@@ -62,21 +64,39 @@ final class CreateRecipeView: UIView {
         ])
     }
 
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [stepOneView, stepTwoView, stepThreeView, stepFourView])
-        scrollView.addSubview(stackView, withEdgeInsets: .zero)
-        NSLayoutConstraint.activate([
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+    private func setupStepOneView() {
+        addSubview(stepOneView, constraints: [
+            stepOneView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            stepOneView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stepOneView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stepOneView.bottomAnchor.constraint(equalTo: stepsView.topAnchor)
         ])
     }
 
-    private func setupScrollView() {
-        addSubview(scrollView, constraints: [
-            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: stepsView.topAnchor),
-            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
+    private func setupStepTwoView() {
+        addSubview(stepTwoView, constraints: [
+            stepTwoView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            stepTwoView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stepTwoView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stepTwoView.bottomAnchor.constraint(equalTo: stepsView.topAnchor)
+        ])
+    }
+
+    private func setupStepThreeView() {
+        addSubview(stepThreeView, constraints: [
+            stepThreeView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            stepThreeView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stepThreeView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stepThreeView.bottomAnchor.constraint(equalTo: stepsView.topAnchor)
+        ])
+    }
+
+    private func setupStepFourView() {
+        addSubview(stepFourView, constraints: [
+            stepFourView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            stepFourView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stepFourView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stepFourView.bottomAnchor.constraint(equalTo: stepsView.topAnchor)
         ])
     }
 
@@ -101,6 +121,8 @@ final class CreateRecipeView: UIView {
     }
 
     func updateBottomInset(keyboardHeight: CGFloat) {
-        scrollView.contentInset.bottom = keyboardHeight
+        stepOneView.updateBottomInset(keyboardHeight: keyboardHeight)
+        stepTwoView.updateBottomInset(keyboardHeight: keyboardHeight)
+        stepThreeView.updateBottomInset(keyboardHeight: keyboardHeight)
     }
 }

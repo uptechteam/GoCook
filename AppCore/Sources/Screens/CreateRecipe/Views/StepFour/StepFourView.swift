@@ -1,5 +1,5 @@
 //
-//  StepThreeView.swift
+//  StepFourView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 24.06.2022.
@@ -8,20 +8,21 @@
 import Library
 import UIKit
 
-final class StepThreeView: UIView {
+final class StepFourView: UIView {
 
     struct Props: Equatable {
         let isVisible: Bool
-        let timeViewProps: StepThreeTimeView.Props
-        let instructionsViewProps: StepThreeInstructionsView.Props
+        let headerViewProps: StepFourHeaderView.Props
+        let ingredientsViewProps: RecipeIngredientsView.Props
+        let instructionsViewProps: RecipeInstructionsView.Props
     }
 
     // MARK: - Properties
 
     private let scrollView = UIScrollView()
-    let timeView = StepThreeTimeView()
-    let instructionsView = StepThreeInstructionsView()
-    private let spaceView = UIView()
+    private let headerView = StepFourHeaderView()
+    private let ingredientsView = RecipeIngredientsView()
+    private let instructionsView = RecipeInstructionsView()
 
     // MARK: - Lifecycle
 
@@ -38,26 +39,21 @@ final class StepThreeView: UIView {
 
     private func setup() {
         setupContentView()
-        setupSpaceView()
         setupStackView()
         setupScrollView()
     }
 
     private func setupContentView() {
-        backgroundColor = .appWhite
-    }
-
-    private func setupSpaceView() {
-        spaceView.setContentHuggingPriority(.defaultLow, for: .vertical)
+        backgroundColor = .gray100
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [timeView, instructionsView, spaceView])
+        let stackView = UIStackView(arrangedSubviews: [headerView, ingredientsView, instructionsView])
         stackView.axis = .vertical
-        stackView.setCustomSpacing(56, after: timeView)
-        scrollView.addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
+        stackView.spacing = 8
+        scrollView.addSubview(stackView, withEdgeInsets: .zero)
         NSLayoutConstraint.activate([
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48)
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
     }
 
@@ -72,11 +68,8 @@ final class StepThreeView: UIView {
 
     func render(props: Props) {
         isHidden = !props.isVisible
-        timeView.render(props: props.timeViewProps)
+        headerView.render(props: props.headerViewProps)
+        ingredientsView.render(props: props.ingredientsViewProps)
         instructionsView.render(props: props.instructionsViewProps)
-    }
-
-    func updateBottomInset(keyboardHeight: CGFloat) {
-        scrollView.contentInset.bottom = keyboardHeight
     }
 }

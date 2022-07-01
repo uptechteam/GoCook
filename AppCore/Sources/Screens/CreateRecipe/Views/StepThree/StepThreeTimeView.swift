@@ -50,6 +50,7 @@ final class StepThreeTimeView: UIView {
     }
 
     private func setupTitleLabel() {
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         titleLabel.render(title: "Cooking time, min", color: .textMain, typography: .subtitle)
     }
 

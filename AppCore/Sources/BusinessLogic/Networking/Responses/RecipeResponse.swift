@@ -10,16 +10,17 @@ import Foundation
 import Helpers
 
 public struct RecipeResponse: Decodable {
-    let avatarURL: String
     let id: String
+    let imageID: String
     let name: String
     let rating: Double
 
     var domainModel: Recipe {
-        Recipe(
+        let recipeImageURL = AppEnvironment.current.baseURL.appendingPathComponent("files/recipe/\(imageID)")
+        return Recipe(
             id: .init(rawValue: id),
             name: name,
-            recipeImageSource: URL(string: avatarURL).flatMap(ImageSource.remote(url:)) ?? .asset(nil),
+            recipeImageSource: ImageSource.remote(url: recipeImageURL),
             rating: rating
         )
     }

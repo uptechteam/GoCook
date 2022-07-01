@@ -5,14 +5,23 @@
 //  Created by Oleksii Andriushchenko on 16.06.2022.
 //
 
-import Library
 import UIKit
 
-final class RecipeInstructionView: UIView {
+public final class RecipeInstructionView: UIView {
 
-    struct Props: Equatable {
-        let title: String
-        let description: String
+    public struct Props: Equatable {
+
+        // MARK: - Properties
+
+        public let title: String
+        public let description: String
+
+        // MARK: - Lifecycle
+
+        public init(title: String, description: String) {
+            self.title = title
+            self.description = description
+        }
     }
 
     // MARK: - Properties
@@ -43,11 +52,13 @@ final class RecipeInstructionView: UIView {
         // TODO: Add typography
         titleLabel.font = FontFamily.RedHatDisplay.medium.font(size: 16)
         titleLabel.textColor = .textMain
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupDescriptionLabel() {
         // TODO: Add typography
         descriptionLabel.numberOfLines = 0
+        descriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupStackView() {
@@ -60,7 +71,7 @@ final class RecipeInstructionView: UIView {
 
     // MARK: - Public methods
 
-    func render(props: Props) {
+    public func render(props: Props) {
         titleLabel.text = props.title
         descriptionLabel.render(title: props.description, color: .textSecondary, typography: .bodyTwo)
     }

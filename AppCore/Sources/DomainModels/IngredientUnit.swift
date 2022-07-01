@@ -1,5 +1,5 @@
 //
-//  Unit.swift
+//  IngredientUnit.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 29.06.2022.

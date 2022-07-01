@@ -12,12 +12,14 @@ final class CreateRecipeStepsView: UIView {
 
     struct Props: Equatable {
         let title: String
+        let isNextButtonVisible: Bool
+        let isFinishButtonVisible: Bool
     }
 
     // MARK: - Properties
 
     private let dividerView = UIView()
-    let backButton = Button(
+    private let backButton = Button(
         config: ButtonConfig(
             buttonSize: .medium,
             colorConfig: ColorConfig(main: .primaryMain, secondary: .primaryPressed),
@@ -25,7 +27,7 @@ final class CreateRecipeStepsView: UIView {
         )
     )
     private let titleLabel = UILabel()
-    let nextButton = Button(
+    private let nextButton = Button(
         config: ButtonConfig(
             buttonSize: .medium,
             colorConfig: ColorConfig(main: .primaryMain, secondary: .primaryPressed),
@@ -33,9 +35,17 @@ final class CreateRecipeStepsView: UIView {
             isBackgroundVisible: false
         )
     )
+    private let finishButton = Button(
+        config: ButtonConfig(
+            buttonSize: .medium,
+            colorConfig: ColorConfig(main: .primaryMain, secondary: .primaryPressed),
+            isBackgroundVisible: false
+        )
+    )
     // callbacks
     var onDidTapBack: () -> Void = { }
     var onDidTapNext: () -> Void = { }
+    var onDidTapFinish: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -55,6 +65,7 @@ final class CreateRecipeStepsView: UIView {
         setupBackButton()
         setupTitleLabel()
         setupNextButton()
+        setupFinishButton()
         setupStackView()
     }
 
@@ -87,8 +98,16 @@ final class CreateRecipeStepsView: UIView {
         nextButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapNext() }), for: .touchUpInside)
     }
 
+    private func setupFinishButton() {
+        finishButton.setTitle("Finish")
+        finishButton.addAction(
+            UIAction(handler: { [weak self] _ in self?.onDidTapFinish() }),
+            for: .touchUpInside
+        )
+    }
+
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [backButton, titleLabel, nextButton])
+        let stackView = UIStackView(arrangedSubviews: [backButton, titleLabel, nextButton, finishButton])
         stackView.alignment = .center
         addSubview(stackView, constraints: [
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
@@ -101,5 +120,7 @@ final class CreateRecipeStepsView: UIView {
 
     func render(props: Props) {
         titleLabel.text = props.title
+        nextButton.isHidden = !props.isNextButtonVisible
+        finishButton.isHidden = !props.isFinishButtonVisible
     }
 }

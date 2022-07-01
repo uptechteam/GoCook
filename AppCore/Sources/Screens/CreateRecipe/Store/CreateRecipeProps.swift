@@ -196,11 +196,46 @@ extension CreateRecipeViewController {
         }
     }
 
-    private static func makeStepFourViewProps(state: State) -> CreateRecipeStepFourView.Props {
-        .init(isVisible: state.step == 3)
+    private static func makeStepFourViewProps(state: State) -> StepFourView.Props {
+        return .init(
+            isVisible: state.step == 3,
+            headerViewProps: makeStepFourHeaderViewProps(state: state),
+            ingredientsViewProps: makeIngredientsViewProps(state: state),
+            instructionsViewProps: makeRecipeInstructionsViewProps(state: state)
+        )
+    }
+
+    private static func makeStepFourHeaderViewProps(state: State) -> StepFourHeaderView.Props {
+        return .init(
+            recipeImageSource: .asset(state.stepOneState.recipeImageState.uploadedImageSource?.image),
+            name: state.stepOneState.mealName,
+            timeViewProps: RecipeTimeView.Props(timeDescription: "\(state.stepThreeState.cookingTime ?? 0) min")
+        )
+    }
+
+    private static func makeIngredientsViewProps(state: State) -> RecipeIngredientsView.Props {
+        return .init(
+            servingsDescription: "\(state.stepTwoState.numberOfServings ?? 0) servings",
+            ingredientsProps: state.stepTwoState.ingredients.map { ingredient in
+                RecipeIngredientView.Props(
+                    name: ingredient.name,
+                    weightDescription: "\(ingredient.amount ?? 0) \(ingredient.unit.reduction)"
+                )
+            }
+        )
+    }
+
+    private static func makeRecipeInstructionsViewProps(state: State) -> RecipeInstructionsView.Props {
+        return .init(instructionsProps: state.stepThreeState.instructions.enumerated().map { index, instruction in
+            return RecipeInstructionView.Props(title: "\(index + 1) Step", description: instruction)
+        })
     }
 
     private static func makeStepsViewProps(state: State) -> CreateRecipeStepsView.Props {
-        return .init(title: "\(state.step + 1) / 4")
+        return .init(
+            title: "\(state.step + 1) / 4",
+            isNextButtonVisible: state.step != 3,
+            isFinishButtonVisible: state.step == 3
+        )
     }
 }

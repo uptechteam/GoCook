@@ -18,8 +18,10 @@ final class StepTwoView: UIView {
 
     // MARK: - Properties
 
+    private let scrollView = UIScrollView()
     let servingsView = StepTwoServingsView()
     let ingredientsView = StepTwoIngredientsView()
+    private let spaceView = UIView()
 
     // MARK: - Lifecycle
 
@@ -36,18 +38,39 @@ final class StepTwoView: UIView {
 
     private func setup() {
         setupContentView()
+        setupSpaceView()
         setupStackView()
+        setupScrollView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
     }
 
+    private func setupSpaceView() {
+        spaceView.setContentHuggingPriority(.required, for: .vertical)
+        let constraint = spaceView.heightAnchor.constraint(equalToConstant: 0)
+        constraint.priority = .init(249)
+        NSLayoutConstraint.activate([
+            constraint
+        ])
+    }
+
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [servingsView, ingredientsView, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [servingsView, ingredientsView, spaceView])
         stackView.axis = .vertical
-        stackView.spacing = 56
-        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
+        stackView.setCustomSpacing(56, after: servingsView)
+        scrollView.addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
+        NSLayoutConstraint.activate([
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48)
+        ])
+    }
+
+    private func setupScrollView() {
+        addSubview(scrollView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
+        ])
     }
 
     // MARK: - Public methods
@@ -56,5 +79,9 @@ final class StepTwoView: UIView {
         isHidden = !props.isVisible
         servingsView.render(props: props.servingsViewProps)
         ingredientsView.render(props: props.ingredientsViewProps)
+    }
+
+    func updateBottomInset(keyboardHeight: CGFloat) {
+        scrollView.contentInset.bottom = keyboardHeight
     }
 }

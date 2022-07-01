@@ -15,6 +15,7 @@ extension CreateRecipeViewController {
     public typealias Store = ReduxStore<State, Action>
 
     public struct State: Equatable {
+        var isUploadingRecipe: Bool
         var step: Int
         var stepOneState: StepOneState
         var stepTwoState: StepTwoState
@@ -36,6 +37,7 @@ extension CreateRecipeViewController {
         case deleteIngredientTapped(IndexPath)
         case deleteInstructionTapped(Int)
         case deleteTapped
+        case finishTapped
         case imagePicked(ImageSource)
         case ingredientAmountTapped(IndexPath)
         case ingredientAmountChanged(id: String, amount: String, unit: IngredientUnit)
@@ -47,6 +49,7 @@ extension CreateRecipeViewController {
         case recipeImageTapped
         case servingsAmountChanged(Int)
         case uploadImage(DomainModelAction<String>)
+        case uploadRecipe(DomainModelAction<Void>)
     }
 
     enum Alert {
@@ -64,26 +67,36 @@ extension CreateRecipeViewController {
 
         public let fileClient: FileClienting
         public let keyboardManager: KeyboardManaging
+        public let recipesClient: RecipesClienting
 
         // MARK: - Lifecycle
 
-        public init(fileClient: FileClienting, keyboardManager: KeyboardManaging) {
+        public init(
+            fileClient: FileClienting,
+            keyboardManager: KeyboardManaging,
+            recipesClient: RecipesClienting
+        ) {
             self.fileClient = fileClient
             self.keyboardManager = keyboardManager
+            self.recipesClient = recipesClient
         }
     }
 
     public static func makeStore(dependencies: Dependencies) -> Store {
-        let uploadImageMiddleware = makeUploadImageMiddleware(dependencies: dependencies)
+        let uploadImageMiddleware = makeUploadImageMiddleware(
+            dependencies: dependencies
+        )
+        let uploadMiddleware = makeUploadMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
             reducer: reduce,
-            middlewares: [uploadImageMiddleware]
+            middlewares: [uploadImageMiddleware, uploadMiddleware]
         )
     }
 
     private static func makeInitialState(dependencies: Dependencies) -> State {
         return State(
+            isUploadingRecipe: false,
             step: 0,
             stepOneState: StepOneState(recipeImageState: .empty, mealName: "", categories: Set()),
             stepTwoState: StepTwoState(ingredients: [.makeNewIngredient()]),
@@ -153,6 +166,9 @@ extension CreateRecipeViewController {
 
         case .deleteTapped:
             newState.stepOneState.recipeImageState = .empty
+
+        case .finishTapped:
+            newState.isUploadingRecipe = true
 
         case .imagePicked(let imageSource):
             newState.stepOneState.recipeImageState = .uploading(imageSource)
@@ -229,6 +245,9 @@ extension CreateRecipeViewController {
             default:
                 newState.stepOneState.recipeImageState = .empty
             }
+
+        case .uploadRecipe:
+            newState.isUploadingRecipe = false
         }
 
         return newState

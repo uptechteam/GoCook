@@ -5,13 +5,21 @@
 //  Created by Oleksii Andriushchenko on 16.06.2022.
 //
 
-import Library
 import UIKit
 
-final class RecipeInstructionsView: UIView {
+public final class RecipeInstructionsView: UIView {
 
-    struct Props: Equatable {
-        let instructionsProps: [RecipeInstructionView.Props]
+    public struct Props: Equatable {
+
+        // MARK: - Properties
+
+        public let instructionsProps: [RecipeInstructionView.Props]
+
+        // MARK: - Lifecycle
+
+        public init(instructionsProps: [RecipeInstructionView.Props]) {
+            self.instructionsProps = instructionsProps
+        }
     }
 
     // MARK: - Properties
@@ -45,6 +53,7 @@ final class RecipeInstructionsView: UIView {
 
     private func setupTitleLabel() {
         titleLabel.render(title: "Instructions", color: .textMain, typography: .subtitle)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupInstructionsStackView() {
@@ -62,14 +71,14 @@ final class RecipeInstructionsView: UIView {
 
     // MARK: - Public methods
 
-    func render(props: Props) {
+    public func render(props: Props) {
         renderInstructions(props: props.instructionsProps)
     }
 
     // MARK: - Private methods
 
     private func renderInstructions(props: [RecipeInstructionView.Props]) {
-        instructionsStackView.arrangedSubviews.forEach(instructionsStackView.removeArrangedSubview)
+        instructionsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         props.map(createInstructionView).forEach(instructionsStackView.addArrangedSubview)
     }
 
