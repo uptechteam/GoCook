@@ -63,7 +63,7 @@ final class StepTwoIngredientsView: UIView {
 
     private func setupTitleLabel() {
         titleLabel.textAlignment = .left
-        titleLabel.render(title: "Ingredients", color: .textMain, typography: .subtitle)
+        titleLabel.render(title: .createRecipeStepTwoIngredientsTitle, color: .textMain, typography: .subtitle)
     }
 
     private func setupLayout() {
@@ -80,7 +80,7 @@ final class StepTwoIngredientsView: UIView {
     }
 
     private func setupAddIngredientButton() {
-        addIngredientButton.setTitle("Add ingredient")
+        addIngredientButton.setTitle(.createRecipeStepTwoAddIngredient)
         addIngredientButton.setImage(.addIcon)
         addIngredientButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapAddIngredient() }),

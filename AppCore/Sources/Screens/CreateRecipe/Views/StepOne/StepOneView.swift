@@ -66,7 +66,7 @@ final class StepOneView: UIView {
     }
 
     private func setupCategoryLabel() {
-        categoryLabel.render(title: "Category", color: .textMain, typography: .subtitle)
+        categoryLabel.render(title: .createRecipeStepOneCategoryTitle, color: .textMain, typography: .subtitle)
         categoryLabel.setContentHuggingPriority(.required, for: .vertical)
     }
 
@@ -88,7 +88,11 @@ final class StepOneView: UIView {
     }
 
     private func setupCategoryErrorLabel() {
-        categoryErrorLabel.render(title: "Select meal category", color: .errorMain, typography: .bodyTwo)
+        categoryErrorLabel.render(
+            title: .createRecipeStepOneCategoryValidation,
+            color: .errorMain,
+            typography: .bodyTwo
+        )
     }
 
     private func setupStackView() {
@@ -155,6 +159,8 @@ extension StepOneView {
         )
     }
 }
+
+// MARK: - Delegate
 
 extension StepOneView: UICollectionViewDelegateFlowLayout {
     func collectionView(

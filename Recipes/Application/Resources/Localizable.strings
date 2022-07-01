@@ -19,3 +19,76 @@
 "profile.empty.content.title" = "You haven’t create any recipe yet\nLet’s chage it";
 "profile.empty.content.button.title" = "Add recipe";
 "profile.button.add.more.title" = "Add new";
+
+// MARK: - Create Recipe
+
+"create.recipe.title" = "Create recipe";
+"create.recipe.step.one.meal.title" = "MEAL NAME";
+"create.recipe.step.one.category.title" = "Category";
+"create.recipe.step.one.upload.error" = "Uploading unsuccessfull. Please retry";
+"create.recipe.step.one.photo.validation" = "Upload meal photo";
+"create.recipe.step.one.meal.validation" = "Enter meal name";
+"create.recipe.step.one.category.validation" = "Select meal category";
+"create.recipe.step.two.servings.title" = "Number of servings";
+"create.recipe.step.two.servings.placeholder" = "Enter amount";
+"create.recipe.step.two.ingredients.title" = "Ingredients";
+"create.recipe.step.two.ingredients.name" = "Enter name";
+"create.recipe.step.two.ingredients.amount" = "Enter amount";
+"create.recipe.step.two.add.ingredient" = "Add ingredient";
+"create.recipe.step.three.time.title" = "Cooking time, min";
+"create.recipe.step.three.time.text" = "%d min";
+"create.recipe.step.three.time.placeholder" = "Enter amount";
+"create.recipe.step.three.instructions.title" = "Instructions";
+"create.recipe.step.three.step.title" = "STEP %d";
+"create.recipe.step.three.step.validation" = "Enter step %d";
+"create.recipe.step.three.add.step" = "Add step";
+"create.recipe.navigation.back" = "Back";
+"create.recipe.navigation.title" = "%d / 4";
+"create.recipe.navigation.next" = "Next";
+"create.recipe.navigation.finish" = "Finish";
+"create.recipe.alert.delete.progress.title" = "Delete progress?";
+"create.recipe.alert.delete.progress.message" = "Closing this page will delete the progress you’ve made in recipe creation";
+"create.recipe.alert.delete.progress.cancel" = "Cancel";
+"create.recipe.alert.delete.progress.delete" = "Delete";
+
+// MARK: - Input
+
+"input.servings.title" = "Number of servings";
+"input.servings.placeholder" = "Amount";
+"input.ingredient.title" = "Ingredient name";
+"input.ingredient.placeholder" = "Name";
+"input.amount.title" = "Ingredient amount";
+"input.amount.placeholder" = "Amount";
+"input.time.title" = "Cooking time, min";
+"input.time.placeholder" = "Amount";
+"input.button.title" = "Save";
+
+// MARK: - Image picker
+
+"image.picker.camera" = "Take photo";
+"image.picker.library" = "Chose from library";
+"image.picker.remove" = "Remove current photo";
+"image.picker.cancel" = "Cancel";
+
+// MARK: - Recipe
+
+"recipe.ingredients.title" = "Ingredients";
+"recipe.ingredients.servings" = "%d servings";
+"recipe.instructions.title" = "Instructions";
+"recipe.instructions.step.title" = "%d Step";
+
+// <===================================================================================================================>
+// Domain models
+// <===================================================================================================================>
+
+// MARK: - Ingredient Unit
+
+"ingredient.unit.cup.reduction" = "cup";
+"ingredient.unit.gram.reduction" = "g";
+"ingredient.unit.kilogram.reduction" = "kg";
+"ingredient.unit.liter.reduction" = "liter";
+"ingredient.unit.milliliter.reduction" = "ml";
+"ingredient.unit.pinch.reduction" = "pinch";
+"ingredient.unit.table.spoon.reduction" = "tbsp";
+"ingredient.unit.tea.spoon.reduction" = "tsp";
+"ingredient.unit.whole.reduction" = "whole";

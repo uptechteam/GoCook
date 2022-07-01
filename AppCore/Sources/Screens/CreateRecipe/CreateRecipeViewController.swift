@@ -79,7 +79,7 @@ public final class CreateRecipeViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupUI() {
-        navigationItem.title = "Create recipe"
+        navigationItem.title = .createRecipeTitle
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: .close,
             primaryAction: UIAction(handler: { [store] _ in store.dispatch(action: .closeTapped) })
@@ -190,14 +190,14 @@ public final class CreateRecipeViewController: UIViewController {
 
     private func showDeleteProgressAlert() {
         let alertController = UIAlertController(
-            title: "Delete progress?",
-            message: "Closing this page will delete the progress you've made in recipe creation",
+            title: .createRecipeAlertDeleteProgressTitle,
+            message: .createRecipeAlertDeleteProgressMessage,
             preferredStyle: .alert
         )
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alertController.addAction(UIAlertAction(title: .createRecipeAlertDeleteProgressCancel, style: .cancel))
         alertController.addAction(
             UIAlertAction(
-                title: "Delete",
+                title: .createRecipeAlertDeleteProgressDelete,
                 style: .destructive,
                 handler: { [store] _ in store.dispatch(action: .closeConfirmed) }
             )
@@ -209,14 +209,14 @@ public final class CreateRecipeViewController: UIViewController {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(
-                title: "Take photo",
+                title: .imagePickerCamera,
                 style: .default,
                 handler: { [weak self] _ in self?.showImagePicker(source: .camera) }
             )
         )
         alertController.addAction(
             UIAlertAction(
-                title: "Choose from library",
+                title: .imagePickerLibrary,
                 style: .default,
                 handler: { [weak self] _ in self?.showImagePicker(source: .photoLibrary) }
             )
@@ -224,13 +224,13 @@ public final class CreateRecipeViewController: UIViewController {
         if isDeleteButtonPresent {
             alertController.addAction(
                 UIAlertAction(
-                    title: "Remove current photo",
+                    title: .imagePickerRemove,
                     style: .default,
                     handler: { [store] _ in store.dispatch(action: .deleteTapped) }
                 )
             )
         }
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alertController.addAction(UIAlertAction(title: .imagePickerCancel, style: .cancel))
         present(alertController, animated: true)
     }
 

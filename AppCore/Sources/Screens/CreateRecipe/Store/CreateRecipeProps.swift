@@ -40,17 +40,24 @@ extension CreateRecipeViewController {
             recipeImageSource: state.stepOneState.recipeImageState.uploadedImageSource,
             isThreeDostImageViewVisible: state.stepOneState.recipeImageState.uploadedImageSource != nil,
             isLoaderVisible: state.stepOneState.recipeImageState.isUploading,
-            errorViewProps: ErrorView.Props(isVisible: !state.stepOneState.isRecipeImageValid, message: "Upload meal photo")
+            errorViewProps: makeRecipeErrorViewProps(state: state)
+        )
+    }
+
+    private static func makeRecipeErrorViewProps(state: State) -> ErrorView.Props {
+        return ErrorView.Props(
+            isVisible: !state.stepOneState.isRecipeImageValid,
+            message: .createRecipeStepOnePhotoValidation
         )
     }
 
     private static func makeMealNameInputViewProps(state: State) -> InputView.Props {
         let isValid = state.stepOneState.isMealNameValid
         return .init(
-            title: "MEAL NAME",
+            title: .createRecipeStepOneMealTitle,
             titleColorSource: .color(isValid ? .textSecondary : .errorMain),
             dividerColorSource: .color(isValid ? .appBlack : .errorMain),
-            errorMessage: isValid ? "" : "Enter meal name",
+            errorMessage: isValid ? "" : .createRecipeStepOneMealValidation,
             isErrorMessageVisible: !isValid
         )
     }
@@ -85,7 +92,7 @@ extension CreateRecipeViewController {
 
     private static func makeServingsViewProps(state: State) -> StepTwoServingsView.Props {
         return .init(
-            amountText: state.stepTwoState.numberOfServings.flatMap(String.init) ?? "Enter amount",
+            amountText: state.stepTwoState.numberOfServings.flatMap(String.init) ?? .createRecipeStepTwoServingsPlaceholder,
             amountColorSource: makeAmountColorSource(state: state),
             amountTypography: state.stepTwoState.numberOfServings == nil ? .body : .subtitleThree
         )
@@ -112,7 +119,7 @@ extension CreateRecipeViewController {
     private static func makeIngredientCellProps(state: State, ingredient: NewIngredient) -> IngredientCell.Props {
         return .init(
             id: ingredient.id,
-            name: ingredient.name.isEmpty ? "Enter name" : ingredient.name,
+            name: ingredient.name.isEmpty ? .createRecipeStepTwoIngredientsName : ingredient.name,
             nameColorSource: makeIngredientNameColorSource(state: state, ingredient: ingredient),
             nameTypography: ingredient.name.isEmpty ? .body : .subtitleThree,
             amount: makeIngredientAmountText(ingredient: ingredient),
@@ -134,7 +141,7 @@ extension CreateRecipeViewController {
 
     private static func makeIngredientAmountText(ingredient: NewIngredient) -> String {
         guard let amount = ingredient.amount else {
-            return "Enter amount"
+            return .createRecipeStepTwoIngredientsAmount
         }
 
         return "\(amount) \(ingredient.unit.reduction)"
@@ -160,7 +167,7 @@ extension CreateRecipeViewController {
 
     private static func makeTimeViewProps(state: State) -> StepThreeTimeView.Props {
         return .init(
-            timeText: state.stepThreeState.cookingTime.flatMap(String.init) ?? "Enter amount",
+            timeText: state.stepThreeState.cookingTime.flatMap(String.init) ?? .createRecipeStepThreeTimePlaceholder,
             timeColorSource: makeCookingTimeColorSource(state: state),
             timeTypography: state.stepThreeState.cookingTime == nil ? .body : .subtitleThree
         )
@@ -180,11 +187,11 @@ extension CreateRecipeViewController {
         let areInstructionsValid = state.stepThreeState.areInstructionsValid
         let instruction = state.stepThreeState.instructions[index]
         return StepThreeInstructionView.Props(
-            title: "STEP \(index + 1)",
+            title: .createRecipeStepThreeStepTitle(index + 1),
             titleColorSource: .color(areInstructionsValid || !instruction.isEmpty ? .textSecondary : .errorMain),
             text: instruction,
             dividerColorSource: .color(areInstructionsValid || !instruction.isEmpty ? .appBlack : .errorMain),
-            errorMessage: "Enter step \(index + 1)",
+            errorMessage: .createRecipeStepThreeStepValidation(index + 1),
             isErrorMessageVisible: !areInstructionsValid && instruction.isEmpty,
             isDeleteButtonVisible: state.stepThreeState.instructions.count > 1
         )
@@ -213,13 +220,17 @@ extension CreateRecipeViewController {
         return .init(
             recipeImageSource: .asset(state.stepOneState.recipeImageState.uploadedImageSource?.image),
             name: state.stepOneState.mealName,
-            timeViewProps: RecipeTimeView.Props(timeDescription: "\(state.stepThreeState.cookingTime ?? 0) min")
+            timeViewProps: makeTimeViewProps(state: state)
         )
+    }
+
+    private static func makeTimeViewProps(state: State) -> RecipeTimeView.Props {
+        .init(timeDescription: .createRecipeStepThreeTimeText(state.stepThreeState.cookingTime ?? 0))
     }
 
     private static func makeIngredientsViewProps(state: State) -> RecipeIngredientsView.Props {
         return .init(
-            servingsDescription: "\(state.stepTwoState.numberOfServings ?? 0) servings",
+            servingsDescription: .recipeIngredientsServings(state.stepTwoState.numberOfServings ?? 0),
             ingredientsProps: state.stepTwoState.ingredients.map { ingredient in
                 RecipeIngredientView.Props(
                     name: ingredient.name,
@@ -231,13 +242,13 @@ extension CreateRecipeViewController {
 
     private static func makeRecipeInstructionsViewProps(state: State) -> RecipeInstructionsView.Props {
         return .init(instructionsProps: state.stepThreeState.instructions.enumerated().map { index, instruction in
-            return RecipeInstructionView.Props(title: "\(index + 1) Step", description: instruction)
+            return RecipeInstructionView.Props(title: .recipeInstructionsStepTitle(index + 1), description: instruction)
         })
     }
 
     private static func makeStepsViewProps(state: State) -> CreateRecipeStepsView.Props {
         return .init(
-            title: "\(state.step + 1) / 4",
+            title: .createRecipeNavigationTitle(state.step + 1),
             isNextButtonVisible: state.step != 3,
             isFinishButtonVisible: state.step == 3 && !state.isUploadingRecipe,
             isLoaderVisible: state.isUploadingRecipe

@@ -50,7 +50,7 @@ final class StepTwoServingsView: UIView {
     }
 
     private func setupTitleLabel() {
-        titleLabel.render(title: "Number of servings", color: .textMain, typography: .subtitle)
+        titleLabel.render(title: .createRecipeStepTwoServingsTitle, color: .textMain, typography: .subtitle)
     }
 
     private func setupAmountLabel() {

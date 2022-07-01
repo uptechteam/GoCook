@@ -257,7 +257,7 @@ extension CreateRecipeViewController {
                 newState.stepOneState.recipeImageState.upload(with: imageID)
 
             case .failure:
-                newState.stepOneState.recipeImageState = .error(message: "Uploading unsuccessfull. Please retry")
+                newState.stepOneState.recipeImageState = .error(message: .createRecipeStepOneUploadError)
 
             case .trigger:
                 break

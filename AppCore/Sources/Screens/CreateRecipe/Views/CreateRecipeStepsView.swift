@@ -83,7 +83,7 @@ final class CreateRecipeStepsView: UIView {
     }
 
     private func setupBackButton() {
-        backButton.setTitle("Back")
+        backButton.setTitle(.createRecipeNavigationBack)
         backButton.setImage(.arrowBack)
         backButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapBack() }), for: .touchUpInside)
     }
@@ -96,13 +96,13 @@ final class CreateRecipeStepsView: UIView {
     }
 
     private func setupNextButton() {
-        nextButton.setTitle("Next")
+        nextButton.setTitle(.createRecipeNavigationNext)
         nextButton.setImage(.arrowForward)
         nextButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapNext() }), for: .touchUpInside)
     }
 
     private func setupFinishButton() {
-        finishButton.setTitle("Finish")
+        finishButton.setTitle(.createRecipeNavigationFinish)
         finishButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapFinish() }),
             for: .touchUpInside

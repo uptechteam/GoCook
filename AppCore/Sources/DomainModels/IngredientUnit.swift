@@ -5,7 +5,7 @@
 //  Created by Oleksii Andriushchenko on 29.06.2022.
 //
 
-import Foundation
+import Library
 
 public enum IngredientUnit: Equatable {
     case cup
@@ -21,31 +21,31 @@ public enum IngredientUnit: Equatable {
     public var reduction: String {
         switch self {
         case .cup:
-            return "cup"
+            return .ingredientUnitCupReduction
 
         case .gram:
-            return "g"
+            return .ingredientUnitGramReduction
 
         case .kilogram:
-            return "kg"
+            return .ingredientUnitKilogramReduction
 
         case .liter:
-            return "liter"
+            return .ingredientUnitLiterReduction
 
         case .milliliter:
-            return "ml"
+            return .ingredientUnitMilliliterReduction
 
         case .pinch:
-            return "pinch"
+            return .ingredientUnitPinchReduction
 
         case .tableSpoon:
-            return "tbsp"
+            return .ingredientUnitTableSpoonReduction
 
         case .teaSpoon:
-            return "tsp"
+            return .ingredientUnitTeaSpoonReduction
 
         case .whole:
-            return "whole"
+            return .ingredientUnitWhileReduction
         }
     }
 
