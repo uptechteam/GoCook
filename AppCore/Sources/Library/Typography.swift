@@ -8,6 +8,7 @@
 import UIKit
 
 public enum Typography {
+    case headerOne
     case headerTwo
     case subtitle
     case subtitleTwo
@@ -21,7 +22,7 @@ public enum Typography {
 
     public var font: UIFont {
         switch self {
-        case .headerTwo, .subtitle, .subtitleTwo, .description:
+        case .headerOne, .headerTwo, .subtitle, .subtitleTwo, .description:
             return FontFamily.RedHatDisplay.medium.font(size: fontSize)
 
         case .subtitleThree, .body, .bodyTwo:
@@ -37,6 +38,9 @@ public enum Typography {
 
     public var fontSize: CGFloat {
         switch self {
+        case .headerOne:
+            return 40
+
         case .headerTwo:
             return 30
 
@@ -56,7 +60,7 @@ public enum Typography {
 
     public var lineHeightMultiple: CGFloat {
         switch self {
-        case .headerTwo, .subtitle:
+        case .headerOne, .headerTwo, .subtitle:
             return 0.91
 
         case .subtitleTwo, .subtitleThree:

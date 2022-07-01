@@ -34,13 +34,21 @@ public final class AppCoordinator {
 
     public func start() {
         window.makeKeyAndVisible()
-        showTabBar()
+        showRegistration()
     }
 
     // MARK: - Private methods
 
     private func loadResources() {
         FontFamily.registerFonts()
+    }
+
+    private func showRegistration() {
+        let navigationController = UINavigationController()
+        let coordinator = RegistrationCoordinator(container: container, navigationController: navigationController)
+        coordinator.start()
+        childCoordinators.append(coordinator)
+        window.rootViewController = coordinator.rootViewController
     }
 
     private func showTabBar() {

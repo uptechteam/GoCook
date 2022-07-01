@@ -45,7 +45,7 @@ public enum IngredientUnit: Equatable {
             return .ingredientUnitTeaSpoonReduction
 
         case .whole:
-            return .ingredientUnitWhileReduction
+            return .ingredientUnitWholeReduction
         }
     }
 

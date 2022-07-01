@@ -97,7 +97,7 @@ final class CreateRecipeStepsView: UIView {
 
     private func setupNextButton() {
         nextButton.setTitle(.createRecipeNavigationNext)
-        nextButton.setImage(.arrowForward)
+        nextButton.setImage(.arrowForwardGreen)
         nextButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapNext() }), for: .touchUpInside)
     }
 

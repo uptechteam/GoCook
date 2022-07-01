@@ -13,6 +13,7 @@ import Home
 import Input
 import Recipe
 import Profile
+import SignUp
 
 extension DependencyContainer {
     public static func injectViewControllers(container: DependencyContainer) {
@@ -23,6 +24,7 @@ extension DependencyContainer {
         injectInputViewController(container: container)
         injectRecipeViewController(container: container)
         injectProfileViewController(container: container)
+        injectSignUpViewController(container: container)
     }
 
     // MARK: - App Tab Bar
@@ -211,6 +213,33 @@ extension DependencyContainer {
         )
         container.register(.unique, type: ProfileViewController.self) { coordinator in
             return ProfileViewController(
+                store: try container.resolve(),
+                actionCreator: try container.resolve(),
+                coordinator: coordinator
+            )
+        }
+    }
+
+    // MARK: - Sign Up
+
+    private static func injectSignUpViewController(container: DependencyContainer) {
+        container.register(
+            .shared,
+            type: SignUpViewController.Dependencies.self,
+            factory: SignUpViewController.Dependencies.init
+        )
+        container.register(
+            .unique,
+            type: SignUpViewController.Store.self,
+            factory: SignUpViewController.makeStore(dependencies:)
+        )
+        container.register(
+            .unique,
+            type: SignUpViewController.ActionCreator.self,
+            factory: SignUpViewController.ActionCreator.init
+        )
+        container.register(.unique, type: SignUpViewController.self) { coordinator in
+            return SignUpViewController(
                 store: try container.resolve(),
                 actionCreator: try container.resolve(),
                 coordinator: coordinator
