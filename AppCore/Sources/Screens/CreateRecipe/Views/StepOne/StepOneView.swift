@@ -13,6 +13,7 @@ final class StepOneView: UIView {
 
     struct Props: Equatable {
         let isVisible: Bool
+        let errorViewProps: ErrorView.Props
         let recipeViewProps: StepOneRecipeView.Props
         let mealNameInputViewProps: InputView.Props
         let items: [CategoryCell.Props]
@@ -25,6 +26,7 @@ final class StepOneView: UIView {
     // MARK: - Properties
 
     private let scrollView = UIScrollView()
+    private let errorView = ErrorView()
     let recipeView = StepOneRecipeView()
     let mealNameInputView = InputView()
     private let categoryLabel = UILabel()
@@ -56,6 +58,7 @@ final class StepOneView: UIView {
         setupCategoryErrorLabel()
         setupStackView()
         setupScrollView()
+        setupErrorView()
     }
 
     private func setupContentView() {
@@ -110,10 +113,19 @@ final class StepOneView: UIView {
         ])
     }
 
+    private func setupErrorView() {
+        addSubview(errorView, constraints: [
+            errorView.topAnchor.constraint(equalTo: topAnchor),
+            errorView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            errorView.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ])
+    }
+
     // MARK: - Public methods
 
     func render(props: Props) {
         isHidden = !props.isVisible
+        errorView.render(props: props.errorViewProps)
         recipeView.render(props: props.recipeViewProps)
         mealNameInputView.render(props: props.mealNameInputViewProps)
         collectionViewHeightConstraint.constant = CGFloat(props.items.count * 24 + (props.items.count - 1) * 20)

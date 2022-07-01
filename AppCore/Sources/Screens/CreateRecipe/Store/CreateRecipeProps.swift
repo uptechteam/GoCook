@@ -24,6 +24,10 @@ extension CreateRecipeViewController {
     private static func makeStepOneViewProps(state: State) -> StepOneView.Props {
         return .init(
             isVisible: state.step == 0,
+            errorViewProps: ErrorView.Props(
+                isVisible: state.stepOneState.recipeImageState.errorMessage != nil,
+                message: state.stepOneState.recipeImageState.errorMessage ?? ""
+            ),
             recipeViewProps: makeRecipeViewProps(state: state),
             mealNameInputViewProps: makeMealNameInputViewProps(state: state),
             items: makeCategoryItems(state: state),

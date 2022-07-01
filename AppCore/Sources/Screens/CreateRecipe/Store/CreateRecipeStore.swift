@@ -256,8 +256,11 @@ extension CreateRecipeViewController {
             case .success(let imageID):
                 newState.stepOneState.recipeImageState.upload(with: imageID)
 
-            default:
-                newState.stepOneState.recipeImageState = .empty
+            case .failure:
+                newState.stepOneState.recipeImageState = .error(message: "Uploading unsuccessfull. Please retry")
+
+            case .trigger:
+                break
             }
 
         case .uploadRecipe:

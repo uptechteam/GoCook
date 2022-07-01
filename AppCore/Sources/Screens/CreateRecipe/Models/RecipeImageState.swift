@@ -12,6 +12,7 @@ enum RecipeImageState: Equatable {
     // MARK: - Properties
 
     case empty
+    case error(message: String)
     case uploading(ImageSource)
     case uploaded(ImageSource, imageID: String)
 
@@ -19,6 +20,16 @@ enum RecipeImageState: Equatable {
         switch self {
         case .uploaded(_, let imageID):
             return imageID
+
+        default:
+            return nil
+        }
+    }
+
+    var errorMessage: String? {
+        switch self {
+        case .error(let message):
+            return message
 
         default:
             return nil
