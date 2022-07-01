@@ -240,6 +240,11 @@ extension CreateRecipeViewController {
             }
 
         case .recipeImageTapped:
+            guard !newState.stepOneState.recipeImageState.isUploading else {
+                newState.stepOneState.recipeImageState = .empty
+                break
+            }
+
             let isDeleteButtonPresent = newState.stepOneState.recipeImageState.uploadedImageSource != nil
             newState.alert = .init(value: .imagePicker(isDeleteButtonPresent: isDeleteButtonPresent))
 

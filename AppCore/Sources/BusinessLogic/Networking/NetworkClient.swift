@@ -37,7 +37,7 @@ public final class NetworkClientImpl: NetworkClient {
             let responseData = try await AF.request(request.urlRequest, interceptor: interceptor)
                 .cURLDescription(calling: logger.log)
                 .validate(statusCode: 200..<300)
-                .serializingData()
+                .serializingData(automaticallyCancelling: true)
                 .value
             logger.log(response: responseData, request: request)
             let response = try JSONDateDecoder().decode(Response.self, from: responseData)
