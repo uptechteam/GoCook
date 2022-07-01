@@ -19,6 +19,7 @@ final class StepFourView: UIView {
 
     // MARK: - Properties
 
+    private let scrollView = UIScrollView()
     private let headerView = StepFourHeaderView()
     private let ingredientsView = RecipeIngredientsView()
     private let instructionsView = RecipeInstructionsView()
@@ -39,6 +40,7 @@ final class StepFourView: UIView {
     private func setup() {
         setupContentView()
         setupStackView()
+        setupScrollView()
     }
 
     private func setupContentView() {
@@ -49,7 +51,17 @@ final class StepFourView: UIView {
         let stackView = UIStackView(arrangedSubviews: [headerView, ingredientsView, instructionsView])
         stackView.axis = .vertical
         stackView.spacing = 8
-        addSubview(stackView, withEdgeInsets: .zero)
+        scrollView.addSubview(stackView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+    }
+
+    private func setupScrollView() {
+        addSubview(scrollView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
+        ])
     }
 
     // MARK: - Public methods
@@ -59,7 +71,5 @@ final class StepFourView: UIView {
         headerView.render(props: props.headerViewProps)
         ingredientsView.render(props: props.ingredientsViewProps)
         instructionsView.render(props: props.instructionsViewProps)
-        setNeedsLayout()
-        layoutIfNeeded()
     }
 }

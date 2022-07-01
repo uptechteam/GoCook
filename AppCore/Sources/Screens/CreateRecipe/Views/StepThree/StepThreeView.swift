@@ -18,6 +18,7 @@ final class StepThreeView: UIView {
 
     // MARK: - Properties
 
+    private let scrollView = UIScrollView()
     let timeView = StepThreeTimeView()
     let instructionsView = StepThreeInstructionsView()
     private let spaceView = UIView()
@@ -39,6 +40,7 @@ final class StepThreeView: UIView {
         setupContentView()
         setupSpaceView()
         setupStackView()
+        setupScrollView()
     }
 
     private func setupContentView() {
@@ -53,7 +55,17 @@ final class StepThreeView: UIView {
         let stackView = UIStackView(arrangedSubviews: [timeView, instructionsView, spaceView])
         stackView.axis = .vertical
         stackView.setCustomSpacing(56, after: timeView)
-        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
+        scrollView.addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
+        NSLayoutConstraint.activate([
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48)
+        ])
+    }
+
+    private func setupScrollView() {
+        addSubview(scrollView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
+        ])
     }
 
     // MARK: - Public methods
@@ -62,5 +74,9 @@ final class StepThreeView: UIView {
         isHidden = !props.isVisible
         timeView.render(props: props.timeViewProps)
         instructionsView.render(props: props.instructionsViewProps)
+    }
+
+    func updateBottomInset(keyboardHeight: CGFloat) {
+        scrollView.contentInset.bottom = keyboardHeight
     }
 }

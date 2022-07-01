@@ -18,6 +18,7 @@ final class StepTwoView: UIView {
 
     // MARK: - Properties
 
+    private let scrollView = UIScrollView()
     let servingsView = StepTwoServingsView()
     let ingredientsView = StepTwoIngredientsView()
     private let spaceView = UIView()
@@ -39,6 +40,7 @@ final class StepTwoView: UIView {
         setupContentView()
         setupSpaceView()
         setupStackView()
+        setupScrollView()
     }
 
     private func setupContentView() {
@@ -58,7 +60,17 @@ final class StepTwoView: UIView {
         let stackView = UIStackView(arrangedSubviews: [servingsView, ingredientsView, spaceView])
         stackView.axis = .vertical
         stackView.setCustomSpacing(56, after: servingsView)
-        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
+        scrollView.addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
+        NSLayoutConstraint.activate([
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48)
+        ])
+    }
+
+    private func setupScrollView() {
+        addSubview(scrollView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
+        ])
     }
 
     // MARK: - Public methods
@@ -67,5 +79,9 @@ final class StepTwoView: UIView {
         isHidden = !props.isVisible
         servingsView.render(props: props.servingsViewProps)
         ingredientsView.render(props: props.ingredientsViewProps)
+    }
+
+    func updateBottomInset(keyboardHeight: CGFloat) {
+        scrollView.contentInset.bottom = keyboardHeight
     }
 }

@@ -24,6 +24,7 @@ final class StepOneView: UIView {
 
     // MARK: - Properties
 
+    private let scrollView = UIScrollView()
     let recipeView = StepOneRecipeView()
     let mealNameInputView = InputView()
     private let categoryLabel = UILabel()
@@ -54,6 +55,7 @@ final class StepOneView: UIView {
         setupCollectionView()
         setupCategoryErrorLabel()
         setupStackView()
+        setupScrollView()
     }
 
     private func setupContentView() {
@@ -76,6 +78,10 @@ final class StepOneView: UIView {
         collectionView.isScrollEnabled = false
         collectionView.delegate = self
         collectionView.register(cell: CategoryCell.self)
+        collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 0)
+        NSLayoutConstraint.activate([
+            collectionViewHeightConstraint
+        ])
     }
 
     private func setupCategoryErrorLabel() {
@@ -91,10 +97,16 @@ final class StepOneView: UIView {
         stackView.setCustomSpacing(20, after: mealNameInputView)
         stackView.setCustomSpacing(24, after: categoryLabel)
         stackView.setCustomSpacing(8, after: collectionView)
-        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
-        collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 0)
+        scrollView.addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
         NSLayoutConstraint.activate([
-            collectionViewHeightConstraint
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48)
+        ])
+    }
+
+    private func setupScrollView() {
+        addSubview(scrollView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
         ])
     }
 
@@ -107,6 +119,10 @@ final class StepOneView: UIView {
         collectionViewHeightConstraint.constant = CGFloat(props.items.count * 24 + (props.items.count - 1) * 20)
         dataSource.apply(sections: [0], items: [props.items])
         categoryErrorLabel.isHidden = !props.isCategoryErrorLabelVisible
+    }
+
+    func updateBottomInset(keyboardHeight: CGFloat) {
+        scrollView.contentInset.bottom = keyboardHeight
     }
 }
 
