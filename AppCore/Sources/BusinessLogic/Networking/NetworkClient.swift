@@ -10,7 +10,7 @@ import Foundation
 import Helpers
 
 public protocol NetworkClient {
-    func request<Response: Decodable>(_ request: AppRequest) async throws -> Response
+    func execute<Response: Decodable>(_ request: AppRequest) async throws -> Response
 }
 
 public final class NetworkClientImpl: NetworkClient {
@@ -31,7 +31,7 @@ public final class NetworkClientImpl: NetworkClient {
 
     // MARK: - Public methods
 
-    public func request<Response: Decodable>(_ request: AppRequest) async throws -> Response {
+    public func execute<Response: Decodable>(_ request: AppRequest) async throws -> Response {
         do {
             let interceptor = createInterceptor(for: request.authorisation)
             let responseData = try await AF.request(request.urlRequest, interceptor: interceptor)

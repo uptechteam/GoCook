@@ -15,7 +15,7 @@ final class StepOneView: UIView {
         let isVisible: Bool
         let errorViewProps: ErrorView.Props
         let recipeViewProps: StepOneRecipeView.Props
-        let mealNameInputViewProps: InputView.Props
+        let mealNameInputViewProps: UserInputView.Props
         let items: [CategoryCell.Props]
         let isCategoryErrorLabelVisible: Bool
     }
@@ -28,7 +28,7 @@ final class StepOneView: UIView {
     private let scrollView = UIScrollView()
     private let errorView = ErrorView()
     let recipeView = StepOneRecipeView()
-    let mealNameInputView = InputView()
+    let mealNameInputView = UserInputView()
     private let categoryLabel = UILabel()
     private lazy var dataSource = makeDataSource()
     private let collectionView = CollectionView()

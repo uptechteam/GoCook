@@ -34,13 +34,13 @@ public final class RecipesClient: RecipesClienting {
 
     public func getRecipes() async throws -> [RecipeCategory] {
         let appRequest = try feedAPI.makeGetRecipesTarget()
-        let response: [RecipeCategoryResponse] = try await networkClient.request(appRequest)
+        let response: [RecipeCategoryResponse] = try await networkClient.execute(appRequest)
         return response.map(\.domainModel)
     }
 
     public func upload(newRecipe: NewRecipe) async throws -> Recipe {
         let appRequest = try recipesAPI.makePostRecipeTarget(request: NewRecipeRequest(newRecipe: newRecipe))
-        let response: RecipeResponse = try await networkClient.request(appRequest)
+        let response: RecipeResponse = try await networkClient.execute(appRequest)
         return response.domainModel
     }
 }

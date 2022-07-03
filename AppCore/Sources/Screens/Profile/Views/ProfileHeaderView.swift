@@ -23,12 +23,7 @@ final class ProfileHeaderView: UIView {
     private let backgroundImageView = UIImageView()
     private let settingsButton = IconButton()
     private let avatarImageView = UIImageView()
-    private let signInButton = Button(
-        config: ButtonConfig(
-            buttonSize: .medium,
-            colorConfig: ColorConfig(main: .errorMain, secondary: .errorPressed)
-        )
-    )
+    private let signInButton = Button(config: ButtonConfig(buttonSize: .medium, colorConfig: .error))
     private let nameLabel = UILabel()
     // callbacks
     var onDidTapSettings: () -> Void = { }

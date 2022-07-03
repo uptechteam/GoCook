@@ -51,7 +51,7 @@ extension CreateRecipeViewController {
         )
     }
 
-    private static func makeMealNameInputViewProps(state: State) -> InputView.Props {
+    private static func makeMealNameInputViewProps(state: State) -> UserInputView.Props {
         let isValid = state.stepOneState.isMealNameValid
         return .init(
             title: .createRecipeStepOneMealTitle,

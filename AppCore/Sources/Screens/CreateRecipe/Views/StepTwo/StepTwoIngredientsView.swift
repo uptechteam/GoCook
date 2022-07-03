@@ -24,11 +24,7 @@ final class StepTwoIngredientsView: UIView {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     private var collectionViewHeightConstraint: NSLayoutConstraint!
     private let addIngredientButton = Button(
-        config: ButtonConfig(
-            buttonSize: .medium,
-            colorConfig: ColorConfig(main: .primaryMain, secondary: .secondaryMain),
-            isBackgroundVisible: false
-        )
+        config: ButtonConfig(buttonSize: .medium, colorConfig: .primary, isBackgroundVisible: false)
     )
     // callbacks
     var onDidTapIngredientName: (IndexPath) -> Void = { _ in }

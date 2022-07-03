@@ -19,11 +19,7 @@ final class StepThreeInstructionsView: UIView {
     private let titleLabel = UILabel()
     private let instructionsStackView = UIStackView()
     private let addInstructionButton = Button(
-        config: ButtonConfig(
-            buttonSize: .medium,
-            colorConfig: ColorConfig(main: .primaryMain, secondary: .secondaryMain),
-            isBackgroundVisible: false
-        )
+        config: ButtonConfig(buttonSize: .medium, colorConfig: .primary, isBackgroundVisible: false)
     )
     // callbacks
     var onDidChangeText: (Int, String) -> Void = { _, _ in }

@@ -207,6 +207,36 @@ extension String {
   public static func recipeInstructionsStepTitle(_ p1: Int) -> String {
     return L10n.tr("Localizable", "recipe.instructions.step.title", p1)
   }
+
+  /// OR
+  public static let signUpOr = L10n.tr("Localizable", "sign.up.or")
+
+  /// Skip
+  public static let signUpSkip = L10n.tr("Localizable", "sign.up.skip")
+
+  /// Find your\ntasty idea\nwith GoCook
+  public static let signUpTitle = L10n.tr("Localizable", "sign.up.title")
+
+  /// Already have an account? 
+  public static let signUpHaveAnAccountFirst = L10n.tr("Localizable", "sign.up.have.an.account.first")
+
+  /// Login
+  public static let signUpHaveAnAccountSecond = L10n.tr("Localizable", "sign.up.have.an.account.second")
+
+  /// FULL NAME
+  public static let signUpNameTitle = L10n.tr("Localizable", "sign.up.name.title")
+
+  /// Password must be at least 8 characters, contain uppercase and lowercase and numbers
+  public static let signUpPasswordDescription = L10n.tr("Localizable", "sign.up.password.description")
+
+  /// PASSWORD
+  public static let signUpPasswordTitle = L10n.tr("Localizable", "sign.up.password.title")
+
+  /// Sign up
+  public static let signUpSignUp = L10n.tr("Localizable", "sign.up.sign.up")
+
+  /// Sign up with Apple
+  public static let signUpSignUpWithApple = L10n.tr("Localizable", "sign.up.sign.up.with.apple")
 }
 // swiftlint:enable function_parameter_count identifier_name line_length type_body_length
 

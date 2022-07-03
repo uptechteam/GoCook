@@ -17,8 +17,8 @@ extension UIImage {
     return UIImage(named: "arrowBack")!
   }
 
-  @nonobjc public class var arrowForward: UIImage {
-    return UIImage(named: "arrowForward")!
+  @nonobjc public class var arrowForwardGreen: UIImage {
+    return UIImage(named: "arrowForwardGreen")!
   }
 
   @nonobjc public class var emptyCheckbox: UIImage {
@@ -39,6 +39,10 @@ extension UIImage {
 
   @nonobjc public class var addIcon: UIImage {
     return UIImage(named: "addIcon")!
+  }
+
+  @nonobjc public class var arrowForward: UIImage {
+    return UIImage(named: "arrowForward")!
   }
 
   @nonobjc public class var backButton: UIImage {
@@ -123,6 +127,14 @@ extension UIImage {
 
   @nonobjc public class var time: UIImage {
     return UIImage(named: "time")!
+  }
+
+  @nonobjc public class var apple: UIImage {
+    return UIImage(named: "apple")!
+  }
+
+  @nonobjc public class var registrationBackground: UIImage {
+    return UIImage(named: "registrationBackground")!
   }
 
   @nonobjc public class var favoritesTabBarIconDeselected: UIImage {

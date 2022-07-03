@@ -77,6 +77,19 @@
 "recipe.instructions.title" = "Instructions";
 "recipe.instructions.step.title" = "%d Step";
 
+// MARK: - Sign up
+
+"sign.up.skip" = "Skip";
+"sign.up.title" = "Find your\ntasty idea\nwith GoCook";
+"sign.up.name.title" = "FULL NAME";
+"sign.up.password.title" = "PASSWORD";
+"sign.up.password.description" = "Password must be at least 8 characters, contain uppercase and lowercase and numbers";
+"sign.up.sign.up" = "Sign up";
+"sign.up.or" = "OR";
+"sign.up.sign.up.with.apple" = "Sign up with Apple";
+"sign.up.have.an.account.first" = "Already have an account? ";
+"sign.up.have.an.account.second" = "Login";
+
 // <===================================================================================================================>
 // Domain models
 // <===================================================================================================================>

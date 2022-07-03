@@ -18,11 +18,7 @@ final class ProfileRecipesHeaderView: UIView {
 
     private let myRecipesLabel = UILabel()
     private let addNewButton = Button(
-        config: ButtonConfig(
-            buttonSize: .medium,
-            colorConfig: ColorConfig(main: .primaryMain, secondary: .primaryPressed),
-            isBackgroundVisible: false
-        )
+        config: ButtonConfig(buttonSize: .medium, colorConfig: .primary, isBackgroundVisible: false)
     )
     // callbacks
     var onDidTapAddNew: () -> Void = { }

@@ -21,27 +21,19 @@ final class CreateRecipeStepsView: UIView {
 
     private let dividerView = UIView()
     private let backButton = Button(
-        config: ButtonConfig(
-            buttonSize: .medium,
-            colorConfig: ColorConfig(main: .primaryMain, secondary: .primaryPressed),
-            isBackgroundVisible: false
-        )
+        config: ButtonConfig(buttonSize: .medium, colorConfig: .primary, isBackgroundVisible: false)
     )
     private let titleLabel = UILabel()
     private let nextButton = Button(
         config: ButtonConfig(
             buttonSize: .medium,
-            colorConfig: ColorConfig(main: .primaryMain, secondary: .primaryPressed),
+            colorConfig: .primary,
             imagePosition: .right,
             isBackgroundVisible: false
         )
     )
     private let finishButton = Button(
-        config: ButtonConfig(
-            buttonSize: .medium,
-            colorConfig: ColorConfig(main: .primaryMain, secondary: .primaryPressed),
-            isBackgroundVisible: false
-        )
+        config: ButtonConfig(buttonSize: .medium, colorConfig: .primary, isBackgroundVisible: false)
     )
     private let spinnerView = SpinnerView()
     // callbacks
@@ -97,7 +89,7 @@ final class CreateRecipeStepsView: UIView {
 
     private func setupNextButton() {
         nextButton.setTitle(.createRecipeNavigationNext)
-        nextButton.setImage(.arrowForward)
+        nextButton.setImage(.arrowForwardGreen)
         nextButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapNext() }), for: .touchUpInside)
     }
 

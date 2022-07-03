@@ -49,7 +49,7 @@ let package = Package(
         .target(
             name: "Routing",
             dependencies: [
-                "AppTabBar", "BusinessLogic", "CreateRecipe", "Favorites", "Filters", "Home", "Input", "Profile", "Recipe"
+                "AppTabBar", "BusinessLogic", "CreateRecipe", "Favorites", "Filters", "Home", "Input", "Profile", "Recipe", "SignUp"
             ]
         ),
         // MARK: - Screens
@@ -76,6 +76,7 @@ let package = Package(
             dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
             path: "Sources/Screens/Profile"
         ),
-        .target(name: "Recipe", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Recipe")
+        .target(name: "Recipe", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Recipe"),
+        .target(name: "SignUp", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/SignUp")
     ]
 )

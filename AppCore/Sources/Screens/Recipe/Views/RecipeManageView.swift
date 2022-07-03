@@ -21,11 +21,7 @@ final class RecipeManageView: UIView {
     let shareButton = Button()
     let editButton = Button(config: ButtonConfig(isBackgroundVisible: false, isBorderVisible: true))
     let deleteButton = Button(
-        config: ButtonConfig(
-            colorConfig: ColorConfig(main: .errorMain, secondary: .errorPressed),
-            isBackgroundVisible: false,
-            isBorderVisible: true
-        )
+        config: ButtonConfig(colorConfig: .error, isBackgroundVisible: false, isBorderVisible: true)
     )
     // callbacks
     var onDidTapShare: () -> Void = { }
