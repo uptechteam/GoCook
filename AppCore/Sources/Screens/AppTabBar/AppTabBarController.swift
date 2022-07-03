@@ -86,7 +86,7 @@ public final class AppTabBarController: UITabBarController {
             }
             .store(in:&cancellables)
 
-        state.map(AppTabBarController.makeProps(from:))
+        state.map(AppTabBarController.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }

@@ -92,7 +92,7 @@ public final class HomeViewController: UIViewController {
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
-        state.map(HomeViewController.makeProps(from:))
+        state.map(HomeViewController.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }

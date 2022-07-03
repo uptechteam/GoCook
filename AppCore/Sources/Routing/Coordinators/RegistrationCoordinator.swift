@@ -7,6 +7,7 @@
 
 import Dip
 import Foundation
+import Login
 import SignUp
 import UIKit
 
@@ -56,4 +57,13 @@ extension RegistrationCoordinator: SignUpCoordinating {
     func didFinish() {
         delegate?.registrationCoordiantorDidFinish(self)
     }
+
+    func didTapLogin() {
+        let viewController: LoginViewController = try! container.resolve(arguments: self as LoginCoordinating)
+        navigationController.setViewControllers([viewController], animated: true)
+    }
+}
+
+extension RegistrationCoordinator: LoginCoordinating {
+
 }

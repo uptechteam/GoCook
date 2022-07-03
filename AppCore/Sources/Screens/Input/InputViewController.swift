@@ -79,9 +79,7 @@ public final class InputViewController: UIViewController {
             .subscribe(on: DispatchQueue.main)
 
         state
-            .map { state in
-                return InputViewController.makeProps(from: state)
-            }
+            .map(InputViewController.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }

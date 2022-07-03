@@ -157,7 +157,7 @@ public final class CreateRecipeViewController: UIViewController {
             .subscribe(on: DispatchQueue.main)
 
         state
-            .map { CreateRecipeViewController.makeProps(from: $0) }
+            .map(CreateRecipeViewController.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }

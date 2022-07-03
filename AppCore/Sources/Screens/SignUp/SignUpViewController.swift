@@ -11,6 +11,7 @@ import UIKit
 
 public protocol SignUpCoordinating: AnyObject {
     func didFinish()
+    func didTapLogin()
 }
 
 public final class SignUpViewController: UIViewController, ErrorPresentable {
@@ -84,9 +85,7 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
             .subscribe(on: DispatchQueue.main)
 
         state
-            .map { state in
-                return SignUpViewController.makeProps(from: state)
-            }
+            .map(SignUpViewController.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
@@ -117,7 +116,7 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
     private func navigate(by route: Route) {
         switch route {
         case .login:
-            break
+            coordinator.didTapLogin()
 
         case .finish:
             coordinator.didFinish()

@@ -1,26 +1,25 @@
 //
-//  ProfileViewController.swift
+//  LoginViewController.swift
 //  
 //
-//  Created by Oleksii Andriushchenko on 15.06.2022.
+//  Created by Oleksii Andriushchenko on 03.07.2022.
 //
 
 import Combine
-import Helpers
 import UIKit
 
-public protocol ProfileCoordinating: AnyObject {
-    func didTapCreateRecipe()
+public protocol LoginCoordinating: AnyObject {
+
 }
 
-public final class ProfileViewController: UIViewController {
+public final class LoginViewController: UIViewController {
 
     // MARK: - Properties
 
     private let store: Store
     private let actionCreator: ActionCreator
-    private let contentView = ProfileView()
-    private unowned let coordinator: ProfileCoordinating
+    private let contentView = LoginView()
+    private unowned let coordinator: LoginCoordinating
     private var cancellables = [AnyCancellable]()
 
     // MARK: - Lifecycle
@@ -28,7 +27,7 @@ public final class ProfileViewController: UIViewController {
     public init(
         store: Store,
         actionCreator: ActionCreator,
-        coordinator: ProfileCoordinating
+        coordinator: LoginCoordinating
     ) {
         self.store = store
         self.actionCreator = actionCreator
@@ -51,34 +50,16 @@ public final class ProfileViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
-
-        actionCreator.subscribeToProfile(handler: store.dispatch)
     }
 
     // MARK: - Private methods
 
     private func setupBinding() {
-        contentView.headerView.onDidTapSettings = { [store] in
-            store.dispatch(action: .logout)
-        }
-
-        contentView.headerView.onDidTapSignIn = { [store] in
-            store.dispatch(action: .login)
-        }
-
-        contentView.recipesHeaderView.onDidTapAddNew = { [store] in
-            store.dispatch(action: .addNewRecipeTapped)
-        }
-
-        contentView.infoView.onDidTapAddRecipe = { [store] in
-            store.dispatch(action: .addNewRecipeTapped)
-        }
-
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
         state
-            .map(ProfileViewController.makeProps)
+            .map(LoginViewController.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
@@ -87,15 +68,14 @@ public final class ProfileViewController: UIViewController {
         state.compactMap(\.route).removeDuplicates()
             .map(\.value)
             .sink { [unowned self] route in
-                navigate(by: route)
+                self.naviagte(by: route)
             }
             .store(in: &cancellables)
     }
 
-    private func navigate(by route: Route) {
+    private func naviagte(by route: Route) {
         switch route {
-        case .createRecipe:
-            coordinator.didTapCreateRecipe()
+
         }
     }
 }
