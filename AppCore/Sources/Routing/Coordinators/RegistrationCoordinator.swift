@@ -28,6 +28,7 @@ public final class RegistrationCoordinator: Coordinating {
         self.container = container
         self.navigationController = navigationController
         self.childContainers = []
+        setupUI()
     }
 
     // MARK: - Public methods
@@ -35,6 +36,12 @@ public final class RegistrationCoordinator: Coordinating {
     public func start() {
         let viewController: SignUpViewController = try! container.resolve(arguments: self as SignUpCoordinating)
         navigationController.pushViewController(viewController, animated: false)
+    }
+
+    // MARK: - Private methods
+
+    private func setupUI() {
+        navigationController.setNavigationBarHidden(true, animated: false)
     }
 }
 

@@ -90,6 +90,7 @@ final class SignUpView: UIView {
     private func setupTitleLabel() {
         titleLabel.render(title: .signUpTitle, color: .textMain, typography: .headerOne)
         titleLabel.numberOfLines = 0
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setupPasswordDescriptionLabel() {
@@ -126,6 +127,7 @@ final class SignUpView: UIView {
         let stackView = UIStackView(
             arrangedSubviews: [
                 titleLabel,
+                UIView(),
                 nameInputView,
                 passwordInputView,
                 passwordDescriptionLabel,
@@ -143,8 +145,7 @@ final class SignUpView: UIView {
         stackView.setCustomSpacing(24, after: passwordDescriptionLabel)
         scrollView.addSubview(
             stackView,
-            withEdgeInsets: UIEdgeInsets(top: 72, left: 24, bottom: 8, right: 24),
-            isSafeAreaRequired: true
+            withEdgeInsets: UIEdgeInsets(top: 72, left: 24, bottom: 8, right: 24)
         )
         NSLayoutConstraint.activate([
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48)
@@ -152,6 +153,7 @@ final class SignUpView: UIView {
     }
 
     private func setupScrollView() {
+        scrollView.contentInsetAdjustmentBehavior = .always
         addSubview(scrollView, withEdgeInsets: .zero)
         NSLayoutConstraint.activate([
             scrollView.widthAnchor.constraint(equalTo: widthAnchor)
