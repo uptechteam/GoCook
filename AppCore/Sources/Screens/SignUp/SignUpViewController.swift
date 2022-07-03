@@ -9,7 +9,7 @@ import Combine
 import UIKit
 
 public protocol SignUpCoordinating: AnyObject {
-
+    func didFinish()
 }
 
 public final class SignUpViewController: UIViewController {
@@ -105,8 +105,7 @@ public final class SignUpViewController: UIViewController {
             break
 
         case .finish:
-            break
+            coordinator.didFinish()
         }
     }
 }
-

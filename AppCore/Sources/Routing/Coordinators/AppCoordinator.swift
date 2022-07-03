@@ -46,6 +46,7 @@ public final class AppCoordinator {
     private func showRegistration() {
         let navigationController = UINavigationController()
         let coordinator = RegistrationCoordinator(container: container, navigationController: navigationController)
+        coordinator.delegate = self
         coordinator.start()
         childCoordinators.append(coordinator)
         window.rootViewController = coordinator.rootViewController
@@ -64,4 +65,13 @@ public final class AppCoordinator {
 
 extension AppCoordinator: AppTabBarCoordinating {
 
+}
+
+// MARK: - Delegates
+
+extension AppCoordinator: RegistrationCoordinatorDelegate {
+    func registrationCoordiantorDidFinish(_ coordinator: RegistrationCoordinator) {
+        childCoordinators.removeAll()
+        showTabBar()
+    }
 }

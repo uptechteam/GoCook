@@ -10,13 +10,18 @@ import Foundation
 import SignUp
 import UIKit
 
-public final class RegistrationCoordinator: Coordinating {
+protocol RegistrationCoordinatorDelegate: AnyObject {
+    func registrationCoordiantorDidFinish(_ coordinator: RegistrationCoordinator)
+}
+
+final class RegistrationCoordinator: Coordinating {
 
     // MARK: - Properties
 
     private let container: DependencyContainer
     private var childContainers: [Coordinating]
     private let navigationController: UINavigationController
+    weak var delegate: RegistrationCoordinatorDelegate?
 
     var rootViewController: UIViewController {
         navigationController
@@ -24,7 +29,7 @@ public final class RegistrationCoordinator: Coordinating {
 
     // MARK: - Lifecycle
 
-    public init(container: DependencyContainer, navigationController: UINavigationController) {
+    init(container: DependencyContainer, navigationController: UINavigationController) {
         self.container = container
         self.navigationController = navigationController
         self.childContainers = []
@@ -33,7 +38,7 @@ public final class RegistrationCoordinator: Coordinating {
 
     // MARK: - Public methods
 
-    public func start() {
+    func start() {
         let viewController: SignUpViewController = try! container.resolve(arguments: self as SignUpCoordinating)
         navigationController.pushViewController(viewController, animated: false)
     }
@@ -48,5 +53,7 @@ public final class RegistrationCoordinator: Coordinating {
 // MARK: - Extensions
 
 extension RegistrationCoordinator: SignUpCoordinating {
-
+    func didFinish() {
+        delegate?.registrationCoordiantorDidFinish(self)
+    }
 }
