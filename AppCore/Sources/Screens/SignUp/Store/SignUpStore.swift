@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 01.07.2022.
 //
 
+import BusinessLogic
 import Helpers
 
 extension SignUpViewController {
@@ -14,6 +15,7 @@ extension SignUpViewController {
     public struct State: Equatable {
         var name: String
         var password: String
+        var alert: AnyIdentifiable<Alert>?
         var route: AnyIdentifiable<Route>?
     }
 
@@ -21,9 +23,14 @@ extension SignUpViewController {
         case loginTapped
         case nameChanged(String)
         case passwordChanged(String)
+        case signUp(DomainModelAction<Void>)
         case signUpTapped
         case signUpWithAppleTapped
         case skipTapped
+    }
+
+    enum Alert {
+        case error(Error)
     }
 
     enum Route {
@@ -32,16 +39,24 @@ extension SignUpViewController {
     }
 
     public struct Dependencies {
-        public init() {
 
+        // MARK: - Properties
+
+        public let profileFacade: ProfileFacading
+
+        // MARK: - Lifecycle
+
+        public init(profileFacade: ProfileFacading) {
+            self.profileFacade = profileFacade
         }
     }
 
     public static func makeStore(dependencies: Dependencies) -> Store {
+        let signUpMiddleware = makeSignUpMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
             reducer: reduce,
-            middlewares: []
+            middlewares: [signUpMiddleware]
         )
     }
 
@@ -49,6 +64,7 @@ extension SignUpViewController {
         return State(
             name: "",
             password: "",
+            alert: nil,
             route: nil
         )
     }
@@ -68,6 +84,18 @@ extension SignUpViewController {
 
         case .passwordChanged(let text):
             newState.password = text
+
+        case .signUp(let modelAction):
+            switch modelAction {
+            case .failure(let error):
+                newState.alert = .init(value: .error(error))
+
+            case .success:
+                newState.route = .init(value: .finish)
+
+            default:
+                break
+            }
 
         case .signUpTapped:
             break

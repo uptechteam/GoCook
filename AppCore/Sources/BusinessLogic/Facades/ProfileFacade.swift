@@ -16,6 +16,7 @@ public protocol ProfileFacading {
     func getProfile() -> Profile
     func login(username: String, password: String) async throws
     func logout() async
+    func signUp(username: String, password: String) async throws
 }
 
 public final class ProfileFacade: ProfileFacading {
@@ -70,6 +71,14 @@ public final class ProfileFacade: ProfileFacading {
         await profileStorage.clear()
         userCredentialsStorage.clear()
         profileSubject.send(nil)
+    }
+
+    public func signUp(username: String, password: String) async throws {
+        let profile = try await profileClient.signUp(username: username, password: password)
+        let token = try await profileClient.login(username: username, password: password)
+        userCredentialsStorage.store(accessKey: token)
+        await profileStorage.store(profile: profile)
+        profileSubject.send(profile)
     }
 
     // MARK: - Private methods

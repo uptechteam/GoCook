@@ -55,6 +55,7 @@ final class SignUpView: UIView {
         setupContentView()
         setupBackgroundImageView()
         setupTitleLabel()
+        setupPasswordInputView()
         setupPasswordDescriptionLabel()
         setupSignUpButton()
         setupOrLabel()
@@ -82,6 +83,10 @@ final class SignUpView: UIView {
         titleLabel.render(title: .signUpTitle, color: .textMain, typography: .headerOne)
         titleLabel.numberOfLines = 0
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
+
+    private func setupPasswordInputView() {
+        passwordInputView.textField.isSecureTextEntry = true
     }
 
     private func setupPasswordDescriptionLabel() {

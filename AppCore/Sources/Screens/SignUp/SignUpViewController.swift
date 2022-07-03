@@ -6,13 +6,14 @@
 //
 
 import Combine
+import Library
 import UIKit
 
 public protocol SignUpCoordinating: AnyObject {
     func didFinish()
 }
 
-public final class SignUpViewController: UIViewController {
+public final class SignUpViewController: UIViewController, ErrorPresentable {
 
     // MARK: - Properties
 
@@ -91,12 +92,26 @@ public final class SignUpViewController: UIViewController {
             }
             .store(in: &cancellables)
 
+        state.compactMap(\.alert).removeDuplicates()
+            .map(\.value)
+            .sink { [unowned self] alert in
+                show(alert: alert)
+            }
+            .store(in: &cancellables)
+
         state.compactMap(\.route).removeDuplicates()
             .map(\.value)
             .sink { [unowned self] route in
                 navigate(by: route)
             }
             .store(in: &cancellables)
+    }
+
+    private func show(alert: Alert) {
+        switch alert {
+        case .error(let error):
+            show(errorMessage: error.localizedDescription)
+        }
     }
 
     private func navigate(by route: Route) {

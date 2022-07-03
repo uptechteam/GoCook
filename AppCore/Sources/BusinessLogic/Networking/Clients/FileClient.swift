@@ -32,13 +32,13 @@ public final class FileClient: FileClienting {
 
     public func uploadAvatar(data: Data) async throws -> Profile {
         let appRequest = try api.makePostAvatarImageTarget(data: data)
-        let response: ProfileResponse = try await networkClient.request(appRequest)
+        let response: ProfileResponse = try await networkClient.execute(appRequest)
         return response.domainModel
     }
 
     public func uploadRecipeImage(data: Data) async throws -> String {
         let appRequest = try api.makePostRecipeImageTarget(data: data)
-        let response: ImageURLResponse = try await networkClient.request(appRequest)
+        let response: ImageURLResponse = try await networkClient.execute(appRequest)
         return response.imageURL
     }
 }

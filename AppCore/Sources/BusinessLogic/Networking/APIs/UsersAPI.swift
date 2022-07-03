@@ -35,4 +35,8 @@ struct UsersAPI {
     func makeRefreshProfileTarget() throws -> AppRequest {
         try targetBuilder.makeGetTarget(path: "me", authorisation: .bearer)
     }
+
+    func makeSignUpTarget(request: CreateUserRequest) throws -> AppRequest {
+        try targetBuilder.makePostJSONTarget(path: "", requestData: request)
+    }
 }

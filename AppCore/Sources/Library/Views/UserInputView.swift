@@ -40,7 +40,7 @@ public final class UserInputView: UIView {
     // MARK: - Properties
 
     private let titleLabel = UILabel()
-    private let textField = UITextField()
+    public let textField = UITextField()
     private let dividerView = UIView()
     private let errorLabel = UILabel()
     // callbacks
