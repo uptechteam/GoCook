@@ -54,7 +54,7 @@ final class RegistrationCoordinator: Coordinating {
 // MARK: - Extensions
 
 extension RegistrationCoordinator: SignUpCoordinating {
-    func didFinish() {
+    func didFinishSignUp() {
         delegate?.registrationCoordiantorDidFinish(self)
     }
 
@@ -65,5 +65,12 @@ extension RegistrationCoordinator: SignUpCoordinating {
 }
 
 extension RegistrationCoordinator: LoginCoordinating {
+    func didFinishLogin() {
+        delegate?.registrationCoordiantorDidFinish(self)
+    }
 
+    func didTapSignUp() {
+        let viewController: SignUpViewController = try! container.resolve(arguments: self as SignUpCoordinating)
+        navigationController.setViewControllers([viewController], animated: true)
+    }
 }

@@ -10,7 +10,7 @@ import Library
 import UIKit
 
 public protocol SignUpCoordinating: AnyObject {
-    func didFinish()
+    func didFinishSignUp()
     func didTapLogin()
 }
 
@@ -93,16 +93,12 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
 
         state.compactMap(\.alert).removeDuplicates()
             .map(\.value)
-            .sink { [unowned self] alert in
-                show(alert: alert)
-            }
+            .sink { [unowned self] alert in show(alert: alert) }
             .store(in: &cancellables)
 
         state.compactMap(\.route).removeDuplicates()
             .map(\.value)
-            .sink { [unowned self] route in
-                navigate(by: route)
-            }
+            .sink { [unowned self] route in navigate(by: route) }
             .store(in: &cancellables)
     }
 
@@ -119,7 +115,7 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
             coordinator.didTapLogin()
 
         case .finish:
-            coordinator.didFinish()
+            coordinator.didFinishSignUp()
         }
     }
 }

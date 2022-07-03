@@ -6,13 +6,15 @@
 //
 
 import Combine
+import Library
 import UIKit
 
 public protocol LoginCoordinating: AnyObject {
-
+    func didFinishLogin()
+    func didTapSignUp()
 }
 
-public final class LoginViewController: UIViewController {
+public final class LoginViewController: UIViewController, ErrorPresentable {
 
     // MARK: - Properties
 
@@ -55,6 +57,30 @@ public final class LoginViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupBinding() {
+        contentView.onDidTapSkip = { [store] in
+            store.dispatch(action: .skipTapped)
+        }
+
+        contentView.nameInputView.onDidChangeText = { [store] text in
+            store.dispatch(action: .nameChanged(text))
+        }
+
+        contentView.passwordInputView.onDidChangeText = { [store] text in
+            store.dispatch(action: .passwordChanged(text))
+        }
+
+        contentView.onDidTapLogin = { [store] in
+            store.dispatch(action: .loginTapped)
+        }
+
+        contentView.onDidTapLoginWithApple = { [store] in
+            store.dispatch(action: .loginWithAppleTapped)
+        }
+
+        contentView.onDidTapNew = { [store] in
+            store.dispatch(action: .signUp)
+        }
+
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
@@ -65,17 +91,31 @@ public final class LoginViewController: UIViewController {
             }
             .store(in: &cancellables)
 
+        state.compactMap(\.alert).removeDuplicates()
+            .map(\.value)
+            .sink { [unowned self] alert in show(alert: alert) }
+            .store(in: &cancellables)
+
         state.compactMap(\.route).removeDuplicates()
             .map(\.value)
-            .sink { [unowned self] route in
-                self.naviagte(by: route)
-            }
+            .sink { [unowned self] route in naviagte(by: route) }
             .store(in: &cancellables)
+    }
+
+    private func show(alert: Alert) {
+        switch alert {
+        case .error(let error):
+            show(errorMessage: error.localizedDescription)
+        }
     }
 
     private func naviagte(by route: Route) {
         switch route {
+        case .finish:
+            coordinator.didFinishLogin()
 
+        case .signUp:
+            coordinator.didTapSignUp()
         }
     }
 }

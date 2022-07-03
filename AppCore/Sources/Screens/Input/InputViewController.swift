@@ -87,9 +87,7 @@ public final class InputViewController: UIViewController {
 
         state.compactMap(\.route).removeDuplicates()
             .map(\.value)
-            .sink { [unowned self] route in
-                navigate(by: route)
-            }
+            .sink { [unowned self] route in navigate(by: route) }
             .store(in: &cancellables)
     }
 

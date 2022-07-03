@@ -32,6 +32,7 @@ final class SignUpView: UIView {
         config: ButtonConfig(colorConfig: .secondary, isBackgroundVisible: false, isBorderVisible: true)
     )
     private let haveAccountLabel = UILabel()
+    private var stackViewHeightConstraint: NSLayoutConstraint!
     // callbacks
     var onDidTapSkip: () -> Void = { }
     var onDidTapSignUp: () -> Void = { }
@@ -47,6 +48,12 @@ final class SignUpView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let height = scrollView.frame.height - 80 - scrollView.safeAreaInsets.top - scrollView.safeAreaInsets.bottom
+        stackViewHeightConstraint.constant = height
     }
 
     // MARK: - Set up
@@ -158,7 +165,6 @@ final class SignUpView: UIView {
         )
         stackView.axis = .vertical
         stackView.spacing = 16
-        stackView.setCustomSpacing(74, after: titleLabel)
         stackView.setCustomSpacing(4, after: nameInputView)
         stackView.setCustomSpacing(-12, after: passwordInputView)
         stackView.setCustomSpacing(24, after: passwordDescriptionLabel)
@@ -166,8 +172,11 @@ final class SignUpView: UIView {
             stackView,
             withEdgeInsets: UIEdgeInsets(top: 72, left: 24, bottom: 8, right: 24)
         )
+        stackViewHeightConstraint = stackView.heightAnchor.constraint(equalToConstant: 0)
+            .prioritised(as: .defaultLow)
         NSLayoutConstraint.activate([
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48)
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48),
+            stackViewHeightConstraint
         ])
     }
 

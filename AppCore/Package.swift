@@ -33,7 +33,7 @@ let package = Package(
             ]
         ),
         // MARK: - Domain models
-        .target(name: "DomainModels", dependencies: ["Helpers"]),
+        .target(name: "DomainModels", dependencies: ["Helpers", "Library"]),
         // MARK: - Heleprs
         .target(
             name: "Helpers",
@@ -92,6 +92,10 @@ let package = Package(
             path: "Sources/Screens/Profile"
         ),
         .target(name: "Recipe", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Recipe"),
-        .target(name: "SignUp", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/SignUp")
+        .target(
+            name: "SignUp",
+            dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
+            path: "Sources/Screens/SignUp"
+        )
     ]
 )
