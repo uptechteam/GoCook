@@ -65,7 +65,7 @@ public final class FiltersViewController: UIViewController {
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
-        state.map(FiltersViewController.makeProps(from:))
+        state.map(FiltersViewController.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }

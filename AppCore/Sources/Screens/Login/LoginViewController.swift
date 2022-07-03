@@ -1,27 +1,27 @@
 //
-//  SignUpViewController.swift
+//  LoginViewController.swift
 //  
 //
-//  Created by Oleksii Andriushchenko on 01.07.2022.
+//  Created by Oleksii Andriushchenko on 03.07.2022.
 //
 
 import Combine
 import Library
 import UIKit
 
-public protocol SignUpCoordinating: AnyObject {
-    func didFinishSignUp()
-    func didTapLogin()
+public protocol LoginCoordinating: AnyObject {
+    func didFinishLogin()
+    func didTapSignUp()
 }
 
-public final class SignUpViewController: UIViewController, ErrorPresentable {
+public final class LoginViewController: UIViewController, ErrorPresentable {
 
     // MARK: - Properties
 
     private let store: Store
     private let actionCreator: ActionCreator
-    private let contentView = SignUpView()
-    private unowned let coordinator: SignUpCoordinating
+    private let contentView = LoginView()
+    private unowned let coordinator: LoginCoordinating
     private var cancellables = [AnyCancellable]()
 
     // MARK: - Lifecycle
@@ -29,7 +29,7 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
     public init(
         store: Store,
         actionCreator: ActionCreator,
-        coordinator: SignUpCoordinating
+        coordinator: LoginCoordinating
     ) {
         self.store = store
         self.actionCreator = actionCreator
@@ -69,23 +69,23 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
             store.dispatch(action: .passwordChanged(text))
         }
 
-        contentView.onDidTapSignUp = { [store] in
-            store.dispatch(action: .signUpTapped)
-        }
-
-        contentView.onDidTapSignUpWithApple = { [store] in
-            store.dispatch(action: .signUpWithAppleTapped)
-        }
-
-        contentView.onDidTapHaveAccount = { [store] in
+        contentView.onDidTapLogin = { [store] in
             store.dispatch(action: .loginTapped)
+        }
+
+        contentView.onDidTapLoginWithApple = { [store] in
+            store.dispatch(action: .loginWithAppleTapped)
+        }
+
+        contentView.onDidTapNew = { [store] in
+            store.dispatch(action: .signUp)
         }
 
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
         state
-            .map(SignUpViewController.makeProps)
+            .map(LoginViewController.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
@@ -98,7 +98,7 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
 
         state.compactMap(\.route).removeDuplicates()
             .map(\.value)
-            .sink { [unowned self] route in navigate(by: route) }
+            .sink { [unowned self] route in naviagte(by: route) }
             .store(in: &cancellables)
     }
 
@@ -109,13 +109,13 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
         }
     }
 
-    private func navigate(by route: Route) {
+    private func naviagte(by route: Route) {
         switch route {
-        case .login:
-            coordinator.didTapLogin()
-
         case .finish:
-            coordinator.didFinishSignUp()
+            coordinator.didFinishLogin()
+
+        case .signUp:
+            coordinator.didTapSignUp()
         }
     }
 }

@@ -11,6 +11,7 @@ import Dip
 import Filters
 import Home
 import Input
+import Login
 import Recipe
 import Profile
 import SignUp
@@ -22,6 +23,7 @@ extension DependencyContainer {
         injectHomeViewController(container: container)
         injectFiltersViewController(container: container)
         injectInputViewController(container: container)
+        injectLoginViewController(container: container)
         injectRecipeViewController(container: container)
         injectProfileViewController(container: container)
         injectSignUpViewController(container: container)
@@ -158,6 +160,33 @@ extension DependencyContainer {
         container.register(.unique, type: InputViewController.self) { (envelope: InputEnvelope, coordinator) in
             return InputViewController(
                 store: try container.resolve(arguments: envelope),
+                actionCreator: try container.resolve(),
+                coordinator: coordinator
+            )
+        }
+    }
+
+    // MARK: - Login
+
+    private static func injectLoginViewController(container: DependencyContainer) {
+        container.register(
+            .shared,
+            type: LoginViewController.Dependencies.self,
+            factory: LoginViewController.Dependencies.init
+        )
+        container.register(
+            .unique,
+            type: LoginViewController.Store.self,
+            factory:  LoginViewController.makeStore
+        )
+        container.register(
+            .unique,
+            type: LoginViewController.ActionCreator.self,
+            factory: LoginViewController.ActionCreator.init
+        )
+        container.register(.unique, type: LoginViewController.self) { coordinator in
+            return LoginViewController(
+                store: try container.resolve(),
                 actionCreator: try container.resolve(),
                 coordinator: coordinator
             )

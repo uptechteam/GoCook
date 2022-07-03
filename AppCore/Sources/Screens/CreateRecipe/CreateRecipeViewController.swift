@@ -157,7 +157,7 @@ public final class CreateRecipeViewController: UIViewController {
             .subscribe(on: DispatchQueue.main)
 
         state
-            .map { CreateRecipeViewController.makeProps(from: $0) }
+            .map(CreateRecipeViewController.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
@@ -165,16 +165,12 @@ public final class CreateRecipeViewController: UIViewController {
 
         state.compactMap(\.alert).removeDuplicates()
             .map(\.value)
-            .sink { [unowned self] alert in
-                show(alert: alert)
-            }
+            .sink { [unowned self] alert in show(alert: alert) }
             .store(in: &cancellables)
 
         state.compactMap(\.route).removeDuplicates()
             .map(\.value)
-            .sink { [unowned self] route in
-                navigate(by: route)
-            }
+            .sink { [unowned self] route in navigate(by: route) }
             .store(in: &cancellables)
     }
 

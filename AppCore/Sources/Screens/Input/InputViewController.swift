@@ -79,9 +79,7 @@ public final class InputViewController: UIViewController {
             .subscribe(on: DispatchQueue.main)
 
         state
-            .map { state in
-                return InputViewController.makeProps(from: state)
-            }
+            .map(InputViewController.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
@@ -89,9 +87,7 @@ public final class InputViewController: UIViewController {
 
         state.compactMap(\.route).removeDuplicates()
             .map(\.value)
-            .sink { [unowned self] route in
-                navigate(by: route)
-            }
+            .sink { [unowned self] route in navigate(by: route) }
             .store(in: &cancellables)
     }
 

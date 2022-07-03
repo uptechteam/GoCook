@@ -70,6 +70,18 @@
 "image.picker.remove" = "Remove current photo";
 "image.picker.cancel" = "Cancel";
 
+// MARK: - Login
+
+"login.skip" = "Skip";
+"login.title" = "Log into\nGoCook";
+"login.name.title" = "FULL NAME";
+"login.password.title" = "PASSWORD";
+"login.login" = "Login";
+"login.or" = "OR";
+"login.login.with.apple" = "Login with Apple";
+"login.new.first" = "New to GoCook? ";
+"login.new.second" = "Sign up";
+
 // MARK: - Recipe
 
 "recipe.ingredients.title" = "Ingredients";

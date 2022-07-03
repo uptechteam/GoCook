@@ -72,7 +72,7 @@ public final class RecipeViewController: UIViewController {
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
-        state.map(RecipeViewController.makeProps(from:))
+        state.map(RecipeViewController.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
@@ -80,9 +80,7 @@ public final class RecipeViewController: UIViewController {
 
         state.compactMap(\.route).removeDuplicates()
             .map(\.value)
-            .sink { [unowned self] route in
-                navigate(by: route)
-            }
+            .sink { [unowned self] route in navigate(by: route) }
             .store(in: &cancellables)
     }
 

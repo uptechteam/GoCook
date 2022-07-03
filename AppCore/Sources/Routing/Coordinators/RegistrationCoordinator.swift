@@ -7,6 +7,7 @@
 
 import Dip
 import Foundation
+import Login
 import SignUp
 import UIKit
 
@@ -53,7 +54,23 @@ final class RegistrationCoordinator: Coordinating {
 // MARK: - Extensions
 
 extension RegistrationCoordinator: SignUpCoordinating {
-    func didFinish() {
+    func didFinishSignUp() {
         delegate?.registrationCoordiantorDidFinish(self)
+    }
+
+    func didTapLogin() {
+        let viewController: LoginViewController = try! container.resolve(arguments: self as LoginCoordinating)
+        navigationController.setViewControllers([viewController], animated: true)
+    }
+}
+
+extension RegistrationCoordinator: LoginCoordinating {
+    func didFinishLogin() {
+        delegate?.registrationCoordiantorDidFinish(self)
+    }
+
+    func didTapSignUp() {
+        let viewController: SignUpViewController = try! container.resolve(arguments: self as SignUpCoordinating)
+        navigationController.setViewControllers([viewController], animated: true)
     }
 }

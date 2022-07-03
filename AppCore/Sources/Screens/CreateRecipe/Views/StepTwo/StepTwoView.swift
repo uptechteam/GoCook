@@ -49,10 +49,9 @@ final class StepTwoView: UIView {
 
     private func setupSpaceView() {
         spaceView.setContentHuggingPriority(.required, for: .vertical)
-        let constraint = spaceView.heightAnchor.constraint(equalToConstant: 0)
-        constraint.priority = .init(249)
         NSLayoutConstraint.activate([
-            constraint
+            spaceView.heightAnchor.constraint(equalToConstant: 0)
+                .prioritised(as: UILayoutPriority(249))
         ])
     }
 

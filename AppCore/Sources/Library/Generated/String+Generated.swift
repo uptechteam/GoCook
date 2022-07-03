@@ -174,6 +174,33 @@ extension String {
   /// Cooking time, min
   public static let inputTimeTitle = L10n.tr("Localizable", "input.time.title")
 
+  /// Login
+  public static let loginLogin = L10n.tr("Localizable", "login.login")
+
+  /// OR
+  public static let loginOr = L10n.tr("Localizable", "login.or")
+
+  /// Skip
+  public static let loginSkip = L10n.tr("Localizable", "login.skip")
+
+  /// Log into\nGoCook
+  public static let loginTitle = L10n.tr("Localizable", "login.title")
+
+  /// Login with Apple
+  public static let loginLoginWithApple = L10n.tr("Localizable", "login.login.with.apple")
+
+  /// FULL NAME
+  public static let loginNameTitle = L10n.tr("Localizable", "login.name.title")
+
+  /// New to GoCook? 
+  public static let loginNewFirst = L10n.tr("Localizable", "login.new.first")
+
+  /// Sign up
+  public static let loginNewSecond = L10n.tr("Localizable", "login.new.second")
+
+  /// PASSWORD
+  public static let loginPasswordTitle = L10n.tr("Localizable", "login.password.title")
+
   /// My recipes
   public static let profileMyRecipes = L10n.tr("Localizable", "profile.my_recipes")
 

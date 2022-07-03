@@ -1,14 +1,14 @@
 //
-//  SignUpView.swift
+//  LoginView.swift
 //  
 //
-//  Created by Oleksii Andriushchenko on 01.07.2022.
+//  Created by Oleksii Andriushchenko on 03.07.2022.
 //
 
 import Library
 import UIKit
 
-final class SignUpView: UIView {
+final class LoginView: UIView {
 
     struct Props: Equatable {
         let nameInputViewProps: UserInputView.Props
@@ -25,19 +25,18 @@ final class SignUpView: UIView {
     private let titleLabel = UILabel()
     let nameInputView = UserInputView()
     let passwordInputView = UserInputView()
-    private let passwordDescriptionLabel = UILabel()
-    private let signUpButton = Button()
+    private let loginButton = Button()
     private let orLabel = UILabel()
-    private let signUpWithAppleButton = Button(
+    private let loginWithAppleButton = Button(
         config: ButtonConfig(colorConfig: .secondary, isBackgroundVisible: false, isBorderVisible: true)
     )
-    private let haveAccountLabel = UILabel()
+    private let newLabel = UILabel()
     private var stackViewHeightConstraint: NSLayoutConstraint!
     // callbacks
     var onDidTapSkip: () -> Void = { }
-    var onDidTapSignUp: () -> Void = { }
-    var onDidTapSignUpWithApple: () -> Void = { }
-    var onDidTapHaveAccount: () -> Void = { }
+    var onDidTapLogin: () -> Void = { }
+    var onDidTapLoginWithApple: () -> Void = { }
+    var onDidTapNew: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -52,7 +51,7 @@ final class SignUpView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        let height = scrollView.frame.height - 80 - scrollView.safeAreaInsets.top - scrollView.safeAreaInsets.bottom
+        let height = frame.height - 80 - scrollView.safeAreaInsets.top - scrollView.safeAreaInsets.bottom
         stackViewHeightConstraint.constant = height
     }
 
@@ -63,11 +62,10 @@ final class SignUpView: UIView {
         setupBackgroundImageView()
         setupTitleLabel()
         setupPasswordInputView()
-        setupPasswordDescriptionLabel()
-        setupSignUpButton()
+        setupLoginButton()
         setupOrLabel()
-        setupSignUpWithAppleButton()
-        setupHaveAccountLabel()
+        setupLoginWithAppleButton()
+        setupNewLabel()
         setupStackView()
         setupScrollView()
         setupSkipButton()
@@ -87,7 +85,7 @@ final class SignUpView: UIView {
     }
 
     private func setupTitleLabel() {
-        titleLabel.render(title: .signUpTitle, color: .textMain, typography: .headerOne)
+        titleLabel.render(title: .loginTitle, color: .textMain, typography: .headerOne)
         titleLabel.numberOfLines = 0
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
@@ -96,37 +94,30 @@ final class SignUpView: UIView {
         passwordInputView.textField.isSecureTextEntry = true
     }
 
-    private func setupPasswordDescriptionLabel() {
-        passwordDescriptionLabel.font = FontFamily.RedHatDisplay.regular.font(size: 14)
-        passwordDescriptionLabel.textColor = .textSecondary
-        passwordDescriptionLabel.text = .signUpPasswordDescription
-        passwordDescriptionLabel.numberOfLines = 0
-    }
-
-    private func setupSignUpButton() {
-        signUpButton.setTitle(.signUpSignUp)
-        signUpButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapSignUp() }), for: .touchUpInside)
+    private func setupLoginButton() {
+        loginButton.setTitle(.loginLogin)
+        loginButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapLogin() }), for: .touchUpInside)
     }
 
     private func setupOrLabel() {
-        orLabel.render(title: .signUpOr, color: .textSecondary, typography: .subtitleTwo)
+        orLabel.render(title: .loginOr, color: .textSecondary, typography: .subtitleTwo)
         orLabel.textAlignment = .center
     }
 
-    private func setupSignUpWithAppleButton() {
-        signUpWithAppleButton.setTitle(.signUpSignUpWithApple)
-        signUpWithAppleButton.setImage(.apple)
-        signUpWithAppleButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapSignUpWithApple() }),
+    private func setupLoginWithAppleButton() {
+        loginWithAppleButton.setTitle(.loginLoginWithApple)
+        loginWithAppleButton.setImage(.apple)
+        loginWithAppleButton.addAction(
+            UIAction(handler: { [weak self] _ in self?.onDidTapLoginWithApple() }),
             for: .touchUpInside
         )
     }
 
-    private func setupHaveAccountLabel() {
+    private func setupNewLabel() {
         let attributedText = NSMutableAttributedString()
         attributedText.append(
             NSAttributedString(
-                string: .signUpHaveAnAccountFirst,
+                string: .loginNewFirst,
                 attributes: [
                     .font: FontFamily.RedHatDisplay.medium.font(size: 14),
                     .foregroundColor: UIColor.textSecondary
@@ -135,18 +126,18 @@ final class SignUpView: UIView {
         )
         attributedText.append(
             NSAttributedString(
-                string: .signUpHaveAnAccountSecond,
+                string: .loginNewSecond,
                 attributes: [
                     .font: FontFamily.RedHatDisplay.regular.font(size: 14),
                     .foregroundColor: UIColor.primaryMain
                 ]
             )
         )
-        haveAccountLabel.attributedText = attributedText
-        haveAccountLabel.textAlignment = .center
-        haveAccountLabel.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleHaveAccountTap))
-        haveAccountLabel.addGestureRecognizer(tapGesture)
+        newLabel.attributedText = attributedText
+        newLabel.textAlignment = .center
+        newLabel.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleNewTap))
+        newLabel.addGestureRecognizer(tapGesture)
     }
 
     private func setupStackView() {
@@ -156,18 +147,16 @@ final class SignUpView: UIView {
                 UIView(),
                 nameInputView,
                 passwordInputView,
-                passwordDescriptionLabel,
-                signUpButton,
+                loginButton,
                 orLabel,
-                signUpWithAppleButton,
-                haveAccountLabel
+                loginWithAppleButton,
+                newLabel
             ]
         )
         stackView.axis = .vertical
         stackView.spacing = 16
         stackView.setCustomSpacing(4, after: nameInputView)
-        stackView.setCustomSpacing(-12, after: passwordInputView)
-        stackView.setCustomSpacing(24, after: passwordDescriptionLabel)
+        stackView.setCustomSpacing(4, after: passwordInputView)
         scrollView.addSubview(
             stackView,
             withEdgeInsets: UIEdgeInsets(top: 72, left: 24, bottom: 8, right: 24)
@@ -189,7 +178,7 @@ final class SignUpView: UIView {
     }
 
     private func setupSkipButton() {
-        skipButton.setTitle(.signUpSkip)
+        skipButton.setTitle(.loginSkip)
         skipButton.setImage(.arrowForward)
         skipButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapSkip() }), for: .touchUpInside)
         skipButton.layer.addShadow(opacitiy: 0.1, radius: 4, offset: CGSize(width: 0, height: 4))
@@ -209,7 +198,7 @@ final class SignUpView: UIView {
     // MARK: - Private methods
 
     @objc
-    private func handleHaveAccountTap() {
-        onDidTapHaveAccount()
+    private func handleNewTap() {
+        onDidTapNew()
     }
 }
