@@ -20,13 +20,7 @@ final class SignUpView: UIView {
     private let scrollView = UIScrollView()
     private let backgroundImageView = UIImageView()
     private let skipButton = Button(
-        config: ButtonConfig(
-            buttonSize: .small,
-            colorConfig: ColorConfig(main: .secondaryMain, secondary: .secondaryPressed),
-            imagePosition: .right,
-            isBackgroundVisible: false,
-            isBorderVisible: true
-        )
+        config: ButtonConfig(buttonSize: .small, colorConfig: .white, imagePosition: .right)
     )
     private let titleLabel = UILabel()
     let nameInputView = UserInputView()
@@ -35,17 +29,14 @@ final class SignUpView: UIView {
     private let signUpButton = Button()
     private let orLabel = UILabel()
     private let signUpWithAppleButton = Button(
-        config: ButtonConfig(
-            colorConfig: .init(main: .secondaryMain, secondary: .secondaryPressed),
-            isBackgroundVisible: false,
-            isBorderVisible: true
-        )
+        config: ButtonConfig(colorConfig: .secondary, isBackgroundVisible: false, isBorderVisible: true)
     )
     private let haveAccountLabel = UILabel()
     // callbacks
     var onDidTapSkip: () -> Void = { }
     var onDidTapSignUp: () -> Void = { }
     var onDidTapSignUpWithApple: () -> Void = { }
+    var onDidTapHaveAccount: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -112,6 +103,7 @@ final class SignUpView: UIView {
 
     private func setupSignUpWithAppleButton() {
         signUpWithAppleButton.setTitle(.signUpSignUpWithApple)
+        signUpWithAppleButton.setImage(.apple)
         signUpWithAppleButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapSignUpWithApple() }),
             for: .touchUpInside
@@ -119,8 +111,30 @@ final class SignUpView: UIView {
     }
 
     private func setupHaveAccountLabel() {
-        haveAccountLabel.render(title: .signUpHaveAnAccount, color: .textSecondary, typography: .subtitleTwo)
+        let attributedText = NSMutableAttributedString()
+        attributedText.append(
+            NSAttributedString(
+                string: .signUpHaveAnAccountFirst,
+                attributes: [
+                    .font: FontFamily.RedHatDisplay.medium.font(size: 14),
+                    .foregroundColor: UIColor.textSecondary
+                ]
+            )
+        )
+        attributedText.append(
+            NSAttributedString(
+                string: .signUpHaveAnAccountSecond,
+                attributes: [
+                    .font: FontFamily.RedHatDisplay.regular.font(size: 14),
+                    .foregroundColor: UIColor.primaryMain
+                ]
+            )
+        )
+        haveAccountLabel.attributedText = attributedText
         haveAccountLabel.textAlignment = .center
+        haveAccountLabel.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleHaveAccountTap))
+        haveAccountLabel.addGestureRecognizer(tapGesture)
     }
 
     private func setupStackView() {
@@ -176,5 +190,12 @@ final class SignUpView: UIView {
     func render(props: Props) {
         nameInputView.render(props: props.nameInputViewProps)
         passwordInputView.render(props: props.passwordInputViewProps)
+    }
+
+    // MARK: - Private methods
+
+    @objc
+    private func handleHaveAccountTap() {
+        onDidTapHaveAccount()
     }
 }

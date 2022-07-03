@@ -217,8 +217,11 @@ extension String {
   /// Find your\ntasty idea\nwith GoCook
   public static let signUpTitle = L10n.tr("Localizable", "sign.up.title")
 
-  /// Already have an account? Login
-  public static let signUpHaveAnAccount = L10n.tr("Localizable", "sign.up.have.an.account")
+  /// Already have an account? 
+  public static let signUpHaveAnAccountFirst = L10n.tr("Localizable", "sign.up.have.an.account.first")
+
+  /// Login
+  public static let signUpHaveAnAccountSecond = L10n.tr("Localizable", "sign.up.have.an.account.second")
 
   /// FULL NAME
   public static let signUpNameTitle = L10n.tr("Localizable", "sign.up.name.title")

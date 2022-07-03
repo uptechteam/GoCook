@@ -7,17 +7,41 @@
 
 import UIKit
 
-public struct ColorConfig: Equatable {
+public enum ColorConfig: Equatable {
+    case error
+    case primary
+    case secondary
+    case white
 
-    // MARK: - Properties
+    public var main: UIColor {
+        switch self {
+        case .error:
+            return .errorMain
 
-    let main: UIColor
-    let secondary: UIColor
+        case .primary:
+            return .primaryMain
 
-    // MARK: - Lifecycle
+        case .secondary:
+            return .secondaryMain
 
-    public init(main: UIColor, secondary: UIColor) {
-        self.main = main
-        self.secondary = secondary
+        case .white:
+            return .appWhite
+        }
+    }
+
+    public var secondary: UIColor {
+        switch self {
+        case .error:
+            return .errorPressed
+
+        case .primary:
+            return .primaryPressed
+
+        case .secondary:
+            return .secondaryPressed
+
+        case .white:
+            return .appWhite
+        }
     }
 }

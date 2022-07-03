@@ -20,11 +20,7 @@ final class ProfileInfoView: UIView {
 
     private let descriptionLabel = UILabel()
     private let addRecipeButton = Button(
-        config: ButtonConfig(
-            buttonSize: .medium,
-            colorConfig: ColorConfig(main: .primaryMain, secondary: .primaryPressed),
-            isBackgroundVisible: false
-        )
+        config: ButtonConfig(buttonSize: .medium, colorConfig: .primary, isBackgroundVisible: false)
     )
     // callbacks
     var onDidTapAddRecipe: () -> Void = { }

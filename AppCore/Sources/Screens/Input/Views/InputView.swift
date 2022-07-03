@@ -30,12 +30,7 @@ final class InputView: UIView {
     private let bottomBackgroundView = UIView()
     private let titleLabel = UILabel()
     private let textField = UITextField()
-    private let saveButton = Button(
-        config: ButtonConfig(
-            buttonSize: .medium,
-            colorConfig: ColorConfig(main: .textMain, secondary: .textSecondary)
-        )
-    )
+    private let saveButton = Button(config: ButtonConfig(buttonSize: .medium, colorConfig: .secondary))
     let unitView = InputUnitView()
     private var bottomConstraint: NSLayoutConstraint!
     // callbacks

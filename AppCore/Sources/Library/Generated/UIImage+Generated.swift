@@ -129,6 +129,10 @@ extension UIImage {
     return UIImage(named: "time")!
   }
 
+  @nonobjc public class var apple: UIImage {
+    return UIImage(named: "apple")!
+  }
+
   @nonobjc public class var registrationBackground: UIImage {
     return UIImage(named: "registrationBackground")!
   }

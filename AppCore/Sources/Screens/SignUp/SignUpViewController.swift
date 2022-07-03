@@ -75,6 +75,10 @@ public final class SignUpViewController: UIViewController {
             store.dispatch(action: .signUpWithAppleTapped)
         }
 
+        contentView.onDidTapHaveAccount = { [store] in
+            store.dispatch(action: .loginTapped)
+        }
+
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 

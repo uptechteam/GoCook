@@ -25,7 +25,7 @@ public struct ButtonConfig: Equatable {
 
     public init(
         buttonSize: ButtonSize = .large,
-        colorConfig: ColorConfig = .init(main: .secondaryMain, secondary: .secondaryPressed),
+        colorConfig: ColorConfig = .secondary,
         imagePosition: ButtonImagePosition = .left,
         isBackgroundVisible: Bool = true,
         isBorderVisible: Bool = false
@@ -76,10 +76,18 @@ public struct ButtonConfig: Equatable {
     func titleColor(for state: ButtonState) -> UIColor {
         switch state {
         case .normal:
-            return isBackgroundVisible ? .appWhite : colorConfig.main
+            if isBackgroundVisible {
+                return colorConfig == .white ? .appBlack : .appWhite
+            } else {
+                return colorConfig.main
+            }
 
         case .highlighted:
-            return isBackgroundVisible ? .appWhite : colorConfig.secondary
+            if isBackgroundVisible {
+                return colorConfig == .white ? .appBlack : .appWhite
+            } else {
+                return colorConfig.secondary
+            }
 
         case .disabled:
             return .textDisabled
