@@ -1,4 +1,4 @@
-input_dir: ../Recipes/Application/Resources/
+input_dir: ../GoCook/Application/Resources/
 output_dir: ../AppCore/Sources/Library/Generated
 
 xcassets:

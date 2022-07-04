@@ -1,6 +1,6 @@
 //
 //  AppCoordinator.swift
-//  Recipes
+//  GoCook
 //
 //  Created by Oleksii Andriushchenko on 13.06.2022.
 //

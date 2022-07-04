@@ -7,23 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8621B46228589D8D00A3881A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8621B46128589D8D00A3881A /* Localizable.strings */; };
 		8621B46428589EE700A3881A /* Routing in Frameworks */ = {isa = PBXBuildFile; productRef = 8621B46328589EE700A3881A /* Routing */; };
-		8628A98B285897E300C8C2E0 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8628A98A285897E300C8C2E0 /* Colors.xcassets */; };
-		8666B4BF2848EF780071CDDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8666B4BE2848EF780071CDDA /* AppDelegate.swift */; };
-		8666B4C82848EF790071CDDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8666B4C72848EF790071CDDA /* Assets.xcassets */; };
-		8666B4CB2848EF790071CDDA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8666B4C92848EF790071CDDA /* LaunchScreen.storyboard */; };
+		8675EC86287314E8009FCA4C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8675EC842873132D009FCA4C /* AppDelegate.swift */; };
+		8675EC872873156C009FCA4C /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8675EC7F2873132D009FCA4C /* Colors.xcassets */; };
+		8675EC882873156F009FCA4C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8675EC802873132D009FCA4C /* Assets.xcassets */; };
+		8675EC8928731572009FCA4C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8675EC812873132D009FCA4C /* Localizable.strings */; };
+		8675EC8A28731576009FCA4C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8675EC822873132D009FCA4C /* LaunchScreen.storyboard */; };
 		869E69852857C0550000FA94 /* AppCore in Resources */ = {isa = PBXBuildFile; fileRef = 869E69842857C0550000FA94 /* AppCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8621B46128589D8D00A3881A /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		8628A98A285897E300C8C2E0 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
-		8666B4BB2848EF780071CDDA /* Recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8666B4BE2848EF780071CDDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8666B4C72848EF790071CDDA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		8666B4CA2848EF790071CDDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8666B4CC2848EF790071CDDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8666B4BB2848EF780071CDDA /* GoCook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoCook.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8675EC7F2873132D009FCA4C /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		8675EC802873132D009FCA4C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8675EC812873132D009FCA4C /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		8675EC832873132D009FCA4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8675EC842873132D009FCA4C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8675EC852873132D009FCA4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		869E69842857C0550000FA94 /* AppCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppCore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -43,7 +43,7 @@
 			isa = PBXGroup;
 			children = (
 				869E69842857C0550000FA94 /* AppCore */,
-				8666B4BD2848EF780071CDDA /* Recipes */,
+				8675EC7B2873132D009FCA4C /* GoCook */,
 				8666B4BC2848EF780071CDDA /* Products */,
 				868C590228578DC600D0C8C8 /* Frameworks */,
 			);
@@ -52,36 +52,36 @@
 		8666B4BC2848EF780071CDDA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8666B4BB2848EF780071CDDA /* Recipes.app */,
+				8666B4BB2848EF780071CDDA /* GoCook.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8666B4BD2848EF780071CDDA /* Recipes */ = {
+		8675EC7B2873132D009FCA4C /* GoCook */ = {
 			isa = PBXGroup;
 			children = (
-				8666B4EE2848EF9B0071CDDA /* Application */,
+				8675EC7D2873132D009FCA4C /* Application */,
 			);
-			path = Recipes;
+			path = GoCook;
 			sourceTree = "<group>";
 		};
-		8666B4EE2848EF9B0071CDDA /* Application */ = {
+		8675EC7D2873132D009FCA4C /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				8666B4EF2848EFC00071CDDA /* Resources */,
-				8666B4BE2848EF780071CDDA /* AppDelegate.swift */,
-				8666B4C92848EF790071CDDA /* LaunchScreen.storyboard */,
-				8666B4CC2848EF790071CDDA /* Info.plist */,
+				8675EC7E2873132D009FCA4C /* Resources */,
+				8675EC822873132D009FCA4C /* LaunchScreen.storyboard */,
+				8675EC842873132D009FCA4C /* AppDelegate.swift */,
+				8675EC852873132D009FCA4C /* Info.plist */,
 			);
 			path = Application;
 			sourceTree = "<group>";
 		};
-		8666B4EF2848EFC00071CDDA /* Resources */ = {
+		8675EC7E2873132D009FCA4C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8666B4C72848EF790071CDDA /* Assets.xcassets */,
-				8628A98A285897E300C8C2E0 /* Colors.xcassets */,
-				8621B46128589D8D00A3881A /* Localizable.strings */,
+				8675EC7F2873132D009FCA4C /* Colors.xcassets */,
+				8675EC802873132D009FCA4C /* Assets.xcassets */,
+				8675EC812873132D009FCA4C /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -96,9 +96,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8666B4BA2848EF780071CDDA /* Recipes */ = {
+		8666B4BA2848EF780071CDDA /* GoCook */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8666B4E52848EF790071CDDA /* Build configuration list for PBXNativeTarget "Recipes" */;
+			buildConfigurationList = 8666B4E52848EF790071CDDA /* Build configuration list for PBXNativeTarget "GoCook" */;
 			buildPhases = (
 				8666B4B72848EF780071CDDA /* Sources */,
 				8666B4B82848EF780071CDDA /* Frameworks */,
@@ -108,12 +108,12 @@
 			);
 			dependencies = (
 			);
-			name = Recipes;
+			name = GoCook;
 			packageProductDependencies = (
 				8621B46328589EE700A3881A /* Routing */,
 			);
-			productName = Recipes;
-			productReference = 8666B4BB2848EF780071CDDA /* Recipes.app */;
+			productName = GoCook;
+			productReference = 8666B4BB2848EF780071CDDA /* GoCook.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -131,7 +131,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8666B4B62848EF780071CDDA /* Build configuration list for PBXProject "Recipes" */;
+			buildConfigurationList = 8666B4B62848EF780071CDDA /* Build configuration list for PBXProject "GoCook" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -144,7 +144,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8666B4BA2848EF780071CDDA /* Recipes */,
+				8666B4BA2848EF780071CDDA /* GoCook */,
 			);
 		};
 /* End PBXProject section */
@@ -154,11 +154,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8621B46228589D8D00A3881A /* Localizable.strings in Resources */,
 				869E69852857C0550000FA94 /* AppCore in Resources */,
-				8628A98B285897E300C8C2E0 /* Colors.xcassets in Resources */,
-				8666B4CB2848EF790071CDDA /* LaunchScreen.storyboard in Resources */,
-				8666B4C82848EF790071CDDA /* Assets.xcassets in Resources */,
+				8675EC8928731572009FCA4C /* Localizable.strings in Resources */,
+				8675EC882873156F009FCA4C /* Assets.xcassets in Resources */,
+				8675EC8A28731576009FCA4C /* LaunchScreen.storyboard in Resources */,
+				8675EC872873156C009FCA4C /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,17 +169,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8666B4BF2848EF780071CDDA /* AppDelegate.swift in Sources */,
+				8675EC86287314E8009FCA4C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		8666B4C92848EF790071CDDA /* LaunchScreen.storyboard */ = {
+		8675EC822873132D009FCA4C /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				8666B4CA2848EF790071CDDA /* Base */,
+				8675EC832873132D009FCA4C /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -306,14 +306,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ESG9RMF2GN;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Recipes/Application/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Recipes;
+				INFOPLIST_FILE = GoCook/Application/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = GoCook;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires access to the camera";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app requires access to the photo library";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -322,9 +327,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.uptech.recipes;
+				PRODUCT_BUNDLE_IDENTIFIER = com.uptech.gocook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development com.uptech.gocook";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -339,14 +345,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ESG9RMF2GN;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Recipes/Application/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Recipes;
+				INFOPLIST_FILE = GoCook/Application/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = GoCook;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires access to the camera";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app requires access to the photo library";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -355,9 +366,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.uptech.recipes;
+				PRODUCT_BUNDLE_IDENTIFIER = com.uptech.gocook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore com.uptech.gocook";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -370,7 +382,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8666B4B62848EF780071CDDA /* Build configuration list for PBXProject "Recipes" */ = {
+		8666B4B62848EF780071CDDA /* Build configuration list for PBXProject "GoCook" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8666B4E32848EF790071CDDA /* Debug */,
@@ -379,7 +391,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8666B4E52848EF790071CDDA /* Build configuration list for PBXNativeTarget "Recipes" */ = {
+		8666B4E52848EF790071CDDA /* Build configuration list for PBXNativeTarget "GoCook" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8666B4E62848EF790071CDDA /* Debug */,

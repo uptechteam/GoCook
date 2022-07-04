@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8666B4BA2848EF780071CDDA"
-               BuildableName = "Recipes.app"
-               BlueprintName = "Recipes"
-               ReferencedContainer = "container:Recipes.xcodeproj">
+               BuildableName = "GoCook.app"
+               BlueprintName = "GoCook"
+               ReferencedContainer = "container:GoCook.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8666B4BA2848EF780071CDDA"
-            BuildableName = "Recipes.app"
-            BlueprintName = "Recipes"
-            ReferencedContainer = "container:Recipes.xcodeproj">
+            BuildableName = "GoCook.app"
+            BlueprintName = "GoCook"
+            ReferencedContainer = "container:GoCook.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8666B4BA2848EF780071CDDA"
-            BuildableName = "Recipes.app"
-            BlueprintName = "Recipes"
-            ReferencedContainer = "container:Recipes.xcodeproj">
+            BuildableName = "GoCook.app"
+            BlueprintName = "GoCook"
+            ReferencedContainer = "container:GoCook.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
