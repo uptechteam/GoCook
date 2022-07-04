@@ -35,6 +35,7 @@ extension SignUpViewController {
     }
 
     enum Alert {
+        case notImplemented
         case error(Error)
     }
 
@@ -127,7 +128,7 @@ extension SignUpViewController {
             break
 
         case .signUpWithAppleTapped:
-            break
+            newState.alert = .init(value: .notImplemented)
 
         case .skipTapped:
             newState.route = .init(value: .finish)

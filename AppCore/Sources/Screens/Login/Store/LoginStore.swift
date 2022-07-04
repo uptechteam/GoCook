@@ -31,6 +31,7 @@ extension LoginViewController {
     }
 
     enum Alert {
+        case notImplemented
         case error(Error)
     }
 
@@ -95,7 +96,7 @@ extension LoginViewController {
             newState.isLoggingIn = true
 
         case .loginWithAppleTapped:
-            break
+            newState.alert = .init(value: .notImplemented)
 
         case .nameChanged(let text):
             newState.name = text
