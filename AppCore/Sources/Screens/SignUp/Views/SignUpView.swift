@@ -165,8 +165,8 @@ final class SignUpView: UIView {
         )
         stackView.axis = .vertical
         stackView.spacing = 16
-        stackView.setCustomSpacing(4, after: nameInputView)
-        stackView.setCustomSpacing(-12, after: passwordInputView)
+        stackView.setCustomSpacing(24, after: nameInputView)
+        stackView.setCustomSpacing(24, after: passwordInputView)
         stackView.setCustomSpacing(24, after: passwordDescriptionLabel)
         scrollView.addSubview(
             stackView,

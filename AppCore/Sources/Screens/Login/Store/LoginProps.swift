@@ -10,6 +10,7 @@ import Library
 extension LoginViewController {
     static func makeProps(from state: State) -> LoginView.Props {
         return .init(
+            isLoading: state.isLoggingIn,
             nameInputViewProps: makeNameInputViewProps(state: state),
             passwordInputViewProps: makePasswordInputViewProps(state: state)
         )

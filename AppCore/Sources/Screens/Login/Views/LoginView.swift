@@ -11,6 +11,7 @@ import UIKit
 final class LoginView: UIView {
 
     struct Props: Equatable {
+        let isLoading: Bool
         let nameInputViewProps: UserInputView.Props
         let passwordInputViewProps: UserInputView.Props
     }
@@ -155,8 +156,8 @@ final class LoginView: UIView {
         )
         stackView.axis = .vertical
         stackView.spacing = 16
-        stackView.setCustomSpacing(4, after: nameInputView)
-        stackView.setCustomSpacing(4, after: passwordInputView)
+        stackView.setCustomSpacing(24, after: nameInputView)
+        stackView.setCustomSpacing(24, after: passwordInputView)
         scrollView.addSubview(
             stackView,
             withEdgeInsets: UIEdgeInsets(top: 72, left: 24, bottom: 8, right: 24)
@@ -191,6 +192,7 @@ final class LoginView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        loginButton.toggleLoading(on: props.isLoading)
         nameInputView.render(props: props.nameInputViewProps)
         passwordInputView.render(props: props.passwordInputViewProps)
     }

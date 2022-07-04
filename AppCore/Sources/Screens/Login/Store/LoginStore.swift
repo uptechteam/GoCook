@@ -13,6 +13,7 @@ extension LoginViewController {
     public typealias Store = ReduxStore<State, Action>
 
     public struct State: Equatable {
+        var isLoggingIn: Bool
         var name: String
         var password: String
         var alert: AnyIdentifiable<Alert>?
@@ -62,6 +63,7 @@ extension LoginViewController {
 
     private static func makeInitialState(dependencies: Dependencies) -> State {
         return State(
+            isLoggingIn: false,
             name: "",
             password: "",
             alert: nil,
@@ -77,6 +79,7 @@ extension LoginViewController {
 
         switch action {
         case .login(let modelAction):
+            newState.isLoggingIn = false
             switch modelAction {
             case .failure(let error):
                 newState.alert = .init(value: .error(error))
@@ -89,7 +92,7 @@ extension LoginViewController {
             }
 
         case .loginTapped:
-            break
+            newState.isLoggingIn = true
 
         case .loginWithAppleTapped:
             break

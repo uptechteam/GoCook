@@ -82,16 +82,12 @@ public final class UserInputView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, textField, dividerView, errorLabel, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, textField, dividerView, errorLabel])
         stackView.axis = .vertical
         stackView.setCustomSpacing(16, after: titleLabel)
         stackView.setCustomSpacing(10, after: textField)
         stackView.setCustomSpacing(8, after: dividerView)
         addSubview(stackView, withEdgeInsets: .zero)
-
-        NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 98)
-        ])
     }
 
     // MARK: - Public methods
