@@ -264,6 +264,9 @@ extension String {
 
   /// Sign up with Apple
   public static let signUpSignUpWithApple = L10n.tr("Localizable", "sign.up.sign.up.with.apple")
+
+  /// This username is taken. Try another one
+  public static let validationNotUniqueUsername = L10n.tr("Localizable", "validation.not.unique.username")
 }
 // swiftlint:enable function_parameter_count identifier_name line_length type_body_length
 

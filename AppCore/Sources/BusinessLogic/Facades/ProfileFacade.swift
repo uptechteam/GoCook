@@ -14,6 +14,7 @@ public protocol ProfileFacading {
     var profile: AnyPublisher<Profile?, Never> { get }
 
     func getProfile() -> Profile
+    func isUnique(username: String) async throws -> Bool
     func login(username: String, password: String) async throws
     func logout() async
     func signUp(username: String, password: String) async throws
@@ -52,6 +53,10 @@ public final class ProfileFacade: ProfileFacading {
 
     public func getProfile() -> Profile {
         profileSubject.value!
+    }
+
+    public func isUnique(username: String) async throws -> Bool {
+        try await profileClient.isUnique(username: username)
     }
 
     public func login(username: String, password: String) async throws {

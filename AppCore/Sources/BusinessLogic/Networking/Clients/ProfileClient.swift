@@ -10,6 +10,7 @@ import Foundation
 import Helpers
 
 public protocol ProfileClienting {
+    func isUnique(username: String) async throws -> Bool
     func login(username: String, password: String) async throws -> String
     func logout() async throws
     func refreshProfile() async throws -> Profile
@@ -31,6 +32,12 @@ public final class ProfileClient: ProfileClienting {
     }
 
     // MARK: - Public methods
+
+    public func isUnique(username: String) async throws -> Bool {
+        let appRequest = try api.makeIsUniqueTarget(username: username)
+        let response: IsUniqueResponse = try await networkClient.execute(appRequest)
+        return response.isUnique
+    }
 
     public func login(username: String, password: String) async throws -> String {
         let appRequest = try api.makeLoginTarget(username: username, password: password)

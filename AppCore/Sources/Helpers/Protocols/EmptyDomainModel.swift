@@ -10,3 +10,9 @@ import Foundation
 public protocol EmptyDomainModel {
     static var empty: Self { get }
 }
+
+extension Bool: EmptyDomainModel {
+    public static var empty: Bool {
+        false
+    }
+}

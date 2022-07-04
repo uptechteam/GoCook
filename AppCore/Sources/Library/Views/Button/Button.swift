@@ -15,6 +15,7 @@ public final class Button: UIControl {
     private let config: ButtonConfig
     private let titleLabel = UILabel()
     private let imageView = UIImageView()
+    private let spinnerView = SpinnerView()
 
     public override var isHighlighted: Bool {
         didSet {
@@ -52,6 +53,7 @@ public final class Button: UIControl {
         setupContentView()
         setupImageView()
         setupTitleLabel()
+        setupSpinnerView()
         setupStackView()
     }
 
@@ -83,14 +85,21 @@ public final class Button: UIControl {
         }
     }
 
+    func setupSpinnerView() {
+        NSLayoutConstraint.activate([
+            spinnerView.widthAnchor.constraint(equalTo: spinnerView.heightAnchor),
+            spinnerView.heightAnchor.constraint(equalToConstant: config.buttonSize.height - 16)
+        ])
+    }
+
     private func setupStackView() {
         let stackView = UIStackView()
         switch config.imagePosition {
         case .left:
-            [imageView, titleLabel].forEach(stackView.addArrangedSubview)
+            [imageView, titleLabel, spinnerView].forEach(stackView.addArrangedSubview)
 
         case .right:
-            [titleLabel, imageView].forEach(stackView.addArrangedSubview)
+            [titleLabel, imageView, spinnerView].forEach(stackView.addArrangedSubview)
         }
         stackView.isUserInteractionEnabled = false
         stackView.spacing = 8
@@ -115,5 +124,15 @@ public final class Button: UIControl {
     public func setImage(_ image: UIImage?) {
         imageView.image = image
         imageView.isHidden = image == nil
+    }
+
+    public func toggleLoading(on: Bool) {
+        spinnerView.toggle(isAnimating: on)
+        titleLabel.isHidden = on
+        if on {
+            imageView.isHidden = true
+        } else {
+            imageView.isHidden = imageView.image == nil
+        }
     }
 }

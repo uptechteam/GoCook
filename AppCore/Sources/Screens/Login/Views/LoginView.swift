@@ -11,8 +11,9 @@ import UIKit
 final class LoginView: UIView {
 
     struct Props: Equatable {
-        let nameInputViewProps: UserInputView.Props
-        let passwordInputViewProps: UserInputView.Props
+        let isLoading: Bool
+        let nameInputViewProps: RegistrationInputView.Props
+        let passwordInputViewProps: RegistrationInputView.Props
     }
 
     // MARK: - Properties
@@ -23,8 +24,8 @@ final class LoginView: UIView {
         config: ButtonConfig(buttonSize: .small, colorConfig: .white, imagePosition: .right)
     )
     private let titleLabel = UILabel()
-    let nameInputView = UserInputView()
-    let passwordInputView = UserInputView()
+    let nameInputView = RegistrationInputView()
+    let passwordInputView = RegistrationInputView()
     private let loginButton = Button()
     private let orLabel = UILabel()
     private let loginWithAppleButton = Button(
@@ -92,6 +93,7 @@ final class LoginView: UIView {
 
     private func setupPasswordInputView() {
         passwordInputView.textField.isSecureTextEntry = true
+        passwordInputView.textField.textContentType = .oneTimeCode
     }
 
     private func setupLoginButton() {
@@ -155,8 +157,8 @@ final class LoginView: UIView {
         )
         stackView.axis = .vertical
         stackView.spacing = 16
-        stackView.setCustomSpacing(4, after: nameInputView)
-        stackView.setCustomSpacing(4, after: passwordInputView)
+        stackView.setCustomSpacing(24, after: nameInputView)
+        stackView.setCustomSpacing(24, after: passwordInputView)
         scrollView.addSubview(
             stackView,
             withEdgeInsets: UIEdgeInsets(top: 72, left: 24, bottom: 8, right: 24)
@@ -191,6 +193,7 @@ final class LoginView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        loginButton.toggleLoading(on: props.isLoading)
         nameInputView.render(props: props.nameInputViewProps)
         passwordInputView.render(props: props.passwordInputViewProps)
     }

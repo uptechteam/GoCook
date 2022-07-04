@@ -12,14 +12,16 @@ public final class SpinnerView: UIView {
 
     // MARK: - Properties
 
+    private var circleColor: UIColor
     private let closeImageView = UIImageView()
     private var circleLayer: CALayer?
     private var isAnimating = false
 
     // MARK: - Lifecycle
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    public init(circleColor: UIColor = .appWhite) {
+        self.circleColor = circleColor
+        super.init(frame: .zero)
         setup()
     }
 
@@ -30,7 +32,12 @@ public final class SpinnerView: UIView {
     // MARK: - Set up
 
     private func setup() {
+        setupContentView()
         setupCloseImageView()
+    }
+
+    private func setupContentView() {
+        isHidden = true
     }
 
     private func setupCloseImageView() {
@@ -53,7 +60,7 @@ public final class SpinnerView: UIView {
         self.isAnimating = isAnimating
         if isAnimating {
             layer.speed = 1
-            setUpAnimation(size: bounds.size, color: .secondaryMain)
+            setUpAnimation(size: bounds.size, color: circleColor)
         } else {
             circleLayer?.removeFromSuperlayer()
             circleLayer = nil

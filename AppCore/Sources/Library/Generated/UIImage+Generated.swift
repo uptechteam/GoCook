@@ -133,6 +133,10 @@ extension UIImage {
     return UIImage(named: "apple")!
   }
 
+  @nonobjc public class var checkGreen: UIImage {
+    return UIImage(named: "checkGreen")!
+  }
+
   @nonobjc public class var registrationBackground: UIImage {
     return UIImage(named: "registrationBackground")!
   }

@@ -11,8 +11,9 @@ import UIKit
 final class SignUpView: UIView {
 
     struct Props: Equatable {
-        let nameInputViewProps: UserInputView.Props
-        let passwordInputViewProps: UserInputView.Props
+        let isLoading: Bool
+        let nameInputViewProps: RegistrationInputView.Props
+        let passwordInputViewProps: RegistrationInputView.Props
     }
 
     // MARK: - Properties
@@ -23,9 +24,8 @@ final class SignUpView: UIView {
         config: ButtonConfig(buttonSize: .small, colorConfig: .white, imagePosition: .right)
     )
     private let titleLabel = UILabel()
-    let nameInputView = UserInputView()
-    let passwordInputView = UserInputView()
-    private let passwordDescriptionLabel = UILabel()
+    let nameInputView = RegistrationInputView()
+    let passwordInputView = RegistrationInputView()
     private let signUpButton = Button()
     private let orLabel = UILabel()
     private let signUpWithAppleButton = Button(
@@ -63,7 +63,6 @@ final class SignUpView: UIView {
         setupBackgroundImageView()
         setupTitleLabel()
         setupPasswordInputView()
-        setupPasswordDescriptionLabel()
         setupSignUpButton()
         setupOrLabel()
         setupSignUpWithAppleButton()
@@ -94,13 +93,7 @@ final class SignUpView: UIView {
 
     private func setupPasswordInputView() {
         passwordInputView.textField.isSecureTextEntry = true
-    }
-
-    private func setupPasswordDescriptionLabel() {
-        passwordDescriptionLabel.font = FontFamily.RedHatDisplay.regular.font(size: 14)
-        passwordDescriptionLabel.textColor = .textSecondary
-        passwordDescriptionLabel.text = .signUpPasswordDescription
-        passwordDescriptionLabel.numberOfLines = 0
+        passwordInputView.textField.textContentType = .oneTimeCode
     }
 
     private func setupSignUpButton() {
@@ -156,7 +149,6 @@ final class SignUpView: UIView {
                 UIView(),
                 nameInputView,
                 passwordInputView,
-                passwordDescriptionLabel,
                 signUpButton,
                 orLabel,
                 signUpWithAppleButton,
@@ -165,9 +157,8 @@ final class SignUpView: UIView {
         )
         stackView.axis = .vertical
         stackView.spacing = 16
-        stackView.setCustomSpacing(4, after: nameInputView)
-        stackView.setCustomSpacing(-12, after: passwordInputView)
-        stackView.setCustomSpacing(24, after: passwordDescriptionLabel)
+        stackView.setCustomSpacing(24, after: nameInputView)
+        stackView.setCustomSpacing(24, after: passwordInputView)
         scrollView.addSubview(
             stackView,
             withEdgeInsets: UIEdgeInsets(top: 72, left: 24, bottom: 8, right: 24)
@@ -202,6 +193,7 @@ final class SignUpView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        signUpButton.toggleLoading(on: props.isLoading)
         nameInputView.render(props: props.nameInputViewProps)
         passwordInputView.render(props: props.passwordInputViewProps)
     }

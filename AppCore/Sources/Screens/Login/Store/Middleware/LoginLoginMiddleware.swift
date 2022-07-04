@@ -21,6 +21,7 @@ extension LoginViewController {
             }
 
             do {
+                try await Task.sleep(nanoseconds: 1_000_000_000)
                 try await dependencies.profileFacade.login(username: state.name, password: state.password)
                 await dispatch(.login(.success(())))
             } catch {

@@ -104,6 +104,11 @@ public final class LoginViewController: UIViewController, ErrorPresentable {
 
     private func show(alert: Alert) {
         switch alert {
+        case .notImplemented:
+            let alertController = UIAlertController(title: "Not implemented yet", message: nil, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Ok", style: .default))
+            present(alertController, animated: true)
+
         case .error(let error):
             show(errorMessage: error.localizedDescription)
         }
