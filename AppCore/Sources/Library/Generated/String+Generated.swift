@@ -189,7 +189,7 @@ extension String {
   /// Login with Apple
   public static let loginLoginWithApple = L10n.tr("Localizable", "login.login.with.apple")
 
-  /// FULL NAME
+  /// USERNAME
   public static let loginNameTitle = L10n.tr("Localizable", "login.name.title")
 
   /// New to GoCook? 
@@ -250,7 +250,7 @@ extension String {
   /// Login
   public static let signUpHaveAnAccountSecond = L10n.tr("Localizable", "sign.up.have.an.account.second")
 
-  /// FULL NAME
+  /// USERNAME
   public static let signUpNameTitle = L10n.tr("Localizable", "sign.up.name.title")
 
   /// Password must be at least 8 characters, contain uppercase and lowercase and numbers

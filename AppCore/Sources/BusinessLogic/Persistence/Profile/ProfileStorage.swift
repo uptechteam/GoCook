@@ -34,11 +34,11 @@ public final class ProfileStorage: ProfileStoraging {
 
     // MARK: - Properties
 
-    private let persistenceManager: any PersistenceManaging<Profile>
+    private let persistenceManager: PersistenceManager<Profile>
 
     // MARK: - Lifecycle
 
-    public init(persistenceManager: any PersistenceManaging<Profile>) {
+    public init(persistenceManager: PersistenceManager<Profile>) {
         self.persistenceManager = persistenceManager
     }
 

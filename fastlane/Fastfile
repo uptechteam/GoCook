@@ -1,0 +1,109 @@
+default_platform(:ios)
+
+platform :ios do
+
+  # MARK: - Set up
+  
+  before_all do
+    setup_circle_ci
+    xcodebuild(xcargs: "-resolvePackageDependencies")
+  end
+
+  # MARK: - Devices/Certificates
+
+  lane :add_device do
+    device_name = prompt(text: "Enter the device name: ")
+    device_udid = prompt(text: "Enter the device UDID: ")
+    device_hash = {}
+    device_hash[device_name] = device_udid
+    register_devices(devices: device_hash)
+    match(
+      type: "development",
+      force_for_new_devices: true
+    )
+  end
+
+  desc "Fetches certificates and profiles from the ios-certificates repository by SSH"
+  lane :sync_profiles do
+    match(
+      type: "development",
+      readonly: false
+    )
+
+    match(
+      type: "appstore",
+      readonly: false
+    )
+  end
+
+  # MARK: - Test project
+
+  desc "Runs all the tests"
+  lane :test do
+    scheme = "Recipes"
+    run_tests(
+      scheme: scheme,
+      device: 'iPhone 13 Pro',
+      output_types: "junit",
+      output_files: "results.xml",
+      cloned_source_packages_path: "SourcePackages",
+      # slack_default_payloads: ['lane', 'test_result', 'git_branch', 'git_author', 'last_git_commit', 'last_git_commit_hash']
+    )
+  end
+
+  # MARK: - Deployment
+
+  lane :test_then_deploy do
+    test
+    deploy
+  end
+
+  private_lane :deploy do
+    # Fetch provisioning profiles
+    match(
+      type: "appstore",
+      readonly: true
+    )
+
+    # Bump build number before the build
+    build_number = get_build_number(xcodeproj: "Recipes.xcodeproj").to_i + 1
+    increment_build_number(build_number: build_number)
+
+    # Build the project with Staging scheme
+    build_ios_app(
+      scheme: "Recipes",
+      export_method: "app-store",
+      cloned_source_packages_path: "SourcePackages"
+    )
+
+    # Upload the build
+    upload_to_testflight(
+      username: "oleksii.andriushchenko@uptech.team",
+      app_identifier: "com.uptech.recipes",
+      skip_waiting_for_build_processing: true
+    )
+
+    # upload_dsyms
+
+    # Commit bump build number, add a tag and push
+    clean_build_artifacts
+    commit_version_bump(
+      xcodeproj: "Recipes",
+      force: true,
+      message: "Bump build number #{build_number} [ci skip]"
+    )
+    push_to_git_remote(
+      remote: "origin",
+      local_branch: "main",
+      remote_branch: "main"
+    )
+
+    version = get_version_number(xcodeproj: "Recipes.xcodeproj", target: "Recipes")
+    build = get_build_number(xcodeproj: "Recipes.xcodeproj")
+    add_git_tag(
+      tag: "release/v#{version}/#{build}"
+    )
+    push_git_tags
+  end
+
+end
