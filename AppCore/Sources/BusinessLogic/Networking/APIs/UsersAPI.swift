@@ -21,6 +21,10 @@ struct UsersAPI {
 
     // MARK: - Public methods
 
+    func makeIsUniqueTarget(username: String) throws -> AppRequest {
+        try targetBuilder.makeGetTarget(path: "unique/\(username)")
+    }
+
     func makeLoginTarget(username: String, password: String) throws -> AppRequest {
         try targetBuilder.makePostTarget(
             path: "login",

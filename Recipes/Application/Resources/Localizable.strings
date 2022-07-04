@@ -74,7 +74,7 @@
 
 "login.skip" = "Skip";
 "login.title" = "Log into\nGoCook";
-"login.name.title" = "FULL NAME";
+"login.name.title" = "USERNAME";
 "login.password.title" = "PASSWORD";
 "login.login" = "Login";
 "login.or" = "OR";
@@ -93,7 +93,7 @@
 
 "sign.up.skip" = "Skip";
 "sign.up.title" = "Find your\ntasty idea\nwith GoCook";
-"sign.up.name.title" = "FULL NAME";
+"sign.up.name.title" = "USERNAME";
 "sign.up.password.title" = "PASSWORD";
 "sign.up.password.description" = "Password must be at least 8 characters, contain uppercase and lowercase and numbers";
 "sign.up.sign.up" = "Sign up";
@@ -117,3 +117,7 @@
 "ingredient.unit.table.spoon.reduction" = "tbsp";
 "ingredient.unit.tea.spoon.reduction" = "tsp";
 "ingredient.unit.whole.reduction" = "whole";
+
+// MARK: - Validation
+
+"validation.not.unique.username" = "This username is taken. Try another one";

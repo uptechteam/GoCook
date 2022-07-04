@@ -12,8 +12,8 @@ final class LoginView: UIView {
 
     struct Props: Equatable {
         let isLoading: Bool
-        let nameInputViewProps: UserInputView.Props
-        let passwordInputViewProps: UserInputView.Props
+        let nameInputViewProps: RegistrationInputView.Props
+        let passwordInputViewProps: RegistrationInputView.Props
     }
 
     // MARK: - Properties
@@ -24,8 +24,8 @@ final class LoginView: UIView {
         config: ButtonConfig(buttonSize: .small, colorConfig: .white, imagePosition: .right)
     )
     private let titleLabel = UILabel()
-    let nameInputView = UserInputView()
-    let passwordInputView = UserInputView()
+    let nameInputView = RegistrationInputView()
+    let passwordInputView = RegistrationInputView()
     private let loginButton = Button()
     private let orLabel = UILabel()
     private let loginWithAppleButton = Button(
@@ -93,6 +93,7 @@ final class LoginView: UIView {
 
     private func setupPasswordInputView() {
         passwordInputView.textField.isSecureTextEntry = true
+        passwordInputView.textField.textContentType = .oneTimeCode
     }
 
     private func setupLoginButton() {

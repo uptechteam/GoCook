@@ -13,8 +13,8 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
     // MARK: - Properties
 
     private var model: Model?
-    private(set) var isLoading: Bool = false
-    private(set) var error: Error?
+    public private(set) var isLoading: Bool = false
+    public private(set) var error: Error?
 
     /// Check wether model is not nil
     public var isPresent: Bool {
@@ -95,6 +95,12 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
 
 extension DomainModelState where Model: Collection {
     public var items: Model {
+        return model ?? .empty
+    }
+}
+
+extension DomainModelState where Model == Bool {
+    public var value: Bool {
         return model ?? .empty
     }
 }

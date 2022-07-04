@@ -16,22 +16,27 @@ extension LoginViewController {
         )
     }
 
-    private static func makeNameInputViewProps(state: State) -> UserInputView.Props {
+    private static func makeNameInputViewProps(state: State) -> RegistrationInputView.Props {
         return .init(
-            title: .loginNameTitle, titleColorSource: .color(.textSecondary),
+            title: .loginNameTitle,
+            titleColorSource: .color(.textSecondary),
+            validationViewProps: .empty,
             dividerColorSource: .color(.appBlack),
-            errorMessage: "",
-            isErrorMessageVisible: false
+            isDescriptionVisible: false,
+            description: "",
+            descriptionColorSource: .color(.clear)
         )
     }
 
-    private static func makePasswordInputViewProps(state: State) -> UserInputView.Props {
+    private static func makePasswordInputViewProps(state: State) -> RegistrationInputView.Props {
         return .init(
             title: .loginPasswordTitle,
             titleColorSource: .color(.textSecondary),
+            validationViewProps: .empty,
             dividerColorSource: .color(.appBlack),
-            errorMessage: "",
-            isErrorMessageVisible: false
+            isDescriptionVisible: false,
+            description: "",
+            descriptionColorSource: .color(.clear)
         )
     }
 }

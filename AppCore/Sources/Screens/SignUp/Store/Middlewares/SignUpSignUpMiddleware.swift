@@ -16,7 +16,7 @@ extension SignUpViewController {
             await next(action)
             let state = getState()
 
-            guard case .signUpTapped = action else {
+            guard case .passwordValidated(let isValid) = action, isValid else {
                 return
             }
 
