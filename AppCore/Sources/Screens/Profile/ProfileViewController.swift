@@ -11,6 +11,8 @@ import UIKit
 
 public protocol ProfileCoordinating: AnyObject {
     func didTapCreateRecipe()
+    func didTapSettings()
+    func didTapSignIn()
 }
 
 public final class ProfileViewController: UIViewController {
@@ -34,6 +36,13 @@ public final class ProfileViewController: UIViewController {
         self.actionCreator = actionCreator
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
+
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            image: .backButton,
+            style: .plain,
+            target: nil,
+            action: nil
+        )
     }
 
     required init?(coder: NSCoder) {
@@ -59,11 +68,11 @@ public final class ProfileViewController: UIViewController {
 
     private func setupBinding() {
         contentView.headerView.onDidTapSettings = { [store] in
-            store.dispatch(action: .logout)
+            store.dispatch(action: .settingsTapped)
         }
 
         contentView.headerView.onDidTapSignIn = { [store] in
-            store.dispatch(action: .login)
+            store.dispatch(action: .signInTapped)
         }
 
         contentView.recipesHeaderView.onDidTapAddNew = { [store] in
@@ -94,6 +103,12 @@ public final class ProfileViewController: UIViewController {
         switch route {
         case .createRecipe:
             coordinator.didTapCreateRecipe()
+
+        case .settings:
+            coordinator.didTapSettings()
+
+        case .signIn:
+            coordinator.didTapSignIn()
         }
     }
 }

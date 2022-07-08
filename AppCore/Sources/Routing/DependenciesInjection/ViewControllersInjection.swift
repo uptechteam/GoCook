@@ -14,6 +14,7 @@ import Input
 import Login
 import Recipe
 import Profile
+import Settings
 import SignUp
 
 extension DependencyContainer {
@@ -26,6 +27,7 @@ extension DependencyContainer {
         injectLoginViewController(container: container)
         injectRecipeViewController(container: container)
         injectProfileViewController(container: container)
+        injectSettingsViewController(container: container)
         injectSignUpViewController(container: container)
     }
 
@@ -177,16 +179,18 @@ extension DependencyContainer {
         container.register(
             .unique,
             type: LoginViewController.Store.self,
-            factory: LoginViewController.makeStore
+            factory: { envelope in
+                LoginViewController.makeStore(dependencies: try container.resolve(), envelope: envelope)
+            }
         )
         container.register(
             .unique,
             type: LoginViewController.ActionCreator.self,
             factory: LoginViewController.ActionCreator.init
         )
-        container.register(.unique, type: LoginViewController.self) { coordinator in
+        container.register(.unique, type: LoginViewController.self) { (envelope: LoginEnvelope, coordinator) in
             return LoginViewController(
-                store: try container.resolve(),
+                store: try container.resolve(arguments: envelope),
                 actionCreator: try container.resolve(),
                 coordinator: coordinator
             )
@@ -249,6 +253,33 @@ extension DependencyContainer {
         }
     }
 
+    // MARK: - Settings
+
+    private static func injectSettingsViewController(container: DependencyContainer) {
+        container.register(
+            .shared,
+            type: SettingsViewController.Dependencies.self,
+            factory: SettingsViewController.Dependencies.init
+        )
+        container.register(
+            .unique,
+            type: SettingsViewController.Store.self,
+            factory: SettingsViewController.makeStore(dependencies:)
+        )
+        container.register(
+            .unique,
+            type: SettingsViewController.ActionCreator.self,
+            factory: SettingsViewController.ActionCreator.init
+        )
+        container.register(.unique, type: SettingsViewController.self) { coordinator in
+            return SettingsViewController(
+                store: try container.resolve(),
+                actionCreator: try container.resolve(),
+                coordinator: coordinator
+            )
+        }
+    }
+
     // MARK: - Sign Up
 
     private static func injectSignUpViewController(container: DependencyContainer) {
@@ -260,16 +291,18 @@ extension DependencyContainer {
         container.register(
             .unique,
             type: SignUpViewController.Store.self,
-            factory: SignUpViewController.makeStore(dependencies:)
+            factory: { envelope in
+                SignUpViewController.makeStore(dependencies: try container.resolve(), envelope: envelope)
+            }
         )
         container.register(
             .unique,
             type: SignUpViewController.ActionCreator.self,
             factory: SignUpViewController.ActionCreator.init
         )
-        container.register(.unique, type: SignUpViewController.self) { coordinator in
+        container.register(.unique, type: SignUpViewController.self) { (envelope: SignUpEnvelope, coordinator) in
             return SignUpViewController(
-                store: try container.resolve(),
+                store: try container.resolve(arguments: envelope),
                 actionCreator: try container.resolve(),
                 coordinator: coordinator
             )

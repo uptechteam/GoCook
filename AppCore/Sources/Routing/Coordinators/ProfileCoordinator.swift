@@ -9,8 +9,12 @@ import AppTabBar
 import CreateRecipe
 import Dip
 import Foundation
+import Helpers
 import Library
+import Login
 import Profile
+import SignUp
+import Settings
 import UIKit
 
 final class ProfileCoordinator: NSObject, Coordinating {
@@ -55,17 +59,62 @@ final class ProfileCoordinator: NSObject, Coordinating {
 
 // MARK: - Extensions
 
+extension ProfileCoordinator: CreateRecipeCoordinatorDelegate {
+    func didFinish(_ coordinator: CreateRecipeCoordinator) {
+        childCoordinators.removeAll(where: { $0 === coordinator })
+    }
+}
+
+extension ProfileCoordinator: LoginCoordinating {
+    func didFinishLogin() {
+        navigationController.popToRootViewController(animated: true)
+    }
+
+    func didTapSignUp() {
+        let envelope = SignUpEnvelope.profile
+        let viewController: SignUpViewController = try! container.resolve(
+            arguments: envelope, self as SignUpCoordinating
+        )
+        let viewControllers = [navigationController.viewControllers[0], viewController]
+        navigationController.setViewControllers(viewControllers, animated: true)
+    }
+}
+
 extension ProfileCoordinator: ProfileCoordinating {
     func didTapCreateRecipe() {
         let coordinator = CreateRecipeCoordinator(container: container, presentingViewController: navigationController)
         childCoordinators.append(coordinator)
         coordinator.start()
     }
+
+    func didTapSettings() {
+        let viewController: SettingsViewController = try! container.resolve(arguments: self as SettingsCoordinating)
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
+    func didTapSignIn() {
+        let envelope = LoginEnvelope.profile
+        let viewController: LoginViewController = try! container.resolve(arguments: envelope, self as LoginCoordinating)
+        navigationController.pushViewController(viewController, animated: true)
+    }
 }
 
-extension ProfileCoordinator: CreateRecipeCoordinatorDelegate {
-    func didFinish(_ coordinator: CreateRecipeCoordinator) {
-        childCoordinators.removeAll(where: { $0 === coordinator })
+extension ProfileCoordinator: SettingsCoordinating {
+    func didLogout() {
+        navigationController.popToRootViewController(animated: true)
+    }
+}
+
+extension ProfileCoordinator: SignUpCoordinating {
+    func didFinishSignUp() {
+        navigationController.popToRootViewController(animated: true)
+    }
+
+    func didTapLogin() {
+        let envelope = LoginEnvelope.profile
+        let viewController: LoginViewController = try! container.resolve(arguments: envelope, self as LoginCoordinating)
+        let viewControllers = [navigationController.viewControllers[0], viewController]
+        navigationController.setViewControllers(viewControllers, animated: true)
     }
 }
 

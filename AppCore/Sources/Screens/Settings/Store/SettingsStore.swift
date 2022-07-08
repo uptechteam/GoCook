@@ -1,34 +1,29 @@
 //
-//  ProfileStore.swift
+//  SettingsStore.swift
 //  
 //
-//  Created by Oleksii Andriushchenko on 15.06.2022.
+//  Created by Oleksii Andriushchenko on 08.07.2022.
 //
 
 import BusinessLogic
-import DomainModels
 import Helpers
 
-extension ProfileViewController {
+extension SettingsViewController {
 
     public typealias Store = ReduxStore<State, Action>
 
     public struct State: Equatable {
-        var profile: Profile?
+        var isLoggingOut: Bool
         var route: AnyIdentifiable<Route>?
     }
 
     public enum Action {
-        case addNewRecipeTapped
-        case settingsTapped
-        case signInTapped
-        case updateProfile(Profile?)
+        case logoutSuccess
+        case logoutTapped
     }
 
     enum Route {
-        case createRecipe
-        case settings
-        case signIn
+        case logout
     }
 
     public struct Dependencies {
@@ -45,38 +40,34 @@ extension ProfileViewController {
     }
 
     public static func makeStore(dependencies: Dependencies) -> Store {
+        let logoutMiddleware = makeLogoutMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
             reducer: reduce,
-            middlewares: []
+            middlewares: [logoutMiddleware]
         )
     }
 
     private static func makeInitialState(dependencies: Dependencies) -> State {
         return State(
-            profile: nil,
+            isLoggingOut: false,
             route: nil
         )
     }
 }
 
-extension ProfileViewController {
+extension SettingsViewController {
     static func reduce(state: State, action: Action) -> State {
 
         var newState = state
 
         switch action {
-        case .addNewRecipeTapped:
-            newState.route = .init(value: .createRecipe)
+        case .logoutSuccess:
+            newState.isLoggingOut = false
+            newState.route = .init(value: .logout)
 
-        case .settingsTapped:
-            newState.route = .init(value: .settings)
-
-        case .signInTapped:
-            newState.route = .init(value: .signIn)
-
-        case .updateProfile(let profile):
-            newState.profile = profile
+        case .logoutTapped:
+            newState.isLoggingOut = true
         }
 
         return newState

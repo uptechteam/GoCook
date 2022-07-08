@@ -72,8 +72,10 @@
 
 // MARK: - Login
 
+"login.title" = "Sign in";
 "login.skip" = "Skip";
-"login.title" = "Log into\nGoCook";
+"login.text.title.registration" = "Log into\nGoCook";
+"login.text.title.profile" = "Log into GoCook";
 "login.name.title" = "USERNAME";
 "login.password.title" = "PASSWORD";
 "login.login" = "Login";
@@ -89,10 +91,17 @@
 "recipe.instructions.title" = "Instructions";
 "recipe.instructions.step.title" = "%d Step";
 
+// MARK: - Settings
+
+"settings.title" = "Settings";
+"settings.logout" = "Log out";
+
 // MARK: - Sign up
 
-"sign.up.skip" = "Skip";
 "sign.up.title" = "Find your\ntasty idea\nwith GoCook";
+"sign.up.skip" = "Skip";
+"sign.up.text.title.registration" = "Find your\ntasty idea\nwith GoCook";
+"sign.up.text.title.profile" = "Sign up to GoCook";
 "sign.up.name.title" = "USERNAME";
 "sign.up.password.title" = "PASSWORD";
 "sign.up.password.description" = "Password must be at least 8 characters, contain uppercase and lowercase and numbers";

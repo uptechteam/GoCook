@@ -189,7 +189,7 @@ extension String {
   /// Skip
   public static let loginSkip = L10n.tr("Localizable", "login.skip")
 
-  /// Log into\nGoCook
+  /// Sign in
   public static let loginTitle = L10n.tr("Localizable", "login.title")
 
   /// Login with Apple
@@ -206,6 +206,12 @@ extension String {
 
   /// PASSWORD
   public static let loginPasswordTitle = L10n.tr("Localizable", "login.password.title")
+
+  /// Log into GoCook
+  public static let loginTextTitleProfile = L10n.tr("Localizable", "login.text.title.profile")
+
+  /// Log into\nGoCook
+  public static let loginTextTitleRegistration = L10n.tr("Localizable", "login.text.title.registration")
 
   /// My recipes
   public static let profileMyRecipes = L10n.tr("Localizable", "profile.my_recipes")
@@ -241,6 +247,12 @@ extension String {
     return L10n.tr("Localizable", "recipe.instructions.step.title", p1)
   }
 
+  /// Log out
+  public static let settingsLogout = L10n.tr("Localizable", "settings.logout")
+
+  /// Settings
+  public static let settingsTitle = L10n.tr("Localizable", "settings.title")
+
   /// OR
   public static let signUpOr = L10n.tr("Localizable", "sign.up.or")
 
@@ -270,6 +282,12 @@ extension String {
 
   /// Sign up with Apple
   public static let signUpSignUpWithApple = L10n.tr("Localizable", "sign.up.sign.up.with.apple")
+
+  /// Sign up to GoCook
+  public static let signUpTextTitleProfile = L10n.tr("Localizable", "sign.up.text.title.profile")
+
+  /// Find your\ntasty idea\nwith GoCook
+  public static let signUpTextTitleRegistration = L10n.tr("Localizable", "sign.up.text.title.registration")
 
   /// Username should contain between 2 and 20 characters
   public static let validationNameLength = L10n.tr("Localizable", "validation.name.length")

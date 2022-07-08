@@ -5,15 +5,20 @@
 //  Created by Oleksii Andriushchenko on 03.07.2022.
 //
 
+import Helpers
 import Library
 
 extension LoginViewController {
     static func makeProps(from state: State) -> LoginView.Props {
         return .init(
-            isLoading: state.isLoggingIn,
+            isNavigationBarVisible: !state.isRegistration,
+            backgroundImageSource: .asset(state.isRegistration ? .registrationBackground : .lowRegistrationBackground),
+            isSkipButtonVisible: state.isRegistration,
+            title: state.isRegistration ? .loginTextTitleRegistration : .loginTextTitleProfile,
             nameInputViewProps: makeNameInputViewProps(state: state),
             passwordInputViewProps: makePasswordInputViewProps(state: state),
-            isLoginButtonEnabled: !state.name.isEmpty && !state.password.isEmpty
+            isLoginButtonEnabled: !state.name.isEmpty && !state.password.isEmpty,
+            isLoading: state.isLoggingIn
         )
     }
 

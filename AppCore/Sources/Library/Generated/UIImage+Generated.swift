@@ -137,6 +137,10 @@ extension UIImage {
     return UIImage(named: "checkGreen")!
   }
 
+  @nonobjc public class var lowRegistrationBackground: UIImage {
+    return UIImage(named: "lowRegistrationBackground")!
+  }
+
   @nonobjc public class var registrationBackground: UIImage {
     return UIImage(named: "registrationBackground")!
   }

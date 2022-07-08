@@ -56,6 +56,7 @@ let package = Package(
                 "Login",
                 "Profile",
                 "Recipe",
+                "Settings",
                 "SignUp"
             ]
         ),
@@ -89,6 +90,11 @@ let package = Package(
             path: "Sources/Screens/Profile"
         ),
         .target(name: "Recipe", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Recipe"),
+        .target(
+            name: "Settings",
+            dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
+            path: "Sources/Screens/Settings"
+        ),
         .target(
             name: "SignUp",
             dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],

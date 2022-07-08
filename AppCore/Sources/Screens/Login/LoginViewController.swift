@@ -35,6 +35,7 @@ public final class LoginViewController: UIViewController, ErrorPresentable {
         self.actionCreator = actionCreator
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
+        setupUI()
     }
 
     required init?(coder: NSCoder) {
@@ -55,6 +56,10 @@ public final class LoginViewController: UIViewController, ErrorPresentable {
     }
 
     // MARK: - Private methods
+
+    private func setupUI() {
+        title = .loginTitle
+    }
 
     private func setupBinding() {
         contentView.onDidTapSkip = { [store] in

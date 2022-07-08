@@ -13,11 +13,16 @@ extension LoginViewController {
     public typealias Store = ReduxStore<State, Action>
 
     public struct State: Equatable {
+        var envelope: LoginEnvelope
         var isLoggingIn: Bool
         var name: String
         var password: String
         var alert: AnyIdentifiable<Alert>?
         var route: AnyIdentifiable<Route>?
+
+        var isRegistration: Bool {
+            envelope == .registration
+        }
     }
 
     public enum Action {
@@ -53,17 +58,18 @@ extension LoginViewController {
         }
     }
 
-    public static func makeStore(dependencies: Dependencies) -> Store {
+    public static func makeStore(dependencies: Dependencies, envelope: LoginEnvelope) -> Store {
         let loginMiddleware = makeLoginMiddleware(dependencies: dependencies)
         return Store(
-            initialState: makeInitialState(dependencies: dependencies),
+            initialState: makeInitialState(dependencies: dependencies, envelope: envelope),
             reducer: reduce,
             middlewares: [loginMiddleware]
         )
     }
 
-    private static func makeInitialState(dependencies: Dependencies) -> State {
+    private static func makeInitialState(dependencies: Dependencies, envelope: LoginEnvelope) -> State {
         return State(
+            envelope: envelope,
             isLoggingIn: false,
             name: "",
             password: "",
