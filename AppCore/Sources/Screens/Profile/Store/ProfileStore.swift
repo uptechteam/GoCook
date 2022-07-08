@@ -20,13 +20,15 @@ extension ProfileViewController {
 
     public enum Action {
         case addNewRecipeTapped
-        case login
-        case logout
+        case settingsTapped
+        case signInTapped
         case updateProfile(Profile?)
     }
 
     enum Route {
         case createRecipe
+        case settings
+        case signIn
     }
 
     public struct Dependencies {
@@ -43,12 +45,10 @@ extension ProfileViewController {
     }
 
     public static func makeStore(dependencies: Dependencies) -> Store {
-        let loginMiddleware = makeLoginMiddleware(dependencies: dependencies)
-        let logoutMiddleware = makeLogoutMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
             reducer: reduce,
-            middlewares: [loginMiddleware, logoutMiddleware]
+            middlewares: []
         )
     }
 
@@ -69,11 +69,11 @@ extension ProfileViewController {
         case .addNewRecipeTapped:
             newState.route = .init(value: .createRecipe)
 
-        case .login:
-            break
+        case .settingsTapped:
+            newState.route = .init(value: .settings)
 
-        case .logout:
-            break
+        case .signInTapped:
+            newState.route = .init(value: .signIn)
 
         case .updateProfile(let profile):
             newState.profile = profile

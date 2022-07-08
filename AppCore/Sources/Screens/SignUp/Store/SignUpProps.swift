@@ -11,6 +11,7 @@ extension SignUpViewController {
     static func makeProps(from state: State) -> SignUpView.Props {
         return .init(
             isLoading: state.isSigningUp,
+            isSkipButtonVisible: false,
             nameInputViewProps: makeNameInputView(state: state),
             passwordInputViewProps: makePasswordInputView(state: state)
         )

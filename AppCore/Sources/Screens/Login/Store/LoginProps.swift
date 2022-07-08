@@ -11,6 +11,7 @@ extension LoginViewController {
     static func makeProps(from state: State) -> LoginView.Props {
         return .init(
             isLoading: state.isLoggingIn,
+            isSkipButtonVisible: false,
             nameInputViewProps: makeNameInputViewProps(state: state),
             passwordInputViewProps: makePasswordInputViewProps(state: state),
             isLoginButtonEnabled: !state.name.isEmpty && !state.password.isEmpty

@@ -12,6 +12,7 @@ final class SignUpView: UIView {
 
     struct Props: Equatable {
         let isLoading: Bool
+        let isSkipButtonVisible: Bool
         let nameInputViewProps: RegistrationInputView.Props
         let passwordInputViewProps: RegistrationInputView.Props
     }
@@ -194,6 +195,7 @@ final class SignUpView: UIView {
 
     func render(props: Props) {
         signUpButton.toggleLoading(on: props.isLoading)
+        skipButton.isHidden = !props.isSkipButtonVisible
         nameInputView.render(props: props.nameInputViewProps)
         passwordInputView.render(props: props.passwordInputViewProps)
     }

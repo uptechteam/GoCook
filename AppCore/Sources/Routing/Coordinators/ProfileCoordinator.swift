@@ -9,8 +9,11 @@ import AppTabBar
 import CreateRecipe
 import Dip
 import Foundation
+import Helpers
 import Library
+import Login
 import Profile
+import SignUp
 import UIKit
 
 final class ProfileCoordinator: NSObject, Coordinating {
@@ -55,17 +58,50 @@ final class ProfileCoordinator: NSObject, Coordinating {
 
 // MARK: - Extensions
 
+extension ProfileCoordinator: CreateRecipeCoordinatorDelegate {
+    func didFinish(_ coordinator: CreateRecipeCoordinator) {
+        childCoordinators.removeAll(where: { $0 === coordinator })
+    }
+}
+
+extension ProfileCoordinator: LoginCoordinating {
+    func didFinishLogin() {
+        navigationController.popToRootViewController(animated: true)
+    }
+
+    func didTapSignUp() {
+        let viewController: SignUpViewController = try! container.resolve(arguments: self as SignUpCoordinating)
+        let viewControllers = [navigationController.viewControllers[0], viewController]
+        navigationController.setViewControllers(viewControllers, animated: true)
+    }
+}
+
 extension ProfileCoordinator: ProfileCoordinating {
     func didTapCreateRecipe() {
         let coordinator = CreateRecipeCoordinator(container: container, presentingViewController: navigationController)
         childCoordinators.append(coordinator)
         coordinator.start()
     }
+
+    func didTapSettings() {
+        log.debug("Show settings")
+    }
+
+    func didTapSignIn() {
+        let viewController: LoginViewController = try! container.resolve(arguments: self as LoginCoordinating)
+        navigationController.pushViewController(viewController, animated: true)
+    }
 }
 
-extension ProfileCoordinator: CreateRecipeCoordinatorDelegate {
-    func didFinish(_ coordinator: CreateRecipeCoordinator) {
-        childCoordinators.removeAll(where: { $0 === coordinator })
+extension ProfileCoordinator: SignUpCoordinating {
+    func didFinishSignUp() {
+        navigationController.popToRootViewController(animated: true)
+    }
+
+    func didTapLogin() {
+        let viewController: LoginViewController = try! container.resolve(arguments: self as LoginCoordinating)
+        let viewControllers = [navigationController.viewControllers[0], viewController]
+        navigationController.setViewControllers(viewControllers, animated: true)
     }
 }
 
