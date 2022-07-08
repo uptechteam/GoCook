@@ -5,15 +5,19 @@
 //  Created by Oleksii Andriushchenko on 01.07.2022.
 //
 
+import Helpers
 import Library
 
 extension SignUpViewController {
     static func makeProps(from state: State) -> SignUpView.Props {
         return .init(
-            isLoading: state.isSigningUp,
-            isSkipButtonVisible: false,
+            isNavigationBarVisible: !state.isRegistration,
+            backgroundImageSource: .asset(state.isRegistration ? .registrationBackground : .lowRegistrationBackground),
+            isSkipButtonVisible: state.isRegistration,
+            title: state.isRegistration ? .signUpTextTitleRegistration : .signUpTextTitleProfile,
             nameInputViewProps: makeNameInputView(state: state),
-            passwordInputViewProps: makePasswordInputView(state: state)
+            passwordInputViewProps: makePasswordInputView(state: state),
+            isLoading: state.isSigningUp
         )
     }
 

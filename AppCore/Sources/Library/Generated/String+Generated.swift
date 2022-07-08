@@ -277,6 +277,12 @@ extension String {
   /// Sign up with Apple
   public static let signUpSignUpWithApple = L10n.tr("Localizable", "sign.up.sign.up.with.apple")
 
+  /// Sign up to GoCook
+  public static let signUpTextTitleProfile = L10n.tr("Localizable", "sign.up.text.title.profile")
+
+  /// Find your\ntasty idea\nwith GoCook
+  public static let signUpTextTitleRegistration = L10n.tr("Localizable", "sign.up.text.title.registration")
+
   /// Username should contain between 2 and 20 characters
   public static let validationNameLength = L10n.tr("Localizable", "validation.name.length")
 

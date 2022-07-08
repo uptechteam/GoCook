@@ -228,10 +228,10 @@ final class LoginView: UIView {
         backgroundImageView.set(props.backgroundImageSource)
         titleLabel.text = props.title
         loginButton.toggleLoading(on: props.isLoading)
-        skipButton.isHidden = !props.isSkipButtonVisible
         nameInputView.render(props: props.nameInputViewProps)
         passwordInputView.render(props: props.passwordInputViewProps)
         loginButton.isEnabled = props.isLoginButtonEnabled
+        skipButton.isHidden = !props.isSkipButtonVisible
     }
 
     // MARK: - Private methods

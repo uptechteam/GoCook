@@ -15,11 +15,16 @@ extension SignUpViewController {
     public struct State: Equatable {
         var isPasswordValid: Bool
         var isSigningUp: Bool
+        var envelope: SignUpEnvelope
         var name: String
         var nameValidation: DomainModelState<Bool>
         var password: String
         var alert: AnyIdentifiable<Alert>?
         var route: AnyIdentifiable<Route>?
+
+        var isRegistration: Bool {
+            envelope == .registration
+        }
     }
 
     public enum Action {
@@ -57,21 +62,22 @@ extension SignUpViewController {
         }
     }
 
-    public static func makeStore(dependencies: Dependencies) -> Store {
+    public static func makeStore(dependencies: Dependencies, envelope: SignUpEnvelope) -> Store {
         let signUpMiddleware = makeSignUpMiddleware(dependencies: dependencies)
         let validatePassword = makeValidateInputsMiddleware(dependencies: dependencies)
         let validateUsernameMiddleware = makeValidateUsernameMiddleware(dependencies: dependencies)
         return Store(
-            initialState: makeInitialState(dependencies: dependencies),
+            initialState: makeInitialState(dependencies: dependencies, envelope: envelope),
             reducer: reduce,
             middlewares: [signUpMiddleware, validatePassword, validateUsernameMiddleware]
         )
     }
 
-    private static func makeInitialState(dependencies: Dependencies) -> State {
+    private static func makeInitialState(dependencies: Dependencies, envelope: SignUpEnvelope) -> State {
         return State(
             isPasswordValid: true,
             isSigningUp: false,
+            envelope: envelope,
             name: "",
             nameValidation: DomainModelState(),
             password: "",

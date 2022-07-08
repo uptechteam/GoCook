@@ -58,7 +58,7 @@ public final class LoginViewController: UIViewController, ErrorPresentable {
     // MARK: - Private methods
 
     private func setupUI() {
-        title = "Sign In"
+        title = .loginTitle
     }
 
     private func setupBinding() {

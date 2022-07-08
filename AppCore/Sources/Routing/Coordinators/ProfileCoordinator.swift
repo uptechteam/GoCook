@@ -70,7 +70,10 @@ extension ProfileCoordinator: LoginCoordinating {
     }
 
     func didTapSignUp() {
-        let viewController: SignUpViewController = try! container.resolve(arguments: self as SignUpCoordinating)
+        let envelope = SignUpEnvelope.profile
+        let viewController: SignUpViewController = try! container.resolve(
+            arguments: envelope, self as SignUpCoordinating
+        )
         let viewControllers = [navigationController.viewControllers[0], viewController]
         navigationController.setViewControllers(viewControllers, animated: true)
     }
