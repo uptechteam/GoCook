@@ -21,7 +21,7 @@ public struct AppEnvironment: Equatable {
     }()
 
     private static let developemnt = AppEnvironment(
-        baseURL: URL(string: "http://127.0.0.1:8080")!,
+        baseURL: URL(string: "https://go-go-cook.herokuapp.com")!, // baseURL: URL(string: "http://127.0.0.1:8080")!,
         name: "development"
     )
     private static let production = AppEnvironment(

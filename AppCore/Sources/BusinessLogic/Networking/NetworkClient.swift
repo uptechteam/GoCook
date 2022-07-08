@@ -34,11 +34,27 @@ public final class NetworkClientImpl: NetworkClient {
     public func execute<Response: Decodable>(_ request: AppRequest) async throws -> Response {
         do {
             let interceptor = createInterceptor(for: request.authorisation)
-            let responseData = try await AF.request(request.urlRequest, interceptor: interceptor)
-                .cURLDescription(calling: logger.log)
-                .validate(statusCode: 200..<300)
-                .serializingData(automaticallyCancelling: true)
-                .value
+            let responseData: Data
+            do {
+                responseData = try await AF.request(request.urlRequest, interceptor: interceptor)
+                    .cURLDescription(calling: logger.log)
+                    .validate(statusCode: 200..<300)
+                    .serializingData(automaticallyCancelling: true)
+                    .value
+            } catch {
+                switch error.asAFError {
+                case .sessionTaskFailed(error: let error):
+                    if (error as NSError).code == -1004 {
+                        throw APIError.cannotConnectToServer
+                    } else {
+                        throw error
+                    }
+
+                default:
+                    throw error
+                }
+            }
+
             logger.log(response: responseData, request: request)
             let response = try JSONDateDecoder().decode(Response.self, from: responseData)
             return response

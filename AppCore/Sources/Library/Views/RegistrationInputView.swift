@@ -76,6 +76,8 @@ public final class RegistrationInputView: UIView {
     }
 
     private func setupTextField() {
+        textField.font = Typography.subtitleThree.font
+        textField.textColor = .appBlack
         textField.delegate = self
     }
 

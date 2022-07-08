@@ -121,3 +121,7 @@
 // MARK: - Validation
 
 "validation.not.unique.username" = "This username is taken. Try another one";
+
+// MARK: - API Error
+
+"api.error.connot.connect.to.server" = "Can't reach the server";
