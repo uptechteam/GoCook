@@ -10,7 +10,7 @@ import Foundation
 extension HomeViewController {
 
     static func makeGetFeedMiddleware(dependencies: Dependencies) -> Store.Middleware {
-        return Store.makeMiddleware { dispatch, getState, next, action in
+        return Store.makeMiddleware { dispatch, _, next, action in
 
             await next(action)
 

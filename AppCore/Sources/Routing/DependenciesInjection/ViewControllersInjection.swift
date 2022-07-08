@@ -177,7 +177,7 @@ extension DependencyContainer {
         container.register(
             .unique,
             type: LoginViewController.Store.self,
-            factory:  LoginViewController.makeStore
+            factory: LoginViewController.makeStore
         )
         container.register(
             .unique,

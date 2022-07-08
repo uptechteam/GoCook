@@ -98,4 +98,3 @@ public final class InputViewController: UIViewController {
         }
     }
 }
-

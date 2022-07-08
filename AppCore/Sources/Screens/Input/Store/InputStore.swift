@@ -92,4 +92,3 @@ extension InputViewController {
         return newState
     }
 }
-

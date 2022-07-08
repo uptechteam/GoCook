@@ -86,13 +86,14 @@ public final class CreateRecipeViewController: UIViewController {
         )
     }
 
+    // swiftlint:disable:next function_body_length
     private func setupBinding() {
         actionCreator.keyboardHeightChange
             .sink { [contentView] height in
                 contentView.updateBottomInset(keyboardHeight: height)
             }
             .store(in: &cancellables)
-        
+
         contentView.stepOneView.recipeView.onDidTapImage = { [store] in
             store.dispatch(action: .recipeImageTapped)
         }

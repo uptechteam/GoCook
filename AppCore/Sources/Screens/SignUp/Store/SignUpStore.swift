@@ -82,6 +82,7 @@ extension SignUpViewController {
 }
 
 extension SignUpViewController {
+    // swiftlint:disable:next cyclomatic_complexity
     static func reduce(state: State, action: Action) -> State {
 
         var newState = state

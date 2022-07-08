@@ -84,7 +84,7 @@ public final class AppTabBarController: UITabBarController {
             .sink { [weak self] state in
                 self?.selectedIndex = state.activeIndex
             }
-            .store(in:&cancellables)
+            .store(in: &cancellables)
 
         state.map(AppTabBarController.makeProps)
             .sink { [contentView] props in

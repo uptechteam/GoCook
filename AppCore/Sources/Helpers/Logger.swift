@@ -137,4 +137,3 @@ private func getEmojiAndLogType(from level: Logging.Logger.Level) -> (String, OS
         return ("💔", .fault)
     }
 }
-

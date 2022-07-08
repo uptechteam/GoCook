@@ -19,8 +19,8 @@ public struct Tagged<Tag, RawValue> {
 
     // MARK: - Public methods
 
-    public func map<B>(_ f: (RawValue) -> B) -> Tagged<Tag, B> {
-        return .init(rawValue: f(self.rawValue))
+    public func map<NewValue>(_ function: (RawValue) -> NewValue) -> Tagged<Tag, NewValue> {
+        return .init(rawValue: function(self.rawValue))
     }
 }
 

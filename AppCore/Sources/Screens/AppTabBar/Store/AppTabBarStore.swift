@@ -26,7 +26,7 @@ extension AppTabBarController {
 
     public struct Dependencies {
         public init() {
-            
+
         }
     }
 

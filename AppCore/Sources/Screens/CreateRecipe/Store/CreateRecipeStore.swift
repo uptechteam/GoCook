@@ -110,6 +110,7 @@ extension CreateRecipeViewController {
 }
 
 extension CreateRecipeViewController {
+    // swiftlint:disable:next function_body_length cyclomatic_complexity
     static func reduce(state: State, action: Action) -> State {
 
         var newState = state
@@ -277,4 +278,3 @@ extension CreateRecipeViewController {
         return newState
     }
 }
-

@@ -10,7 +10,7 @@ import Helpers
 extension ProfileViewController {
 
     static func makeLogoutMiddleware(dependencies: Dependencies) -> Store.Middleware {
-        return Store.makeMiddleware { dispatch, getState, next, action in
+        return Store.makeMiddleware { _, _, next, action in
 
             await next(action)
 

@@ -72,7 +72,7 @@ extension HomeCoordinator: HomeCoordinating {
 }
 
 extension HomeCoordinator: FiltersCoordinating {
-    
+
 }
 
 extension HomeCoordinator: RecipeCoordinating {
