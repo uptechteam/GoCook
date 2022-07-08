@@ -1,0 +1,26 @@
+excluded:
+  - SourcePackages/
+  - Library/Generated
+
+disabled_rules:
+  - force_try
+
+nesting:
+  type_level:
+    warning: 4
+
+line_length: 140
+
+identifier_name:
+  excluded:
+    - qa
+    - id
+    - up
+    - on
+    - to
+    - me
+    - by
+
+type_name:
+  excluded:
+    - ID
