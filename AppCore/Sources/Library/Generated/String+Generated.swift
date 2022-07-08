@@ -10,6 +10,12 @@ import Foundation
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 extension String {
 
+  /// Can't reach the server
+  public static let apiErrorConnotConnectToServer = L10n.tr("Localizable", "api.error.connot.connect.to.server")
+
+  /// Unknown error occured
+  public static let apiErrorUnknownError = L10n.tr("Localizable", "api.error.unknown.error")
+
   /// Create recipe
   public static let createRecipeTitle = L10n.tr("Localizable", "create.recipe.title")
 
@@ -264,6 +270,9 @@ extension String {
 
   /// Sign up with Apple
   public static let signUpSignUpWithApple = L10n.tr("Localizable", "sign.up.sign.up.with.apple")
+
+  /// Username should contain between 2 and 20 characters
+  public static let validationNameLength = L10n.tr("Localizable", "validation.name.length")
 
   /// This username is taken. Try another one
   public static let validationNotUniqueUsername = L10n.tr("Localizable", "validation.not.unique.username")

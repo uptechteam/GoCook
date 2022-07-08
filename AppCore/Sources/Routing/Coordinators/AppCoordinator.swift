@@ -17,16 +17,18 @@ public final class AppCoordinator {
 
     // MARK: - Properties
 
+    private var childCoordinators: [Coordinating]
     private let container: DependencyContainer
     private let window: UIWindow
-    private var childCoordinators: [Coordinating]
+    private let storage: Storage
 
     // MARK: - Lifecycle
 
     public init(window: UIWindow) {
+        self.childCoordinators = []
         self.container = .configure()
         self.window = window
-        self.childCoordinators = []
+        self.storage = try! container.resolve()
         loadResources()
     }
 
@@ -34,7 +36,11 @@ public final class AppCoordinator {
 
     public func start() {
         window.makeKeyAndVisible()
-        showRegistration()
+        if isFirstSession() {
+            showRegistration()
+        } else {
+            showTabBar()
+        }
     }
 
     // MARK: - Private methods
@@ -59,6 +65,12 @@ public final class AppCoordinator {
         childCoordinators.append(coordinator)
         window.rootViewController = coordinator.rootViewController
     }
+
+    private func isFirstSession() -> Bool {
+        let isFirstSession = (try? storage.getBool(forKey: Constants.isFirstSessionKey)) == nil
+        try? storage.store(bool: true, forKey: Constants.isFirstSessionKey)
+        return isFirstSession
+    }
 }
 
 // MARK: - Extensions
@@ -73,5 +85,13 @@ extension AppCoordinator: RegistrationCoordinatorDelegate {
     func registrationCoordiantorDidFinish(_ coordinator: RegistrationCoordinator) {
         childCoordinators.removeAll()
         showTabBar()
+    }
+}
+
+// MARK: - Constants
+
+extension AppCoordinator {
+    private enum Constants {
+        static let isFirstSessionKey = "AppCoordinator.isFirstSessionKey"
     }
 }

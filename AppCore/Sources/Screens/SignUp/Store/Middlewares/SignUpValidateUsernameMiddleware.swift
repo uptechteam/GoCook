@@ -7,6 +7,7 @@
 
 import DomainModels
 import Foundation
+import Helpers
 
 extension SignUpViewController {
     static func makeValidateUsernameMiddleware(dependencies: Dependencies) -> Store.Middleware {
@@ -19,12 +20,17 @@ extension SignUpViewController {
                 return
             }
 
-            guard !text.isEmpty else {
-                await dispatch(.nameValidated(.success(false)))
+            task?.cancel()
+            guard text.count >= AppConstants.Validation.nameLengthRange.lowerBound else {
+                await dispatch(.nameValidated(.success(true)))
                 return
             }
 
-            task?.cancel()
+            guard text.count <= AppConstants.Validation.nameLengthRange.upperBound else {
+                await dispatch(.nameValidated(.failure(ValidationError.nameLength)))
+                return
+            }
+
             task = Task {
                 do {
                     try await Task.sleep(nanoseconds: 200_000_000)

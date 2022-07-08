@@ -59,7 +59,7 @@ extension SignUpViewController {
 
     public static func makeStore(dependencies: Dependencies) -> Store {
         let signUpMiddleware = makeSignUpMiddleware(dependencies: dependencies)
-        let validatePassword = makeValidatePasswordMiddleware(dependencies: dependencies)
+        let validatePassword = makeValidateInputsMiddleware(dependencies: dependencies)
         let validateUsernameMiddleware = makeValidateUsernameMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
