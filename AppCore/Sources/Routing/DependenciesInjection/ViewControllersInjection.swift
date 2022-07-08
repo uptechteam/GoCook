@@ -177,16 +177,18 @@ extension DependencyContainer {
         container.register(
             .unique,
             type: LoginViewController.Store.self,
-            factory: LoginViewController.makeStore
+            factory: { envelope in
+                LoginViewController.makeStore(dependencies: try container.resolve(), envelope: envelope)
+            }
         )
         container.register(
             .unique,
             type: LoginViewController.ActionCreator.self,
             factory: LoginViewController.ActionCreator.init
         )
-        container.register(.unique, type: LoginViewController.self) { coordinator in
+        container.register(.unique, type: LoginViewController.self) { (envelope: LoginEnvelope, coordinator) in
             return LoginViewController(
-                store: try container.resolve(),
+                store: try container.resolve(arguments: envelope),
                 actionCreator: try container.resolve(),
                 coordinator: coordinator
             )

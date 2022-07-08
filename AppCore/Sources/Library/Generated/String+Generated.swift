@@ -189,7 +189,7 @@ extension String {
   /// Skip
   public static let loginSkip = L10n.tr("Localizable", "login.skip")
 
-  /// Log into\nGoCook
+  /// Sign in
   public static let loginTitle = L10n.tr("Localizable", "login.title")
 
   /// Login with Apple
@@ -206,6 +206,12 @@ extension String {
 
   /// PASSWORD
   public static let loginPasswordTitle = L10n.tr("Localizable", "login.password.title")
+
+  /// Log into GoCook
+  public static let loginTextTitleProfile = L10n.tr("Localizable", "login.text.title.profile")
+
+  /// Log into\nGoCook
+  public static let loginTextTitleRegistration = L10n.tr("Localizable", "login.text.title.registration")
 
   /// My recipes
   public static let profileMyRecipes = L10n.tr("Localizable", "profile.my_recipes")

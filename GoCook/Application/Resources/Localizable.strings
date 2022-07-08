@@ -72,8 +72,10 @@
 
 // MARK: - Login
 
+"login.title" = "Sign in";
 "login.skip" = "Skip";
-"login.title" = "Log into\nGoCook";
+"login.text.title.registration" = "Log into\nGoCook";
+"login.text.title.profile" = "Log into GoCook";
 "login.name.title" = "USERNAME";
 "login.password.title" = "PASSWORD";
 "login.login" = "Login";

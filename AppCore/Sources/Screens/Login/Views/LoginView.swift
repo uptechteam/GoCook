@@ -5,21 +5,26 @@
 //  Created by Oleksii Andriushchenko on 03.07.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
 final class LoginView: UIView {
 
     struct Props: Equatable {
-        let isLoading: Bool
+        let isNavigationBarVisible: Bool
+        let backgroundImageSource: ImageSource
         let isSkipButtonVisible: Bool
+        let title: String
         let nameInputViewProps: RegistrationInputView.Props
         let passwordInputViewProps: RegistrationInputView.Props
         let isLoginButtonEnabled: Bool
+        let isLoading: Bool
     }
 
     // MARK: - Properties
 
+    private let dividerView = UIView()
     private let scrollView = UIScrollView()
     private let backgroundImageView = UIImageView()
     private let skipButton = Button(
@@ -34,6 +39,9 @@ final class LoginView: UIView {
         config: ButtonConfig(colorConfig: .secondary, isBackgroundVisible: false, isBorderVisible: true)
     )
     private let newLabel = UILabel()
+    private var scrollViewTopConstraint: NSLayoutConstraint!
+    private var scrollViewSafeAreaTopConstraint: NSLayoutConstraint!
+    private var stackViewTopConstraint: NSLayoutConstraint!
     private var stackViewHeightConstraint: NSLayoutConstraint!
     // callbacks
     var onDidTapSkip: () -> Void = { }
@@ -54,7 +62,8 @@ final class LoginView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        let height = frame.height - 80 - scrollView.safeAreaInsets.top - scrollView.safeAreaInsets.bottom
+        let safeAreaVerticalInsets = safeAreaInsets.top + safeAreaInsets.bottom
+        let height = frame.height - stackViewTopConstraint.constant - 8 - safeAreaVerticalInsets
         stackViewHeightConstraint.constant = height
     }
 
@@ -62,6 +71,7 @@ final class LoginView: UIView {
 
     private func setup() {
         setupContentView()
+        setupDividerView()
         setupBackgroundImageView()
         setupTitleLabel()
         setupPasswordInputView()
@@ -78,17 +88,28 @@ final class LoginView: UIView {
         backgroundColor = .appWhite
     }
 
+    private func setupDividerView() {
+        dividerView.backgroundColor = .divider
+        addSubview(dividerView, constraints: [
+            dividerView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            dividerView.heightAnchor.constraint(equalToConstant: 1)
+        ])
+    }
+
     private func setupBackgroundImageView() {
-        backgroundImageView.image = .registrationBackground
+        scrollViewTopConstraint = backgroundImageView.topAnchor.constraint(equalTo: topAnchor)
+        scrollViewSafeAreaTopConstraint = backgroundImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor)
         addSubview(backgroundImageView, constraints: [
-            backgroundImageView.topAnchor.constraint(equalTo: topAnchor),
             backgroundImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             backgroundImageView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
 
     private func setupTitleLabel() {
-        titleLabel.render(title: .loginTitle, color: .textMain, typography: .headerOne)
+        titleLabel.render(typography: .headerOne)
+        titleLabel.textColor = .textMain
         titleLabel.numberOfLines = 0
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
@@ -161,10 +182,13 @@ final class LoginView: UIView {
         stackView.spacing = 16
         stackView.setCustomSpacing(24, after: nameInputView)
         stackView.setCustomSpacing(24, after: passwordInputView)
-        scrollView.addSubview(
-            stackView,
-            withEdgeInsets: UIEdgeInsets(top: 72, left: 24, bottom: 8, right: 24)
-        )
+        stackViewTopConstraint = stackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 72)
+        scrollView.addSubview(stackView, constraints: [
+            stackViewTopConstraint,
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -24),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -8)
+        ])
         stackViewHeightConstraint = stackView.heightAnchor.constraint(equalToConstant: 0)
             .prioritised(as: .defaultLow)
         NSLayoutConstraint.activate([
@@ -175,7 +199,12 @@ final class LoginView: UIView {
 
     private func setupScrollView() {
         scrollView.contentInsetAdjustmentBehavior = .always
-        addSubview(scrollView, withEdgeInsets: .zero)
+        addSubview(scrollView, constraints: [
+            scrollView.topAnchor.constraint(equalTo: backgroundImageView.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
         NSLayoutConstraint.activate([
             scrollView.widthAnchor.constraint(equalTo: widthAnchor)
         ])
@@ -195,6 +224,9 @@ final class LoginView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        renderTopViews(isNavigationBarVisible: props.isNavigationBarVisible)
+        backgroundImageView.set(props.backgroundImageSource)
+        titleLabel.text = props.title
         loginButton.toggleLoading(on: props.isLoading)
         skipButton.isHidden = !props.isSkipButtonVisible
         nameInputView.render(props: props.nameInputViewProps)
@@ -203,6 +235,14 @@ final class LoginView: UIView {
     }
 
     // MARK: - Private methods
+
+    private func renderTopViews(isNavigationBarVisible: Bool) {
+        dividerView.isHidden = !isNavigationBarVisible
+        scrollViewTopConstraint.isActive = !isNavigationBarVisible
+        scrollViewSafeAreaTopConstraint.isActive = isNavigationBarVisible
+        stackViewTopConstraint.constant = isNavigationBarVisible ? 93 : 72
+        titleLabel.textAlignment = isNavigationBarVisible ? .center : .natural
+    }
 
     @objc
     private func handleNewTap() {

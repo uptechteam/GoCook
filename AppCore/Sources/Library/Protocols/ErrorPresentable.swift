@@ -14,9 +14,7 @@ public protocol ErrorPresentable {
 
 extension ErrorPresentable where Self: UIViewController {
     public func show(errorMessage: String) {
-        // Getting parent view
-        let controller = navigationController ?? self
-        guard let view = controller.view else {
+        guard let view = view else {
             return
         }
 

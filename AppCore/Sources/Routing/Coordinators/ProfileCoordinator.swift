@@ -88,7 +88,8 @@ extension ProfileCoordinator: ProfileCoordinating {
     }
 
     func didTapSignIn() {
-        let viewController: LoginViewController = try! container.resolve(arguments: self as LoginCoordinating)
+        let envelope = LoginEnvelope.profile
+        let viewController: LoginViewController = try! container.resolve(arguments: envelope, self as LoginCoordinating)
         navigationController.pushViewController(viewController, animated: true)
     }
 }
@@ -99,7 +100,8 @@ extension ProfileCoordinator: SignUpCoordinating {
     }
 
     func didTapLogin() {
-        let viewController: LoginViewController = try! container.resolve(arguments: self as LoginCoordinating)
+        let envelope = LoginEnvelope.profile
+        let viewController: LoginViewController = try! container.resolve(arguments: envelope, self as LoginCoordinating)
         let viewControllers = [navigationController.viewControllers[0], viewController]
         navigationController.setViewControllers(viewControllers, animated: true)
     }
