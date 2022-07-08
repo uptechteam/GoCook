@@ -11,7 +11,7 @@ import Foundation
 extension SignUpViewController {
     static func makeValidateUsernameMiddleware(dependencies: Dependencies) -> Store.Middleware {
         var task: Task<Void, Error>?
-        return Store.makeMiddleware { dispatch, getState, next, action in
+        return Store.makeMiddleware { dispatch, _, next, action in
 
             await next(action)
 

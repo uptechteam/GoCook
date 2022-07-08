@@ -20,7 +20,7 @@ public protocol PersistenceManaging<DomainModel> {
 }
 
 extension PersistenceManaging {
-    func clear() async  {
+    func clear() async {
         await clear(filter: Filter(predicates: []))
     }
 }

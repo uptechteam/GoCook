@@ -76,7 +76,6 @@ extension CreateRecipeCoordinator: CreateRecipeCoordinating {
     }
 }
 
-
 extension CreateRecipeCoordinator: InputCoordinating {
     func didFinish(inputDetails: InputDetails) {
         navigationController.dismiss(animated: true)

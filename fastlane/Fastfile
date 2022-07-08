@@ -27,12 +27,12 @@ platform :ios do
   lane :sync_profiles do
     match(
       type: "development",
-      readonly: false
+      readonly: true
     )
 
     match(
       type: "appstore",
-      readonly: false
+      readonly: true
     )
   end
 
@@ -40,7 +40,7 @@ platform :ios do
 
   desc "Runs all the tests"
   lane :test do
-    scheme = "Recipes"
+    scheme = "GoCook"
     run_tests(
       scheme: scheme,
       device: 'iPhone 13 Pro',
@@ -66,12 +66,12 @@ platform :ios do
     )
 
     # Bump build number before the build
-    build_number = get_build_number(xcodeproj: "Recipes.xcodeproj").to_i + 1
+    build_number = get_build_number(xcodeproj: "GoCook.xcodeproj").to_i + 1
     increment_build_number(build_number: build_number)
 
     # Build the project with Staging scheme
     build_ios_app(
-      scheme: "Recipes",
+      scheme: "GoCook",
       export_method: "app-store",
       cloned_source_packages_path: "SourcePackages"
     )
@@ -79,7 +79,7 @@ platform :ios do
     # Upload the build
     upload_to_testflight(
       username: "oleksii.andriushchenko@uptech.team",
-      app_identifier: "com.uptech.recipes",
+      app_identifier: "com.uptech.gocook",
       skip_waiting_for_build_processing: true
     )
 
@@ -88,7 +88,7 @@ platform :ios do
     # Commit bump build number, add a tag and push
     clean_build_artifacts
     commit_version_bump(
-      xcodeproj: "Recipes",
+      xcodeproj: "GoCook",
       force: true,
       message: "Bump build number #{build_number} [ci skip]"
     )
@@ -98,8 +98,8 @@ platform :ios do
       remote_branch: "main"
     )
 
-    version = get_version_number(xcodeproj: "Recipes.xcodeproj", target: "Recipes")
-    build = get_build_number(xcodeproj: "Recipes.xcodeproj")
+    version = get_version_number(xcodeproj: "GoCook.xcodeproj", target: "GoCook")
+    build = get_build_number(xcodeproj: "GoCook.xcodeproj")
     add_git_tag(
       tag: "release/v#{version}/#{build}"
     )

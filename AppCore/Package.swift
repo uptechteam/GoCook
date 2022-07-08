@@ -16,9 +16,6 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-log", from: "1.4.0")
     ],
     targets: [
-        // MARK: - App Core
-        .target(name: "AppCore", dependencies: []),
-        .testTarget(name: "AppCoreTests", dependencies: ["AppCore"]),
         // MARK: - Business logic
         .target(
             name: "BusinessLogic",

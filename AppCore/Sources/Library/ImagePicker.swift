@@ -112,7 +112,7 @@ extension ImagePicker: PHPickerViewControllerDelegate {
             return
         }
 
-        result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+        result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, _ in
             DispatchQueue.main.async {
                 let resizedImage = (image as? UIImage)?.resizeImage(targetSize: CGSize(width: 400, height: 400))
                 self?.completion(resizedImage)
