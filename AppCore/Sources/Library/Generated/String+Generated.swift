@@ -247,6 +247,12 @@ extension String {
     return L10n.tr("Localizable", "recipe.instructions.step.title", p1)
   }
 
+  /// Log out
+  public static let settingsLogout = L10n.tr("Localizable", "settings.logout")
+
+  /// Settings
+  public static let settingsTitle = L10n.tr("Localizable", "settings.title")
+
   /// OR
   public static let signUpOr = L10n.tr("Localizable", "sign.up.or")
 

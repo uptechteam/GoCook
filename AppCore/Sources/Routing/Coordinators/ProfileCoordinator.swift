@@ -14,6 +14,7 @@ import Library
 import Login
 import Profile
 import SignUp
+import Settings
 import UIKit
 
 final class ProfileCoordinator: NSObject, Coordinating {
@@ -87,13 +88,20 @@ extension ProfileCoordinator: ProfileCoordinating {
     }
 
     func didTapSettings() {
-        log.debug("Show settings")
+        let viewController: SettingsViewController = try! container.resolve(arguments: self as SettingsCoordinating)
+        navigationController.pushViewController(viewController, animated: true)
     }
 
     func didTapSignIn() {
         let envelope = LoginEnvelope.profile
         let viewController: LoginViewController = try! container.resolve(arguments: envelope, self as LoginCoordinating)
         navigationController.pushViewController(viewController, animated: true)
+    }
+}
+
+extension ProfileCoordinator: SettingsCoordinating {
+    func didLogout() {
+        navigationController.popToRootViewController(animated: true)
     }
 }
 

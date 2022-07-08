@@ -91,6 +91,11 @@
 "recipe.instructions.title" = "Instructions";
 "recipe.instructions.step.title" = "%d Step";
 
+// MARK: - Settings
+
+"settings.title" = "Settings";
+"settings.logout" = "Log out";
+
 // MARK: - Sign up
 
 "sign.up.title" = "Find your\ntasty idea\nwith GoCook";
