@@ -38,21 +38,11 @@ public final class NetworkClientImpl: NetworkClient {
             do {
                 responseData = try await AF.request(request.urlRequest, interceptor: interceptor)
                     .cURLDescription(calling: logger.log)
-                    .validate(statusCode: 200..<300)
+                    .validate(validate)
                     .serializingData(automaticallyCancelling: true)
                     .value
             } catch {
-                switch error.asAFError {
-                case .sessionTaskFailed(error: let error):
-                    if (error as NSError).code == -1004 {
-                        throw APIError.cannotConnectToServer
-                    } else {
-                        throw error
-                    }
-
-                default:
-                    throw error
-                }
+                throw map(error)
             }
 
             logger.log(response: responseData, request: request)
@@ -78,61 +68,44 @@ public final class NetworkClientImpl: NetworkClient {
             return PasswordAuthentication(username: username, password: password)
         }
     }
-}
 
-struct PasswordAuthentication: RequestInterceptor {
+    private func map(_ error: Error) -> Error {
+        switch error.asAFError {
+        case .responseValidationFailed(reason: .customValidationFailed(error: let error)):
+            return error
 
-    // MARK: - Properties
+        case .sessionTaskFailed(error: let error):
+            if (error as NSError).code == -1004 {
+                return APIError.cannotConnectToServer
+            } else {
+                return error
+            }
 
-    private let username: String
-    private let password: String
-
-    // MARK: - Lifecycle
-
-    init(username: String, password: String) {
-        self.username = username
-        self.password = password
+        default:
+            return error
+        }
     }
 
-    // MARK: - Public methods
-
-    func adapt(_ urlRequest: URLRequest, using state: RequestAdapterState, completion: @escaping (Result<URLRequest, Error>) -> Void) {
-        var urlRequest = urlRequest
-        urlRequest.headers.add(.authorization(username: username, password: password))
-        completion(.success(urlRequest))
-    }
-}
-
-struct BasicAuthentication: RequestInterceptor {
-    func adapt(_ urlRequest: URLRequest, using state: RequestAdapterState, completion: @escaping (Result<URLRequest, Error>) -> Void) {
-        var urlRequest = urlRequest
-        urlRequest.headers.add(.authorization("Basic dXNlcm5hbWU6c2VjcmV0"))
-        completion(.success(urlRequest))
-    }
-}
-
-struct BearerAuthentication: RequestInterceptor {
-
-    // MARK: - Properties
-
-    private let userCrenetialsStorage: UserCredentialsStoraging
-
-    // MARK: - Lifecycle
-
-    init(userCrenetialsStorage: UserCredentialsStoraging) {
-        self.userCrenetialsStorage = userCrenetialsStorage
-    }
-
-    // MARK: - Public methods
-
-    func adapt(_ urlRequest: URLRequest, using state: RequestAdapterState, completion: @escaping (Result<URLRequest, Error>) -> Void) {
-        guard let token = userCrenetialsStorage.getAccessKey() else {
-            completion(.success(urlRequest))
-            return
+    private func validate(
+        _ request: URLRequest?,
+        _ response: HTTPURLResponse,
+        _ data: Data?
+    ) -> Result<Void, Error> {
+        guard !(200..<300 ~= response.statusCode) else {
+            return .success(())
         }
 
-        var urlRequest = urlRequest
-        urlRequest.headers.add(.authorization(bearerToken: token))
-        completion(.success(urlRequest))
+        guard
+            let data = data,
+            let errorResponse = try? JSONDateDecoder().decode(ErrorResponse.self, from: data)
+        else {
+            log.error(
+                "Unknown error occured",
+                metadata: ["Response": .string(response.description)]
+            )
+            return .failure(APIError.unknownError)
+        }
+
+        return .failure(APIError.server(message: errorResponse.reason))
     }
 }

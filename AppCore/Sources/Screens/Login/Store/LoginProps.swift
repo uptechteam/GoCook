@@ -12,7 +12,8 @@ extension LoginViewController {
         return .init(
             isLoading: state.isLoggingIn,
             nameInputViewProps: makeNameInputViewProps(state: state),
-            passwordInputViewProps: makePasswordInputViewProps(state: state)
+            passwordInputViewProps: makePasswordInputViewProps(state: state),
+            isLoginButtonEnabled: !state.name.isEmpty && !state.password.isEmpty
         )
     }
 

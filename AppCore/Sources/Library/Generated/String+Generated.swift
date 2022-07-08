@@ -13,6 +13,9 @@ extension String {
   /// Can't reach the server
   public static let apiErrorConnotConnectToServer = L10n.tr("Localizable", "api.error.connot.connect.to.server")
 
+  /// Unknown error occured
+  public static let apiErrorUnknownError = L10n.tr("Localizable", "api.error.unknown.error")
+
   /// Create recipe
   public static let createRecipeTitle = L10n.tr("Localizable", "create.recipe.title")
 

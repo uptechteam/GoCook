@@ -14,6 +14,7 @@ final class LoginView: UIView {
         let isLoading: Bool
         let nameInputViewProps: RegistrationInputView.Props
         let passwordInputViewProps: RegistrationInputView.Props
+        let isLoginButtonEnabled: Bool
     }
 
     // MARK: - Properties
@@ -196,6 +197,7 @@ final class LoginView: UIView {
         loginButton.toggleLoading(on: props.isLoading)
         nameInputView.render(props: props.nameInputViewProps)
         passwordInputView.render(props: props.passwordInputViewProps)
+        loginButton.isEnabled = props.isLoginButtonEnabled
     }
 
     // MARK: - Private methods

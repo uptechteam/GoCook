@@ -9,6 +9,8 @@ import Foundation
 
 enum APIError: Error {
     case cannotConnectToServer
+    case server(message: String)
+    case unknownError
 }
 
 extension APIError: LocalizedError {
@@ -16,6 +18,12 @@ extension APIError: LocalizedError {
         switch self {
         case .cannotConnectToServer:
             return .apiErrorConnotConnectToServer
+
+        case .server(let message):
+            return message
+
+        case .unknownError:
+            return .apiErrorUnknownError
         }
     }
 }
