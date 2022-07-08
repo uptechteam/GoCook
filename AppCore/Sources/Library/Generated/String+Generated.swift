@@ -268,6 +268,9 @@ extension String {
   /// Sign up with Apple
   public static let signUpSignUpWithApple = L10n.tr("Localizable", "sign.up.sign.up.with.apple")
 
+  /// Username should contain between 2 and 20 characters
+  public static let validationNameLength = L10n.tr("Localizable", "validation.name.length")
+
   /// This username is taken. Try another one
   public static let validationNotUniqueUsername = L10n.tr("Localizable", "validation.not.unique.username")
 }

@@ -120,6 +120,7 @@
 
 // MARK: - Validation
 
+"validation.name.length" = "Username should contain between 2 and 20 characters";
 "validation.not.unique.username" = "This username is taken. Try another one";
 
 // MARK: - API Error
