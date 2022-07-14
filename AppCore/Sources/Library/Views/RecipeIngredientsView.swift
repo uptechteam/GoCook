@@ -63,7 +63,6 @@ public final class RecipeIngredientsView: UIView {
     }
 
     private func setupServingsLabel() {
-        // TODO: Add new typography
         servingsLabel.font = FontFamily.RedHatDisplay.regular.font(size: 16)
         servingsLabel.textColor = .textSecondary
     }

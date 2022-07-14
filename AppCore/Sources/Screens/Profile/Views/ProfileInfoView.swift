@@ -45,7 +45,6 @@ final class ProfileInfoView: UIView {
     }
 
     private func setupDescriptionLabel() {
-        // TODO: Add typography
         descriptionLabel.font = FontFamily.RedHatDisplay.regular.font(size: 16)
         descriptionLabel.textColor = .textDisabled
         descriptionLabel.text = .profileEmptyContentTitle
