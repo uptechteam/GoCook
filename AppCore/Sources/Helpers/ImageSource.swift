@@ -50,11 +50,8 @@ extension UIImageView {
             completion?(true)
 
         case .remote(let url):
-            if self.image == nil {
-                self.image = placeholder
-            }
             let options = makeOptions(with: newSize)
-            kf.setImage(with: url, options: options)
+            kf.setImage(with: url, placeholder: placeholder, options: options)
         }
     }
 
