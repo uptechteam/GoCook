@@ -11,11 +11,16 @@ import UIKit
 final class HomeView: UIView {
 
     struct Props: Equatable {
-        let items: [RecipeCategoryCell.Props]
+        let items: [Item]
     }
 
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, RecipeCategoryCell.Props>
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, RecipeCategoryCell.Props>
+    enum Item: Hashable {
+        case categories(CategoriesCell.Props)
+        case recipes(RecipeCategoryCell.Props)
+    }
+
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Item>
+    typealias DataSource = UICollectionViewDiffableDataSource<Int, Item>
 
     // MARK: - Properties
 
@@ -87,6 +92,7 @@ final class HomeView: UIView {
         collectionView.backgroundColor = nil
         collectionView.delegate = self
         collectionView.contentInset.bottom = 41
+        collectionView.register(cell: CategoriesCell.self)
         collectionView.register(cell: RecipeCategoryCell.self)
     }
 
@@ -108,10 +114,7 @@ final class HomeView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        var snapshot = Snapshot()
-        snapshot.appendSections([0])
-        snapshot.appendItems(props.items, toSection: 0)
-        dataSource.apply(snapshot)
+        dataSource.apply(sections: [0], items: [props.items])
     }
 }
 
@@ -121,19 +124,27 @@ private extension HomeView {
     func makeDataSource() -> DataSource {
         return DataSource(
             collectionView: collectionView,
-            cellProvider: { [weak self] collectionView, indexPath, props in
-                let cell: RecipeCategoryCell = collectionView.dequeueReusableCell(for: indexPath)
-                cell.render(props: props)
-                cell.onDidTapViewAll = { [weak self] in
-                    self?.onDidTapViewAll(indexPath)
+            cellProvider: { [weak self] collectionView, indexPath, item in
+                switch item {
+                case .categories(let props):
+                    let cell: CategoriesCell = collectionView.dequeueReusableCell(for: indexPath)
+                    cell.render(props: props)
+                    return cell
+
+                case .recipes(let props):
+                    let cell: RecipeCategoryCell = collectionView.dequeueReusableCell(for: indexPath)
+                    cell.render(props: props)
+                    cell.onDidTapViewAll = { [weak self] in
+                        self?.onDidTapViewAll(indexPath)
+                    }
+                    cell.onDidTapItem = { [weak self] itemIndexPath in
+                        self?.onDidTapItem(IndexPath(item: itemIndexPath.item, section: indexPath.item))
+                    }
+                    cell.onDidTapLike = { [weak self] likeIndexPath in
+                        self?.onDidTapLike(IndexPath(item: likeIndexPath.item, section: indexPath.item))
+                    }
+                    return cell
                 }
-                cell.onDidTapItem = { [weak self] itemIndexPath in
-                    self?.onDidTapItem(IndexPath(item: itemIndexPath.item, section: indexPath.item))
-                }
-                cell.onDidTapLike = { [weak self] likeIndexPath in
-                    self?.onDidTapLike(IndexPath(item: likeIndexPath.item, section: indexPath.item))
-                }
-                return cell
             }
         )
     }
@@ -169,6 +180,16 @@ extension HomeView: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        CGSize(width: collectionView.bounds.width, height: 324)
+        guard let item = dataSource.itemIdentifier(for: indexPath) else {
+            return .zero
+        }
+
+        switch item {
+        case .categories:
+            return CGSize(width: collectionView.bounds.width, height: 32)
+
+        case .recipes:
+            return CGSize(width: collectionView.bounds.width, height: 324)
+        }
     }
 }

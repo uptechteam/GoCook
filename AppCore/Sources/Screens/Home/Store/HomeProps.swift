@@ -10,7 +10,29 @@ import Library
 
 extension HomeViewController {
     static func makeProps(from state: State) -> HomeView.Props {
-        .init(items: state.recipeCategories.items.map(makeRecipeCategoryCellProps))
+        .init(items: makeItems(state: state))
+    }
+
+    private static func makeItems(state: State) -> [HomeView.Item] {
+        let categories: [HomeView.Item] = [.categories(CategoriesCell.Props(items: makeCategoriesCellProps(state: state)))]
+        let recipeCategories = state.recipeCategories.items.map(makeRecipeCategoryCellProps).map(HomeView.Item.recipes)
+        return categories + recipeCategories
+    }
+
+    private static func makeCategoriesCellProps(state: State) -> [CategoryCell.Props] {
+        let all = CategoryCell.Props(
+            backgroundColorSource: .color(.secondaryMain),
+            title: "All",
+            titleColorSource: .color(.appWhite)
+        )
+        let categories = CategoryType.priorityOrder.map { type in
+            return CategoryCell.Props(
+                backgroundColorSource: .color(.gray100),
+                title: type.name,
+                titleColorSource: .color(.textMain)
+            )
+        }
+        return [all] + categories
     }
 
     private static func makeRecipeCategoryCellProps(recipeCategory: RecipeCategory) -> RecipeCategoryCell.Props {
