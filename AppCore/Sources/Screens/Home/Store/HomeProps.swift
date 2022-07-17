@@ -10,10 +10,10 @@ import Library
 
 extension HomeViewController {
     static func makeProps(from state: State) -> HomeView.Props {
-        .init(items: makeItems(state: state))
+        .init(sections: makeSections(state: state))
     }
 
-    private static func makeItems(state: State) -> [HomeView.Item] {
+    private static func makeSections(state: State) -> [HomeView.Section] {
         let categories: [HomeView.Item] = [.categories(CategoriesCell.Props(items: makeCategoriesCellProps(state: state)))]
         let recipeCategories = state.recipeCategories.items.map(makeRecipeCategoryCellProps).map(HomeView.Item.recipes)
         return categories + recipeCategories

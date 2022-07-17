@@ -11,16 +11,44 @@ import UIKit
 final class HomeView: UIView {
 
     struct Props: Equatable {
-        let items: [Item]
+        let sections: [Section]
+    }
+
+    enum Section: Hashable {
+        case category(RecipeCategoryHeaderView.Props, items: [Item])
+
+        var items: [Item] {
+            switch self {
+            case .category(_, let items):
+                return items
+            }
+        }
+
+        func hash(into hasher: inout Hasher) {
+            switch self {
+            case .category(let props, _):
+                hasher.combine(props.title)
+            }
+        }
     }
 
     enum Item: Hashable {
         case categories(CategoriesCell.Props)
-        case recipes(RecipeCategoryCell.Props)
+        case recipes(title: String, RecipeCategoryCell.Props)
+
+        func hash(into hasher: inout Hasher) {
+            switch self {
+            case .categories(let props):
+                hasher.combine(props)
+
+            case .recipes(let title, _):
+                hasher.combine(title)
+            }
+        }
     }
 
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Item>
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, Item>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
 
     // MARK: - Properties
 
@@ -114,7 +142,7 @@ final class HomeView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        dataSource.apply(sections: [0], items: [props.items])
+        dataSource.apply(sections: props.sections, items: props.sections.flatMap(\.items))
     }
 }
 
@@ -122,7 +150,7 @@ final class HomeView: UIView {
 
 private extension HomeView {
     func makeDataSource() -> DataSource {
-        return DataSource(
+        let dataSource =  DataSource(
             collectionView: collectionView,
             cellProvider: { [weak self] collectionView, indexPath, item in
                 switch item {
@@ -131,12 +159,9 @@ private extension HomeView {
                     cell.render(props: props)
                     return cell
 
-                case .recipes(let props):
+                case .recipes(_, let props):
                     let cell: RecipeCategoryCell = collectionView.dequeueReusableCell(for: indexPath)
                     cell.render(props: props)
-                    cell.onDidTapViewAll = { [weak self] in
-                        self?.onDidTapViewAll(indexPath)
-                    }
                     cell.onDidTapItem = { [weak self] itemIndexPath in
                         self?.onDidTapItem(IndexPath(item: itemIndexPath.item, section: indexPath.item))
                     }
@@ -147,6 +172,19 @@ private extension HomeView {
                 }
             }
         )
+        dataSource.supplementaryViewProvider = { [weak dataSource] collectionView, type, indexPath in
+            guard let section = dataSource?.sectionIdentifier(for: indexPath.section) else {
+                return nil
+            }
+
+            switch section {
+            case .category(let props, _):
+                let headerView: RecipeCategoryHeaderView = collectionView.dequeueReusableHeader(for: indexPath)
+                headerView.render(props: props)
+                return headerView
+            }
+        }
+        return dataSource
     }
 }
 

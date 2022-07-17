@@ -10,13 +10,8 @@ import UIKit
 
 final class RecipeCategoryCell: UICollectionViewCell, ReusableCell {
 
-    struct Props: Hashable {
-        let title: String
+    struct Props: Equatable {
         let items: [RecipeCell.Props]
-
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(title)
-        }
     }
 
     typealias Snapshot = NSDiffableDataSourceSnapshot<Int, RecipeCell.Props>
@@ -24,13 +19,9 @@ final class RecipeCategoryCell: UICollectionViewCell, ReusableCell {
 
     // MARK: - Properties
 
-    private let topStackView = UIStackView()
-    private let titleLabel = UILabel()
-    private let viewAllButton = UIButton()
     private lazy var dataSource = makeDataSource()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     // callbacks
-    var onDidTapViewAll: () -> Void = { }
     var onDidTapItem: (IndexPath) -> Void = { _ in }
     var onDidTapLike: (IndexPath) -> Void = { _ in }
 
@@ -48,29 +39,8 @@ final class RecipeCategoryCell: UICollectionViewCell, ReusableCell {
     // MARK: - Set up
 
     private func setup() {
-        setupTopStackView()
-        setupTitleLabel()
-        setupViewAllButton()
         setupLayout()
         setupCollectionView()
-        setupStackView()
-    }
-
-    private func setupTopStackView() {
-        [titleLabel, UIView(), viewAllButton].forEach(topStackView.addArrangedSubview)
-        topStackView.alignment = .center
-    }
-
-    private func setupTitleLabel() {
-        titleLabel.render(typography: .headerTwo)
-    }
-
-    private func setupViewAllButton() {
-        viewAllButton.setTitle(.homeCategoryViewAll, for: .normal)
-        viewAllButton.setTitleColor(.primaryMain, for: .normal)
-        viewAllButton.setTitleColor(.primaryPressed, for: .highlighted)
-        viewAllButton.titleLabel?.render(typography: .buttonLarge)
-        viewAllButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapViewAll() }), for: .touchUpInside)
     }
 
     private func setupLayout() {
@@ -87,17 +57,9 @@ final class RecipeCategoryCell: UICollectionViewCell, ReusableCell {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.delegate = self
         collectionView.register(cell: RecipeCell.self)
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [topStackView, collectionView])
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = 24
-        contentView.addSubview(stackView, withEdgeInsets: .zero)
+        contentView.addSubview(collectionView, withEdgeInsets: .zero)
         NSLayoutConstraint.activate([
-            topStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
-            collectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            collectionView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
             collectionView.heightAnchor.constraint(equalToConstant: 264)
         ])
     }
@@ -105,17 +67,7 @@ final class RecipeCategoryCell: UICollectionViewCell, ReusableCell {
     // MARK: - Public methods
 
     func render(props: Props) {
-        titleLabel.text = props.title
-        render(items: props.items)
-    }
-
-    // MARK: - Private methods
-
-    private func render(items: [RecipeCell.Props]) {
-        var snapshot = Snapshot()
-        snapshot.appendSections([0])
-        snapshot.appendItems(items, toSection: 0)
-        dataSource.apply(snapshot)
+        dataSource.apply(sections: [0], items: [props.items])
     }
 }
 
