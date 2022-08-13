@@ -10,8 +10,18 @@ import UIKit
 
 final class RecipeCategoryCell: UICollectionViewCell, ReusableCell {
 
-    struct Props: Equatable {
+    struct Props: Hashable {
+
+        // MARK: - Properties
+
+        let title: String
         let items: [RecipeCell.Props]
+
+        // MARK: - Public methods
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(title)
+        }
     }
 
     typealias Snapshot = NSDiffableDataSourceSnapshot<Int, RecipeCell.Props>

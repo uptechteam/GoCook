@@ -15,6 +15,10 @@ public struct RecipeCategory: Equatable {
     public let category: CategoryType
     public let recipes: [Recipe]
 
+    public var isTrendsCategory: Bool {
+        category.name == "Trending"
+    }
+
     // MARK: - Lifecycle
 
     public init(category: CategoryType, recipes: [Recipe]) {

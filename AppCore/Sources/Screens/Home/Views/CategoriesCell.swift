@@ -11,7 +11,12 @@ import UIKit
 final class CategoriesCell: UICollectionViewCell, ReusableCell {
 
     struct Props: Hashable {
+
+        // MARK: - Properties
+
         let items: [CategoryCell.Props]
+
+        // MARK: - Public methods
 
         func hash(into hasher: inout Hasher) {
             hasher.combine("Categories")

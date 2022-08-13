@@ -55,7 +55,7 @@ final class RecipeCategoryHeaderView: UICollectionReusableView {
     private func setupStackView() {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, UIView(), viewAllButton])
         stackView.alignment = .center
-        addSubview(stackView, withEdgeInsets: .zero)
+        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24))
     }
 
     // MARK: - Public methods

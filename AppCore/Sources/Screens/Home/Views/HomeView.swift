@@ -34,17 +34,7 @@ final class HomeView: UIView {
 
     enum Item: Hashable {
         case categories(CategoriesCell.Props)
-        case recipes(title: String, RecipeCategoryCell.Props)
-
-        func hash(into hasher: inout Hasher) {
-            switch self {
-            case .categories(let props):
-                hasher.combine(props)
-
-            case .recipes(let title, _):
-                hasher.combine(title)
-            }
-        }
+        case recipes(RecipeCategoryCell.Props)
     }
 
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
@@ -112,14 +102,15 @@ final class HomeView: UIView {
 
     private func setupLayout() {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumInteritemSpacing = 40
+        flowLayout.minimumLineSpacing = 24
+        flowLayout.sectionInset = UIEdgeInsets(top: 24, left: 0, bottom: 40, right: 0)
         collectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
 
     private func setupCollectionView() {
         collectionView.backgroundColor = nil
         collectionView.delegate = self
-        collectionView.contentInset.bottom = 41
+        collectionView.registerHeader(view: RecipeCategoryHeaderView.self)
         collectionView.register(cell: CategoriesCell.self)
         collectionView.register(cell: RecipeCategoryCell.self)
     }
@@ -142,7 +133,7 @@ final class HomeView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        dataSource.apply(sections: props.sections, items: props.sections.flatMap(\.items))
+        dataSource.apply(sections: props.sections, items: props.sections.map(\.items))
     }
 }
 
@@ -159,7 +150,7 @@ private extension HomeView {
                     cell.render(props: props)
                     return cell
 
-                case .recipes(_, let props):
+                case .recipes(let props):
                     let cell: RecipeCategoryCell = collectionView.dequeueReusableCell(for: indexPath)
                     cell.render(props: props)
                     cell.onDidTapItem = { [weak self] itemIndexPath in
@@ -172,7 +163,7 @@ private extension HomeView {
                 }
             }
         )
-        dataSource.supplementaryViewProvider = { [weak dataSource] collectionView, type, indexPath in
+        dataSource.supplementaryViewProvider = { [weak dataSource] collectionView, _, indexPath in
             guard let section = dataSource?.sectionIdentifier(for: indexPath.section) else {
                 return nil
             }
@@ -227,7 +218,15 @@ extension HomeView: UICollectionViewDelegateFlowLayout {
             return CGSize(width: collectionView.bounds.width, height: 32)
 
         case .recipes:
-            return CGSize(width: collectionView.bounds.width, height: 324)
+            return CGSize(width: collectionView.bounds.width, height: 264)
         }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        .init(width: collectionView.bounds.width, height: 36)
     }
 }
