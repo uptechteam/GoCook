@@ -77,6 +77,10 @@ extension UIImage {
     return UIImage(named: "filters")!
   }
 
+  @nonobjc public class var mealPlaceholder: UIImage {
+    return UIImage(named: "mealPlaceholder")!
+  }
+
   @nonobjc public class var search: UIImage {
     return UIImage(named: "search")!
   }

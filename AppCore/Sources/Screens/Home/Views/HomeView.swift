@@ -11,11 +11,34 @@ import UIKit
 final class HomeView: UIView {
 
     struct Props: Equatable {
-        let items: [RecipeCategoryCell.Props]
+        let sections: [Section]
     }
 
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, RecipeCategoryCell.Props>
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, RecipeCategoryCell.Props>
+    enum Section: Hashable {
+        case category(RecipeCategoryHeaderView.Props, items: [Item])
+
+        var items: [Item] {
+            switch self {
+            case .category(_, let items):
+                return items
+            }
+        }
+
+        func hash(into hasher: inout Hasher) {
+            switch self {
+            case .category(let props, _):
+                hasher.combine(props.title)
+            }
+        }
+    }
+
+    enum Item: Hashable {
+        case categories(CategoriesCell.Props)
+        case recipes(RecipeCategoryCell.Props)
+    }
+
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
 
     // MARK: - Properties
 
@@ -27,6 +50,7 @@ final class HomeView: UIView {
     // callbacks
     var onDidChangeSearchQuery: (String) -> Void = { _ in }
     var onDidTapFilters: () -> Void = { }
+    var onDidTapCategory: (IndexPath) -> Void = { _ in }
     var onDidTapViewAll: (IndexPath) -> Void = { _ in }
     var onDidTapItem: (IndexPath) -> Void = { _ in }
     var onDidTapLike: (IndexPath) -> Void = { _ in }
@@ -79,14 +103,16 @@ final class HomeView: UIView {
 
     private func setupLayout() {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumInteritemSpacing = 40
+        flowLayout.minimumLineSpacing = 24
+        flowLayout.sectionInset = UIEdgeInsets(top: 24, left: 0, bottom: 40, right: 0)
         collectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
 
     private func setupCollectionView() {
         collectionView.backgroundColor = nil
         collectionView.delegate = self
-        collectionView.contentInset.bottom = 41
+        collectionView.registerHeader(view: RecipeCategoryHeaderView.self)
+        collectionView.register(cell: CategoriesCell.self)
         collectionView.register(cell: RecipeCategoryCell.self)
     }
 
@@ -108,10 +134,7 @@ final class HomeView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        var snapshot = Snapshot()
-        snapshot.appendSections([0])
-        snapshot.appendItems(props.items, toSection: 0)
-        dataSource.apply(snapshot)
+        dataSource.apply(sections: props.sections, items: props.sections.map(\.items), animatingDifferences: false)
     }
 }
 
@@ -119,23 +142,44 @@ final class HomeView: UIView {
 
 private extension HomeView {
     func makeDataSource() -> DataSource {
-        return DataSource(
+        let dataSource =  DataSource(
             collectionView: collectionView,
-            cellProvider: { [weak self] collectionView, indexPath, props in
-                let cell: RecipeCategoryCell = collectionView.dequeueReusableCell(for: indexPath)
-                cell.render(props: props)
-                cell.onDidTapViewAll = { [weak self] in
-                    self?.onDidTapViewAll(indexPath)
+            cellProvider: { [weak self] collectionView, indexPath, item in
+                switch item {
+                case .categories(let props):
+                    let cell: CategoriesCell = collectionView.dequeueReusableCell(for: indexPath)
+                    cell.render(props: props)
+                    cell.onDidTapItem = { [weak self] indexPath in
+                        self?.onDidTapCategory(indexPath)
+                    }
+                    return cell
+
+                case .recipes(let props):
+                    let cell: RecipeCategoryCell = collectionView.dequeueReusableCell(for: indexPath)
+                    cell.render(props: props)
+                    cell.onDidTapItem = { [weak self] itemIndexPath in
+                        self?.onDidTapItem(IndexPath(item: itemIndexPath.item, section: indexPath.section))
+                    }
+                    cell.onDidTapLike = { [weak self] likeIndexPath in
+                        self?.onDidTapLike(IndexPath(item: likeIndexPath.item, section: indexPath.section))
+                    }
+                    return cell
                 }
-                cell.onDidTapItem = { [weak self] itemIndexPath in
-                    self?.onDidTapItem(IndexPath(item: itemIndexPath.item, section: indexPath.item))
-                }
-                cell.onDidTapLike = { [weak self] likeIndexPath in
-                    self?.onDidTapLike(IndexPath(item: likeIndexPath.item, section: indexPath.item))
-                }
-                return cell
             }
         )
+        dataSource.supplementaryViewProvider = { [weak dataSource] collectionView, _, indexPath in
+            guard let section = dataSource?.sectionIdentifier(for: indexPath.section) else {
+                return nil
+            }
+
+            switch section {
+            case .category(let props, _):
+                let headerView: RecipeCategoryHeaderView = collectionView.dequeueReusableHeader(for: indexPath)
+                headerView.render(props: props)
+                return headerView
+            }
+        }
+        return dataSource
     }
 }
 
@@ -163,12 +207,47 @@ extension HomeView: UITextFieldDelegate {
     }
 }
 
+extension HomeView: UICollectionViewDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard
+            let newCell = collectionView.cellForItem(at: indexPath) as? ScrollableCell,
+            let oldCell = cell as? ScrollableCell
+        else {
+            return
+        }
+
+        newCell.scrollableOffset = oldCell.scrollableOffset
+    }
+}
+
 extension HomeView: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        CGSize(width: collectionView.bounds.width, height: 324)
+        guard let item = dataSource.itemIdentifier(for: indexPath) else {
+            return .zero
+        }
+
+        switch item {
+        case .categories:
+            return CGSize(width: collectionView.bounds.width, height: 32)
+
+        case .recipes:
+            return CGSize(width: collectionView.bounds.width, height: 264)
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        .init(width: collectionView.bounds.width, height: 36)
     }
 }

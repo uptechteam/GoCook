@@ -43,7 +43,6 @@ final class ProfileRecipesHeaderView: UIView {
     }
 
     private func setupMyRecipesLabel() {
-        // TODO: Add typography
         myRecipesLabel.font = FontFamily.RedHatDisplay.medium.font(size: 24)
         myRecipesLabel.textColor = .textMain
         myRecipesLabel.text = .profileMyRecipes

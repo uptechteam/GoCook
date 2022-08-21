@@ -85,7 +85,7 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
     // MARK: - Public methods
 
     func render(props: Props) {
-        recipeImageView.set(props.recipeImageSource)
+        recipeImageView.set(props.recipeImageSource, placeholder: .mealPlaceholder)
         nameLabel.render(title: props.name, color: .appBlack, typography: .subtitleTwo)
         ratingView.render(props: props.ratingViewProps)
     }

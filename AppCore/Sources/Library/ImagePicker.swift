@@ -12,6 +12,8 @@ import UIKit
 @MainActor
 public final class ImagePicker: NSObject {
 
+    // MARK: - Properties
+
     private var completion: (UIImage?) -> Void = { _ in }
 
     // MARK: - Lifecycle
