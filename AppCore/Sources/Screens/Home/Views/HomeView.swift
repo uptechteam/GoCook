@@ -158,10 +158,10 @@ private extension HomeView {
                     let cell: RecipeCategoryCell = collectionView.dequeueReusableCell(for: indexPath)
                     cell.render(props: props)
                     cell.onDidTapItem = { [weak self] itemIndexPath in
-                        self?.onDidTapItem(IndexPath(item: itemIndexPath.item, section: indexPath.item))
+                        self?.onDidTapItem(IndexPath(item: itemIndexPath.item, section: indexPath.section))
                     }
                     cell.onDidTapLike = { [weak self] likeIndexPath in
-                        self?.onDidTapLike(IndexPath(item: likeIndexPath.item, section: indexPath.item))
+                        self?.onDidTapLike(IndexPath(item: likeIndexPath.item, section: indexPath.section))
                     }
                     return cell
                 }
