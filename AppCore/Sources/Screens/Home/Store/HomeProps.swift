@@ -29,24 +29,24 @@ extension HomeViewController {
     }
 
     private static func makeCategoriesCellProps(state: State) -> [CategoryCell.Props] {
-        let all = CategoryCell.Props(
-            backgroundColorSource: .color(.secondaryMain),
-            title: "All",
-            titleColorSource: .color(.appWhite)
-        )
+        let all = makeCategoryCellProps(title: "All", isSelected: state.selectedCategories.isEmpty)
         let categories = CategoryType.priorityOrder.map { type in
-            return CategoryCell.Props(
-                backgroundColorSource: .color(.gray100),
-                title: type.name,
-                titleColorSource: .color(.textMain)
-            )
+            makeCategoryCellProps(title: type.name, isSelected: state.selectedCategories.contains(type))
         }
         return [all] + categories
     }
 
+    private static func makeCategoryCellProps(title: String, isSelected: Bool) -> CategoryCell.Props {
+        return .init(
+            backgroundColorSource: isSelected ? .color(.secondaryMain) :  .color(.gray100),
+            title: title,
+            titleColorSource: isSelected ? .color(.appWhite) : .color(.textMain)
+        )
+    }
+
     private static func makeTrendsCategoryCellProps(state: State) -> RecipeCategoryCell.Props {
-        guard let trendsCategory = state.recipeCategories.items.first(where: \.isTrendsCategory) else {
-            return .init(title: "Trends", items: [])
+        guard let trendsCategory = state.recipeCategories.items.first(where: \.isTrendingCategory) else {
+            return .init(title: "Trending", items: [])
         }
 
         return makeRecipeCategoryCellProps(recipeCategory: trendsCategory)
@@ -70,7 +70,7 @@ extension HomeViewController {
     }
 
     private static func makeOtherCategoriesSections(state: State) -> [HomeView.Section] {
-        let otherCategories = state.recipeCategories.items.filter { !$0.isTrendsCategory }
+        let otherCategories = state.recipeCategories.items.filter { !$0.isTrendingCategory }
         return otherCategories.map(makeOtherCategorySection)
     }
 

@@ -17,10 +17,12 @@ public extension HomeViewController {
     struct State: Equatable {
         var recipeCategories: DomainModelState<[RecipeCategory]>
         var searchQuery: String
+        var selectedCategories: Set<CategoryType>
         var route: AnyIdentifiable<Route>?
     }
 
     enum Action {
+        case didTapCategory(IndexPath)
         case didTapFilters
         case didTapItem(IndexPath)
         case didTapLike(IndexPath)
@@ -36,7 +38,12 @@ public extension HomeViewController {
     }
 
     struct Dependencies {
+
+        // MARK: - Properties
+
         let recipesClient: RecipesClienting
+
+        // MARK: - Public methods
 
         public init(recipesClient: RecipesClienting) {
             self.recipesClient = recipesClient
@@ -56,17 +63,30 @@ public extension HomeViewController {
         return State(
             recipeCategories: .init(),
             searchQuery: "",
+            selectedCategories: Set(),
             route: nil
         )
     }
 }
 
 extension HomeViewController {
+    // swiftlint:disable:next cyclomatic_complexity
     static func reduce(state: State, action: Action) -> State {
 
         var newState = state
 
         switch action {
+        case .didTapCategory(let indexPath):
+            if indexPath.item == 0 {
+                newState.selectedCategories.removeAll()
+            } else if let selectedCategory = CategoryType.priorityOrder[safe: indexPath.item - 1] {
+                if newState.selectedCategories.contains(selectedCategory) {
+                    newState.selectedCategories.remove(selectedCategory)
+                } else {
+                    newState.selectedCategories.insert(selectedCategory)
+                }
+            }
+
         case .didTapFilters:
             newState.route = .init(value: .filters)
 

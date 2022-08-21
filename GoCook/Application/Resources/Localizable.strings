@@ -134,5 +134,6 @@
 
 // MARK: - API Error
 
+"api.error.broken.data" = "Got invalid data from server";
 "api.error.connot.connect.to.server" = "Can't reach the server";
 "api.error.unknown.error" = "Unknown error occured";

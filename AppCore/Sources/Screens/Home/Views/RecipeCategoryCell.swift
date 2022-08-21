@@ -8,7 +8,7 @@
 import Library
 import UIKit
 
-final class RecipeCategoryCell: UICollectionViewCell, ReusableCell {
+final class RecipeCategoryCell: UICollectionViewCell, ReusableCell, ScrollableCell {
 
     struct Props: Hashable {
 
@@ -34,6 +34,19 @@ final class RecipeCategoryCell: UICollectionViewCell, ReusableCell {
     // callbacks
     var onDidTapItem: (IndexPath) -> Void = { _ in }
     var onDidTapLike: (IndexPath) -> Void = { _ in }
+
+    var id: Int {
+        hash
+    }
+
+    var scrollableOffset: CGFloat {
+        get {
+            collectionView.contentOffset.x
+        }
+        set {
+            collectionView.setContentOffset(CGPoint(x: newValue, y: 0), animated: false)
+        }
+    }
 
     // MARK: - Lifecycle
 

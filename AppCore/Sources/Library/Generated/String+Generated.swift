@@ -10,6 +10,9 @@ import Foundation
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 extension String {
 
+  /// Got invalid data from server
+  public static let apiErrorBrokenData = L10n.tr("Localizable", "api.error.broken.data")
+
   /// Can't reach the server
   public static let apiErrorConnotConnectToServer = L10n.tr("Localizable", "api.error.connot.connect.to.server")
 

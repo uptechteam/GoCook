@@ -77,6 +77,10 @@ public final class HomeViewController: UIViewController {
             store.dispatch(action: .didTapFilters)
         }
 
+        contentView.onDidTapCategory = { [store] indexPath in
+            store.dispatch(action: .didTapCategory(indexPath))
+        }
+
         contentView.onDidTapViewAll = { [store] indexPath in
             store.dispatch(action: .didTapViewAll(indexPath))
         }

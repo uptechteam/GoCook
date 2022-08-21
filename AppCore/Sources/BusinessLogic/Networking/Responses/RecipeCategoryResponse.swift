@@ -9,12 +9,21 @@ import DomainModels
 import Foundation
 
 struct RecipeCategoryResponse: Decodable {
+
+    // MARK: - Properties
+
     let name: String
     let recipes: [RecipeResponse]
 
-    var domainModel: RecipeCategory {
-        RecipeCategory(
-            category: CategoryType(name: name),
+    // MARK: - Public methods
+
+    func getDomainModel() throws -> RecipeCategory {
+        guard let category = CategoryType(name: name) else {
+            throw APIError.brokenData
+        }
+
+        return RecipeCategory(
+            category: category,
             recipes: recipes.map(\.domainModel)
         )
     }

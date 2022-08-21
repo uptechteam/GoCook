@@ -15,8 +15,8 @@ public struct RecipeCategory: Equatable {
     public let category: CategoryType
     public let recipes: [Recipe]
 
-    public var isTrendsCategory: Bool {
-        category.name == "Trending"
+    public var isTrendingCategory: Bool {
+        category == .trending
     }
 
     // MARK: - Lifecycle
@@ -29,6 +29,6 @@ public struct RecipeCategory: Equatable {
 
 extension RecipeCategory: EmptyDomainModel {
     public static var empty: RecipeCategory {
-        RecipeCategory(category: .custom(name: "Trends"), recipes: [])
+        RecipeCategory(category: .trending, recipes: [])
     }
 }

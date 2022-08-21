@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Helpers
 
 public enum CategoryType: Hashable {
 
@@ -16,7 +17,7 @@ public enum CategoryType: Hashable {
     case dinner
     case drinks
     case lunch
-    case custom(name: String)
+    case trending
 
     public var name: String {
         switch self {
@@ -35,8 +36,8 @@ public enum CategoryType: Hashable {
         case .lunch:
             return "Lunch"
 
-        case .custom(let name):
-            return name
+        case .trending:
+            return "Trending"
         }
     }
 
@@ -46,25 +47,29 @@ public enum CategoryType: Hashable {
 
     // MARK: - Lifecycle
 
-    public init(name: String) {
+    public init?(name: String) {
         switch name {
-        case "breakfast":
+        case "Breakfast":
             self = .breakfast
 
-        case "desserts":
+        case "Desserts":
             self = .desserts
 
-        case "dinner":
+        case "Dinner":
             self = .dinner
 
-        case "drinks":
+        case "Drinks":
             self = .drinks
 
-        case "lunch":
+        case "Lunch":
             self = .lunch
 
+        case "Trending":
+            self = .trending
+
         default:
-            self = .custom(name: name)
+            log.error("Got invalid value for category type", metadata: ["Value": .string(name)])
+            return nil
         }
     }
 }

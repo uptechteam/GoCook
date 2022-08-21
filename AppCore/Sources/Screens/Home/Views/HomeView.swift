@@ -50,6 +50,7 @@ final class HomeView: UIView {
     // callbacks
     var onDidChangeSearchQuery: (String) -> Void = { _ in }
     var onDidTapFilters: () -> Void = { }
+    var onDidTapCategory: (IndexPath) -> Void = { _ in }
     var onDidTapViewAll: (IndexPath) -> Void = { _ in }
     var onDidTapItem: (IndexPath) -> Void = { _ in }
     var onDidTapLike: (IndexPath) -> Void = { _ in }
@@ -133,7 +134,7 @@ final class HomeView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        dataSource.apply(sections: props.sections, items: props.sections.map(\.items))
+        dataSource.apply(sections: props.sections, items: props.sections.map(\.items), animatingDifferences: false)
     }
 }
 
@@ -148,6 +149,9 @@ private extension HomeView {
                 case .categories(let props):
                     let cell: CategoriesCell = collectionView.dequeueReusableCell(for: indexPath)
                     cell.render(props: props)
+                    cell.onDidTapItem = { [weak self] indexPath in
+                        self?.onDidTapCategory(indexPath)
+                    }
                     return cell
 
                 case .recipes(let props):
@@ -200,6 +204,23 @@ extension HomeView: UITextFieldDelegate {
 
         onDidChangeSearchQuery(newText)
         return true
+    }
+}
+
+extension HomeView: UICollectionViewDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard
+            let newCell = collectionView.cellForItem(at: indexPath) as? ScrollableCell,
+            let oldCell = cell as? ScrollableCell
+        else {
+            return
+        }
+
+        newCell.scrollableOffset = oldCell.scrollableOffset
     }
 }
 

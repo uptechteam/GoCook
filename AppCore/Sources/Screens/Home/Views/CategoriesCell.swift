@@ -8,7 +8,7 @@
 import Library
 import UIKit
 
-final class CategoriesCell: UICollectionViewCell, ReusableCell {
+final class CategoriesCell: UICollectionViewCell, ReusableCell, ScrollableCell {
 
     struct Props: Hashable {
 
@@ -32,6 +32,19 @@ final class CategoriesCell: UICollectionViewCell, ReusableCell {
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     // callbacks
     var onDidTapItem: (IndexPath) -> Void = { _ in }
+
+    var id: Int {
+        hash
+    }
+
+    var scrollableOffset: CGFloat {
+        get {
+            return collectionView.contentOffset.x
+        }
+        set {
+            collectionView.setContentOffset(CGPoint(x: newValue, y: 0), animated: false)
+        }
+    }
 
     // MARK: - Lifecycle
 
@@ -88,6 +101,12 @@ private extension CategoriesCell {
 }
 
 // MARK: - Delegate
+
+extension CategoriesCell: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        onDidTapItem(indexPath)
+    }
+}
 
 extension CategoriesCell: UICollectionViewDelegateFlowLayout {
     func collectionView(

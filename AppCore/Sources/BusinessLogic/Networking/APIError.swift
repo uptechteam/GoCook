@@ -8,6 +8,7 @@
 import Foundation
 
 enum APIError: Error {
+    case brokenData
     case cannotConnectToServer
     case server(message: String)
     case unknownError
@@ -16,6 +17,9 @@ enum APIError: Error {
 extension APIError: LocalizedError {
     var errorDescription: String? {
         switch self {
+        case .brokenData:
+            return .apiErrorBrokenData
+
         case .cannotConnectToServer:
             return .apiErrorConnotConnectToServer
 
