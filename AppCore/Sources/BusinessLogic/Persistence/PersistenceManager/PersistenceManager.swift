@@ -51,11 +51,6 @@ public final class PersistenceManager<DomainModel: PersistenceModel>: Persistenc
     // MARK: - Public methods
 
     public func store(models: [DomainModel]) async {
-        guard Thread.isMainThread else {
-            log.error("Can't store models on background thread.")
-            return
-        }
-
         let context = persistentContainer.viewContext
         models.forEach { model in
             _ = model.createEntity(context: context)
@@ -69,11 +64,6 @@ public final class PersistenceManager<DomainModel: PersistenceModel>: Persistenc
     }
 
     public func getModels() async -> [DomainModel] {
-        guard Thread.isMainThread else {
-            log.error("Can't fetch models on background thread.")
-            return []
-        }
-
         let fetchRequest = NSFetchRequest<DomainModel.Entity>(entityName: entityName)
         let context = persistentContainer.viewContext
         do {
@@ -86,11 +76,6 @@ public final class PersistenceManager<DomainModel: PersistenceModel>: Persistenc
     }
 
     public func clear(filter: Filter) async {
-        guard Thread.isMainThread else {
-            log.error("Can't clear data on background thread.")
-            return
-        }
-
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         if !filter.predicates.isEmpty {
             fetchRequest.predicate = NSPredicate(
