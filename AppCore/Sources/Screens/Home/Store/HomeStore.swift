@@ -19,16 +19,24 @@ public extension HomeViewController {
         var searchQuery: String
         var selectedCategories: Set<CategoryType>
         var route: AnyIdentifiable<Route>?
+
+        var trendingCategory: RecipeCategory {
+            recipeCategories.items.first(where: \.isTrendingCategory) ?? .init(category: .trending, recipes: [])
+        }
+
+        var otherCategories: [RecipeCategory] {
+            recipeCategories.items.filter { !$0.isTrendingCategory }
+        }
     }
 
     enum Action {
         case categoryTapped(IndexPath)
         case filtersTapped
         case getFeed(DomainModelAction<[RecipeCategory]>)
-        case likeTapped(IndexPath)
-        case recipeTapped(IndexPath)
+        case likeTapped(IndexPath, isTrending: Bool)
+        case recipeTapped(IndexPath, isTrending: Bool)
         case searchQueryChanged(String)
-        case viewAllTapped(Int)
+        case viewAllTapped(Int, isTrending: Bool)
     }
 
     enum Route {
@@ -76,7 +84,7 @@ extension HomeViewController {
         var newState = state
 
         switch action {
-        case .categoryTapped(let indexPath):
+        case let .categoryTapped(indexPath):
             if indexPath.item == 0 {
                 newState.selectedCategories.removeAll()
             } else if let selectedCategory = CategoryType.priorityOrder[safe: indexPath.item - 1] {
@@ -93,17 +101,17 @@ extension HomeViewController {
         case .getFeed(let modelAction):
             newState.recipeCategories.handle(action: modelAction)
 
-        case .likeTapped(let indexPath):
-            guard let recipe = newState.recipeCategories[safe: indexPath.section]?.recipes[safe: indexPath.item] else {
-                print("Error")
+        case let .likeTapped(indexPath, isTrending):
+            let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: indexPath.section]
+            guard let recipe = category?.recipes[safe: indexPath.item] else {
                 break
             }
 
             print("Press like for \(recipe)")
 
-        case .recipeTapped(let indexPath):
-            guard let recipe = newState.recipeCategories[safe: indexPath.section]?.recipes[safe: indexPath.item] else {
-                print("Error")
+        case let .recipeTapped(indexPath, isTrending):
+            let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: indexPath.section]
+            guard let recipe = category?.recipes[safe: indexPath.item] else {
                 break
             }
 
@@ -112,9 +120,9 @@ extension HomeViewController {
         case .searchQueryChanged(let query):
             newState.searchQuery = query
 
-        case .viewAllTapped(let index):
-            guard let category = newState.recipeCategories[safe: index] else {
-                print("Error")
+        case let .viewAllTapped(index, isTrending):
+            let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: index]
+            guard let category else {
                 break
             }
 

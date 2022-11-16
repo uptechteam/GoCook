@@ -16,7 +16,7 @@ extension HomeViewController {
     private static func makeFeedViewProps(state: State) -> HomeFeedView.Props {
         return .init(
             trendingCategoryViewProps: makeTrendingCategoryViewProps(state: state),
-            otherCategoriesViewsProps: makeOtherCategoriesViewProps(state: state)
+            otherCategoriesViewsProps: state.otherCategories.map(makeOtherCategoryViewProps)
         )
     }
 
@@ -24,7 +24,7 @@ extension HomeViewController {
         return .init(
             headerProps: HomeRecipeCategoryHeaderView.Props(title: "Trending"),
             categoriesListViewProps: makeCategoriesListViewProps(state: state),
-            recipesListViewProps: makeTrendingRecipesListViewProps(state: state)
+            recipesListViewProps: makeRecipesListViewProps(category: state.trendingCategory)
         )
     }
 
@@ -44,9 +44,17 @@ extension HomeViewController {
         )
     }
 
-    private static func makeTrendingRecipesListViewProps(state: State) -> HomeRecipesListView.Props {
-        let recipes = state.recipeCategories.items.first(where: \.isTrendingCategory)?.recipes ?? []
-        return .init(items: recipes.map(makeRecipeCellProps))
+    private static func makeOtherCategoryViewProps(recipeCategory: RecipeCategory) -> HomeOtherCategoryView.Props {
+        return .init(
+            headerProps: HomeRecipeCategoryHeaderView.Props(title: recipeCategory.category.name),
+            recipesListViewProps: makeRecipesListViewProps(category: recipeCategory)
+        )
+    }
+
+    // MARK: - Extra
+
+    private static func makeRecipesListViewProps(category: RecipeCategory) -> HomeRecipesListView.Props {
+        .init(items: category.recipes.map(makeRecipeCellProps))
     }
 
     private static func makeRecipeCellProps(recipe: Recipe) -> RecipeCell.Props {
@@ -56,18 +64,6 @@ extension HomeViewController {
             isLiked: false,
             name: recipe.name,
             ratingViewProps: RatingView.Props(ratingText: "\(recipe.rating)")
-        )
-    }
-
-    private static func makeOtherCategoriesViewProps(state: State) -> [HomeOtherCategoryView.Props] {
-        let otherCategories = state.recipeCategories.items.filter { !$0.isTrendingCategory }
-        return otherCategories.map(makeOtherCategoryViewProps)
-    }
-
-    private static func makeOtherCategoryViewProps(recipeCategory: RecipeCategory) -> HomeOtherCategoryView.Props {
-        return .init(
-            headerProps: HomeRecipeCategoryHeaderView.Props(title: recipeCategory.category.name),
-            recipesListViewProps: HomeRecipesListView.Props(items: recipeCategory.recipes.map(makeRecipeCellProps))
         )
     }
 }

@@ -81,16 +81,28 @@ public final class HomeViewController: UIViewController {
             store.dispatch(action: .categoryTapped(indexPath))
         }
 
+        contentView.feedView.trendingCategoryView.headerView.onTapViewAll = { [store] in
+            store.dispatch(action: .viewAllTapped(0, isTrending: true))
+        }
+
+        contentView.feedView.trendingCategoryView.recipesListView.onTapItem = { [store] indexPath in
+            store.dispatch(action: .recipeTapped(indexPath, isTrending: true))
+        }
+
+        contentView.feedView.trendingCategoryView.recipesListView.onTapLike = { [store] indexPath in
+            store.dispatch(action: .likeTapped(indexPath, isTrending: true))
+        }
+
         contentView.feedView.onTapViewAll = { [store] index in
-            store.dispatch(action: .viewAllTapped(index))
+            store.dispatch(action: .viewAllTapped(index, isTrending: false))
         }
 
         contentView.feedView.onTapRecipe = { [store] indexPath in
-            store.dispatch(action: .recipeTapped(indexPath))
+            store.dispatch(action: .recipeTapped(indexPath, isTrending: false))
         }
 
         contentView.feedView.onTapLike = { [store] indexPath in
-            store.dispatch(action: .likeTapped(indexPath))
+            store.dispatch(action: .likeTapped(indexPath, isTrending: false))
         }
 
         let state = store.$state.removeDuplicates()
