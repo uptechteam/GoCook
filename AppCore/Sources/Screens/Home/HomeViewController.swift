@@ -70,27 +70,27 @@ public final class HomeViewController: UIViewController {
 
     private func setupBinding() {
         contentView.onDidChangeSearchQuery = { [store] query in
-            store.dispatch(action: .didChangeSearchQuery(query))
+            store.dispatch(action: .searchQueryChanged(query))
         }
 
         contentView.onDidTapFilters = { [store] in
-            store.dispatch(action: .didTapFilters)
+            store.dispatch(action: .filtersTapped)
         }
 
-        contentView.onDidTapCategory = { [store] indexPath in
-            store.dispatch(action: .didTapCategory(indexPath))
+        contentView.feedView.trendingCategoryView.categoriesListView.onTapItem = { [store] indexPath in
+            store.dispatch(action: .categoryTapped(indexPath))
         }
 
-        contentView.onDidTapViewAll = { [store] indexPath in
-            store.dispatch(action: .didTapViewAll(indexPath))
+        contentView.feedView.onTapViewAll = { [store] index in
+            store.dispatch(action: .viewAllTapped(index))
         }
 
-        contentView.onDidTapItem = { [store] indexPath in
-            store.dispatch(action: .didTapItem(indexPath))
+        contentView.feedView.onTapRecipe = { [store] indexPath in
+            store.dispatch(action: .recipeTapped(indexPath))
         }
 
-        contentView.onDidTapLike = { [store] indexPath in
-            store.dispatch(action: .didTapLike(indexPath))
+        contentView.feedView.onTapLike = { [store] indexPath in
+            store.dispatch(action: .likeTapped(indexPath))
         }
 
         let state = store.$state.removeDuplicates()

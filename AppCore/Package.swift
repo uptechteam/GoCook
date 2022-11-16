@@ -61,44 +61,24 @@ let package = Package(
             ]
         ),
         // MARK: - Screens
-        .target(name: "AppTabBar", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/AppTabBar"),
-        .target(
-            name: "CreateRecipe",
-            dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
-            path: "Sources/Screens/CreateRecipe"
-        ),
-        .target(name: "Favorites", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Favorites"),
-        .target(name: "Filters", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Filters"),
-        .target(
-            name: "Home",
-            dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
-            path: "Sources/Screens/Home"
-        ),
-        .target(
-            name: "Input",
-            dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
-            path: "Sources/Screens/Input"
-        ),
-        .target(
-            name: "Login",
-            dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
-            path: "Sources/Screens/Login"
-        ),
-        .target(
-            name: "Profile",
-            dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
-            path: "Sources/Screens/Profile"
-        ),
-        .target(name: "Recipe", dependencies: ["DomainModels", "Helpers", "Library"], path: "Sources/Screens/Recipe"),
-        .target(
-            name: "Settings",
-            dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
-            path: "Sources/Screens/Settings"
-        ),
-        .target(
-            name: "SignUp",
-            dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
-            path: "Sources/Screens/SignUp"
-        )
+        makeScreenModule(name: "AppTabBar"),
+        makeScreenModule(name: "CreateRecipe"),
+        makeScreenModule(name: "Favorites"),
+        makeScreenModule(name: "Filters"),
+        makeScreenModule(name: "Home"),
+        makeScreenModule(name: "Input"),
+        makeScreenModule(name: "Login"),
+        makeScreenModule(name: "Profile"),
+        makeScreenModule(name: "Recipe"),
+        makeScreenModule(name: "Settings"),
+        makeScreenModule(name: "SignUp")
     ]
 )
+
+private func makeScreenModule(name: String) -> Target {
+    return .target(
+        name: name,
+        dependencies: ["BusinessLogic", "DomainModels", "Helpers", "Library"],
+        path: "Sources/Screens/\(name)"
+    )
+}

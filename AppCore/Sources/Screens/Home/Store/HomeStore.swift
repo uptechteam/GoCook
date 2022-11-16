@@ -22,13 +22,13 @@ public extension HomeViewController {
     }
 
     enum Action {
-        case didTapCategory(IndexPath)
-        case didTapFilters
-        case didTapItem(IndexPath)
-        case didTapLike(IndexPath)
-        case didTapViewAll(IndexPath)
-        case didChangeSearchQuery(String)
+        case categoryTapped(IndexPath)
+        case filtersTapped
         case getFeed(DomainModelAction<[RecipeCategory]>)
+        case likeTapped(IndexPath)
+        case recipeTapped(IndexPath)
+        case searchQueryChanged(String)
+        case viewAllTapped(Int)
     }
 
     enum Route {
@@ -76,7 +76,7 @@ extension HomeViewController {
         var newState = state
 
         switch action {
-        case .didTapCategory(let indexPath):
+        case .categoryTapped(let indexPath):
             if indexPath.item == 0 {
                 newState.selectedCategories.removeAll()
             } else if let selectedCategory = CategoryType.priorityOrder[safe: indexPath.item - 1] {
@@ -87,18 +87,13 @@ extension HomeViewController {
                 }
             }
 
-        case .didTapFilters:
+        case .filtersTapped:
             newState.route = .init(value: .filters)
 
-        case .didTapItem(let indexPath):
-            guard let recipe = newState.recipeCategories[safe: indexPath.section]?.recipes[safe: indexPath.item] else {
-                print("Error")
-                break
-            }
+        case .getFeed(let modelAction):
+            newState.recipeCategories.handle(action: modelAction)
 
-            newState.route = .init(value: .itemDetails(recipe))
-
-        case .didTapLike(let indexPath):
+        case .likeTapped(let indexPath):
             guard let recipe = newState.recipeCategories[safe: indexPath.section]?.recipes[safe: indexPath.item] else {
                 print("Error")
                 break
@@ -106,19 +101,24 @@ extension HomeViewController {
 
             print("Press like for \(recipe)")
 
-        case .didTapViewAll(let indexPath):
-            guard let category = newState.recipeCategories[safe: indexPath.section] else {
+        case .recipeTapped(let indexPath):
+            guard let recipe = newState.recipeCategories[safe: indexPath.section]?.recipes[safe: indexPath.item] else {
+                print("Error")
+                break
+            }
+
+            newState.route = .init(value: .itemDetails(recipe))
+
+        case .searchQueryChanged(let query):
+            newState.searchQuery = query
+
+        case .viewAllTapped(let index):
+            guard let category = newState.recipeCategories[safe: index] else {
                 print("Error")
                 break
             }
 
             newState.route = .init(value: .recipeCategory(category))
-
-        case .didChangeSearchQuery(let query):
-            newState.searchQuery = query
-
-        case .getFeed(let modelAction):
-            newState.recipeCategories.handle(action: modelAction)
         }
 
         return newState

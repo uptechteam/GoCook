@@ -12,11 +12,16 @@ import UIKit
 final class RecipeCell: UICollectionViewCell, ReusableCell {
 
     struct Props: Hashable {
+
+        // MARK: - Properties
+
         let id: String
         let recipeImageSource: ImageSource
         let isLiked: Bool
         let name: String
         let ratingViewProps: RatingView.Props
+
+        // MARK: - Public methods
 
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
@@ -30,7 +35,7 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
     private let nameLabel = UILabel()
     private let ratingView = RatingView()
     // callbacks
-    var onDidTapLike: () -> Void = { }
+    var onTapLike: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -53,8 +58,8 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
     }
 
     private func setupRecipeImageView() {
-        recipeImageView.clipsToBounds = true
         recipeImageView.backgroundColor = .gray100
+        recipeImageView.clipsToBounds = true
         recipeImageView.contentMode = .scaleAspectFill
         NSLayoutConstraint.activate([
             recipeImageView.widthAnchor.constraint(equalTo: recipeImageView.heightAnchor)
@@ -62,7 +67,6 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
     }
 
     private func setupNameLabel() {
-        nameLabel.render(typography: .subtitleTwo)
         nameLabel.numberOfLines = 2
     }
 
@@ -75,7 +79,7 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
 
     private func setupLikeButton() {
         likeButton.set(image: .circleFavoriteEmpty)
-        likeButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapLike() }), for: .touchUpInside)
+        likeButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapLike() }), for: .touchUpInside)
         contentView.addSubview(likeButton, constraints: [
             likeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             likeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)

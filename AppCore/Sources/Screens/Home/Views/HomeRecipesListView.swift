@@ -1,5 +1,5 @@
 //
-//  RecipeCategoryCell.swift
+//  HomeRecipesListView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 15.06.2022.
@@ -8,20 +8,10 @@
 import Library
 import UIKit
 
-final class RecipeCategoryCell: UICollectionViewCell, ReusableCell, ScrollableCell {
+final class HomeRecipesListView: UIView {
 
-    struct Props: Hashable {
-
-        // MARK: - Properties
-
-        let title: String
+    struct Props: Equatable {
         let items: [RecipeCell.Props]
-
-        // MARK: - Public methods
-
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(title)
-        }
     }
 
     typealias Snapshot = NSDiffableDataSourceSnapshot<Int, RecipeCell.Props>
@@ -29,24 +19,11 @@ final class RecipeCategoryCell: UICollectionViewCell, ReusableCell, ScrollableCe
 
     // MARK: - Properties
 
-    private lazy var dataSource = makeDataSource()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
+    private lazy var dataSource = makeDataSource()
     // callbacks
-    var onDidTapItem: (IndexPath) -> Void = { _ in }
-    var onDidTapLike: (IndexPath) -> Void = { _ in }
-
-    var id: Int {
-        hash
-    }
-
-    var scrollableOffset: CGFloat {
-        get {
-            collectionView.contentOffset.x
-        }
-        set {
-            collectionView.setContentOffset(CGPoint(x: newValue, y: 0), animated: false)
-        }
-    }
+    var onTapItem: (IndexPath) -> Void = { _ in }
+    var onTapLike: (IndexPath) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -62,8 +39,21 @@ final class RecipeCategoryCell: UICollectionViewCell, ReusableCell, ScrollableCe
     // MARK: - Set up
 
     private func setup() {
-        setupLayout()
         setupCollectionView()
+        setupLayout()
+    }
+
+    private func setupCollectionView() {
+        collectionView.backgroundColor = .clear
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.delegate = self
+        collectionView.register(cell: RecipeCell.self)
+        addSubview(collectionView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            collectionView.widthAnchor.constraint(equalTo: widthAnchor),
+            collectionView.heightAnchor.constraint(equalToConstant: 264)
+        ])
     }
 
     private func setupLayout() {
@@ -74,37 +64,24 @@ final class RecipeCategoryCell: UICollectionViewCell, ReusableCell, ScrollableCe
         collectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
 
-    private func setupCollectionView() {
-        collectionView.backgroundColor = .clear
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.delegate = self
-        collectionView.register(cell: RecipeCell.self)
-        contentView.addSubview(collectionView, withEdgeInsets: .zero)
-        NSLayoutConstraint.activate([
-            collectionView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-            collectionView.heightAnchor.constraint(equalToConstant: 264)
-        ])
-    }
-
     // MARK: - Public methods
 
     func render(props: Props) {
         dataSource.apply(sections: [0], items: [props.items])
     }
-}
 
-// MARK: - Data Source
+    // MARK: - Private methods
 
-private extension RecipeCategoryCell {
-    func makeDataSource() -> DataSource {
+    private func makeDataSource() -> DataSource {
         return DataSource(
             collectionView: collectionView,
             cellProvider: { [weak self] collectionView, indexPath, props in
                 let cell: RecipeCell = collectionView.dequeueReusableCell(for: indexPath)
                 cell.render(props: props)
-                cell.onDidTapLike = { [weak self] in
-                    self?.onDidTapLike(indexPath)
+                cell.onTapLike = { [weak self, unowned cell] in
+                    if let indexPath = self?.collectionView.indexPath(for: cell) {
+                        self?.onTapLike(indexPath)
+                    }
                 }
                 return cell
             }
@@ -112,10 +89,10 @@ private extension RecipeCategoryCell {
     }
 }
 
-// MARK: - Delegate
+// MARK: - UICollectionViewDelegate
 
-extension RecipeCategoryCell: UICollectionViewDelegate {
+extension HomeRecipesListView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        onDidTapItem(indexPath)
+        onTapItem(indexPath)
     }
 }
