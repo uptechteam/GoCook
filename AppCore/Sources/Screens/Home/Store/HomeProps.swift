@@ -58,8 +58,8 @@ extension HomeViewController {
     private static func makeSearchResultsViewProps(state: State) -> HomeSearchResultsView.Props {
         return .init(
             isVisible: !state.searchQuery.isEmpty,
-            isSpinnerVisible: true,
-            isDescriptionLabelVisible: false,
+            isSpinnerVisible: state.isGettingRecipes,
+            isDescriptionLabelVisible: !state.isGettingRecipes && state.searchedRecipes.isEmpty,
             description: "No results found",
             items: []
         )

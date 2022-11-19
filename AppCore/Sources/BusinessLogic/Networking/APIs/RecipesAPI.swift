@@ -21,6 +21,11 @@ struct RecipesAPI {
 
     // MARK: - Public methods
 
+    func makeGetRecipesTarget(query: String) throws -> AppRequest {
+        let parameters = ["query": query]
+        return try targetBuilder.makeGetTarget(path: "", parameters: parameters)
+    }
+
     func makePostRecipeTarget(request: NewRecipeRequest) throws -> AppRequest {
         try targetBuilder.makePostJSONTarget(path: "", requestData: request, authorisation: .bearer)
     }
