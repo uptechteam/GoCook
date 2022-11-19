@@ -69,6 +69,7 @@ public final class AppTabBarController: UITabBarController {
             contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -21),
             contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+        additionalSafeAreaInsets.bottom = 56
     }
 
     private func setupBinding() {

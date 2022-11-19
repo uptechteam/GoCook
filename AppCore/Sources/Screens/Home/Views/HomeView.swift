@@ -73,11 +73,12 @@ final class HomeView: UIView {
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.spacing = 24
-        addSubview(
-            stackView,
-            withEdgeInsets: UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0),
-            isSafeAreaRequired: true
-        )
+        addSubview(stackView, constraints: [
+            stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+        ])
         NSLayoutConstraint.activate([
             topStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
             feedView.widthAnchor.constraint(equalTo: stackView.widthAnchor)
