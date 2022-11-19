@@ -10,11 +10,15 @@ import Library
 
 extension HomeViewController {
     static func makeProps(from state: State) -> HomeView.Props {
-        .init(feedViewProps: makeFeedViewProps(state: state))
+        return .init(
+            feedViewProps: makeFeedViewProps(state: state),
+            searchResultsViewProps: makeSearchResultsViewProps(state: state)
+        )
     }
 
     private static func makeFeedViewProps(state: State) -> HomeFeedView.Props {
         return .init(
+            isVisible: state.searchQuery.isEmpty,
             trendingCategoryViewProps: makeTrendingCategoryViewProps(state: state),
             otherCategoriesViewsProps: state.otherCategories.map(makeOtherCategoryViewProps)
         )
@@ -48,6 +52,16 @@ extension HomeViewController {
         return .init(
             headerProps: HomeRecipeCategoryHeaderView.Props(title: recipeCategory.category.name),
             recipesListViewProps: makeRecipesListViewProps(category: recipeCategory)
+        )
+    }
+
+    private static func makeSearchResultsViewProps(state: State) -> HomeSearchResultsView.Props {
+        return .init(
+            isVisible: !state.searchQuery.isEmpty,
+            isSpinnerVisible: true,
+            isDescriptionLabelVisible: false,
+            description: "No results found",
+            items: []
         )
     }
 

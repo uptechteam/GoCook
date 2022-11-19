@@ -12,6 +12,7 @@ final class HomeView: UIView {
 
     struct Props: Equatable {
         let feedViewProps: HomeFeedView.Props
+        let searchResultsViewProps: HomeSearchResultsView.Props
     }
 
     // MARK: - Properties
@@ -20,6 +21,7 @@ final class HomeView: UIView {
     let searchTextField = SearchTextField()
     let filtersButton = IconButton()
     let feedView = HomeFeedView()
+    let searchResultsView = HomeSearchResultsView()
     // callbacks
     var onDidChangeSearchQuery: (String) -> Void = { _ in }
     var onDidTapFilters: () -> Void = { }
@@ -42,6 +44,7 @@ final class HomeView: UIView {
         setupTopStackView()
         setupSearchTextField()
         setupFiltersButton()
+        setupSearchTextField()
         setupStackView()
     }
 
@@ -68,8 +71,12 @@ final class HomeView: UIView {
         ])
     }
 
+    private func setupSearchResultsView() {
+        searchResultsView.isHidden = true
+    }
+
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [topStackView, feedView])
+        let stackView = UIStackView(arrangedSubviews: [topStackView, feedView, searchResultsView])
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.spacing = 24
@@ -89,6 +96,7 @@ final class HomeView: UIView {
 
     func render(props: Props) {
         feedView.render(props: props.feedViewProps)
+        searchResultsView.render(props: props.searchResultsViewProps)
     }
 }
 

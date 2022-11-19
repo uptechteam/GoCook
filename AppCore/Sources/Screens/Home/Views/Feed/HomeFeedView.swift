@@ -11,6 +11,7 @@ import UIKit
 final class HomeFeedView: UIView {
 
     struct Props: Equatable {
+        let isVisible: Bool
         let trendingCategoryViewProps: HomeTrendingCategoryView.Props
         let otherCategoriesViewsProps: [HomeOtherCategoryView.Props]
     }
@@ -63,6 +64,7 @@ final class HomeFeedView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        isHidden = !props.isVisible
         trendingCategoryView.render(props: props.trendingCategoryViewProps)
         renderOtherCategories(viewsProps: props.otherCategoriesViewsProps)
     }
