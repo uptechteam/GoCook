@@ -19,16 +19,24 @@ public extension HomeViewController {
         var searchQuery: String
         var selectedCategories: Set<CategoryType>
         var route: AnyIdentifiable<Route>?
+
+        var trendingCategory: RecipeCategory {
+            recipeCategories.items.first(where: \.isTrendingCategory) ?? .init(category: .trending, recipes: [])
+        }
+
+        var otherCategories: [RecipeCategory] {
+            recipeCategories.items.filter { !$0.isTrendingCategory }
+        }
     }
 
     enum Action {
-        case didTapCategory(IndexPath)
-        case didTapFilters
-        case didTapItem(IndexPath)
-        case didTapLike(IndexPath)
-        case didTapViewAll(IndexPath)
-        case didChangeSearchQuery(String)
+        case categoryTapped(IndexPath)
+        case filtersTapped
         case getFeed(DomainModelAction<[RecipeCategory]>)
+        case likeTapped(IndexPath, isTrending: Bool)
+        case recipeTapped(IndexPath, isTrending: Bool)
+        case searchQueryChanged(String)
+        case viewAllTapped(Int, isTrending: Bool)
     }
 
     enum Route {
@@ -76,7 +84,7 @@ extension HomeViewController {
         var newState = state
 
         switch action {
-        case .didTapCategory(let indexPath):
+        case let .categoryTapped(indexPath):
             if indexPath.item == 0 {
                 newState.selectedCategories.removeAll()
             } else if let selectedCategory = CategoryType.priorityOrder[safe: indexPath.item - 1] {
@@ -87,38 +95,38 @@ extension HomeViewController {
                 }
             }
 
-        case .didTapFilters:
+        case .filtersTapped:
             newState.route = .init(value: .filters)
 
-        case .didTapItem(let indexPath):
-            guard let recipe = newState.recipeCategories[safe: indexPath.section]?.recipes[safe: indexPath.item] else {
-                print("Error")
-                break
-            }
+        case .getFeed(let modelAction):
+            newState.recipeCategories.handle(action: modelAction)
 
-            newState.route = .init(value: .itemDetails(recipe))
-
-        case .didTapLike(let indexPath):
-            guard let recipe = newState.recipeCategories[safe: indexPath.section]?.recipes[safe: indexPath.item] else {
-                print("Error")
+        case let .likeTapped(indexPath, isTrending):
+            let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: indexPath.section]
+            guard let recipe = category?.recipes[safe: indexPath.item] else {
                 break
             }
 
             print("Press like for \(recipe)")
 
-        case .didTapViewAll(let indexPath):
-            guard let category = newState.recipeCategories[safe: indexPath.section] else {
-                print("Error")
+        case let .recipeTapped(indexPath, isTrending):
+            let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: indexPath.section]
+            guard let recipe = category?.recipes[safe: indexPath.item] else {
+                break
+            }
+
+            newState.route = .init(value: .itemDetails(recipe))
+
+        case .searchQueryChanged(let query):
+            newState.searchQuery = query
+
+        case let .viewAllTapped(index, isTrending):
+            let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: index]
+            guard let category else {
                 break
             }
 
             newState.route = .init(value: .recipeCategory(category))
-
-        case .didChangeSearchQuery(let query):
-            newState.searchQuery = query
-
-        case .getFeed(let modelAction):
-            newState.recipeCategories.handle(action: modelAction)
         }
 
         return newState

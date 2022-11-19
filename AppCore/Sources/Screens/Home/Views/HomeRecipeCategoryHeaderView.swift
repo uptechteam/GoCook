@@ -1,5 +1,5 @@
 //
-//  RecipeCategoryHeaderView.swift
+//  HomeRecipeCategoryHeaderView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 16.07.2022.
@@ -8,7 +8,7 @@
 import Library
 import UIKit
 
-final class RecipeCategoryHeaderView: UICollectionReusableView {
+final class HomeRecipeCategoryHeaderView: UIView {
 
     struct Props: Equatable {
         let title: String
@@ -19,7 +19,7 @@ final class RecipeCategoryHeaderView: UICollectionReusableView {
     private let titleLabel = UILabel()
     private let viewAllButton = UIButton()
     // callbacks
-    var onDidTapViewAll: () -> Void = { }
+    var onTapViewAll: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -35,13 +35,8 @@ final class RecipeCategoryHeaderView: UICollectionReusableView {
     // MARK: - Set up
 
     private func setup() {
-        setupTitleLabel()
         setupViewAllButton()
         setupStackView()
-    }
-
-    private func setupTitleLabel() {
-        titleLabel.render(typography: .headerTwo)
     }
 
     private func setupViewAllButton() {
@@ -49,7 +44,7 @@ final class RecipeCategoryHeaderView: UICollectionReusableView {
         viewAllButton.setTitleColor(.primaryMain, for: .normal)
         viewAllButton.setTitleColor(.primaryPressed, for: .highlighted)
         viewAllButton.titleLabel?.render(typography: .buttonLarge)
-        viewAllButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapViewAll() }), for: .touchUpInside)
+        viewAllButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapViewAll() }), for: .touchUpInside)
     }
 
     private func setupStackView() {
@@ -61,6 +56,6 @@ final class RecipeCategoryHeaderView: UICollectionReusableView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        titleLabel.text = props.title
+        titleLabel.render(title: props.title, color: .appBlack, typography: .headerTwo)
     }
 }

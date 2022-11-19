@@ -8,19 +8,10 @@
 import Library
 import UIKit
 
-final class CategoriesCell: UICollectionViewCell, ReusableCell, ScrollableCell {
+final class HomeCategoriesListView: UIView {
 
-    struct Props: Hashable {
-
-        // MARK: - Properties
-
+    struct Props: Equatable {
         let items: [CategoryCell.Props]
-
-        // MARK: - Public methods
-
-        func hash(into hasher: inout Hasher) {
-            hasher.combine("Categories")
-        }
     }
 
     typealias Snapshot = NSDiffableDataSourceSnapshot<Int, CategoryCell.Props>
@@ -28,23 +19,10 @@ final class CategoriesCell: UICollectionViewCell, ReusableCell, ScrollableCell {
 
     // MARK: - Properties
 
-    private lazy var dataSource = makeDataSource()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
+    private lazy var dataSource = makeDataSource()
     // callbacks
-    var onDidTapItem: (IndexPath) -> Void = { _ in }
-
-    var id: Int {
-        hash
-    }
-
-    var scrollableOffset: CGFloat {
-        get {
-            return collectionView.contentOffset.x
-        }
-        set {
-            collectionView.setContentOffset(CGPoint(x: newValue, y: 0), animated: false)
-        }
-    }
+    var onTapItem: (IndexPath) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -60,8 +38,24 @@ final class CategoriesCell: UICollectionViewCell, ReusableCell, ScrollableCell {
     // MARK: - Set up
 
     private func setup() {
-        setupLayout()
+        setupContentView()
         setupCollectionView()
+        setupLayout()
+    }
+
+    private func setupContentView() {
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: 32)
+        ])
+    }
+
+    private func setupCollectionView() {
+        collectionView.backgroundColor = .clear
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.delegate = self
+        collectionView.register(cell: CategoryCell.self)
+        addSubview(collectionView, withEdgeInsets: .zero)
     }
 
     private func setupLayout() {
@@ -71,44 +65,34 @@ final class CategoriesCell: UICollectionViewCell, ReusableCell, ScrollableCell {
         collectionView.setCollectionViewLayout(flowlayout, animated: false)
     }
 
-    private func setupCollectionView() {
-        collectionView.backgroundColor = .clear
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.delegate = self
-        collectionView.register(cell: CategoryCell.self)
-        contentView.addSubview(collectionView, withEdgeInsets: .zero)
-    }
-
     // MARK: - Public methods
 
     func render(props: Props) {
         dataSource.apply(sections: [0], items: [props.items])
     }
-}
 
-// MARK: - Data Source
+    // MARK: - Private methods
 
-private extension CategoriesCell {
-    func makeDataSource() -> DataSource {
-        return DataSource(
-            collectionView: collectionView) { collectionView, indexPath, props in
-                let cell: CategoryCell = collectionView.dequeueReusableCell(for: indexPath)
-                cell.render(props: props)
-                return cell
-            }
+    private func makeDataSource() -> DataSource {
+        return DataSource(collectionView: collectionView) { collectionView, indexPath, props in
+            let cell: CategoryCell = collectionView.dequeueReusableCell(for: indexPath)
+            cell.render(props: props)
+            return cell
+        }
     }
 }
 
-// MARK: - Delegate
+// MARK: - UICollectionViewDelegate
 
-extension CategoriesCell: UICollectionViewDelegate {
+extension HomeCategoriesListView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        onDidTapItem(indexPath)
+        onTapItem(indexPath)
     }
 }
 
-extension CategoriesCell: UICollectionViewDelegateFlowLayout {
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension HomeCategoriesListView: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
