@@ -15,7 +15,9 @@ public extension HomeViewController {
     typealias Store = ReduxStore<State, Action>
 
     struct State: Equatable {
+        var isGettingRecipes: Bool
         var recipeCategories: DomainModelState<[RecipeCategory]>
+        var searchedRecipes: [Recipe]
         var searchQuery: String
         var selectedCategories: Set<CategoryType>
         var route: AnyIdentifiable<Route>?
@@ -33,6 +35,7 @@ public extension HomeViewController {
         case categoryTapped(IndexPath)
         case filtersTapped
         case getFeed(DomainModelAction<[RecipeCategory]>)
+        case getRecipes(Result<[Recipe], Error>)
         case likeTapped(IndexPath, isTrending: Bool)
         case recipeTapped(IndexPath, isTrending: Bool)
         case searchQueryChanged(String)
@@ -60,16 +63,19 @@ public extension HomeViewController {
 
     static func makeStore(dependencies: Dependencies) -> Store {
         let getFeedMiddleware = makeGetFeedMiddleware(dependencies: dependencies)
+        let getRecipesMiddleware = makeGetRecipesMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
             reducer: reduce,
-            middlewares: [getFeedMiddleware]
+            middlewares: [getFeedMiddleware, getRecipesMiddleware]
         )
     }
 
     private static func makeInitialState(dependencies: Dependencies) -> State {
         return State(
+            isGettingRecipes: false,
             recipeCategories: .init(),
+            searchedRecipes: [],
             searchQuery: "",
             selectedCategories: Set(),
             route: nil
@@ -101,6 +107,12 @@ extension HomeViewController {
         case .getFeed(let modelAction):
             newState.recipeCategories.handle(action: modelAction)
 
+        case .getRecipes(let result):
+            newState.isGettingRecipes = false
+            if case .success(let recipes) = result {
+                newState.searchedRecipes = recipes
+            }
+
         case let .likeTapped(indexPath, isTrending):
             let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: indexPath.section]
             guard let recipe = category?.recipes[safe: indexPath.item] else {
@@ -119,6 +131,9 @@ extension HomeViewController {
 
         case .searchQueryChanged(let query):
             newState.searchQuery = query
+            if !query.isEmpty {
+                newState.isGettingRecipes = true
+            }
 
         case let .viewAllTapped(index, isTrending):
             let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: index]

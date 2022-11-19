@@ -12,6 +12,7 @@ final class HomeView: UIView {
 
     struct Props: Equatable {
         let feedViewProps: HomeFeedView.Props
+        let searchResultsViewProps: HomeSearchResultsView.Props
     }
 
     // MARK: - Properties
@@ -20,6 +21,7 @@ final class HomeView: UIView {
     let searchTextField = SearchTextField()
     let filtersButton = IconButton()
     let feedView = HomeFeedView()
+    let searchResultsView = HomeSearchResultsView()
     // callbacks
     var onDidChangeSearchQuery: (String) -> Void = { _ in }
     var onDidTapFilters: () -> Void = { }
@@ -42,6 +44,7 @@ final class HomeView: UIView {
         setupTopStackView()
         setupSearchTextField()
         setupFiltersButton()
+        setupSearchTextField()
         setupStackView()
     }
 
@@ -68,19 +71,25 @@ final class HomeView: UIView {
         ])
     }
 
+    private func setupSearchResultsView() {
+        searchResultsView.isHidden = true
+    }
+
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [topStackView, feedView])
+        let stackView = UIStackView(arrangedSubviews: [topStackView, feedView, searchResultsView])
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.spacing = 24
-        addSubview(
-            stackView,
-            withEdgeInsets: UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0),
-            isSafeAreaRequired: true
-        )
+        addSubview(stackView, constraints: [
+            stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+        ])
         NSLayoutConstraint.activate([
             topStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
-            feedView.widthAnchor.constraint(equalTo: stackView.widthAnchor)
+            feedView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            searchResultsView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48)
         ])
     }
 
@@ -88,6 +97,7 @@ final class HomeView: UIView {
 
     func render(props: Props) {
         feedView.render(props: props.feedViewProps)
+        searchResultsView.render(props: props.searchResultsViewProps)
     }
 }
 

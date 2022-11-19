@@ -10,11 +10,15 @@ import Library
 
 extension HomeViewController {
     static func makeProps(from state: State) -> HomeView.Props {
-        .init(feedViewProps: makeFeedViewProps(state: state))
+        return .init(
+            feedViewProps: makeFeedViewProps(state: state),
+            searchResultsViewProps: makeSearchResultsViewProps(state: state)
+        )
     }
 
     private static func makeFeedViewProps(state: State) -> HomeFeedView.Props {
         return .init(
+            isVisible: state.searchQuery.isEmpty,
             trendingCategoryViewProps: makeTrendingCategoryViewProps(state: state),
             otherCategoriesViewsProps: state.otherCategories.map(makeOtherCategoryViewProps)
         )
@@ -51,6 +55,15 @@ extension HomeViewController {
         )
     }
 
+    private static func makeSearchResultsViewProps(state: State) -> HomeSearchResultsView.Props {
+        return .init(
+            isVisible: !state.searchQuery.isEmpty,
+            items: state.isGettingRecipes ? [] : state.searchedRecipes.map(makeSmallRecipeCellProps),
+            isSpinnerVisible: state.isGettingRecipes,
+            isNoResultsLabelVisible: !state.isGettingRecipes && state.searchedRecipes.isEmpty
+        )
+    }
+
     // MARK: - Extra
 
     private static func makeRecipesListViewProps(category: RecipeCategory) -> HomeRecipesListView.Props {
@@ -58,6 +71,16 @@ extension HomeViewController {
     }
 
     private static func makeRecipeCellProps(recipe: Recipe) -> RecipeCell.Props {
+        return .init(
+            id: recipe.id.rawValue,
+            recipeImageSource: recipe.recipeImageSource,
+            isLiked: false,
+            name: recipe.name,
+            ratingViewProps: RatingView.Props(ratingText: "\(recipe.rating)")
+        )
+    }
+
+    private static func makeSmallRecipeCellProps(recipe: Recipe) -> SmallRecipeCell.Props {
         return .init(
             id: recipe.id.rawValue,
             recipeImageSource: recipe.recipeImageSource,
