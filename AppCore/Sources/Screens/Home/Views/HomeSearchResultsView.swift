@@ -12,16 +12,23 @@ final class HomeSearchResultsView: UIView {
 
     struct Props: Equatable {
         let isVisible: Bool
+        let items: [SmallRecipeCell.Props]
         let isSpinnerVisible: Bool
-        let isDescriptionLabelVisible: Bool
-        let description: String
-        let items: [String]
+        let isNoResultsLabelVisible: Bool
     }
+
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, SmallRecipeCell.Props>
+    typealias DataSource = UICollectionViewDiffableDataSource<Int, SmallRecipeCell.Props>
 
     // MARK: - Properties
 
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
+    private lazy var dataSource = makeDataSource()
     private let spinnerView = SpinnerView(circleColor: .appBlack)
-    private let descriptionLabel = UILabel()
+    private let noResultsLabel = UILabel()
+    // callbacks
+    var onTapItem: (IndexPath) -> Void = { _ in }
+    var onTapLike: (IndexPath) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -34,11 +41,42 @@ final class HomeSearchResultsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setupLayout()
+    }
+
     // MARK: - Set up
 
     private func setup() {
+        setupCollectionView()
+        setupNoResultsLabel()
         setupSpinnerView()
-        setupDescriptionLabel()
+    }
+
+    private func setupCollectionView() {
+        collectionView.backgroundColor = .clear
+        collectionView.contentInset = .zero
+        collectionView.delegate = self
+        collectionView.register(cell: SmallRecipeCell.self)
+        addSubview(collectionView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            collectionView.widthAnchor.constraint(equalTo: widthAnchor)
+        ])
+    }
+
+    private func setupLayout() {
+        guard !(collectionView.collectionViewLayout is UICollectionViewFlowLayout) else {
+            return
+        }
+
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 24
+        flowLayout.itemSize = CGSize(width: bounds.width, height: 120)
+        collectionView.setCollectionViewLayout(flowLayout, animated: false)
+        NSLayoutConstraint.activate([
+            collectionView.widthAnchor.constraint(equalTo: widthAnchor)
+        ])
     }
 
     private func setupSpinnerView() {
@@ -50,10 +88,11 @@ final class HomeSearchResultsView: UIView {
         ])
     }
 
-    private func setupDescriptionLabel() {
-        addSubview(descriptionLabel, constraints: [
-            descriptionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 174),
-            descriptionLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+    private func setupNoResultsLabel() {
+        noResultsLabel.render(title: "No results found", color: .textDisabled, typography: .body)
+        addSubview(noResultsLabel, constraints: [
+            noResultsLabel.topAnchor.constraint(equalTo: topAnchor, constant: 174),
+            noResultsLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
 
@@ -61,8 +100,34 @@ final class HomeSearchResultsView: UIView {
 
     func render(props: Props) {
         isHidden = !props.isVisible
+        dataSource.apply(sections: [0], items: [props.items])
         spinnerView.toggle(isAnimating: props.isSpinnerVisible)
-        descriptionLabel.isHidden = !props.isDescriptionLabelVisible
-        descriptionLabel.render(title: props.description, color: .textDisabled, typography: .body)
+        noResultsLabel.isHidden = !props.isNoResultsLabelVisible
+    }
+
+    // MARK: - Private methods
+
+    private func makeDataSource() -> DataSource {
+        return DataSource(
+            collectionView: collectionView,
+            cellProvider: { [weak self] collectionView, indexPath, props in
+                let cell: SmallRecipeCell = collectionView.dequeueReusableCell(for: indexPath)
+                cell.render(props: props)
+                cell.onTapLike = { [weak self, unowned cell] in
+                    if let indexPath = self?.collectionView.indexPath(for: cell) {
+                        self?.onTapLike(indexPath)
+                    }
+                }
+                return cell
+            }
+        )
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension HomeSearchResultsView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        onTapItem(indexPath)
     }
 }

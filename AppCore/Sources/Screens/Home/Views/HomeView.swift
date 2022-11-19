@@ -88,7 +88,8 @@ final class HomeView: UIView {
         ])
         NSLayoutConstraint.activate([
             topStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
-            feedView.widthAnchor.constraint(equalTo: stackView.widthAnchor)
+            feedView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            searchResultsView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48)
         ])
     }
 

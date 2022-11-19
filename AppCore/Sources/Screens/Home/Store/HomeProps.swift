@@ -58,10 +58,9 @@ extension HomeViewController {
     private static func makeSearchResultsViewProps(state: State) -> HomeSearchResultsView.Props {
         return .init(
             isVisible: !state.searchQuery.isEmpty,
+            items: state.isGettingRecipes ? [] : state.searchedRecipes.map(makeSmallRecipeCellProps),
             isSpinnerVisible: state.isGettingRecipes,
-            isDescriptionLabelVisible: !state.isGettingRecipes && state.searchedRecipes.isEmpty,
-            description: "No results found",
-            items: []
+            isNoResultsLabelVisible: !state.isGettingRecipes && state.searchedRecipes.isEmpty
         )
     }
 
@@ -72,6 +71,16 @@ extension HomeViewController {
     }
 
     private static func makeRecipeCellProps(recipe: Recipe) -> RecipeCell.Props {
+        return .init(
+            id: recipe.id.rawValue,
+            recipeImageSource: recipe.recipeImageSource,
+            isLiked: false,
+            name: recipe.name,
+            ratingViewProps: RatingView.Props(ratingText: "\(recipe.rating)")
+        )
+    }
+
+    private static func makeSmallRecipeCellProps(recipe: Recipe) -> SmallRecipeCell.Props {
         return .init(
             id: recipe.id.rawValue,
             recipeImageSource: recipe.recipeImageSource,
