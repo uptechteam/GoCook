@@ -40,10 +40,7 @@ final class RegistrationCoordinator: Coordinating {
     // MARK: - Public methods
 
     func start() {
-        let envelope = SignUpEnvelope.registration
-        let viewController: SignUpViewController = try! container.resolve(
-            arguments: envelope, self as SignUpCoordinating
-        )
+        let viewController = SignUpViewController.resolve(from: container, envelope: .registration, coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
     }
 
@@ -62,8 +59,7 @@ extension RegistrationCoordinator: SignUpCoordinating {
     }
 
     func didTapLogin() {
-        let envelope = LoginEnvelope.registration
-        let viewController: LoginViewController = try! container.resolve(arguments: envelope, self as LoginCoordinating)
+        let viewController = LoginViewController.resolve(from: container, envelope: .registration, coordinator: self)
         navigationController.setViewControllers([viewController], animated: true)
     }
 }
@@ -74,10 +70,7 @@ extension RegistrationCoordinator: LoginCoordinating {
     }
 
     func didTapSignUp() {
-        let envelope = SignUpEnvelope.registration
-        let viewController: SignUpViewController = try! container.resolve(
-            arguments: envelope, self as SignUpCoordinating
-        )
+        let viewController = SignUpViewController.resolve(from: container, envelope: .registration, coordinator: self)
         navigationController.setViewControllers([viewController], animated: true)
     }
 }

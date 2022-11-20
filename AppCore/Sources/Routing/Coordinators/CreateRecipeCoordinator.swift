@@ -41,7 +41,7 @@ final class CreateRecipeCoordinator: Coordinating {
     // MARK: - Lifecycle
 
     func start() {
-        let viewController: CreateRecipeViewController = try! container.resolve(arguments: self as CreateRecipeCoordinating)
+        let viewController = CreateRecipeViewController.resolve(from: container, coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
         navigationController.modalPresentationStyle = .overFullScreen
         presentingViewController.present(navigationController, animated: true)
@@ -69,7 +69,7 @@ extension CreateRecipeCoordinator: CreateRecipeCoordinating {
     @MainActor
     func didTapInput(details: InputDetails) {
         let envelope = InputEnvelope(details: details)
-        let viewController: InputViewController = try! container.resolve(arguments: envelope, self as InputCoordinating)
+        let viewController = InputViewController.resolve(from: container, envelope: envelope, coordinator: self)
         viewController.modalPresentationStyle = .overCurrentContext
         viewController.modalTransitionStyle = .crossDissolve
         navigationController.present(viewController, animated: true)

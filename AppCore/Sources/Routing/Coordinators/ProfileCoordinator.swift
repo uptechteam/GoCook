@@ -42,7 +42,7 @@ final class ProfileCoordinator: NSObject, Coordinating {
     // MARK: - Lifecycle
 
     func start() {
-        let viewController: ProfileViewController = try! container.resolve(arguments: self as ProfileCoordinating)
+        let viewController = ProfileViewController.resolve(from: container, coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
     }
 
@@ -72,9 +72,7 @@ extension ProfileCoordinator: LoginCoordinating {
 
     func didTapSignUp() {
         let envelope = SignUpEnvelope.profile
-        let viewController: SignUpViewController = try! container.resolve(
-            arguments: envelope, self as SignUpCoordinating
-        )
+        let viewController = SignUpViewController.resolve(from: container, envelope: envelope, coordinator: self)
         let viewControllers = [navigationController.viewControllers[0], viewController]
         navigationController.setViewControllers(viewControllers, animated: true)
     }
@@ -88,13 +86,13 @@ extension ProfileCoordinator: ProfileCoordinating {
     }
 
     func didTapSettings() {
-        let viewController: SettingsViewController = try! container.resolve(arguments: self as SettingsCoordinating)
+        let viewController = SettingsViewController.resolve(from: container, coordinator: self)
         navigationController.pushViewController(viewController, animated: true)
     }
 
     func didTapSignIn() {
         let envelope = LoginEnvelope.profile
-        let viewController: LoginViewController = try! container.resolve(arguments: envelope, self as LoginCoordinating)
+        let viewController = LoginViewController.resolve(from: container, envelope: envelope, coordinator: self)
         navigationController.pushViewController(viewController, animated: true)
     }
 }
@@ -111,8 +109,7 @@ extension ProfileCoordinator: SignUpCoordinating {
     }
 
     func didTapLogin() {
-        let envelope = LoginEnvelope.profile
-        let viewController: LoginViewController = try! container.resolve(arguments: envelope, self as LoginCoordinating)
+        let viewController = LoginViewController.resolve(from: container, envelope: .profile, coordinator: self)
         let viewControllers = [navigationController.viewControllers[0], viewController]
         navigationController.setViewControllers(viewControllers, animated: true)
     }

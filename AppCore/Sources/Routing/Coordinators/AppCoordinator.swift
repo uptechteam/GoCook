@@ -59,7 +59,7 @@ public final class AppCoordinator {
     }
 
     private func showTabBar() {
-        let appTabBarController: AppTabBarController = try! container.resolve(arguments: self as AppTabBarCoordinating)
+        let appTabBarController = AppTabBarController.resolve(from: container, coordinator: self)
         let coordinator = AppTabBarCoordinator(container: container, tabBarController: appTabBarController)
         coordinator.start()
         childCoordinators.append(coordinator)
