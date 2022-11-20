@@ -7,6 +7,7 @@
 
 import Combine
 import DomainModels
+import Library
 import UIKit
 
 public protocol HomeCoordinating: AnyObject {
@@ -14,7 +15,7 @@ public protocol HomeCoordinating: AnyObject {
     func show(recipe: Recipe)
 }
 
-public final class HomeViewController: UIViewController {
+public final class HomeViewController: UIViewController, TabBarPresentable {
 
     // MARK: - Properties
 
@@ -23,6 +24,10 @@ public final class HomeViewController: UIViewController {
     private let contentView = HomeView()
     private unowned let coordinator: HomeCoordinating
     private var cancellables = [AnyCancellable]()
+
+    public var tabBarShouldBeVisible: Bool {
+        true
+    }
 
     // MARK: - Lifecycle
 

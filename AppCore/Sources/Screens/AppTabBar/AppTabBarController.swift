@@ -57,6 +57,10 @@ public final class AppTabBarController: UITabBarController {
         store.dispatch(action: .selectInitialItem)
     }
 
+    public func makeTabBarSnapshot() -> UIView? {
+        contentView.snapshotView(afterScreenUpdates: false)
+    }
+
     public func toggleTabBarVisibility(on: Bool) {
         contentView.isHidden = !on
     }
@@ -65,20 +69,19 @@ public final class AppTabBarController: UITabBarController {
 
     private func setupUI() {
         tabBar.isHidden = true
+        additionalSafeAreaInsets.bottom = 56
         view.addSubview(contentView, constraints: [
-            contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -21),
+            contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
-        additionalSafeAreaInsets.bottom = 56
     }
 
     private func setupBinding() {
-        contentView.onDidTapItem = { [store] index in
+        contentView.onTapItem = { [store] index in
             store.dispatch(action: .itemTapped(index))
         }
 
-        let state = store.$state
-            .removeDuplicates()
+        let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
         state

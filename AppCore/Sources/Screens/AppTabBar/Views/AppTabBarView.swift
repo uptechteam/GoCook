@@ -5,13 +5,16 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
 final class AppTabBarView: UIView {
 
     struct Props: Equatable {
-        let activeIndex: Int
+        let favoritesImageSource: ImageSource
+        let homeImageSource: ImageSource
+        let profileImageSource: ImageSource
     }
 
     // MARK: - Properties
@@ -20,7 +23,7 @@ final class AppTabBarView: UIView {
     private let homeButton = IconButton()
     private let profileButton = IconButton()
     // callbacks
-    var onDidTapItem: (Int) -> Void = { _ in }
+    var onTapItem: (Int) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -54,15 +57,15 @@ final class AppTabBarView: UIView {
     }
 
     private func setupFavoritesButton() {
-        favoritesButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapItem(0) }), for: .touchUpInside)
+        favoritesButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapItem(0) }), for: .touchUpInside)
     }
 
     private func setupHomeButton() {
-        homeButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapItem(1) }), for: .touchUpInside)
+        homeButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapItem(1) }), for: .touchUpInside)
     }
 
     private func setupProfileButton() {
-        profileButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapItem(2) }), for: .touchUpInside)
+        profileButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapItem(2) }), for: .touchUpInside)
     }
 
     private func setupStackView() {
@@ -77,8 +80,8 @@ final class AppTabBarView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        favoritesButton.set(image: props.activeIndex == 0 ? .favoritesTabBarIconSelected : .favoritesTabBarIconDeselected)
-        homeButton.set(image: props.activeIndex == 1 ? .homeTabBarIconSelected : .homeTabBarIconDeselected)
-        profileButton.set(image: props.activeIndex == 2 ? .profileTabBarIconSelected : .profileTabBarIconDeselected)
+        favoritesButton.set(image: props.favoritesImageSource.image)
+        homeButton.set(image: props.homeImageSource.image)
+        profileButton.set(image: props.profileImageSource.image)
     }
 }

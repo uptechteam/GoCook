@@ -57,7 +57,6 @@ public final class FiltersViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupUI() {
-        hidesBottomBarWhenPushed = true
         navigationItem.title = "Filters"
     }
 
