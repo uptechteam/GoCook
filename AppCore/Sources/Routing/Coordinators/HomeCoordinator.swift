@@ -45,7 +45,7 @@ final class HomeCoordinator: NSObject, Coordinating {
     // MARK: - Public methods
 
     func start() {
-        let viewController: HomeViewController = try! container.resolve(arguments: self as HomeCoordinating)
+        let viewController = HomeViewController.resolve(from: container, coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
     }
 
@@ -64,15 +64,13 @@ final class HomeCoordinator: NSObject, Coordinating {
 
 extension HomeCoordinator: HomeCoordinating {
     func showFilters() {
-        let viewController: FiltersViewController = try! container.resolve(arguments: self as FiltersCoordinating)
+        let viewController = FiltersViewController.resolve(from: container, coordinator: self)
         navigationController.pushViewController(viewController, animated: true)
     }
 
     func show(recipe: Recipe) {
         let envelope = RecipeEnvelope(recipe: recipe)
-        let viewController: RecipeViewController = try! container.resolve(
-            arguments: envelope, self as RecipeCoordinating
-        )
+        let viewController = RecipeViewController.resolve(from: container, envelope: envelope, coordinator: self)
         navigationController.pushViewController(viewController, animated: true)
     }
 }
