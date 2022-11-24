@@ -18,7 +18,7 @@ public struct RecipeDetails: Equatable {
     public let duration: Int
     public let ingredients: [Ingredient]
     public let instructions: [String]
-    public let rating: Int?
+    public let rating: RatingDetails
 
     // MARK: - Lifecycle
 
@@ -30,7 +30,7 @@ public struct RecipeDetails: Equatable {
         duration: Int,
         ingredients: [Ingredient],
         instructions: [String],
-        rating: Int?
+        rating: RatingDetails
     ) {
         self.id = id
         self.name = name

@@ -52,4 +52,40 @@ public enum IngredientUnit: Equatable {
     public static var priorityOrded: [IngredientUnit] = [
         .gram, .milliliter, .teaSpoon, .tableSpoon, .whole, .cup, .pinch, .liter, .kilogram
     ]
+
+    // MARK: - Lifecycle
+
+    public init?(rawValue: String) {
+        switch rawValue {
+        case "cup":
+            self = .cup
+
+        case "gr":
+            self = .gram
+
+        case "kg":
+            self = .kilogram
+
+        case "liter":
+            self = .liter
+
+        case "ml":
+            self = .milliliter
+
+        case "pinch":
+            self = .pinch
+
+        case "tbsp":
+            self = .tableSpoon
+
+        case "tsp":
+            self = .teaSpoon
+
+        case "whole":
+            self = .whole
+
+        default:
+            return nil
+        }
+    }
 }

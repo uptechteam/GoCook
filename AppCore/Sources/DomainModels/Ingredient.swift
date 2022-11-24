@@ -9,14 +9,15 @@ public struct Ingredient: Equatable {
 
     // MARK: - Properties
 
+    public let amount: Int
     public let name: String
-    /// Weight in grams
-    public let weight: Int
+    public let unit: IngredientUnit
 
     // MARK: - Lifecycle
 
-    public init(name: String, weight: Int) {
+    public init(amount: Int, name: String, unit: IngredientUnit) {
+        self.amount = amount
         self.name = name
-        self.weight = weight
+        self.unit = unit
     }
 }

@@ -7,13 +7,17 @@
 
 import DomainModels
 
-struct IngredientRequest: Encodable {
+struct IngredientRepresentable: Codable {
 
     // MARK: - Properties
 
     let amount: Int
     let name: String
     let unit: String
+
+    var domainModel: Ingredient {
+        .init(amount: amount, name: name, unit: IngredientUnit(rawValue: unit) ?? .gram)
+    }
 
     // MARK: - Lifecycle
 
