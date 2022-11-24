@@ -1,5 +1,5 @@
 //
-//  TargetBuilder.swift
+//  RequestBuilder.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 20.06.2022.
@@ -9,7 +9,7 @@ import Alamofire
 import Helpers
 import Foundation
 
-struct TargetBuilder {
+struct RequestBuilder {
 
     // MARK: - Properties
 
@@ -25,7 +25,7 @@ struct TargetBuilder {
 
     // MARK: - Public methods
 
-    func makeDeleteTarget(
+    func makeDeleteRequest(
         path: String,
         authorisation: Authorisation = .basic
     ) throws -> AppRequest {
@@ -37,7 +37,7 @@ struct TargetBuilder {
         return AppRequest(urlRequest: request, authorisation: authorisation)
     }
 
-    func makeGetTarget(
+    func makeGetRequest(
         path: String,
         parameters: [String: String] = [:],
         authorisation: Authorisation = .basic
@@ -51,7 +51,7 @@ struct TargetBuilder {
         return AppRequest(urlRequest: request, authorisation: authorisation)
     }
 
-    func makePostTarget(
+    func makePostRequest(
         path: String,
         parameters: [String: String] = [:],
         authorisation: Authorisation = .basic
@@ -65,7 +65,7 @@ struct TargetBuilder {
         return AppRequest(urlRequest: request, authorisation: authorisation)
     }
 
-    func makePostDataTarget(
+    func makePostDataRequest(
         path: String,
         data: Data,
         authorisation: Authorisation = .basic
@@ -79,7 +79,7 @@ struct TargetBuilder {
         return AppRequest(urlRequest: request, authorisation: authorisation)
     }
 
-    func makePostJSONTarget<Request: Encodable>(
+    func makePostJSONRequest<Request: Encodable>(
         path: String,
         requestData: Request,
         authorisation: Authorisation = .basic

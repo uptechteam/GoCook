@@ -11,36 +11,36 @@ struct UsersAPI {
 
     // MARK: - Properties
 
-    private let targetBuilder: TargetBuilder
+    private let requestBuilder: RequestBuilder
 
     // MARK: - Lifecycle
 
     init(baseURL: URL) {
-        self.targetBuilder = TargetBuilder(baseURL: baseURL.appendingPathComponent("users"))
+        self.requestBuilder = RequestBuilder(baseURL: baseURL.appendingPathComponent("users"))
     }
 
     // MARK: - Public methods
 
-    func makeIsUniqueTarget(username: String) throws -> AppRequest {
-        try targetBuilder.makeGetTarget(path: "unique/\(username)")
+    func makeIsUniqueRequest(username: String) throws -> AppRequest {
+        try requestBuilder.makeGetRequest(path: "unique/\(username)")
     }
 
-    func makeLoginTarget(username: String, password: String) throws -> AppRequest {
-        try targetBuilder.makePostTarget(
+    func makeLoginRequest(username: String, password: String) throws -> AppRequest {
+        try requestBuilder.makePostRequest(
             path: "login",
             authorisation: .login(username: username, password: password)
         )
     }
 
-    func makeLogoutTarget() throws -> AppRequest {
-        try targetBuilder.makeDeleteTarget(path: "logout", authorisation: .bearer)
+    func makeLogoutRequest() throws -> AppRequest {
+        try requestBuilder.makeDeleteRequest(path: "logout", authorisation: .bearer)
     }
 
-    func makeRefreshProfileTarget() throws -> AppRequest {
-        try targetBuilder.makeGetTarget(path: "me", authorisation: .bearer)
+    func makeRefreshProfileRequest() throws -> AppRequest {
+        try requestBuilder.makeGetRequest(path: "me", authorisation: .bearer)
     }
 
-    func makeSignUpTarget(request: CreateUserRequest) throws -> AppRequest {
-        try targetBuilder.makePostJSONTarget(path: "", requestData: request)
+    func makeSignUpRequest(request: CreateUserRequest) throws -> AppRequest {
+        try requestBuilder.makePostJSONRequest(path: "", requestData: request)
     }
 }
