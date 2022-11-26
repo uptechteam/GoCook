@@ -12,6 +12,7 @@ import UIKit
 final class RecipeManageView: UIView {
 
     struct Props: Equatable {
+        let isVisible: Bool
         let isEditButtonVisible: Bool
         let isDeleteButtonVisible: Bool
     }
@@ -90,6 +91,7 @@ final class RecipeManageView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        isHidden = !props.isVisible
         editButton.isHidden = !props.isEditButtonVisible
         deleteButton.isHidden = !props.isDeleteButtonVisible
     }

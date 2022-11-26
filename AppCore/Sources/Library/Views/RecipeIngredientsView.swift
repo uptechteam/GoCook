@@ -13,12 +13,14 @@ public final class RecipeIngredientsView: UIView {
 
         // MARK: - Properties
 
+        public let isVisible: Bool
         public let servingsDescription: String
         public let ingredientsProps: [RecipeIngredientView.Props]
 
         // MARK: - Lifecycle
 
-        public init(servingsDescription: String, ingredientsProps: [RecipeIngredientView.Props]) {
+        public init(isVisible: Bool, servingsDescription: String, ingredientsProps: [RecipeIngredientView.Props]) {
+            self.isVisible = isVisible
             self.servingsDescription = servingsDescription
             self.ingredientsProps = ingredientsProps
         }
@@ -81,6 +83,7 @@ public final class RecipeIngredientsView: UIView {
     // MARK: - Public methods
 
     public func render(props: Props) {
+        isHidden = !props.isVisible
         servingsLabel.render(title: props.servingsDescription, color: .textSecondary, typography: .body)
         renderIngredients(props: props.ingredientsProps)
     }

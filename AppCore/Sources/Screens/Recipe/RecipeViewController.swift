@@ -52,6 +52,7 @@ public final class RecipeViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
+        store.dispatch(action: .viewDidLoad)
     }
 
     // MARK: - Private methods
@@ -67,6 +68,10 @@ public final class RecipeViewController: UIViewController {
 
         contentView.onDidTapBack = { [store] in
             store.dispatch(action: .backTapped)
+        }
+
+        contentView.onDidTapLike = { [store] in
+            store.dispatch(action: .likeTapped)
         }
 
         let state = store.$state.removeDuplicates()

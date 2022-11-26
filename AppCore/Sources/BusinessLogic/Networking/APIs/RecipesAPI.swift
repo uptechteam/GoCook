@@ -23,11 +23,11 @@ struct RecipesAPI {
     // MARK: - Public methods
 
     func makeDeleteDislikeRequest(recipeID: Recipe.ID) throws -> AppRequest {
-        try requestBuilder.makeDeleteRequest(path: "\(recipeID.rawValue)/like")
+        try requestBuilder.makeDeleteRequest(path: "\(recipeID.rawValue)/like", authorisation: .bearer)
     }
 
     func makeGetFavoriteRecipesRequest() throws -> AppRequest {
-        try requestBuilder.makeGetRequest(path: "favorite")
+        try requestBuilder.makeGetRequest(path: "favorite", authorisation: .bearer)
     }
 
     func makeGetRecipeRequest(id: Recipe.ID) throws -> AppRequest {
@@ -40,7 +40,7 @@ struct RecipesAPI {
     }
 
     func makePostLikeRequest(recipeID: Recipe.ID) throws -> AppRequest {
-        try requestBuilder.makePostRequest(path: "\(recipeID.rawValue)/like")
+        try requestBuilder.makePostRequest(path: "\(recipeID.rawValue)/like", authorisation: .bearer)
     }
 
     func makePostRecipeRequest(request: NewRecipeRequest) throws -> AppRequest {

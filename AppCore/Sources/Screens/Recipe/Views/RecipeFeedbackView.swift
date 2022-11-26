@@ -11,6 +11,7 @@ import UIKit
 final class RecipeFeedbackView: UIView {
 
     struct Props: Equatable {
+        let isVisible: Bool
         let text: String
         let rating: Int
     }
@@ -67,6 +68,7 @@ final class RecipeFeedbackView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        isHidden = !props.isVisible
         textLabel.render(title: props.text, color: .textMain, typography: .subtitleTwo)
         renderStars(rating: props.rating)
     }

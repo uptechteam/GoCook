@@ -147,6 +147,7 @@ extension RecipeView: UIScrollViewDelegate {
         if delta != 0 {
             scrollView.contentOffset = CGPoint(x: 0, y: offset + delta)
         }
+
         renderHeaderVisibility()
     }
 }

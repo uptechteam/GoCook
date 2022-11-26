@@ -6,39 +6,57 @@
 //
 
 import Foundation
+import Helpers
 
 public struct RecipeDetails: Equatable {
 
     // MARK: - Properties
 
-    public let id: Recipe.ID
-    public let name: String
     public let author: User
-    public let ratingDetails: RatingDetails
     public let duration: Int
+    public let id: Recipe.ID
     public let ingredients: [Ingredient]
     public let instructions: [String]
-    public let rating: RatingDetails
+    public let name: String
+    public let ratingDetails: RatingDetails
+    public let recipeImageSource: ImageSource
 
     // MARK: - Lifecycle
 
     public init(
-        id: Recipe.ID,
-        name: String,
         author: User,
-        ratingDetails: RatingDetails,
         duration: Int,
+        id: Recipe.ID,
         ingredients: [Ingredient],
         instructions: [String],
-        rating: RatingDetails
+        name: String,
+        ratingDetails: RatingDetails,
+        recipeImageSource: ImageSource
     ) {
-        self.id = id
-        self.name = name
         self.author = author
-        self.ratingDetails = ratingDetails
         self.duration = duration
+        self.id = id
         self.ingredients = ingredients
         self.instructions = instructions
-        self.rating = rating
+        self.name = name
+        self.ratingDetails = ratingDetails
+        self.recipeImageSource = recipeImageSource
+    }
+}
+
+// MARK: - EmptyDomainModel
+
+extension RecipeDetails: EmptyDomainModel {
+    public static var empty: RecipeDetails {
+        .init(
+            author: User(avatar: .asset(nil), id: User.ID(rawValue: "1"), username: ""),
+            duration: 0,
+            id: Recipe.ID(rawValue: "1"),
+            ingredients: [],
+            instructions: [],
+            name: "",
+            ratingDetails: RatingDetails(rating: 0, reviewsCount: 0),
+            recipeImageSource: .asset(nil)
+        )
     }
 }

@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
+import DomainModels
 import Foundation
 import Library
 
@@ -12,7 +13,7 @@ extension RecipeViewController {
     static func makeProps(from state: State) -> RecipeView.Props {
         return .init(
             headerViewProps: makeHeaderViewProps(state: state),
-            recipeImageSource: state.recipe.recipeImageSource,
+            recipeImageSource: state.recipeImageSource,
             isLiked: false,
             recipeDetailsViewProps: makeRecipeDetailsViewProps(state: state)
         )
@@ -20,7 +21,7 @@ extension RecipeViewController {
 
     private static func makeHeaderViewProps(state: State) -> RecipeHeaderView.Props {
         return .init(
-            title: state.recipe.name,
+            title: state.recipeName,
             isLiked: false
         )
     }
@@ -37,51 +38,67 @@ extension RecipeViewController {
 
     private static func makeDetailsHeaderViewProps(state: State) -> RecipeDetailsHeaderView.Props {
         return .init(
-            name: state.recipe.name,
-            authorViewProps: RecipeAuthorView.Props(avatarImageSource: .asset(nil), username: "Monica Adams"),
-            ratingViewProps: RatingView.Props(ratingText: "4.8"),
-            timeViewProps: RecipeTimeView.Props(timeDescription: "30 min")
+            name: state.recipeName,
+            contentStateView: makeContentStateView(state: state),
+            authorViewProps: makeAuthorViewProps(state: state),
+            isBottomContentVisible: state.recipeDetails.isPresent,
+            ratingViewProps: RatingView.Props(ratingText: "\(state.recipeDetails.ratingDetails.rating)"),
+            timeViewProps: RecipeTimeView.Props(timeDescription: "\(state.recipeDetails.duration) min")
+        )
+    }
+
+    private static func makeAuthorViewProps(state: State) -> RecipeAuthorView.Props {
+        return .init(
+            isVisible: state.recipeDetails.isPresent,
+            avatarImageSource: state.recipeDetails.author.avatar,
+            username: state.recipeName
+        )
+    }
+
+    private static func makeContentStateView(state: State) -> ContentStateView.Props {
+        return .init(
+            isVisible: !state.recipeDetails.isPresent,
+            isSpinnerVisible: state.recipeDetails.isLoading,
+            isTitleVisible: state.recipeDetails.error != nil,
+            title: "Something went wrong\nPlease try again",
+            isActionButtonVisible: state.recipeDetails.error != nil,
+            actionButtonTitle: "Retry"
         )
     }
 
     private static func makeIngredientsViewProps(state: State) -> RecipeIngredientsView.Props {
         return .init(
-            servingsDescription: "4 servings",
-            ingredientsProps: [
-                RecipeIngredientView.Props(name: "Sliced avocado", weightDescription: "200g"),
-                RecipeIngredientView.Props(name: "Tortilla chips", weightDescription: "300g"),
-                RecipeIngredientView.Props(name: "Romaine lettuce", weightDescription: "400g"),
-                RecipeIngredientView.Props(name: "Red cabbage and radishes", weightDescription: "150g"),
-                RecipeIngredientView.Props(name: "A little\nlove", weightDescription: "100g")
-            ]
+            isVisible: state.recipeDetails.isPresent,
+            servingsDescription: "? servings",
+            ingredientsProps: state.recipeDetails.ingredients.map { ingredient in
+                return RecipeIngredientView.Props(
+                    name: ingredient.name,
+                    weightDescription: "\(ingredient.amount)\(ingredient.unit.reduction)"
+                )
+            }
         )
     }
 
     private static func makeInstructionsViewProps(state: State) -> RecipeInstructionsView.Props {
         return .init(
-            instructionsProps: [
-                RecipeInstructionView.Props(
-                    title: "1 step",
-                    description: "Eleifend tristique duis laoreet phasellus praesent. Nulla sed vitae sed id."
-                ),
-                RecipeInstructionView.Props(
-                    title: "2 step",
-                    description: "Eleifend tristique duis laoreet phasellus praesent. Nulla sed vitae sed id."
-                ),
-                RecipeInstructionView.Props(
-                    title: "3 step",
-                    description: "Eleifend tristique duis laoreet phasellus praesent. Nulla sed vitae sed id."
-                )
-            ]
+            isVisible: state.recipeDetails.isPresent,
+            instructionsProps: state.recipeDetails.instructions.enumerated().map { (index, instruction) in
+                RecipeInstructionView.Props(title: "\(index + 1) step", description: instruction)
+            }
         )
     }
 
     private static func makeFeedbackViewProps(state: State) -> RecipeFeedbackView.Props {
-        .init(text: "How would you rate Grilled Corn With Chaat Masala?", rating: 3)
+        return .init(
+            isVisible: state.recipeDetails.isPresent,
+            text: "How would you rate \(state.recipeName)?",
+            rating: 0
+        )
     }
 
     private static func makeManageViewProps(state: State) -> RecipeManageView.Props {
         return .init(
+            isVisible: state.recipeDetails.isPresent,
             isEditButtonVisible: true,
             isDeleteButtonVisible: true
         )

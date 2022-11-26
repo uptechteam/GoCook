@@ -22,14 +22,14 @@ public struct RecipeDetailsResponse: Decodable {
     var domainModel: RecipeDetails {
         let recipeImageURL = AppEnvironment.current.baseURL.appendingPathComponent("files/recipe/\(imageID)")
         return RecipeDetails(
-            id: Recipe.ID(rawValue: id),
-            name: name,
             author: author.domainModel,
-            ratingDetails: rating.domainModel,
             duration: duration,
+            id: Recipe.ID(rawValue: id),
             ingredients: ingredients.map(\.domainModel),
             instructions: instructions,
-            rating: rating.domainModel
+            name: name,
+            ratingDetails: rating.domainModel,
+            recipeImageSource: .remote(url: recipeImageURL)
         )
     }
 }

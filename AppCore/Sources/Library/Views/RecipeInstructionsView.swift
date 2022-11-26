@@ -13,11 +13,13 @@ public final class RecipeInstructionsView: UIView {
 
         // MARK: - Properties
 
+        public let isVisible: Bool
         public let instructionsProps: [RecipeInstructionView.Props]
 
         // MARK: - Lifecycle
 
-        public init(instructionsProps: [RecipeInstructionView.Props]) {
+        public init(isVisible: Bool, instructionsProps: [RecipeInstructionView.Props]) {
+            self.isVisible = isVisible
             self.instructionsProps = instructionsProps
         }
     }
@@ -72,6 +74,7 @@ public final class RecipeInstructionsView: UIView {
     // MARK: - Public methods
 
     public func render(props: Props) {
+        isHidden = !props.isVisible
         renderInstructions(props: props.instructionsProps)
     }
 

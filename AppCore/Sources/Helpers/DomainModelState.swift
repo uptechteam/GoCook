@@ -63,6 +63,18 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
         }
     }
 
+    /// Update state with result.
+    /// - Parameter result: Result with either model or error.
+    public mutating func handle(result: Result<Model, Error>) {
+        switch result {
+        case .failure(let error):
+            setError(error)
+
+        case .success(let domainModel):
+            update(with: domainModel)
+        }
+    }
+
     /// Set error and toggle `isLoading` off.
     /// - Parameter error: error.
     public mutating func setError(_ error: Error) {
