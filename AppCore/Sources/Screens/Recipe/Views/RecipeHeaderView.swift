@@ -94,6 +94,6 @@ final class RecipeHeaderView: UIView {
 
     func render(props: Props) {
         titleLabel.text = props.title
-        likeButton.set(image: props.isLiked ? .favoriteFilled : .favoriteEmpty)
+        likeButton.set(image: props.isLiked ? .heartFilled : .heartEmpty)
     }
 }

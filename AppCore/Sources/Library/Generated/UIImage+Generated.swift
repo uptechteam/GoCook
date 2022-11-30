@@ -65,12 +65,12 @@ extension UIImage {
     return UIImage(named: "closeRed")!
   }
 
-  @nonobjc public class var circleFavoriteEmpty: UIImage {
-    return UIImage(named: "circleFavoriteEmpty")!
+  @nonobjc public class var circleWithEmptyHeart: UIImage {
+    return UIImage(named: "circleWithEmptyHeart")!
   }
 
-  @nonobjc public class var circleFavoriteFilled: UIImage {
-    return UIImage(named: "circleFavoriteFilled")!
+  @nonobjc public class var circleWithFilledHeart: UIImage {
+    return UIImage(named: "circleWithFilledHeart")!
   }
 
   @nonobjc public class var filters: UIImage {
@@ -121,12 +121,12 @@ extension UIImage {
     return UIImage(named: "edit")!
   }
 
-  @nonobjc public class var favoriteEmpty: UIImage {
-    return UIImage(named: "favoriteEmpty")!
+  @nonobjc public class var heartEmpty: UIImage {
+    return UIImage(named: "heartEmpty")!
   }
 
-  @nonobjc public class var favoriteFilled: UIImage {
-    return UIImage(named: "favoriteFilled")!
+  @nonobjc public class var heartFilled: UIImage {
+    return UIImage(named: "heartFilled")!
   }
 
   @nonobjc public class var share: UIImage {

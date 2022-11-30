@@ -126,7 +126,7 @@ final class RecipeView: UIView {
     func render(props: Props) {
         headerView.render(props: props.headerViewProps)
         recipeImageView.set(props.recipeImageSource)
-        likeButton.set(image: props.isLiked ? .circleFavoriteFilled : .circleFavoriteEmpty)
+        likeButton.set(image: props.isLiked ? .circleWithFilledHeart : .circleWithEmptyHeart)
         detailsView.render(props: props.recipeDetailsViewProps)
     }
 

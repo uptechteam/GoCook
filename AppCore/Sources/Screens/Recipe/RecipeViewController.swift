@@ -69,6 +69,10 @@ public final class RecipeViewController: UIViewController {
             store.dispatch(action: .likeTapped)
         }
 
+        contentView.headerView.onDidTapLike = { [store] in
+            store.dispatch(action: .likeTapped)
+        }
+
         contentView.detailsView.headerView.contentStateView.onTapAction = { [store] in
             store.dispatch(action: .retryTapped)
         }
