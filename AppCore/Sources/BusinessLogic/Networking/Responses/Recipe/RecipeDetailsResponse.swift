@@ -16,8 +16,10 @@ public struct RecipeDetailsResponse: Decodable {
     let imageID: String
     let ingredients: [IngredientRepresentable]
     let instructions: [String]
+    let liked: Bool
     let name: String
     let rating: RatingDetailsResponse
+    let servings: Int
 
     var domainModel: RecipeDetails {
         let recipeImageURL = AppEnvironment.current.baseURL.appendingPathComponent("files/recipe/\(imageID)")
@@ -27,9 +29,11 @@ public struct RecipeDetailsResponse: Decodable {
             id: Recipe.ID(rawValue: id),
             ingredients: ingredients.map(\.domainModel),
             instructions: instructions,
+            liked: liked,
             name: name,
             ratingDetails: rating.domainModel,
-            recipeImageSource: .remote(url: recipeImageURL)
+            recipeImageSource: .remote(url: recipeImageURL),
+            servingsCount: servings
         )
     }
 }

@@ -31,7 +31,9 @@ extension RecipeViewController {
     public enum Action {
         case backTapped
         case getRecipeDetails(Result<RecipeDetails, Error>)
+        case like(Result<RecipeDetails, Error>)
         case likeTapped
+        case retryTapped
         case viewDidLoad
     }
 
@@ -77,14 +79,21 @@ extension RecipeViewController {
         var newState = state
 
         switch action {
-        case .likeTapped:
-            break
 
         case .backTapped:
             newState.route = .init(value: .back)
 
         case .getRecipeDetails(let result):
             newState.recipeDetails.handle(result: result)
+
+        case .like(let result):
+            newState.recipeDetails.handle(result: result)
+
+        case .likeTapped:
+            break
+
+        case .retryTapped:
+            newState.recipeDetails.toggleIsLoading(on: true)
 
         case .viewDidLoad:
             newState.recipeDetails.toggleIsLoading(on: true)

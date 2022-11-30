@@ -24,7 +24,7 @@ final class RecipeView: UIView {
     private let recipeImageView = UIImageView()
     private let backButton = IconButton()
     private let likeButton = IconButton()
-    private let detailsView = RecipeDetailsView()
+    let detailsView = RecipeDetailsView()
     private var isFirstLayoutFinished = false
     private var scrollViewTopConstraint: NSLayoutConstraint!
     // callbacks

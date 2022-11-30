@@ -64,6 +64,7 @@ public final class ContentStateView: UIView {
     private func setup() {
         setupSpinnerView()
         setupSpinnerView()
+        setupActionButton()
         setupStackView()
     }
 
@@ -72,6 +73,10 @@ public final class ContentStateView: UIView {
             spinnerView.widthAnchor.constraint(equalToConstant: 40),
             spinnerView.heightAnchor.constraint(equalToConstant: 40)
         ])
+    }
+
+    private func setupActionButton() {
+        actionButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapAction() }), for: .touchUpInside)
     }
 
     private func setupStackView() {

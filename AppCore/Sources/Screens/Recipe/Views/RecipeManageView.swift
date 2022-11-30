@@ -55,7 +55,7 @@ final class RecipeManageView: UIView {
     }
 
     private func setupShareButton() {
-        shareButton.setTitle("Share")
+        shareButton.setTitle(.recipeShare)
         shareButton.setImage(.share)
         shareButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapShare() }),
@@ -64,7 +64,7 @@ final class RecipeManageView: UIView {
     }
 
     private func setupEditButton() {
-        editButton.setTitle("Edit")
+        editButton.setTitle(.recipeEdit)
         editButton.setImage(.edit)
         editButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapEdit() }),
@@ -73,7 +73,7 @@ final class RecipeManageView: UIView {
     }
 
     private func setupDeleteButton() {
-        deleteButton.setTitle("Delete")
+        deleteButton.setTitle(.recipeDelete)
         deleteButton.setImage(.delete)
         deleteButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapDelete() }),

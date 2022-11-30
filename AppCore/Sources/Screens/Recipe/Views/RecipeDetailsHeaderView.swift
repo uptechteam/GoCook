@@ -23,7 +23,7 @@ final class RecipeDetailsHeaderView: UIView {
 
     private let separatorView = UIView()
     private let nameLabel = UILabel()
-    private let contentStateView = ContentStateView()
+    let contentStateView = ContentStateView()
     private let authorView = RecipeAuthorView()
     private let bottomStackView = UIStackView()
     private let ratingView = RatingView()
@@ -74,11 +74,12 @@ final class RecipeDetailsHeaderView: UIView {
 
     private func setupStackView() {
         let stackView = UIStackView(
-            arrangedSubviews: [separatorView, nameLabel, contentStateView, UIView(), authorView, bottomStackView]
+            arrangedSubviews: [separatorView, nameLabel, contentStateView, authorView, bottomStackView]
         )
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.setCustomSpacing(14.5, after: separatorView)
+        stackView.setCustomSpacing(20, after: nameLabel)
         stackView.setCustomSpacing(20, after: authorView)
         addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 14.5, left: 24, bottom: 32, right: 24))
         NSLayoutConstraint.activate([

@@ -74,7 +74,7 @@ extension HomeViewController {
         return .init(
             id: recipe.id.rawValue,
             recipeImageSource: recipe.recipeImageSource,
-            isLiked: false,
+            isLiked: recipe.isFavorite,
             name: recipe.name,
             ratingViewProps: RatingView.Props(ratingText: "\(recipe.rating)")
         )
@@ -84,7 +84,7 @@ extension HomeViewController {
         return .init(
             id: recipe.id.rawValue,
             recipeImageSource: recipe.recipeImageSource,
-            isLiked: false,
+            isLiked: recipe.isFavorite,
             name: recipe.name,
             ratingViewProps: RatingView.Props(ratingText: "\(recipe.rating)")
         )

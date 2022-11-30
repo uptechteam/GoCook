@@ -34,7 +34,6 @@ public final class RecipeViewController: UIViewController {
         self.actionCreator = actionCreator
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
-        setupUI()
     }
 
     required init?(coder: NSCoder) {
@@ -57,10 +56,6 @@ public final class RecipeViewController: UIViewController {
 
     // MARK: - Private methods
 
-    private func setupUI() {
-        navigationItem.title = "Recipe"
-    }
-
     private func setupBinding() {
         contentView.headerView.onDidTapBack = { [store] in
             store.dispatch(action: .backTapped)
@@ -72,6 +67,10 @@ public final class RecipeViewController: UIViewController {
 
         contentView.onDidTapLike = { [store] in
             store.dispatch(action: .likeTapped)
+        }
+
+        contentView.detailsView.headerView.contentStateView.onTapAction = { [store] in
+            store.dispatch(action: .retryTapped)
         }
 
         let state = store.$state.removeDuplicates()

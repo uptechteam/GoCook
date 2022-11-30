@@ -20,7 +20,7 @@ final class RecipeDetailsView: UIView {
 
     // MARK: - Properties
 
-    private let headerView = RecipeDetailsHeaderView()
+    let headerView = RecipeDetailsHeaderView()
     private let ingredientsView = RecipeIngredientsView()
     private let instructionsView = RecipeInstructionsView()
     private let feedbackView = RecipeFeedbackView()

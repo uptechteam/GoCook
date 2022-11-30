@@ -10,12 +10,12 @@ import Foundation
 import Helpers
 
 public protocol RecipesClienting {
-    func dislikeRecipe(id: Recipe.ID) async throws -> RecipeDetails
+    func dislike(recipeID: Recipe.ID) async throws -> RecipeDetails
     func fetchFavoriteRecipes() async throws -> [Recipe]
     func fetchFeed() async throws -> [RecipeCategory]
     func fetchRecipeDetails(id: Recipe.ID) async throws -> RecipeDetails
     func fetchRecipes(query: String) async throws -> [Recipe]
-    func likeRecipe(id: Recipe.ID) async throws -> RecipeDetails
+    func like(recipeID: Recipe.ID) async throws -> RecipeDetails
     func upload(newRecipe: NewRecipe) async throws -> Recipe
 }
 
@@ -37,8 +37,8 @@ public final class RecipesClient: RecipesClienting {
 
     // MARK: - Public methods
 
-    public func dislikeRecipe(id: Recipe.ID) async throws -> RecipeDetails {
-        let request = try recipesAPI.makeDeleteDislikeRequest(recipeID: id)
+    public func dislike(recipeID: Recipe.ID) async throws -> RecipeDetails {
+        let request = try recipesAPI.makeDeleteDislikeRequest(recipeID: recipeID)
         let response: RecipeDetailsResponse = try await networkClient.execute(request)
         return response.domainModel
     }
@@ -67,8 +67,8 @@ public final class RecipesClient: RecipesClienting {
         return response.map(\.domainModel)
     }
 
-    public func likeRecipe(id: Recipe.ID) async throws -> RecipeDetails {
-        let request = try recipesAPI.makePostLikeRequest(recipeID: id)
+    public func like(recipeID: Recipe.ID) async throws -> RecipeDetails {
+        let request = try recipesAPI.makePostLikeRequest(recipeID: recipeID)
         let response: RecipeDetailsResponse = try await networkClient.execute(request)
         return response.domainModel
     }

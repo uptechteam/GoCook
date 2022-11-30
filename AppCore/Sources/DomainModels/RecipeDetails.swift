@@ -17,9 +17,11 @@ public struct RecipeDetails: Equatable {
     public let id: Recipe.ID
     public let ingredients: [Ingredient]
     public let instructions: [String]
+    public let liked: Bool
     public let name: String
     public let ratingDetails: RatingDetails
     public let recipeImageSource: ImageSource
+    public let servingsCount: Int
 
     // MARK: - Lifecycle
 
@@ -29,18 +31,22 @@ public struct RecipeDetails: Equatable {
         id: Recipe.ID,
         ingredients: [Ingredient],
         instructions: [String],
+        liked: Bool,
         name: String,
         ratingDetails: RatingDetails,
-        recipeImageSource: ImageSource
+        recipeImageSource: ImageSource,
+        servingsCount: Int
     ) {
         self.author = author
         self.duration = duration
         self.id = id
         self.ingredients = ingredients
         self.instructions = instructions
+        self.liked = liked
         self.name = name
         self.ratingDetails = ratingDetails
         self.recipeImageSource = recipeImageSource
+        self.servingsCount = servingsCount
     }
 }
 
@@ -54,9 +60,11 @@ extension RecipeDetails: EmptyDomainModel {
             id: Recipe.ID(rawValue: "1"),
             ingredients: [],
             instructions: [],
+            liked: false,
             name: "",
             ratingDetails: RatingDetails(rating: 0, reviewsCount: 0),
-            recipeImageSource: .asset(nil)
+            recipeImageSource: .asset(nil),
+            servingsCount: 0
         )
     }
 }

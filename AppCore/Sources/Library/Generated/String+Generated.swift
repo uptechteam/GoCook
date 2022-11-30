@@ -234,6 +234,34 @@ extension String {
   /// Sign in
   public static let profileSignIn = L10n.tr("Localizable", "profile.sign.in")
 
+  /// Delete
+  public static let recipeDelete = L10n.tr("Localizable", "recipe.delete")
+
+  /// Edit
+  public static let recipeEdit = L10n.tr("Localizable", "recipe.edit")
+
+  /// Share
+  public static let recipeShare = L10n.tr("Localizable", "recipe.share")
+
+  /// (%@ reviews)
+  public static func recipeDetailsReviews(_ p1: String) -> String {
+    return L10n.tr("Localizable", "recipe.details.reviews", p1)
+  }
+
+  /// %d min
+  public static func recipeDetailsCookingTime(_ p1: Int) -> String {
+    return L10n.tr("Localizable", "recipe.details.cooking.time", p1)
+  }
+
+  /// (1 review)
+  public static let recipeDetailsOneReview = L10n.tr("Localizable", "recipe.details.one.review")
+
+  /// Retry
+  public static let recipeErrorRetry = L10n.tr("Localizable", "recipe.error.retry")
+
+  /// Something went wrong\nPlease try again
+  public static let recipeErrorTitle = L10n.tr("Localizable", "recipe.error.title")
+
   /// %d servings
   public static func recipeIngredientsServings(_ p1: Int) -> String {
     return L10n.tr("Localizable", "recipe.ingredients.servings", p1)
@@ -249,6 +277,14 @@ extension String {
   public static func recipeInstructionsStepTitle(_ p1: Int) -> String {
     return L10n.tr("Localizable", "recipe.instructions.step.title", p1)
   }
+
+  /// How would you rate %@?
+  public static func recipeRatingQuestion(_ p1: String) -> String {
+    return L10n.tr("Localizable", "recipe.rating.question", p1)
+  }
+
+  /// Thank you for your feedback!
+  public static let recipeRatingThankYou = L10n.tr("Localizable", "recipe.rating.thank.you")
 
   /// Log out
   public static let settingsLogout = L10n.tr("Localizable", "settings.logout")

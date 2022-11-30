@@ -86,10 +86,20 @@
 
 // MARK: - Recipe
 
+"recipe.details.one.review" = "(1 review)";
+"recipe.details.reviews" = "(%@ reviews)";
+"recipe.details.cooking.time" = "%d min";
 "recipe.ingredients.title" = "Ingredients";
 "recipe.ingredients.servings" = "%d servings";
 "recipe.instructions.title" = "Instructions";
 "recipe.instructions.step.title" = "%d Step";
+"recipe.rating.question" = "How would you rate %@?";
+"recipe.rating.thank.you" = "Thank you for your feedback!";
+"recipe.share" = "Share";
+"recipe.edit" = "Edit";
+"recipe.delete" = "Delete";
+"recipe.error.title" = "Something went wrong\nPlease try again";
+"recipe.error.retry" = "Retry";
 
 // MARK: - Settings
 

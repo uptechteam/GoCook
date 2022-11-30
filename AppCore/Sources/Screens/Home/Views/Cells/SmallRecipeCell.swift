@@ -99,6 +99,7 @@ final class SmallRecipeCell: UICollectionViewCell, ReusableCell {
 
     func render(props: Props) {
         recipeImageView.set(props.recipeImageSource, placeholder: .mealPlaceholder)
+        likeButton.set(image: props.isLiked ? .circleFavoriteFilled : .circleFavoriteEmpty)
         nameLabel.render(title: props.name, color: .appBlack, typography: .subtitleTwo)
         ratingView.render(props: props.ratingViewProps)
     }

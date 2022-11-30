@@ -14,7 +14,7 @@ extension RecipeViewController {
         return .init(
             headerViewProps: makeHeaderViewProps(state: state),
             recipeImageSource: state.recipeImageSource,
-            isLiked: false,
+            isLiked: state.recipeDetails.liked,
             recipeDetailsViewProps: makeRecipeDetailsViewProps(state: state)
         )
     }
@@ -22,7 +22,7 @@ extension RecipeViewController {
     private static func makeHeaderViewProps(state: State) -> RecipeHeaderView.Props {
         return .init(
             title: state.recipeName,
-            isLiked: false
+            isLiked: state.recipeDetails.liked
         )
     }
 
@@ -43,7 +43,7 @@ extension RecipeViewController {
             authorViewProps: makeAuthorViewProps(state: state),
             isBottomContentVisible: state.recipeDetails.isPresent,
             ratingViewProps: RatingView.Props(ratingText: "\(state.recipeDetails.ratingDetails.rating)"),
-            timeViewProps: RecipeTimeView.Props(timeDescription: "\(state.recipeDetails.duration) min")
+            timeViewProps: RecipeTimeView.Props(timeDescription: .recipeDetailsCookingTime(state.recipeDetails.duration))
         )
     }
 
@@ -51,7 +51,7 @@ extension RecipeViewController {
         return .init(
             isVisible: state.recipeDetails.isPresent,
             avatarImageSource: state.recipeDetails.author.avatar,
-            username: state.recipeName
+            username: state.recipeDetails.author.username
         )
     }
 
@@ -60,16 +60,16 @@ extension RecipeViewController {
             isVisible: !state.recipeDetails.isPresent,
             isSpinnerVisible: state.recipeDetails.isLoading,
             isTitleVisible: state.recipeDetails.error != nil,
-            title: "Something went wrong\nPlease try again",
+            title: .recipeErrorTitle,
             isActionButtonVisible: state.recipeDetails.error != nil,
-            actionButtonTitle: "Retry"
+            actionButtonTitle: .recipeErrorRetry
         )
     }
 
     private static func makeIngredientsViewProps(state: State) -> RecipeIngredientsView.Props {
         return .init(
             isVisible: state.recipeDetails.isPresent,
-            servingsDescription: "? servings",
+            servingsDescription: .recipeIngredientsServings(state.recipeDetails.servingsCount),
             ingredientsProps: state.recipeDetails.ingredients.map { ingredient in
                 return RecipeIngredientView.Props(
                     name: ingredient.name,
@@ -83,7 +83,7 @@ extension RecipeViewController {
         return .init(
             isVisible: state.recipeDetails.isPresent,
             instructionsProps: state.recipeDetails.instructions.enumerated().map { (index, instruction) in
-                RecipeInstructionView.Props(title: "\(index + 1) step", description: instruction)
+                RecipeInstructionView.Props(title: .recipeInstructionsStepTitle(index + 1), description: instruction)
             }
         )
     }
@@ -91,7 +91,7 @@ extension RecipeViewController {
     private static func makeFeedbackViewProps(state: State) -> RecipeFeedbackView.Props {
         return .init(
             isVisible: state.recipeDetails.isPresent,
-            text: "How would you rate \(state.recipeName)?",
+            text: .recipeRatingQuestion(state.recipeName),
             rating: 0
         )
     }
