@@ -42,7 +42,7 @@ extension RecipeViewController {
             contentStateView: makeContentStateView(state: state),
             authorViewProps: makeAuthorViewProps(state: state),
             isBottomContentVisible: state.recipeDetails.isPresent,
-            ratingViewProps: RatingView.Props(ratingText: "\(state.recipeDetails.ratingDetails.rating)"),
+            ratingViewProps: makeRatingViewProps(recipe: state.recipeDetails.getModel()),
             timeViewProps: RecipeTimeView.Props(timeDescription: .recipeDetailsCookingTime(state.recipeDetails.duration))
         )
     }
@@ -52,6 +52,15 @@ extension RecipeViewController {
             isVisible: state.recipeDetails.isPresent,
             avatarImageSource: state.recipeDetails.author.avatar,
             username: state.recipeDetails.author.username
+        )
+    }
+
+    private static func makeRatingViewProps(recipe: RecipeDetails) -> RatingView.Props {
+        let reviewsCount = recipe.ratingDetails.reviewsCount
+        return .init(
+            ratingText: "\(recipe.ratingDetails.rating)",
+            isReviewsLabelVisible: true,
+            reviewsText: reviewsCount == 1 ? .recipeDetailsOneReview : .recipeDetailsReviews(reviewsCount)
         )
     }
 

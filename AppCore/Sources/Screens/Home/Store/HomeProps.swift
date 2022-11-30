@@ -76,7 +76,7 @@ extension HomeViewController {
             recipeImageSource: recipe.recipeImageSource,
             isLiked: recipe.isFavorite,
             name: recipe.name,
-            ratingViewProps: RatingView.Props(ratingText: "\(recipe.rating)")
+            ratingViewProps: makeRatingViewProps(recipe: recipe)
         )
     }
 
@@ -86,7 +86,15 @@ extension HomeViewController {
             recipeImageSource: recipe.recipeImageSource,
             isLiked: recipe.isFavorite,
             name: recipe.name,
-            ratingViewProps: RatingView.Props(ratingText: "\(recipe.rating)")
+            ratingViewProps: makeRatingViewProps(recipe: recipe)
+        )
+    }
+
+    private static func makeRatingViewProps(recipe: Recipe) -> RatingView.Props {
+        return .init(
+            ratingText: "\(recipe.rating)",
+            isReviewsLabelVisible: false,
+            reviewsText: ""
         )
     }
 }

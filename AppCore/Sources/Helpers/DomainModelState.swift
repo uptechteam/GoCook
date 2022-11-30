@@ -33,6 +33,13 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
 
     // MARK: - Public methods
 
+    /// Returns presented model or empty if there is no model.
+    ///
+    /// - Returns: `Model` model.
+    public func getModel() -> Model {
+        model ?? .empty
+    }
+
     /// Update state according to action
     /// - Parameter action: Action with 3 possible cases.
     public mutating func handle(action: DomainModelAction<Model>) {

@@ -87,7 +87,7 @@
 // MARK: - Recipe
 
 "recipe.details.one.review" = "(1 review)";
-"recipe.details.reviews" = "(%@ reviews)";
+"recipe.details.reviews" = "(%d reviews)";
 "recipe.details.cooking.time" = "%d min";
 "recipe.ingredients.title" = "Ingredients";
 "recipe.ingredients.servings" = "%d servings";

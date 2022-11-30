@@ -243,8 +243,8 @@ extension String {
   /// Share
   public static let recipeShare = L10n.tr("Localizable", "recipe.share")
 
-  /// (%@ reviews)
-  public static func recipeDetailsReviews(_ p1: String) -> String {
+  /// (%d reviews)
+  public static func recipeDetailsReviews(_ p1: Int) -> String {
     return L10n.tr("Localizable", "recipe.details.reviews", p1)
   }
 
