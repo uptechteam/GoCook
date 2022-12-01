@@ -43,6 +43,14 @@ struct RecipesAPI {
         try requestBuilder.makePostRequest(path: "\(recipeID.rawValue)/like", authorisation: .bearer)
     }
 
+    func makePostRateRequest(recipeID: Recipe.ID, rating: Int) throws -> AppRequest {
+        return try requestBuilder.makePostJSONRequest(
+            path: "\(recipeID.rawValue)/rating",
+            requestData: ["rating": "\(rating)"],
+            authorisation: .bearer
+        )
+    }
+
     func makePostRecipeRequest(request: NewRecipeRequest) throws -> AppRequest {
         try requestBuilder.makePostJSONRequest(path: "", requestData: request, authorisation: .bearer)
     }

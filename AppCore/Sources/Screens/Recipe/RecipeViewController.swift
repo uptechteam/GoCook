@@ -77,6 +77,10 @@ public final class RecipeViewController: UIViewController {
             store.dispatch(action: .retryTapped)
         }
 
+        contentView.detailsView.feedbackView.onTapStar = { [store] index in
+            store.dispatch(action: .starTapped(index))
+        }
+
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 

@@ -20,6 +20,8 @@ final class RecipeFeedbackView: UIView {
 
     private let textLabel = UILabel()
     private let starsStackView = UIStackView()
+    // callbacks
+    var onTapStar: (Int) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -51,8 +53,12 @@ final class RecipeFeedbackView: UIView {
     }
 
     private func setupStarsStackView() {
-        (1...5)
-            .map { _ in UIImageView() }
+        (0...4)
+            .map { index in
+                let button = UIButton()
+                button.addAction(UIAction(handler: { [weak self] _ in self?.onTapStar(index) }), for: .touchUpInside)
+                return button
+            }
             .forEach(starsStackView.addArrangedSubview)
         starsStackView.spacing = 20
     }
@@ -77,10 +83,10 @@ final class RecipeFeedbackView: UIView {
 
     private func renderStars(rating: Int) {
         starsStackView.arrangedSubviews
-            .compactMap { $0 as? UIImageView }
+            .compactMap { $0 as? UIButton }
             .enumerated()
-            .forEach { index, imageView in
-                imageView.image = index < rating ? .bigFilledStar : .bigEmptyStar
+            .forEach { index, button in
+                button.setImage(index < rating ? .bigFilledStar : .bigEmptyStar, for: .normal)
             }
     }
 }

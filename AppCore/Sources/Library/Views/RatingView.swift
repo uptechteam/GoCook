@@ -65,7 +65,7 @@ public final class RatingView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [starImageView, textLabel, reviewsLabelLabel, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [starImageView, textLabel, reviewsLabelLabel])
         stackView.alignment = .center
         stackView.spacing = 6
         addSubview(stackView, withEdgeInsets: .zero)
@@ -76,6 +76,6 @@ public final class RatingView: UIView {
     public func render(props: Props) {
         textLabel.render(title: props.ratingText, color: .appBlack, typography: .other)
         reviewsLabelLabel.isHidden = !props.isReviewsLabelVisible
-        reviewsLabelLabel.render(title: props.reviewsText, color: .textDisabled, typography: .other)
+        reviewsLabelLabel.render(title: props.reviewsText, color: .textSecondary, typography: .bodyTwo)
     }
 }

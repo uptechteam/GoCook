@@ -16,6 +16,7 @@ public protocol RecipesClienting {
     func fetchRecipeDetails(id: Recipe.ID) async throws -> RecipeDetails
     func fetchRecipes(query: String) async throws -> [Recipe]
     func like(recipeID: Recipe.ID) async throws -> RecipeDetails
+    func rate(recipeID: Recipe.ID, rating: Int) async throws -> RecipeDetails
     func upload(newRecipe: NewRecipe) async throws -> Recipe
 }
 
@@ -69,6 +70,12 @@ public final class RecipesClient: RecipesClienting {
 
     public func like(recipeID: Recipe.ID) async throws -> RecipeDetails {
         let request = try recipesAPI.makePostLikeRequest(recipeID: recipeID)
+        let response: RecipeDetailsResponse = try await networkClient.execute(request)
+        return response.domainModel
+    }
+
+    public func rate(recipeID: Recipe.ID, rating: Int) async throws -> RecipeDetails {
+        let request = try recipesAPI.makePostRateRequest(recipeID: recipeID, rating: rating)
         let response: RecipeDetailsResponse = try await networkClient.execute(request)
         return response.domainModel
     }

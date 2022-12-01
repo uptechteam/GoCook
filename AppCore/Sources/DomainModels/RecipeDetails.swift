@@ -19,6 +19,7 @@ public struct RecipeDetails: Equatable {
     public let instructions: [String]
     public let liked: Bool
     public let name: String
+    public var rating: Int
     public let ratingDetails: RatingDetails
     public let recipeImageSource: ImageSource
     public let servingsCount: Int
@@ -33,6 +34,7 @@ public struct RecipeDetails: Equatable {
         instructions: [String],
         liked: Bool,
         name: String,
+        rating: Int,
         ratingDetails: RatingDetails,
         recipeImageSource: ImageSource,
         servingsCount: Int
@@ -44,6 +46,7 @@ public struct RecipeDetails: Equatable {
         self.instructions = instructions
         self.liked = liked
         self.name = name
+        self.rating = rating
         self.ratingDetails = ratingDetails
         self.recipeImageSource = recipeImageSource
         self.servingsCount = servingsCount
@@ -62,6 +65,7 @@ extension RecipeDetails: EmptyDomainModel {
             instructions: [],
             liked: false,
             name: "",
+            rating: 0,
             ratingDetails: RatingDetails(rating: 0, reviewsCount: 0),
             recipeImageSource: .asset(nil),
             servingsCount: 0

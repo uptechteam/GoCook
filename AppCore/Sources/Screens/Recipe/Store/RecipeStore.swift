@@ -33,7 +33,9 @@ extension RecipeViewController {
         case getRecipeDetails(Result<RecipeDetails, Error>)
         case like(Result<RecipeDetails, Error>)
         case likeTapped
+        case rate(Result<RecipeDetails, Error>)
         case retryTapped
+        case starTapped(Int)
         case viewDidLoad
     }
 
@@ -57,10 +59,11 @@ extension RecipeViewController {
     public static func makeStore(dependencies: Dependencies, envelope: RecipeEnvelope) -> Store {
         let getRecipeDetailsMiddleware = makeGetRecipeDetailsMiddleware(dependencies: dependencies)
         let likeMiddleware = makeLikeMiddleware(dependencies: dependencies)
+        let rateMiddleware = makeRateMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies, envelope: envelope),
             reducer: reduce,
-            middlewares: [getRecipeDetailsMiddleware, likeMiddleware]
+            middlewares: [getRecipeDetailsMiddleware, likeMiddleware, rateMiddleware]
         )
     }
 
@@ -79,7 +82,6 @@ extension RecipeViewController {
         var newState = state
 
         switch action {
-
         case .backTapped:
             newState.route = .init(value: .back)
 
@@ -92,8 +94,16 @@ extension RecipeViewController {
         case .likeTapped:
             break
 
+        case .rate(let result):
+            newState.recipeDetails.handle(result: result)
+
         case .retryTapped:
             newState.recipeDetails.toggleIsLoading(on: true)
+
+        case .starTapped(let index):
+            var recipeDetails = newState.recipeDetails.getModel()
+            recipeDetails.rating = index + 1
+            newState.recipeDetails.update(with: recipeDetails)
 
         case .viewDidLoad:
             newState.recipeDetails.toggleIsLoading(on: true)

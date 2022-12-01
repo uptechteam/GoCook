@@ -23,7 +23,7 @@ final class RecipeDetailsView: UIView {
     let headerView = RecipeDetailsHeaderView()
     private let ingredientsView = RecipeIngredientsView()
     private let instructionsView = RecipeInstructionsView()
-    private let feedbackView = RecipeFeedbackView()
+    let feedbackView = RecipeFeedbackView()
     private let manageView = RecipeManageView()
 
     // MARK: - Lifecycle

@@ -19,6 +19,7 @@ public struct RecipeDetailsResponse: Decodable {
     let liked: Bool
     let name: String
     let rating: RatingDetailsResponse
+    let ratingByUser: Int
     let servings: Int
 
     var domainModel: RecipeDetails {
@@ -31,6 +32,7 @@ public struct RecipeDetailsResponse: Decodable {
             instructions: instructions,
             liked: liked,
             name: name,
+            rating: ratingByUser,
             ratingDetails: rating.domainModel,
             recipeImageSource: .remote(url: recipeImageURL),
             servingsCount: servings
