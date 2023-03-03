@@ -26,7 +26,7 @@ extension LoginViewController {
     }
 
     public enum Action {
-        case login(DomainModelAction<Void>)
+        case login(Result<Void, Error>)
         case loginTapped
         case loginWithAppleTapped
         case nameChanged(String)
@@ -49,11 +49,13 @@ extension LoginViewController {
 
         // MARK: - Properties
 
+        public let keyboardManager: KeyboardManaging
         public let profileFacade: ProfileFacading
 
         // MARK: - Lifecycle
 
-        public init(profileFacade: ProfileFacading) {
+        public init(keyboardManager: KeyboardManaging, profileFacade: ProfileFacading) {
+            self.keyboardManager = keyboardManager
             self.profileFacade = profileFacade
         }
     }
@@ -85,17 +87,14 @@ extension LoginViewController {
         var newState = state
 
         switch action {
-        case .login(let modelAction):
+        case .login(let result):
             newState.isLoggingIn = false
-            switch modelAction {
+            switch result {
             case .failure(let error):
                 newState.alert = .init(value: .error(error))
 
             case .success:
                 newState.route = .init(value: .finish)
-
-            default:
-                break
             }
 
         case .loginTapped:
