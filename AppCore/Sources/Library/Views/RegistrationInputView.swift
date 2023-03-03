@@ -112,6 +112,7 @@ public final class RegistrationInputView: UIView {
 
     public func render(props: Props) {
         titleLabel.render(title: props.title, color: props.titleColorSource.color, typography: .bodyTwo)
+        textField.tintColor = props.titleColorSource.color
         validationView.render(props: props.validationViewProps)
         dividerView.backgroundColor = props.dividerColorSource.color
         descriptionLabel.isHidden = !props.isDescriptionVisible
