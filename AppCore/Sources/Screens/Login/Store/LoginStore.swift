@@ -49,11 +49,13 @@ extension LoginViewController {
 
         // MARK: - Properties
 
+        public let keyboardManager: KeyboardManaging
         public let profileFacade: ProfileFacading
 
         // MARK: - Lifecycle
 
-        public init(profileFacade: ProfileFacading) {
+        public init(keyboardManager: KeyboardManaging, profileFacade: ProfileFacading) {
+            self.keyboardManager = keyboardManager
             self.profileFacade = profileFacade
         }
     }

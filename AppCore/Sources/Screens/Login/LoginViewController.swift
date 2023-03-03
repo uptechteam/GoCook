@@ -62,7 +62,7 @@ public final class LoginViewController: UIViewController, ErrorPresentable {
     }
 
     private func setupBinding() {
-        contentView.onDidTapSkip = { [store] in
+        contentView.onTapSkip = { [store] in
             store.dispatch(action: .skipTapped)
         }
 
@@ -74,17 +74,23 @@ public final class LoginViewController: UIViewController, ErrorPresentable {
             store.dispatch(action: .passwordChanged(text))
         }
 
-        contentView.onDidTapLogin = { [store] in
+        contentView.onTapLogin = { [store] in
             store.dispatch(action: .loginTapped)
         }
 
-        contentView.onDidTapLoginWithApple = { [store] in
+        contentView.onTapLoginWithApple = { [store] in
             store.dispatch(action: .loginWithAppleTapped)
         }
 
-        contentView.onDidTapNew = { [store] in
+        contentView.onTapNew = { [store] in
             store.dispatch(action: .signUp)
         }
+
+        actionCreator.keyboardHeightChange
+            .sink { [contentView] height in
+                contentView.updateBottomInset(keyboardHeight: height)
+            }
+            .store(in: &cancellables)
 
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)

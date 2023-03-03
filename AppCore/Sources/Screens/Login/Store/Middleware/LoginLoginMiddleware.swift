@@ -9,7 +9,6 @@ import BusinessLogic
 import Foundation
 
 extension LoginViewController {
-
     static func makeLoginMiddleware(dependencies: Dependencies) -> Store.Middleware {
         return Store.makeMiddleware { dispatch, getState, next, action in
 

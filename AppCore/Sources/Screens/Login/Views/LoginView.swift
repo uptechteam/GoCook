@@ -44,10 +44,10 @@ final class LoginView: UIView {
     private var stackViewTopConstraint: NSLayoutConstraint!
     private var stackViewHeightConstraint: NSLayoutConstraint!
     // callbacks
-    var onDidTapSkip: () -> Void = { }
-    var onDidTapLogin: () -> Void = { }
-    var onDidTapLoginWithApple: () -> Void = { }
-    var onDidTapNew: () -> Void = { }
+    var onTapSkip: () -> Void = { }
+    var onTapLogin: () -> Void = { }
+    var onTapLoginWithApple: () -> Void = { }
+    var onTapNew: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -121,7 +121,7 @@ final class LoginView: UIView {
 
     private func setupLoginButton() {
         loginButton.setTitle(.loginLogin)
-        loginButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapLogin() }), for: .touchUpInside)
+        loginButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapLogin() }), for: .touchUpInside)
     }
 
     private func setupOrLabel() {
@@ -133,7 +133,7 @@ final class LoginView: UIView {
         loginWithAppleButton.setTitle(.loginLoginWithApple)
         loginWithAppleButton.setImage(.apple)
         loginWithAppleButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapLoginWithApple() }),
+            UIAction(handler: { [weak self] _ in self?.onTapLoginWithApple() }),
             for: .touchUpInside
         )
     }
@@ -213,7 +213,7 @@ final class LoginView: UIView {
     private func setupSkipButton() {
         skipButton.setTitle(.loginSkip)
         skipButton.setImage(.arrowForward)
-        skipButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapSkip() }), for: .touchUpInside)
+        skipButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSkip() }), for: .touchUpInside)
         skipButton.layer.addShadow(opacitiy: 0.1, radius: 4, offset: CGSize(width: 0, height: 4))
         addSubview(skipButton, constraints: [
             skipButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8),
@@ -234,6 +234,11 @@ final class LoginView: UIView {
         skipButton.isHidden = !props.isSkipButtonVisible
     }
 
+    func updateBottomInset(keyboardHeight: CGFloat) {
+        scrollView.contentInset.bottom = keyboardHeight
+        layoutSubviews()
+    }
+
     // MARK: - Private methods
 
     private func renderTopViews(isNavigationBarVisible: Bool) {
@@ -246,6 +251,6 @@ final class LoginView: UIView {
 
     @objc
     private func handleNewTap() {
-        onDidTapNew()
+        onTapNew()
     }
 }

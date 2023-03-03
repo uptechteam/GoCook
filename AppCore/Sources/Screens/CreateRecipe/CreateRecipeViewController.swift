@@ -88,12 +88,6 @@ public final class CreateRecipeViewController: UIViewController {
 
     // swiftlint:disable:next function_body_length
     private func setupBinding() {
-        actionCreator.keyboardHeightChange
-            .sink { [contentView] height in
-                contentView.updateBottomInset(keyboardHeight: height)
-            }
-            .store(in: &cancellables)
-
         contentView.stepOneView.recipeView.onDidTapImage = { [store] in
             store.dispatch(action: .recipeImageTapped)
         }
@@ -153,6 +147,12 @@ public final class CreateRecipeViewController: UIViewController {
         contentView.stepsView.onDidTapFinish = { [store] in
             store.dispatch(action: .finishTapped)
         }
+
+        actionCreator.keyboardHeightChange
+            .sink { [contentView] height in
+                contentView.updateBottomInset(keyboardHeight: height)
+            }
+            .store(in: &cancellables)
 
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
