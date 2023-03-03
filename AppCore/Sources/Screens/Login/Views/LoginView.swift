@@ -86,6 +86,9 @@ final class LoginView: UIView {
 
     private func setupContentView() {
         backgroundColor = .appWhite
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        tapGesture.delegate = self
+        addGestureRecognizer(tapGesture)
     }
 
     private func setupDividerView() {
@@ -250,7 +253,24 @@ final class LoginView: UIView {
     }
 
     @objc
+    private func handleTap() {
+        endEditing(true)
+    }
+
+    @objc
     private func handleNewTap() {
         onTapNew()
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+extension LoginView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        guard let view = touch.view else {
+            return false
+        }
+
+        return !(view is UIControl)
     }
 }
