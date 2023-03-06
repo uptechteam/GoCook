@@ -45,9 +45,9 @@ final class ProfileInfoView: UIView {
     }
 
     private func setupDescriptionLabel() {
-        descriptionLabel.font = FontFamily.RedHatDisplay.regular.font(size: 16)
-        descriptionLabel.textColor = .textDisabled
         descriptionLabel.text = .profileEmptyContentTitle
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.textAlignment = .center
     }
 
     private func setupAddRecipeButton() {
@@ -74,7 +74,7 @@ final class ProfileInfoView: UIView {
 
     func render(props: Props) {
         isHidden = !props.isVisible
-        descriptionLabel.text = props.description
+        descriptionLabel.render(title: props.description, color: .textDisabled, typography: .body)
         addRecipeButton.isHidden = !props.isAddRecipeButtonVisible
     }
 }

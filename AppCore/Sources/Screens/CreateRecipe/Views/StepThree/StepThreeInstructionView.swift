@@ -58,7 +58,6 @@ final class StepThreeInstructionView: UIView {
     }
 
     private func setupTitleLabel() {
-        titleLabel.font = FontFamily.RedHatDisplay.regular.font(size: 13)
         titleLabel.textAlignment = .left
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
@@ -124,6 +123,7 @@ final class StepThreeInstructionView: UIView {
     func updateUI(props: Props) {
         titleLabel.text = props.title
         titleLabel.textColor = props.titleColorSource.color
+        titleLabel.render(title: props.title, color: props.titleColorSource.color, typography: .bodyThree)
         dividerView.backgroundColor = props.dividerColorSource.color
         errorLabel.text = props.errorMessage
         errorLabel.isHidden = !props.isErrorMessageVisible

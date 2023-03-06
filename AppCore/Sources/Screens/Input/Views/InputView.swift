@@ -95,7 +95,7 @@ final class InputView: UIView {
         textField.autocorrectionType = .no
         textField.spellCheckingType = .no
         textField.delegate = self
-        textField.font = FontFamily.RedHatDisplay.regular.font(size: 30)
+        textField.font = Typography.headerThree.font
         textField.textColor = .textMain
         textField.tintColor = .primaryMain
     }
@@ -134,10 +134,7 @@ final class InputView: UIView {
         textField.text = props.text
         textField.attributedPlaceholder = NSAttributedString(
             string: props.placeholder,
-            attributes: [
-                .font: FontFamily.RedHatDisplay.regular.font(size: 30),
-                .foregroundColor: UIColor.textDisabled
-            ]
+            attributes: Typography.headerThree.getParameters(color: .textDisabled)
         )
         setKeyboardType(to: props.keyboardType)
         unitView.render(props: props.unitViewProps)

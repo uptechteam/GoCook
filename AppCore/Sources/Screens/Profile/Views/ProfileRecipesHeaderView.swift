@@ -43,9 +43,7 @@ final class ProfileRecipesHeaderView: UIView {
     }
 
     private func setupMyRecipesLabel() {
-        myRecipesLabel.font = FontFamily.RedHatDisplay.medium.font(size: 24)
-        myRecipesLabel.textColor = .textMain
-        myRecipesLabel.text = .profileMyRecipes
+        myRecipesLabel.render(title: .profileMyRecipes, color: .textMain, typography: .headerFour)
     }
 
     private func setupAddNewButton() {

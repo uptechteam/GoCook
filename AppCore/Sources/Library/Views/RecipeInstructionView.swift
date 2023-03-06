@@ -49,8 +49,6 @@ public final class RecipeInstructionView: UIView {
     }
 
     private func setupTitleLabel() {
-        titleLabel.font = FontFamily.RedHatDisplay.medium.font(size: 16)
-        titleLabel.textColor = .textMain
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
@@ -71,6 +69,7 @@ public final class RecipeInstructionView: UIView {
 
     public func render(props: Props) {
         titleLabel.text = props.title
+        titleLabel.render(title: props.title, color: .textMain, typography: .subtitleFour)
         descriptionLabel.render(title: props.description, color: .textSecondary, typography: .bodyTwo)
     }
 }

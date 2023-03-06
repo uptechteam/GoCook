@@ -10,22 +10,31 @@ import UIKit
 public enum Typography {
     case headerOne
     case headerTwo
+    // Check if needed
+    case headerThree
+    case headerFour
     case subtitle
     case subtitleTwo
     case subtitleThree
+    // Check if needed
+    case subtitleFour
     case body
     case bodyTwo
+    // Check if needed
+    case bodyThree
     case description
     case buttonLarge
     case buttonSmall
     case other
 
+    // MARK: - Properties
+
     public var font: UIFont {
         switch self {
-        case .headerOne, .headerTwo, .subtitle, .subtitleTwo, .description:
+        case .headerOne, .headerTwo, .headerFour, .subtitle, .subtitleTwo, .subtitleFour, .description:
             return FontFamily.RedHatDisplay.medium.font(size: fontSize)
 
-        case .subtitleThree, .body, .bodyTwo:
+        case .headerThree, .subtitleThree, .body, .bodyTwo, .bodyThree:
             return FontFamily.RedHatDisplay.regular.font(size: fontSize)
 
         case .buttonLarge, .buttonSmall:
@@ -41,8 +50,11 @@ public enum Typography {
         case .headerOne:
             return 40
 
-        case .headerTwo:
+        case .headerTwo, .headerThree:
             return 30
+
+        case .headerFour:
+            return 24
 
         case .subtitle:
             return 20
@@ -50,20 +62,26 @@ public enum Typography {
         case .subtitleTwo, .subtitleThree:
             return 18
 
-        case .body, .buttonLarge:
+        case .subtitleFour, .body, .buttonLarge:
             return 16
 
         case .bodyTwo, .description, .buttonSmall, .other:
             return 14
+
+        case .bodyThree:
+            return 13
         }
     }
 
     public var lineHeightMultiple: CGFloat {
         switch self {
-        case .headerOne, .headerTwo, .subtitle:
+        case .headerOne, .headerTwo, .headerThree, .subtitle:
             return 0.91
 
-        case .subtitleTwo, .subtitleThree:
+        case .headerFour:
+            return 1.13
+
+        case .subtitleTwo, .subtitleThree, .subtitleFour:
             return 1.01
 
         case .body:
@@ -72,14 +90,17 @@ public enum Typography {
         case .bodyTwo, .description, .buttonSmall, .other:
             return 1.08
 
+        case .bodyThree:
+            return 1.16
+
         case .buttonLarge:
             return 1.32
         }
     }
 
-    public var parameters: [NSAttributedString.Key: Any] {
-        return [
-            .font: font
-        ]
+    // MARK: - Public methods
+
+    public func getParameters(color: UIColor) -> [NSAttributedString.Key: Any] {
+        [.font: font, .foregroundColor: color]
     }
 }
