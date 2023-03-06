@@ -13,7 +13,7 @@ extension String {
         let bounds = nsString.boundingRect(
             with: CGSize(width: width, height: CGFloat.greatestFiniteMagnitude),
             options: [.usesLineFragmentOrigin],
-            attributes: typography.parameters,
+            attributes: typography.getParameters(color: .clear),
             context: nil
         )
         return .init(width: ceil(bounds.width), height: ceil(bounds.height))
