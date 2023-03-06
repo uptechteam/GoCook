@@ -93,6 +93,10 @@ extension UIImage {
     return UIImage(named: "avatarPlaceholder")!
   }
 
+  @nonobjc public class var editFilled: UIImage {
+    return UIImage(named: "editFilled")!
+  }
+
   @nonobjc public class var profileBackground: UIImage {
     return UIImage(named: "profileBackground")!
   }

@@ -67,7 +67,6 @@ public final class AppCoordinator {
     }
 
     private func isFirstSession() -> Bool {
-        return true
         let isFirstSession = (try? storage.getBool(forKey: Constants.isFirstSessionKey)) == nil
         try? storage.store(bool: true, forKey: Constants.isFirstSessionKey)
         return isFirstSession

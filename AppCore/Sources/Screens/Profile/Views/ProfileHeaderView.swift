@@ -12,6 +12,8 @@ import UIKit
 final class ProfileHeaderView: UIView {
 
     struct Props: Equatable {
+        let isEditButtonVisible: Bool
+        let isSettingsButtonVisible: Bool
         let avatarImageSource: ImageSource
         let isSignInButtonVisible: Bool
         let isNameLabelVisible: Bool
@@ -21,13 +23,15 @@ final class ProfileHeaderView: UIView {
     // MARK: - Properties
 
     private let backgroundImageView = UIImageView()
+    private let editButton = IconButton()
     private let settingsButton = IconButton()
     private let avatarImageView = UIImageView()
     private let signInButton = Button(config: ButtonConfig(buttonSize: .medium, colorConfig: .error))
     private let nameLabel = UILabel()
     // callbacks
-    var onDidTapSettings: () -> Void = { }
-    var onDidTapSignIn: () -> Void = { }
+    var onTapEdit: () -> Void = { }
+    var onTapSettings: () -> Void = { }
+    var onTapSignIn: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -44,6 +48,7 @@ final class ProfileHeaderView: UIView {
 
     private func setup() {
         setupBackgroundImageView()
+        setupEditButton()
         setupSettingsButton()
         setupAvatarImageView()
         setupSignInButton()
@@ -62,9 +67,18 @@ final class ProfileHeaderView: UIView {
         ])
     }
 
+    private func setupEditButton() {
+        editButton.set(image: .editFilled)
+        editButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSettings() }), for: .touchUpInside)
+        addSubview(editButton, constraints: [
+            editButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 14),
+            editButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 23.5)
+        ])
+    }
+
     private func setupSettingsButton() {
         settingsButton.set(image: .settings)
-        settingsButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapSettings() }), for: .touchUpInside)
+        settingsButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSettings() }), for: .touchUpInside)
         addSubview(settingsButton, constraints: [
             settingsButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 12),
             settingsButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22)
@@ -82,7 +96,7 @@ final class ProfileHeaderView: UIView {
 
     private func setupSignInButton() {
         signInButton.setTitle(.profileSignIn)
-        signInButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapSignIn() }), for: .touchUpInside)
+        signInButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSignIn() }), for: .touchUpInside)
     }
 
     private func setupNameLabel() {
@@ -106,6 +120,8 @@ final class ProfileHeaderView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        editButton.isHidden = !props.isEditButtonVisible
+        settingsButton.isHidden = !props.isSettingsButtonVisible
         avatarImageView.set(props.avatarImageSource, placeholder: .avatarPlaceholder)
         signInButton.isHidden = !props.isSignInButtonVisible
         nameLabel.isHidden = !props.isNameLabelVisible

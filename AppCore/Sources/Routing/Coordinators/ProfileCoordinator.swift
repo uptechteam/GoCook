@@ -85,6 +85,10 @@ extension ProfileCoordinator: ProfileCoordinating {
         coordinator.start()
     }
 
+    func didTapEdit() {
+        print("Did tap edit.")
+    }
+
     func didTapSettings() {
         let viewController = SettingsViewController.resolve(from: container, coordinator: self)
         navigationController.pushViewController(viewController, animated: true)

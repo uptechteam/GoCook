@@ -11,6 +11,7 @@ import UIKit
 
 public protocol ProfileCoordinating: AnyObject {
     func didTapCreateRecipe()
+    func didTapEdit()
     func didTapSettings()
     func didTapSignIn()
 }
@@ -24,6 +25,10 @@ public final class ProfileViewController: UIViewController {
     private let contentView = ProfileView()
     private unowned let coordinator: ProfileCoordinating
     private var cancellables = [AnyCancellable]()
+
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
 
     // MARK: - Lifecycle
 
@@ -67,11 +72,15 @@ public final class ProfileViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupBinding() {
-        contentView.headerView.onDidTapSettings = { [store] in
+        contentView.headerView.onTapEdit = { [store] in
+            store.dispatch(action: .editTapped)
+        }
+
+        contentView.headerView.onTapSettings = { [store] in
             store.dispatch(action: .settingsTapped)
         }
 
-        contentView.headerView.onDidTapSignIn = { [store] in
+        contentView.headerView.onTapSignIn = { [store] in
             store.dispatch(action: .signInTapped)
         }
 
@@ -103,6 +112,9 @@ public final class ProfileViewController: UIViewController {
         switch route {
         case .createRecipe:
             coordinator.didTapCreateRecipe()
+
+        case .edit:
+            coordinator.didTapEdit()
 
         case .settings:
             coordinator.didTapSettings()
