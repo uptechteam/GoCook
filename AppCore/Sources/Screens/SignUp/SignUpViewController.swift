@@ -86,6 +86,12 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
             store.dispatch(action: .loginTapped)
         }
 
+        actionCreator.keyboardHeightChange
+            .sink { [contentView] height in
+                contentView.updateBottomInset(keyboardHeight: height)
+            }
+            .store(in: &cancellables)
+
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 

@@ -232,6 +232,11 @@ final class SignUpView: UIView {
         skipButton.isHidden = !props.isSkipButtonVisible
     }
 
+    func updateBottomInset(keyboardHeight: CGFloat) {
+        scrollView.contentInset.bottom = keyboardHeight
+        layoutSubviews()
+    }
+
     // MARK: - Private methods
 
     private func renderTopViews(isNavigationBarVisible: Bool) {
