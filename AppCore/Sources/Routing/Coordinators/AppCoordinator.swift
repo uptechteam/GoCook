@@ -61,6 +61,7 @@ public final class AppCoordinator {
     private func showTabBar() {
         let appTabBarController = AppTabBarController.resolve(from: container, coordinator: self)
         let coordinator = AppTabBarCoordinator(container: container, tabBarController: appTabBarController)
+        coordinator.delegate = self
         coordinator.start()
         childCoordinators.append(coordinator)
         window.rootViewController = coordinator.rootViewController
@@ -73,13 +74,22 @@ public final class AppCoordinator {
     }
 }
 
-// MARK: - Extensions
+// MARK: - AppTabBarCoordinating
 
 extension AppCoordinator: AppTabBarCoordinating {
 
 }
 
-// MARK: - Delegates
+// MARK: - AppTabBarCoordinatorDelegate
+
+extension AppCoordinator: AppTabBarCoordinatorDelegate {
+    func appTabBarCoordinatorDidFinish() {
+        childCoordinators.removeAll()
+        showRegistration()
+    }
+}
+
+// MARK: - RegistrationCoordinatorDelegate
 
 extension AppCoordinator: RegistrationCoordinatorDelegate {
     func registrationCoordiantorDidFinish(_ coordinator: RegistrationCoordinator) {
