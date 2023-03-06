@@ -61,26 +61,35 @@ public final class AppCoordinator {
     private func showTabBar() {
         let appTabBarController = AppTabBarController.resolve(from: container, coordinator: self)
         let coordinator = AppTabBarCoordinator(container: container, tabBarController: appTabBarController)
+        coordinator.delegate = self
         coordinator.start()
         childCoordinators.append(coordinator)
         window.rootViewController = coordinator.rootViewController
     }
 
     private func isFirstSession() -> Bool {
-        return true
         let isFirstSession = (try? storage.getBool(forKey: Constants.isFirstSessionKey)) == nil
         try? storage.store(bool: true, forKey: Constants.isFirstSessionKey)
         return isFirstSession
     }
 }
 
-// MARK: - Extensions
+// MARK: - AppTabBarCoordinating
 
 extension AppCoordinator: AppTabBarCoordinating {
 
 }
 
-// MARK: - Delegates
+// MARK: - AppTabBarCoordinatorDelegate
+
+extension AppCoordinator: AppTabBarCoordinatorDelegate {
+    func appTabBarCoordinatorDidFinish() {
+        childCoordinators.removeAll()
+        showRegistration()
+    }
+}
+
+// MARK: - RegistrationCoordinatorDelegate
 
 extension AppCoordinator: RegistrationCoordinatorDelegate {
     func registrationCoordiantorDidFinish(_ coordinator: RegistrationCoordinator) {

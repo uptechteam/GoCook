@@ -62,7 +62,7 @@ final class SettingsView: UIView {
         addSubview(logoutButton, constraints: [
             logoutButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
             logoutButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-            logoutButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor)
+            logoutButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 

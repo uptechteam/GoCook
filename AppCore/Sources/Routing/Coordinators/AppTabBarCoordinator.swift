@@ -11,6 +11,10 @@ import BusinessLogic
 import Library
 import UIKit
 
+protocol AppTabBarCoordinatorDelegate: AnyObject {
+    func appTabBarCoordinatorDidFinish()
+}
+
 final class AppTabBarCoordinator: Coordinating {
 
     // MARK: - Properties
@@ -18,6 +22,7 @@ final class AppTabBarCoordinator: Coordinating {
     private let container: DependencyContainer
     private let tabBarController: AppTabBarController
     private var childCoordinators: [Coordinating]
+    weak var delegate: AppTabBarCoordinatorDelegate?
 
     var rootViewController: UIViewController {
         tabBarController
@@ -56,6 +61,15 @@ final class AppTabBarCoordinator: Coordinating {
 
     private func makeProfileCoordinator() {
         let coordinator = ProfileCoordinator(container: container, navigationController: BaseNavigationController())
+        coordinator.delegate = self
         childCoordinators.append(coordinator)
+    }
+}
+
+// MARK: - ProfileCoordinatorDelegate
+
+extension AppTabBarCoordinator: ProfileCoordinatorDelegate {
+    func profileCoordinatorDidFinish(_ coordinator: ProfileCoordinator) {
+        delegate?.appTabBarCoordinatorDidFinish()
     }
 }
