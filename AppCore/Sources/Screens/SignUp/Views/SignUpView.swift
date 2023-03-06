@@ -85,6 +85,9 @@ final class SignUpView: UIView {
 
     private func setupContentView() {
         backgroundColor = .appWhite
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        tapGesture.delegate = self
+        addGestureRecognizer(tapGesture)
     }
 
     private func setupDividerView() {
@@ -248,7 +251,24 @@ final class SignUpView: UIView {
     }
 
     @objc
+    private func handleTap() {
+        endEditing(true)
+    }
+
+    @objc
     private func handleHaveAccountTap() {
         onDidTapHaveAccount()
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+extension SignUpView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        guard let view = touch.view else {
+            return false
+        }
+
+        return !(view is UIControl)
     }
 }
