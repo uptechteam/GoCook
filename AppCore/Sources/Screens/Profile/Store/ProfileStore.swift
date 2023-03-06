@@ -20,6 +20,7 @@ extension ProfileViewController {
 
     public enum Action {
         case addNewRecipeTapped
+        case editTapped
         case settingsTapped
         case signInTapped
         case updateProfile(Profile?)
@@ -27,6 +28,7 @@ extension ProfileViewController {
 
     enum Route {
         case createRecipe
+        case edit
         case settings
         case signIn
     }
@@ -68,6 +70,9 @@ extension ProfileViewController {
         switch action {
         case .addNewRecipeTapped:
             newState.route = .init(value: .createRecipe)
+
+        case .editTapped:
+            newState.route = .init(value: .edit)
 
         case .settingsTapped:
             newState.route = .init(value: .settings)

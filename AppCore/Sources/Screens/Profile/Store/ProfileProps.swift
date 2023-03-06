@@ -18,6 +18,8 @@ extension ProfileViewController {
 
     private static func makeHeaderViewProps(state: State) -> ProfileHeaderView.Props {
         return .init(
+            isEditButtonVisible: state.profile != nil,
+            isSettingsButtonVisible: state.profile != nil,
             avatarImageSource: state.profile?.avatar ?? .asset(.avatarPlaceholder),
             isSignInButtonVisible: state.profile == nil,
             isNameLabelVisible: state.profile != nil,

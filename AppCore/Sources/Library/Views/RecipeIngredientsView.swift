@@ -47,7 +47,6 @@ public final class RecipeIngredientsView: UIView {
     private func setup() {
         setupContentView()
         setupTitleLabel()
-        setupServingsLabel()
         setupTopStackView()
         setupIngredientsStackView()
         setupStackView()
@@ -60,11 +59,6 @@ public final class RecipeIngredientsView: UIView {
     private func setupTitleLabel() {
         titleLabel.render(title: "Ingredients", color: .textMain, typography: .subtitle)
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
-
-    private func setupServingsLabel() {
-        servingsLabel.font = FontFamily.RedHatDisplay.regular.font(size: 16)
-        servingsLabel.textColor = .textSecondary
     }
 
     private func setupTopStackView() {
@@ -87,7 +81,7 @@ public final class RecipeIngredientsView: UIView {
     // MARK: - Public methods
 
     public func render(props: Props) {
-        servingsLabel.text = props.servingsDescription
+        servingsLabel.render(title: props.servingsDescription, color: .textSecondary, typography: .body)
         renderIngredients(props: props.ingredientsProps)
     }
 
