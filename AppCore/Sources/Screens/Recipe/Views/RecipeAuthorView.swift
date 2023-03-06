@@ -67,9 +67,8 @@ final class RecipeAuthorView: UIView {
     // MARK: - Private methods
 
     private func renderUsername(_ text: String) {
-        var attributes = Typography.description.parameters
+        var attributes = Typography.description.getParameters(color: .divider)
         attributes[.underlineStyle] = NSUnderlineStyle.thick
-        attributes[.underlineColor] = UIColor.divider
         usernameLabel.attributedText = NSAttributedString(string: text, attributes: attributes)
     }
 }
