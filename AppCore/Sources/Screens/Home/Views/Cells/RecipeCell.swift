@@ -17,7 +17,7 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
 
         let id: String
         let recipeImageSource: ImageSource
-        let isLiked: Bool
+        let isFavorite: Bool
         let name: String
         let ratingViewProps: RatingView.Props
 
@@ -31,11 +31,11 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
     // MARK: - Properties
 
     private let recipeImageView = UIImageView()
-    private let likeButton = IconButton()
+    private let favoriteButton = IconButton()
     private let nameLabel = UILabel()
     private let ratingView = RatingView()
     // callbacks
-    var onTapLike: () -> Void = { }
+    var onTapFavorite: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -54,7 +54,7 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
         setupRecipeImageView()
         setupNameLabel()
         setupStackView()
-        setupLikeButton()
+        setupFavoriteButton()
     }
 
     private func setupRecipeImageView() {
@@ -77,11 +77,11 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
         contentView.addSubview(stackView, withEdgeInsets: .zero)
     }
 
-    private func setupLikeButton() {
-        likeButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapLike() }), for: .touchUpInside)
-        contentView.addSubview(likeButton, constraints: [
-            likeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            likeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)
+    private func setupFavoriteButton() {
+        favoriteButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapFavorite() }), for: .touchUpInside)
+        contentView.addSubview(favoriteButton, constraints: [
+            favoriteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            favoriteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)
         ])
     }
 
@@ -89,7 +89,7 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
 
     func render(props: Props) {
         recipeImageView.set(props.recipeImageSource, placeholder: .mealPlaceholder)
-        likeButton.set(image: props.isLiked ? .circleWithFilledHeart : .circleWithEmptyHeart)
+        favoriteButton.set(image: props.isFavorite ? .circleWithFilledHeart : .circleWithEmptyHeart)
         nameLabel.render(title: props.name, color: .appBlack, typography: .subtitleTwo)
         ratingView.render(props: props.ratingViewProps)
     }

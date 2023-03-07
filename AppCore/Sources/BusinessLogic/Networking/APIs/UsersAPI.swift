@@ -40,7 +40,8 @@ struct UsersAPI {
         try requestBuilder.makeGetRequest(path: "me", authorisation: .bearer)
     }
 
-    func makeSignUpRequest(request: CreateUserRequest) throws -> AppRequest {
-        try requestBuilder.makePostJSONRequest(path: "", requestData: request)
+    func makeSignUpRequest(username: String, password: String) throws -> AppRequest {
+        let requestData = CreateUserRequest(username: username, password: password)
+        return try requestBuilder.makePostJSONRequest(path: "", requestData: requestData)
     }
 }

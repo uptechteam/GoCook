@@ -28,7 +28,7 @@ final class HomeSearchResultsView: UIView {
     private let noResultsLabel = UILabel()
     // callbacks
     var onTapItem: (IndexPath) -> Void = { _ in }
-    var onTapLike: (IndexPath) -> Void = { _ in }
+    var onTapFavorite: (IndexPath) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -113,9 +113,9 @@ final class HomeSearchResultsView: UIView {
             cellProvider: { [weak self] collectionView, indexPath, props in
                 let cell: SmallRecipeCell = collectionView.dequeueReusableCell(for: indexPath)
                 cell.render(props: props)
-                cell.onTapLike = { [weak self, unowned cell] in
+                cell.onTapFavorite = { [weak self, unowned cell] in
                     if let indexPath = self?.collectionView.indexPath(for: cell) {
-                        self?.onTapLike(indexPath)
+                        self?.onTapFavorite(indexPath)
                     }
                 }
                 return cell

@@ -30,9 +30,9 @@ extension RecipeViewController {
 
     public enum Action {
         case backTapped
+        case favorite(Result<RecipeDetails, Error>)
+        case favoriteTapped
         case getRecipeDetails(Result<RecipeDetails, Error>)
-        case like(Result<RecipeDetails, Error>)
-        case likeTapped
         case rate(Result<RecipeDetails, Error>)
         case retryTapped
         case starTapped(Int)
@@ -57,13 +57,13 @@ extension RecipeViewController {
     }
 
     public static func makeStore(dependencies: Dependencies, envelope: RecipeEnvelope) -> Store {
+        let favoriteMiddleware = makeFavoriteMiddleware(dependencies: dependencies)
         let getRecipeDetailsMiddleware = makeGetRecipeDetailsMiddleware(dependencies: dependencies)
-        let likeMiddleware = makeLikeMiddleware(dependencies: dependencies)
         let rateMiddleware = makeRateMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies, envelope: envelope),
             reducer: reduce,
-            middlewares: [getRecipeDetailsMiddleware, likeMiddleware, rateMiddleware]
+            middlewares: [favoriteMiddleware, getRecipeDetailsMiddleware, rateMiddleware]
         )
     }
 
@@ -85,14 +85,14 @@ extension RecipeViewController {
         case .backTapped:
             newState.route = .init(value: .back)
 
+        case .favorite(let result):
+            newState.recipeDetails.handle(result: result)
+
+        case .favoriteTapped:
+            break
+
         case .getRecipeDetails(let result):
             newState.recipeDetails.handle(result: result)
-
-        case .like(let result):
-            newState.recipeDetails.handle(result: result)
-
-        case .likeTapped:
-            break
 
         case .rate(let result):
             newState.recipeDetails.handle(result: result)

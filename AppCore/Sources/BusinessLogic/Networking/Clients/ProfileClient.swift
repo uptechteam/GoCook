@@ -34,32 +34,31 @@ public final class ProfileClient: ProfileClienting {
     // MARK: - Public methods
 
     public func isUnique(username: String) async throws -> Bool {
-        let appRequest = try api.makeIsUniqueRequest(username: username)
-        let response: IsUniqueResponse = try await networkClient.execute(appRequest)
+        let request = try api.makeIsUniqueRequest(username: username)
+        let response: IsUniqueResponse = try await networkClient.execute(request)
         return response.isUnique
     }
 
     public func login(username: String, password: String) async throws -> String {
-        let appRequest = try api.makeLoginRequest(username: username, password: password)
-        let response: TokenResponse = try await networkClient.execute(appRequest)
+        let request = try api.makeLoginRequest(username: username, password: password)
+        let response: TokenResponse = try await networkClient.execute(request)
         return response.token
     }
 
     public func logout() async throws {
-        let appRequest = try api.makeLogoutRequest()
-        let _: EmptyResponse = try await networkClient.execute(appRequest)
+        let request = try api.makeLogoutRequest()
+        let _: EmptyResponse = try await networkClient.execute(request)
     }
 
     public func refreshProfile() async throws -> Profile {
-        let appRequest = try api.makeRefreshProfileRequest()
-        let response: ProfileResponse = try await networkClient.execute(appRequest)
+        let request = try api.makeRefreshProfileRequest()
+        let response: ProfileResponse = try await networkClient.execute(request)
         return response.domainModel
     }
 
     public func signUp(username: String, password: String) async throws -> Profile {
-        let request = CreateUserRequest(username: username, password: password)
-        let appRequest = try api.makeSignUpRequest(request: request)
-        let response: ProfileResponse = try await networkClient.execute(appRequest)
+        let request = try api.makeSignUpRequest(username: username, password: password)
+        let response: ProfileResponse = try await networkClient.execute(request)
         return response.domainModel
     }
 }

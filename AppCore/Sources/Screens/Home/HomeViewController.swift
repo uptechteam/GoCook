@@ -94,8 +94,8 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
             store.dispatch(action: .recipeTapped(indexPath, isTrending: true))
         }
 
-        contentView.feedView.trendingCategoryView.recipesListView.onTapLike = { [store] indexPath in
-            store.dispatch(action: .likeTapped(indexPath, isTrending: true))
+        contentView.feedView.trendingCategoryView.recipesListView.onTapFavorite = { [store] indexPath in
+            store.dispatch(action: .favoriteTapped(indexPath, isTrending: true))
         }
 
         contentView.feedView.onTapViewAll = { [store] index in
@@ -106,8 +106,8 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
             store.dispatch(action: .recipeTapped(indexPath, isTrending: false))
         }
 
-        contentView.feedView.onTapLike = { [store] indexPath in
-            store.dispatch(action: .likeTapped(indexPath, isTrending: false))
+        contentView.feedView.onTapFavorite = { [store] indexPath in
+            store.dispatch(action: .favoriteTapped(indexPath, isTrending: false))
         }
 
         let state = store.$state.removeDuplicates()

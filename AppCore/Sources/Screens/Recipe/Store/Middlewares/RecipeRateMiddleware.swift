@@ -23,9 +23,9 @@ extension RecipeViewController {
             do {
                 let rating = index + 1
                 let recipeDetails = try await dependencies.recipesClient.rate(recipeID: state.recipe.id, rating: rating)
-                await dispatch(.like(.success(recipeDetails)))
+                await dispatch(.favorite(.success(recipeDetails)))
             } catch {
-                await dispatch(.like(.failure(error)))
+                await dispatch(.favorite(.failure(error)))
             }
         }
     }
