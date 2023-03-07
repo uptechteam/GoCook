@@ -10,13 +10,13 @@ import Foundation
 import Helpers
 
 public protocol RecipesClienting {
-    func dislike(recipeID: Recipe.ID) async throws -> RecipeDetails
+    func addToFavorites(recipeID: Recipe.ID) async throws -> RecipeDetails
     func fetchFavoriteRecipes() async throws -> [Recipe]
     func fetchFeed() async throws -> [RecipeCategory]
     func fetchRecipeDetails(id: Recipe.ID) async throws -> RecipeDetails
     func fetchRecipes(query: String) async throws -> [Recipe]
-    func like(recipeID: Recipe.ID) async throws -> RecipeDetails
     func rate(recipeID: Recipe.ID, rating: Int) async throws -> RecipeDetails
+    func removeFromFavorites(recipeID: Recipe.ID) async throws -> RecipeDetails
     func upload(newRecipe: NewRecipe) async throws -> Recipe
 }
 
@@ -36,8 +36,8 @@ public final class RecipesClient: RecipesClienting {
 
     // MARK: - Public methods
 
-    public func dislike(recipeID: Recipe.ID) async throws -> RecipeDetails {
-        let request = try recipesAPI.makeDeleteDislikeRequest(recipeID: recipeID)
+    public func addToFavorites(recipeID: Recipe.ID) async throws -> RecipeDetails {
+        let request = try recipesAPI.makePostAddToFavoritesRequest(recipeID: recipeID)
         let response: RecipeDetailsResponse = try await networkClient.execute(request)
         return response.domainModel
     }
@@ -66,14 +66,14 @@ public final class RecipesClient: RecipesClienting {
         return response.map(\.domainModel)
     }
 
-    public func like(recipeID: Recipe.ID) async throws -> RecipeDetails {
-        let request = try recipesAPI.makePostLikeRequest(recipeID: recipeID)
+    public func rate(recipeID: Recipe.ID, rating: Int) async throws -> RecipeDetails {
+        let request = try recipesAPI.makePostRateRequest(recipeID: recipeID, rating: rating)
         let response: RecipeDetailsResponse = try await networkClient.execute(request)
         return response.domainModel
     }
 
-    public func rate(recipeID: Recipe.ID, rating: Int) async throws -> RecipeDetails {
-        let request = try recipesAPI.makePostRateRequest(recipeID: recipeID, rating: rating)
+    public func removeFromFavorites(recipeID: Recipe.ID) async throws -> RecipeDetails {
+        let request = try recipesAPI.makeDeleteRemoveFromFavoritesRequest(recipeID: recipeID)
         let response: RecipeDetailsResponse = try await networkClient.execute(request)
         return response.domainModel
     }

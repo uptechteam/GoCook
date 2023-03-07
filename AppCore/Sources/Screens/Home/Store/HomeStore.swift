@@ -33,10 +33,10 @@ public extension HomeViewController {
 
     enum Action {
         case categoryTapped(IndexPath)
+        case favoriteTapped(IndexPath, isTrending: Bool)
         case filtersTapped
         case getFeed(DomainModelAction<[RecipeCategory]>)
         case getRecipes(Result<[Recipe], Error>)
-        case likeTapped(IndexPath, isTrending: Bool)
         case recipeTapped(IndexPath, isTrending: Bool)
         case searchQueryChanged(String)
         case viewAllTapped(Int, isTrending: Bool)
@@ -101,6 +101,14 @@ extension HomeViewController {
                 }
             }
 
+        case let .favoriteTapped(indexPath, isTrending):
+            let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: indexPath.section]
+            guard let recipe = category?.recipes[safe: indexPath.item] else {
+                break
+            }
+
+            print("Press favorite for \(recipe)")
+
         case .filtersTapped:
             newState.route = .init(value: .filters)
 
@@ -112,14 +120,6 @@ extension HomeViewController {
             if case .success(let recipes) = result {
                 newState.searchedRecipes = recipes
             }
-
-        case let .likeTapped(indexPath, isTrending):
-            let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: indexPath.section]
-            guard let recipe = category?.recipes[safe: indexPath.item] else {
-                break
-            }
-
-            print("Press like for \(recipe)")
 
         case let .recipeTapped(indexPath, isTrending):
             let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: indexPath.section]

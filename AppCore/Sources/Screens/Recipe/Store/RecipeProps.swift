@@ -14,7 +14,7 @@ extension RecipeViewController {
         return .init(
             headerViewProps: makeHeaderViewProps(state: state),
             recipeImageSource: state.recipeImageSource,
-            isLiked: state.recipeDetails.liked,
+            isFavorite: state.recipeDetails.isFavorite,
             recipeDetailsViewProps: makeRecipeDetailsViewProps(state: state)
         )
     }
@@ -22,7 +22,7 @@ extension RecipeViewController {
     private static func makeHeaderViewProps(state: State) -> RecipeHeaderView.Props {
         return .init(
             title: state.recipeName,
-            isLiked: state.recipeDetails.liked
+            isFavorite: state.recipeDetails.isFavorite
         )
     }
 

@@ -14,7 +14,7 @@ final class RecipeView: UIView {
     struct Props: Equatable {
         let headerViewProps: RecipeHeaderView.Props
         let recipeImageSource: ImageSource
-        let isLiked: Bool
+        let isFavorite: Bool
         let recipeDetailsViewProps: RecipeDetailsView.Props
     }
 
@@ -23,13 +23,13 @@ final class RecipeView: UIView {
     let headerView = RecipeHeaderView()
     private let recipeImageView = UIImageView()
     private let backButton = IconButton()
-    private let likeButton = IconButton()
+    private let favoriteButton = IconButton()
     let detailsView = RecipeDetailsView()
     private var isFirstLayoutFinished = false
     private var scrollViewTopConstraint: NSLayoutConstraint!
     // callbacks
     var onDidTapBack: () -> Void = { }
-    var onDidTapLike: () -> Void = { }
+    var onDidTapFavorite: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -56,7 +56,7 @@ final class RecipeView: UIView {
         setupContentView()
         setupRecipeImageView()
         setupBackButton()
-        setupLikeButton()
+        setupFavoriteButton()
         setupDetailsView()
         setupHeaderView()
     }
@@ -85,11 +85,11 @@ final class RecipeView: UIView {
         ])
     }
 
-    private func setupLikeButton() {
-        likeButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapLike() }), for: .touchUpInside)
-        addSubview(likeButton, constraints: [
-            likeButton.topAnchor.constraint(equalTo: recipeImageView.topAnchor, constant: 46),
-            likeButton.trailingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: -12)
+    private func setupFavoriteButton() {
+        favoriteButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapFavorite() }), for: .touchUpInside)
+        addSubview(favoriteButton, constraints: [
+            favoriteButton.topAnchor.constraint(equalTo: recipeImageView.topAnchor, constant: 46),
+            favoriteButton.trailingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: -12)
         ])
     }
 
@@ -126,7 +126,7 @@ final class RecipeView: UIView {
     func render(props: Props) {
         headerView.render(props: props.headerViewProps)
         recipeImageView.set(props.recipeImageSource)
-        likeButton.set(image: props.isLiked ? .circleWithFilledHeart : .circleWithEmptyHeart)
+        favoriteButton.set(image: props.isFavorite ? .circleWithFilledHeart : .circleWithEmptyHeart)
         detailsView.render(props: props.recipeDetailsViewProps)
     }
 

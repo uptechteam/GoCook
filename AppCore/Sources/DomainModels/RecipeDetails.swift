@@ -17,7 +17,7 @@ public struct RecipeDetails: Equatable {
     public let id: Recipe.ID
     public let ingredients: [Ingredient]
     public let instructions: [String]
-    public let liked: Bool
+    public let isFavorite: Bool
     public let name: String
     public var rating: Int?
     public let ratingDetails: RatingDetails
@@ -32,7 +32,7 @@ public struct RecipeDetails: Equatable {
         id: Recipe.ID,
         ingredients: [Ingredient],
         instructions: [String],
-        liked: Bool,
+        isFavorite: Bool,
         name: String,
         rating: Int?,
         ratingDetails: RatingDetails,
@@ -44,7 +44,7 @@ public struct RecipeDetails: Equatable {
         self.id = id
         self.ingredients = ingredients
         self.instructions = instructions
-        self.liked = liked
+        self.isFavorite = isFavorite
         self.name = name
         self.rating = rating
         self.ratingDetails = ratingDetails
@@ -63,7 +63,7 @@ extension RecipeDetails: EmptyDomainModel {
             id: Recipe.ID(rawValue: "1"),
             ingredients: [],
             instructions: [],
-            liked: false,
+            isFavorite: false,
             name: "",
             rating: 0,
             ratingDetails: RatingDetails(rating: 0, reviewsCount: 0),

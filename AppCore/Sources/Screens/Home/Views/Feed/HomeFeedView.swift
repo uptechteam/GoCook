@@ -24,7 +24,7 @@ final class HomeFeedView: UIView {
     // callbacks
     var onTapViewAll: (Int) -> Void = { _ in }
     var onTapRecipe: (IndexPath) -> Void = { _ in }
-    var onTapLike: (IndexPath) -> Void = { _ in }
+    var onTapFavorite: (IndexPath) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -93,8 +93,8 @@ final class HomeFeedView: UIView {
         otherCategoryView.recipesListView.onTapItem = { [weak self] indexPath in
             self?.onTapRecipe(IndexPath(item: indexPath.item, section: index))
         }
-        otherCategoryView.recipesListView.onTapLike = { [weak self] indexPath in
-            self?.onTapLike(IndexPath(item: indexPath.item, section: index))
+        otherCategoryView.recipesListView.onTapFavorite = { [weak self] indexPath in
+            self?.onTapFavorite(IndexPath(item: indexPath.item, section: index))
         }
         return otherCategoryView
     }

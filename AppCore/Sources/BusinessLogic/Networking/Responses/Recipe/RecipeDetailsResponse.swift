@@ -16,7 +16,7 @@ public struct RecipeDetailsResponse: Decodable {
     let imageID: String
     let ingredients: [IngredientRepresentable]
     let instructions: [String]
-    let liked: Bool
+    let isFavorite: Bool
     let name: String
     let rating: RatingDetailsResponse
     let ratingByUser: Int?
@@ -30,7 +30,7 @@ public struct RecipeDetailsResponse: Decodable {
             id: Recipe.ID(rawValue: id),
             ingredients: ingredients.map(\.domainModel),
             instructions: instructions,
-            liked: liked,
+            isFavorite: isFavorite,
             name: name,
             rating: ratingByUser,
             ratingDetails: rating.domainModel,

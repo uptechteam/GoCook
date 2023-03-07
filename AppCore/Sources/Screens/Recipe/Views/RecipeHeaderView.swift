@@ -12,18 +12,18 @@ final class RecipeHeaderView: UIView {
 
     struct Props: Equatable {
         let title: String
-        let isLiked: Bool
+        let isFavorite: Bool
     }
 
     // MARK: - Properties
 
     private let backButton = IconButton()
     private let titleLabel = UILabel()
-    private let likeButton = IconButton()
+    private let favoriteButton = IconButton()
     private let separatorView = UIView()
     // callbacks
     var onDidTapBack: () -> Void = { }
-    var onDidTapLike: () -> Void = { }
+    var onDidTapFavorite: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -42,7 +42,7 @@ final class RecipeHeaderView: UIView {
         setupContentView()
         setupBackButton()
         setupTitleLabel()
-        setupLikeButton()
+        setupFavoriteButton()
         setupStackView()
         setupSeparatorView()
     }
@@ -63,15 +63,15 @@ final class RecipeHeaderView: UIView {
         titleLabel.render(typography: .subtitleTwo)
     }
 
-    private func setupLikeButton() {
-        likeButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapLike() }),
+    private func setupFavoriteButton() {
+        favoriteButton.addAction(
+            UIAction(handler: { [weak self] _ in self?.onDidTapFavorite() }),
             for: .touchUpInside
         )
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [backButton, titleLabel, likeButton])
+        let stackView = UIStackView(arrangedSubviews: [backButton, titleLabel, favoriteButton])
         stackView.spacing = 16
         addSubview(stackView, constraints: [
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 22),
@@ -94,6 +94,6 @@ final class RecipeHeaderView: UIView {
 
     func render(props: Props) {
         titleLabel.text = props.title
-        likeButton.set(image: props.isLiked ? .heartFilled : .heartEmpty)
+        favoriteButton.set(image: props.isFavorite ? .heartFilled : .heartEmpty)
     }
 }
