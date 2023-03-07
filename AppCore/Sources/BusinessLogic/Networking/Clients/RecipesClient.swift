@@ -24,14 +24,12 @@ public final class RecipesClient: RecipesClienting {
 
     // MARK: - Properties
 
-    private let feedAPI: FeedAPI
     private let recipesAPI: RecipesAPI
     private let networkClient: NetworkClient
 
     // MARK: - Lifecycle
 
     public init(networkClient: NetworkClient) {
-        self.feedAPI = FeedAPI(baseURL: AppEnvironment.current.baseURL)
         self.recipesAPI = RecipesAPI(baseURL: AppEnvironment.current.baseURL)
         self.networkClient = networkClient
     }
@@ -51,8 +49,8 @@ public final class RecipesClient: RecipesClienting {
     }
 
     public func fetchFeed() async throws -> [RecipeCategory] {
-        let appRequest = try feedAPI.makeGetRecipesRequest()
-        let response: [RecipeCategoryResponse] = try await networkClient.execute(appRequest)
+        let request = try recipesAPI.makeGetFeedRequest()
+        let response: [RecipeCategoryResponse] = try await networkClient.execute(request)
         return try response.map { try $0.getDomainModel() }
     }
 
@@ -63,8 +61,8 @@ public final class RecipesClient: RecipesClienting {
     }
 
     public func fetchRecipes(query: String) async throws -> [Recipe] {
-        let appRequest = try recipesAPI.makeGetRecipesRequest(query: query)
-        let response: [RecipeResponse] = try await networkClient.execute(appRequest)
+        let request = try recipesAPI.makeGetRecipesRequest(query: query)
+        let response: [RecipeResponse] = try await networkClient.execute(request)
         return response.map(\.domainModel)
     }
 
@@ -81,8 +79,8 @@ public final class RecipesClient: RecipesClienting {
     }
 
     public func upload(newRecipe: NewRecipe) async throws -> Recipe {
-        let appRequest = try recipesAPI.makePostRecipeRequest(request: NewRecipeRequest(newRecipe: newRecipe))
-        let response: RecipeResponse = try await networkClient.execute(appRequest)
+        let request = try recipesAPI.makePostRecipeRequest(request: NewRecipeRequest(newRecipe: newRecipe))
+        let response: RecipeResponse = try await networkClient.execute(request)
         return response.domainModel
     }
 }

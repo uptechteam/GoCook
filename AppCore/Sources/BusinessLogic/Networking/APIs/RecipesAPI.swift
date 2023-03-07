@@ -30,6 +30,10 @@ struct RecipesAPI {
         try requestBuilder.makeGetRequest(path: "favorite", authorisation: .bearer)
     }
 
+    func makeGetFeedRequest() throws -> AppRequest {
+        try requestBuilder.makeGetRequest(path: "feed", authorisation: .bearer)
+    }
+
     func makeGetRecipeRequest(id: Recipe.ID) throws -> AppRequest {
         try requestBuilder.makeGetRequest(path: "\(id.rawValue)", authorisation: .bearer)
     }

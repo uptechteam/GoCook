@@ -31,14 +31,14 @@ public final class FileClient: FileClienting {
     // MARK: - Public methods
 
     public func uploadAvatar(data: Data) async throws -> Profile {
-        let appRequest = try api.makePostAvatarImageRequest(data: data)
-        let response: ProfileResponse = try await networkClient.execute(appRequest)
+        let request = try api.makePostAvatarImageRequest(data: data)
+        let response: ProfileResponse = try await networkClient.execute(request)
         return response.domainModel
     }
 
     public func uploadRecipeImage(data: Data) async throws -> String {
-        let appRequest = try api.makePostRecipeImageRequest(data: data)
-        let response: ImageURLResponse = try await networkClient.execute(appRequest)
+        let request = try api.makePostRecipeImageRequest(data: data)
+        let response: ImageURLResponse = try await networkClient.execute(request)
         return response.imageURL
     }
 }
