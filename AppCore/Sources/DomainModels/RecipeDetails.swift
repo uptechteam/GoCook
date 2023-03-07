@@ -19,7 +19,7 @@ public struct RecipeDetails: Equatable {
     public let instructions: [String]
     public let liked: Bool
     public let name: String
-    public var rating: Int
+    public var rating: Int?
     public let ratingDetails: RatingDetails
     public let recipeImageSource: ImageSource
     public let servingsCount: Int
@@ -34,7 +34,7 @@ public struct RecipeDetails: Equatable {
         instructions: [String],
         liked: Bool,
         name: String,
-        rating: Int,
+        rating: Int?,
         ratingDetails: RatingDetails,
         recipeImageSource: ImageSource,
         servingsCount: Int

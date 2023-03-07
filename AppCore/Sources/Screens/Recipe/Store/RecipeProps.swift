@@ -101,7 +101,7 @@ extension RecipeViewController {
         return .init(
             isVisible: state.recipeDetails.isPresent,
             text: .recipeRatingQuestion(state.recipeName),
-            rating: state.recipeDetails.rating
+            rating: state.recipeDetails.rating ?? 0
         )
     }
 
