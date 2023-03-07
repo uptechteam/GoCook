@@ -33,6 +33,13 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
 
     // MARK: - Public methods
 
+    /// Returns presented model or empty if there is no model.
+    ///
+    /// - Returns: `Model` model.
+    public func getModel() -> Model {
+        model ?? .empty
+    }
+
     /// Update state according to action
     /// - Parameter action: Action with 3 possible cases.
     public mutating func handle(action: DomainModelAction<Model>) {
@@ -60,6 +67,18 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
 
         case .trigger:
             toggleIsLoading(on: true)
+        }
+    }
+
+    /// Update state with result.
+    /// - Parameter result: Result with either model or error.
+    public mutating func handle(result: Result<Model, Error>) {
+        switch result {
+        case .failure(let error):
+            setError(error)
+
+        case .success(let domainModel):
+            update(with: domainModel)
         }
     }
 

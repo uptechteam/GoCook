@@ -11,21 +11,21 @@ struct FilesAPI {
 
     // MARK: - Properties
 
-    private let targetBuilder: TargetBuilder
+    private let requestBuilder: RequestBuilder
 
     // MARK: - Lifecycle
 
     init(baseURL: URL) {
-        self.targetBuilder = TargetBuilder(baseURL: baseURL.appendingPathComponent("files"))
+        self.requestBuilder = RequestBuilder(baseURL: baseURL.appendingPathComponent("files"))
     }
 
     // MARK: - Public methods
 
-    func makePostAvatarImageTarget(data: Data) throws -> AppRequest {
-        try targetBuilder.makePostDataTarget(path: "avatar", data: data, authorisation: .bearer)
+    func makePostAvatarImageRequest(data: Data) throws -> AppRequest {
+        try requestBuilder.makePostDataRequest(path: "avatar", data: data, authorisation: .bearer)
     }
 
-    func makePostRecipeImageTarget(data: Data) throws -> AppRequest {
-        try targetBuilder.makePostDataTarget(path: "recipe", data: data, authorisation: .bearer)
+    func makePostRecipeImageRequest(data: Data) throws -> AppRequest {
+        try requestBuilder.makePostDataRequest(path: "recipe", data: data, authorisation: .bearer)
     }
 }

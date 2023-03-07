@@ -10,10 +10,19 @@ import UIKit
 public final class RatingView: UIView {
 
     public struct Props: Equatable {
-        public let ratingText: String
 
-        public init(ratingText: String) {
+        // MARK: - Properties
+
+        public let ratingText: String
+        public let isReviewsLabelVisible: Bool
+        public let reviewsText: String
+
+        // MARK: - Lifecycle
+
+        public init(ratingText: String, isReviewsLabelVisible: Bool, reviewsText: String) {
             self.ratingText = ratingText
+            self.isReviewsLabelVisible = isReviewsLabelVisible
+            self.reviewsText = reviewsText
         }
     }
 
@@ -21,6 +30,7 @@ public final class RatingView: UIView {
 
     private let starImageView = UIImageView()
     private let textLabel = UILabel()
+    private let reviewsLabelLabel = UILabel()
 
     // MARK: - Lifecycle
 
@@ -55,7 +65,8 @@ public final class RatingView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [starImageView, textLabel, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [starImageView, textLabel, reviewsLabelLabel])
+        stackView.alignment = .center
         stackView.spacing = 6
         addSubview(stackView, withEdgeInsets: .zero)
     }
@@ -63,6 +74,8 @@ public final class RatingView: UIView {
     // MARK: - Public methods
 
     public func render(props: Props) {
-        textLabel.text = props.ratingText
+        textLabel.render(title: props.ratingText, color: .appBlack, typography: .other)
+        reviewsLabelLabel.isHidden = !props.isReviewsLabelVisible
+        reviewsLabelLabel.render(title: props.reviewsText, color: .textSecondary, typography: .bodyTwo)
     }
 }

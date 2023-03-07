@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-public protocol ErrorPresentable {
+public protocol ErrorPresentable where Self: UIViewController {
     func show(errorMessage: String)
 }
 
-extension ErrorPresentable where Self: UIViewController {
+extension ErrorPresentable {
     public func show(errorMessage: String) {
         guard let view = view else {
             return

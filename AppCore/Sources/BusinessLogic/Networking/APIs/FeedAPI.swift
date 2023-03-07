@@ -11,17 +11,17 @@ struct FeedAPI {
 
     // MARK: - Properties
 
-    private let targetBuilder: TargetBuilder
+    private let requestBuilder: RequestBuilder
 
     // MARK: - Lifecycle
 
     init(baseURL: URL) {
-        self.targetBuilder = TargetBuilder(baseURL: baseURL.appendingPathComponent("feed"))
+        self.requestBuilder = RequestBuilder(baseURL: baseURL.appendingPathComponent("feed"))
     }
 
     // MARK: - Public methods
 
-    func makeGetRecipesTarget() throws -> AppRequest {
-        try targetBuilder.makeGetTarget(path: "")
+    func makeGetRecipesRequest() throws -> AppRequest {
+        try requestBuilder.makeGetRequest(path: "", authorisation: .bearer)
     }
 }

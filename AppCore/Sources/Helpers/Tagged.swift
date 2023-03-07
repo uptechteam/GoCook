@@ -125,3 +125,7 @@ extension Tagged: LosslessStringConvertible where RawValue: LosslessStringConver
         self.init(rawValue: rawValue)
     }
 }
+
+extension Tagged: Sendable where RawValue: Sendable {
+
+}

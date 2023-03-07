@@ -24,7 +24,7 @@ final class RecipeView: UIView {
     private let recipeImageView = UIImageView()
     private let backButton = IconButton()
     private let likeButton = IconButton()
-    private let detailsView = RecipeDetailsView()
+    let detailsView = RecipeDetailsView()
     private var isFirstLayoutFinished = false
     private var scrollViewTopConstraint: NSLayoutConstraint!
     // callbacks
@@ -126,7 +126,7 @@ final class RecipeView: UIView {
     func render(props: Props) {
         headerView.render(props: props.headerViewProps)
         recipeImageView.set(props.recipeImageSource)
-        likeButton.set(image: props.isLiked ? .circleFavoriteFilled : .circleFavoriteEmpty)
+        likeButton.set(image: props.isLiked ? .circleWithFilledHeart : .circleWithEmptyHeart)
         detailsView.render(props: props.recipeDetailsViewProps)
     }
 
@@ -147,6 +147,7 @@ extension RecipeView: UIScrollViewDelegate {
         if delta != 0 {
             scrollView.contentOffset = CGPoint(x: 0, y: offset + delta)
         }
+
         renderHeaderVisibility()
     }
 }

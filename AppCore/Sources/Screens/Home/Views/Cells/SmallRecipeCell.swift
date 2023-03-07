@@ -87,7 +87,6 @@ final class SmallRecipeCell: UICollectionViewCell, ReusableCell {
     }
 
     private func setupLikeButton() {
-        likeButton.set(image: .circleFavoriteEmpty)
         likeButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapLike() }), for: .touchUpInside)
         contentView.addSubview(likeButton, constraints: [
             likeButton.topAnchor.constraint(equalTo: recipeImageView.topAnchor, constant: 4),
@@ -99,6 +98,7 @@ final class SmallRecipeCell: UICollectionViewCell, ReusableCell {
 
     func render(props: Props) {
         recipeImageView.set(props.recipeImageSource, placeholder: .mealPlaceholder)
+        likeButton.set(image: props.isLiked ? .circleWithFilledHeart : .circleWithEmptyHeart)
         nameLabel.render(title: props.name, color: .appBlack, typography: .subtitleTwo)
         ratingView.render(props: props.ratingViewProps)
     }

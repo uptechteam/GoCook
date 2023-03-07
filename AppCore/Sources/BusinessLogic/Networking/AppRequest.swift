@@ -1,5 +1,5 @@
 //
-//  AppTarget.swift
+//  AppRequest.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 17.06.2022.

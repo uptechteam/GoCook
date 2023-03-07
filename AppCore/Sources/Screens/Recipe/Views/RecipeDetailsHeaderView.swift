@@ -12,7 +12,9 @@ final class RecipeDetailsHeaderView: UIView {
 
     struct Props: Equatable {
         let name: String
+        let contentStateView: ContentStateView.Props
         let authorViewProps: RecipeAuthorView.Props
+        let isBottomContentVisible: Bool
         let ratingViewProps: RatingView.Props
         let timeViewProps: RecipeTimeView.Props
     }
@@ -21,6 +23,7 @@ final class RecipeDetailsHeaderView: UIView {
 
     private let separatorView = UIView()
     private let nameLabel = UILabel()
+    let contentStateView = ContentStateView()
     private let authorView = RecipeAuthorView()
     private let bottomStackView = UIStackView()
     private let ratingView = RatingView()
@@ -70,10 +73,13 @@ final class RecipeDetailsHeaderView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [separatorView, nameLabel, UIView(), authorView, bottomStackView])
+        let stackView = UIStackView(
+            arrangedSubviews: [separatorView, nameLabel, contentStateView, authorView, bottomStackView]
+        )
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.setCustomSpacing(14.5, after: separatorView)
+        stackView.setCustomSpacing(20, after: nameLabel)
         stackView.setCustomSpacing(20, after: authorView)
         addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 14.5, left: 24, bottom: 32, right: 24))
         NSLayoutConstraint.activate([
@@ -87,7 +93,9 @@ final class RecipeDetailsHeaderView: UIView {
 
     func render(props: Props) {
         nameLabel.render(title: props.name, color: .textMain, typography: .headerTwo)
+        contentStateView.render(props: props.contentStateView)
         authorView.render(props: props.authorViewProps)
+        bottomStackView.isHidden = !props.isBottomContentVisible
         ratingView.render(props: props.ratingViewProps)
         timeView.render(props: props.timeViewProps)
     }

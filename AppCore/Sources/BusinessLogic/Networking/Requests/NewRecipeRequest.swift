@@ -14,7 +14,7 @@ struct NewRecipeRequest: Encodable {
 
     let duration: Int
     let imageID: String
-    let ingredients: [IngredientRequest]
+    let ingredients: [IngredientRepresentable]
     let instructions: [String]
     let name: String
     let servings: Int
@@ -25,7 +25,7 @@ struct NewRecipeRequest: Encodable {
     init(newRecipe: NewRecipe) {
         self.duration = newRecipe.duration
         self.imageID = newRecipe.imageID
-        self.ingredients = newRecipe.ingredients.compactMap(IngredientRequest.init)
+        self.ingredients = newRecipe.ingredients.compactMap(IngredientRepresentable.init)
         self.instructions = newRecipe.instructions
         self.name = newRecipe.name
         self.servings = newRecipe.servings

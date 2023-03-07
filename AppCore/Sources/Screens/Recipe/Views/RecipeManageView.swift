@@ -12,6 +12,7 @@ import UIKit
 final class RecipeManageView: UIView {
 
     struct Props: Equatable {
+        let isVisible: Bool
         let isEditButtonVisible: Bool
         let isDeleteButtonVisible: Bool
     }
@@ -54,7 +55,7 @@ final class RecipeManageView: UIView {
     }
 
     private func setupShareButton() {
-        shareButton.setTitle("Share")
+        shareButton.setTitle(.recipeShare)
         shareButton.setImage(.share)
         shareButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapShare() }),
@@ -63,7 +64,7 @@ final class RecipeManageView: UIView {
     }
 
     private func setupEditButton() {
-        editButton.setTitle("Edit")
+        editButton.setTitle(.recipeEdit)
         editButton.setImage(.edit)
         editButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapEdit() }),
@@ -72,7 +73,7 @@ final class RecipeManageView: UIView {
     }
 
     private func setupDeleteButton() {
-        deleteButton.setTitle("Delete")
+        deleteButton.setTitle(.recipeDelete)
         deleteButton.setImage(.delete)
         deleteButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapDelete() }),
@@ -90,6 +91,7 @@ final class RecipeManageView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        isHidden = !props.isVisible
         editButton.isHidden = !props.isEditButtonVisible
         deleteButton.isHidden = !props.isDeleteButtonVisible
     }

@@ -6,39 +6,69 @@
 //
 
 import Foundation
+import Helpers
 
 public struct RecipeDetails: Equatable {
 
     // MARK: - Properties
 
-    public let id: Recipe.ID
-    public let name: String
     public let author: User
-    public let ratingDetails: RatingDetails
     public let duration: Int
+    public let id: Recipe.ID
     public let ingredients: [Ingredient]
     public let instructions: [String]
-    public let rating: Int?
+    public let liked: Bool
+    public let name: String
+    public var rating: Int
+    public let ratingDetails: RatingDetails
+    public let recipeImageSource: ImageSource
+    public let servingsCount: Int
 
     // MARK: - Lifecycle
 
     public init(
-        id: Recipe.ID,
-        name: String,
         author: User,
-        ratingDetails: RatingDetails,
         duration: Int,
+        id: Recipe.ID,
         ingredients: [Ingredient],
         instructions: [String],
-        rating: Int?
+        liked: Bool,
+        name: String,
+        rating: Int,
+        ratingDetails: RatingDetails,
+        recipeImageSource: ImageSource,
+        servingsCount: Int
     ) {
-        self.id = id
-        self.name = name
         self.author = author
-        self.ratingDetails = ratingDetails
         self.duration = duration
+        self.id = id
         self.ingredients = ingredients
         self.instructions = instructions
+        self.liked = liked
+        self.name = name
         self.rating = rating
+        self.ratingDetails = ratingDetails
+        self.recipeImageSource = recipeImageSource
+        self.servingsCount = servingsCount
+    }
+}
+
+// MARK: - EmptyDomainModel
+
+extension RecipeDetails: EmptyDomainModel {
+    public static var empty: RecipeDetails {
+        .init(
+            author: User(avatar: .asset(nil), id: User.ID(rawValue: "1"), username: ""),
+            duration: 0,
+            id: Recipe.ID(rawValue: "1"),
+            ingredients: [],
+            instructions: [],
+            liked: false,
+            name: "",
+            rating: 0,
+            ratingDetails: RatingDetails(rating: 0, reviewsCount: 0),
+            recipeImageSource: .asset(nil),
+            servingsCount: 0
+        )
     }
 }

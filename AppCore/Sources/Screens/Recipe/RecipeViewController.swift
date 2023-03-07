@@ -34,7 +34,6 @@ public final class RecipeViewController: UIViewController {
         self.actionCreator = actionCreator
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
-        setupUI()
     }
 
     required init?(coder: NSCoder) {
@@ -52,13 +51,10 @@ public final class RecipeViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
+        store.dispatch(action: .viewDidLoad)
     }
 
     // MARK: - Private methods
-
-    private func setupUI() {
-        navigationItem.title = "Recipe"
-    }
 
     private func setupBinding() {
         contentView.headerView.onDidTapBack = { [store] in
@@ -67,6 +63,22 @@ public final class RecipeViewController: UIViewController {
 
         contentView.onDidTapBack = { [store] in
             store.dispatch(action: .backTapped)
+        }
+
+        contentView.onDidTapLike = { [store] in
+            store.dispatch(action: .likeTapped)
+        }
+
+        contentView.headerView.onDidTapLike = { [store] in
+            store.dispatch(action: .likeTapped)
+        }
+
+        contentView.detailsView.headerView.contentStateView.onTapAction = { [store] in
+            store.dispatch(action: .retryTapped)
+        }
+
+        contentView.detailsView.feedbackView.onTapStar = { [store] index in
+            store.dispatch(action: .starTapped(index))
         }
 
         let state = store.$state.removeDuplicates()

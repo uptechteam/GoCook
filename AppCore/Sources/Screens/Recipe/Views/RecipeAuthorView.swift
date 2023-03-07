@@ -12,6 +12,7 @@ import UIKit
 final class RecipeAuthorView: UIView {
 
     struct Props: Equatable {
+        let isVisible: Bool
         let avatarImageSource: ImageSource
         let username: String
     }
@@ -60,6 +61,7 @@ final class RecipeAuthorView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        isHidden = !props.isVisible
         avatarImageView.set(props.avatarImageSource)
         renderUsername(props.username)
     }

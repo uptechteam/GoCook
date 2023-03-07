@@ -230,6 +230,7 @@ extension CreateRecipeViewController {
 
     private static func makeIngredientsViewProps(state: State) -> RecipeIngredientsView.Props {
         return .init(
+            isVisible: true,
             servingsDescription: .recipeIngredientsServings(state.stepTwoState.numberOfServings ?? 0),
             ingredientsProps: state.stepTwoState.ingredients.map { ingredient in
                 RecipeIngredientView.Props(
@@ -241,9 +242,18 @@ extension CreateRecipeViewController {
     }
 
     private static func makeRecipeInstructionsViewProps(state: State) -> RecipeInstructionsView.Props {
-        return .init(instructionsProps: state.stepThreeState.instructions.enumerated().map { index, instruction in
-            return RecipeInstructionView.Props(title: .recipeInstructionsStepTitle(index + 1), description: instruction)
-        })
+        let instructionsProps = state.stepThreeState.instructions
+            .enumerated()
+            .map { index, instruction in
+                return RecipeInstructionView.Props(
+                    title: .recipeInstructionsStepTitle(index + 1),
+                    description: instruction
+                )
+            }
+        return .init(
+            isVisible: true,
+            instructionsProps: instructionsProps
+        )
     }
 
     private static func makeStepsViewProps(state: State) -> CreateRecipeStepsView.Props {
