@@ -22,7 +22,7 @@ final class StepOneRecipeView: UIView {
 
     private let imageView = UIImageView()
     private let threeDotsImageView = UIImageView()
-    private let spinnerView = SpinnerView()
+    private let spinnerView = SpinnerView(circleColor: .appBlack)
     private let errorView = ErrorView()
     // callbacks
     var onDidTapImage: () -> Void = { }

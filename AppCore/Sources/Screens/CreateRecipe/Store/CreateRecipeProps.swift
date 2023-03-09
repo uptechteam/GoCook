@@ -259,6 +259,7 @@ extension CreateRecipeViewController {
     private static func makeStepsViewProps(state: State) -> CreateRecipeStepsView.Props {
         return .init(
             title: .createRecipeNavigationTitle(state.step + 1),
+            isBackButtonVisible: state.step > 0,
             isNextButtonVisible: state.step != 3,
             isFinishButtonVisible: state.step == 3 && !state.isUploadingRecipe,
             isLoaderVisible: state.isUploadingRecipe
