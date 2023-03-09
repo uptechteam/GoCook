@@ -27,6 +27,10 @@ public final class CreateRecipeViewController: UIViewController {
     private unowned let coordinator: CreateRecipeCoordinating
     private var cancellables = [AnyCancellable]()
 
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
+        .darkContent
+    }
+
     // MARK: - Lifecycle
 
     public init(
@@ -88,7 +92,7 @@ public final class CreateRecipeViewController: UIViewController {
 
     // swiftlint:disable:next function_body_length
     private func setupBinding() {
-        contentView.stepOneView.recipeView.onDidTapImage = { [store] in
+        contentView.stepOneView.recipeImageView.onDidTapImage = { [store] in
             store.dispatch(action: .recipeImageTapped)
         }
 
@@ -134,6 +138,10 @@ public final class CreateRecipeViewController: UIViewController {
 
         contentView.stepThreeView.instructionsView.onDidTapAddInstruction = { [store] in
             store.dispatch(action: .addInstructionTapped)
+        }
+
+        contentView.stepFourView.headerView.recipeImageView.onDidTapImage = { [store] in
+            store.dispatch(action: .recipeImageTapped)
         }
 
         contentView.stepsView.onDidTapBack = { [store] in

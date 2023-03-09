@@ -14,7 +14,7 @@ final class StepOneView: UIView {
     struct Props: Equatable {
         let isVisible: Bool
         let errorViewProps: ErrorView.Props
-        let recipeViewProps: StepOneRecipeView.Props
+        let recipeViewProps: CreateRecipeImageView.Props
         let mealNameInputViewProps: UserInputView.Props
         let items: [CategoryCell.Props]
         let isCategoryErrorLabelVisible: Bool
@@ -27,7 +27,7 @@ final class StepOneView: UIView {
 
     private let scrollView = UIScrollView()
     private let errorView = ErrorView()
-    let recipeView = StepOneRecipeView()
+    let recipeImageView = CreateRecipeImageView()
     let mealNameInputView = UserInputView()
     private let categoryLabel = UILabel()
     private lazy var dataSource = makeDataSource()
@@ -97,10 +97,10 @@ final class StepOneView: UIView {
 
     private func setupStackView() {
         let stackView = UIStackView(
-            arrangedSubviews: [recipeView, mealNameInputView, categoryLabel, collectionView, categoryErrorLabel]
+            arrangedSubviews: [recipeImageView, mealNameInputView, categoryLabel, collectionView, categoryErrorLabel]
         )
         stackView.axis = .vertical
-        stackView.setCustomSpacing(48, after: recipeView)
+        stackView.setCustomSpacing(48, after: recipeImageView)
         stackView.setCustomSpacing(20, after: mealNameInputView)
         stackView.setCustomSpacing(24, after: categoryLabel)
         stackView.setCustomSpacing(8, after: collectionView)
@@ -130,7 +130,7 @@ final class StepOneView: UIView {
     func render(props: Props) {
         isHidden = !props.isVisible
         errorView.render(props: props.errorViewProps)
-        recipeView.render(props: props.recipeViewProps)
+        recipeImageView.render(props: props.recipeViewProps)
         mealNameInputView.render(props: props.mealNameInputViewProps)
         collectionViewHeightConstraint.constant = CGFloat(props.items.count * 24 + (props.items.count - 1) * 20)
         dataSource.apply(sections: [0], items: [props.items])

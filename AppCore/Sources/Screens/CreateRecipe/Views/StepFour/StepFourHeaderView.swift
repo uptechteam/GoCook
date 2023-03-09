@@ -12,14 +12,14 @@ import UIKit
 final class StepFourHeaderView: UIView {
 
     struct Props: Equatable {
-        let recipeImageSource: ImageSource
+        let recipeImageView: CreateRecipeImageView.Props
         let name: String
         let timeViewProps: RecipeTimeView.Props
     }
 
     // MARK: - Properties
 
-    private let recipeImageView = UIImageView()
+    let recipeImageView = CreateRecipeImageView()
     private let nameLabel = UILabel()
     private let timeStackView = UIStackView()
     private let timeView = RecipeTimeView()
@@ -83,7 +83,7 @@ final class StepFourHeaderView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        recipeImageView.set(props.recipeImageSource)
+        recipeImageView.render(props: props.recipeImageView)
         nameLabel.text = props.name
         timeView.render(props: props.timeViewProps)
     }

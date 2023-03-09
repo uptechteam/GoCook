@@ -69,6 +69,7 @@ public final class UserInputView: UIView {
     private func setupTextField() {
         textField.font = Typography.subtitleThree.font
         textField.textColor = .appBlack
+        textField.tintColor = .appBlack
         textField.delegate = self
     }
 

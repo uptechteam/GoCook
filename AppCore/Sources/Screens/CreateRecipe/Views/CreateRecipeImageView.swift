@@ -1,15 +1,15 @@
 //
-//  StepOneRecipeView.swift
+//  CreateRecipeImageView.swift
 //  
 //
-//  Created by Oleksii Andriushchenko on 28.06.2022.
+//  Created by Oleksii Andriushchenko on 09.03.2023.
 //
 
 import Helpers
 import Library
 import UIKit
 
-final class StepOneRecipeView: UIView {
+final class CreateRecipeImageView: UIView {
 
     struct Props: Equatable {
         let recipeImageSource: ImageSource?
@@ -22,7 +22,7 @@ final class StepOneRecipeView: UIView {
 
     private let imageView = UIImageView()
     private let threeDotsImageView = UIImageView()
-    private let spinnerView = SpinnerView()
+    private let spinnerView = SpinnerView(circleColor: .appBlack)
     private let errorView = ErrorView()
     // callbacks
     var onDidTapImage: () -> Void = { }
@@ -115,3 +115,4 @@ final class StepOneRecipeView: UIView {
         onDidTapImage()
     }
 }
+

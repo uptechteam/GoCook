@@ -20,7 +20,7 @@ final class StepFourView: UIView {
     // MARK: - Properties
 
     private let scrollView = UIScrollView()
-    private let headerView = StepFourHeaderView()
+    let headerView = StepFourHeaderView()
     private let ingredientsView = RecipeIngredientsView()
     private let instructionsView = RecipeInstructionsView()
 

@@ -9,6 +9,12 @@ import UIKit
 
 public final class BaseNavigationController: UINavigationController {
 
+    // MARK: - Properties
+
+    public override var childForStatusBarStyle: UIViewController? {
+        presentedViewController ?? topViewController
+    }
+
     // MARK: - Lifecycle
 
     public init() {

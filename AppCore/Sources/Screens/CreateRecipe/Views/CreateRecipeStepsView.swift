@@ -12,6 +12,7 @@ final class CreateRecipeStepsView: UIView {
 
     struct Props: Equatable {
         let title: String
+        let isBackButtonVisible: Bool
         let isNextButtonVisible: Bool
         let isFinishButtonVisible: Bool
         let isLoaderVisible: Bool
@@ -122,6 +123,7 @@ final class CreateRecipeStepsView: UIView {
 
     func render(props: Props) {
         titleLabel.text = props.title
+        backButton.alpha = props.isBackButtonVisible ? 1 : 0
         nextButton.isHidden = !props.isNextButtonVisible
         finishButton.isHidden = !props.isFinishButtonVisible
         spinnerView.toggle(isAnimating: props.isLoaderVisible)
