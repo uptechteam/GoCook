@@ -178,6 +178,14 @@ extension CreateRecipeViewController {
             newState.stepOneState.recipeImageState = .empty
 
         case .finishTapped:
+            guard
+                newState.stepOneState.isDataValid,
+                newState.stepTwoState.isDataValid,
+                newState.stepThreeState.isDataValid
+            else {
+                break
+            }
+
             newState.isUploadingRecipe = true
 
         case .imagePicked(let imageSource):

@@ -13,10 +13,11 @@ extension CreateRecipeViewController {
     static func makeUploadMiddleware(dependencies: Dependencies) -> Store.Middleware {
         return Store.makeMiddleware { dispatch, getState, next, action in
 
+            let oldState = getState()
             await next(action)
             let state = getState()
 
-            guard case .finishTapped = action else {
+            guard state.isUploadingRecipe, !oldState.isUploadingRecipe else {
                 return
             }
 

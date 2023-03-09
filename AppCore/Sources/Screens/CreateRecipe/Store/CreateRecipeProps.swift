@@ -35,15 +35,6 @@ extension CreateRecipeViewController {
         )
     }
 
-    private static func makeRecipeViewProps(state: State) -> StepOneRecipeView.Props {
-        return .init(
-            recipeImageSource: state.stepOneState.recipeImageState.uploadedImageSource,
-            isThreeDostImageViewVisible: state.stepOneState.recipeImageState.uploadedImageSource != nil,
-            isLoaderVisible: state.stepOneState.recipeImageState.isUploading,
-            errorViewProps: makeRecipeErrorViewProps(state: state)
-        )
-    }
-
     private static func makeRecipeErrorViewProps(state: State) -> ErrorView.Props {
         return ErrorView.Props(
             isVisible: !state.stepOneState.isRecipeImageValid,
@@ -218,7 +209,7 @@ extension CreateRecipeViewController {
 
     private static func makeStepFourHeaderViewProps(state: State) -> StepFourHeaderView.Props {
         return .init(
-            recipeImageSource: .asset(state.stepOneState.recipeImageState.uploadedImageSource?.image),
+            recipeImageView: makeRecipeViewProps(state: state),
             name: state.stepOneState.mealName,
             timeViewProps: makeTimeViewProps(state: state)
         )
@@ -263,6 +254,17 @@ extension CreateRecipeViewController {
             isNextButtonVisible: state.step != 3,
             isFinishButtonVisible: state.step == 3 && !state.isUploadingRecipe,
             isLoaderVisible: state.isUploadingRecipe
+        )
+    }
+
+    // MARK: - Extra
+
+    private static func makeRecipeViewProps(state: State) -> CreateRecipeImageView.Props {
+        return .init(
+            recipeImageSource: state.stepOneState.recipeImageState.uploadedImageSource,
+            isThreeDostImageViewVisible: state.stepOneState.recipeImageState.uploadedImageSource != nil,
+            isLoaderVisible: state.stepOneState.recipeImageState.isUploading,
+            errorViewProps: makeRecipeErrorViewProps(state: state)
         )
     }
 }
