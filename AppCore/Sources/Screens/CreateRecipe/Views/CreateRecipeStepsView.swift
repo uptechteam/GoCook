@@ -123,7 +123,7 @@ final class CreateRecipeStepsView: UIView {
 
     func render(props: Props) {
         titleLabel.text = props.title
-        backButton.isHidden = !props.isBackButtonVisible
+        backButton.alpha = props.isBackButtonVisible ? 1 : 0
         nextButton.isHidden = !props.isNextButtonVisible
         finishButton.isHidden = !props.isFinishButtonVisible
         spinnerView.toggle(isAnimating: props.isLoaderVisible)

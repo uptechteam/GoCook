@@ -27,6 +27,10 @@ public final class CreateRecipeViewController: UIViewController {
     private unowned let coordinator: CreateRecipeCoordinating
     private var cancellables = [AnyCancellable]()
 
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
+        .darkContent
+    }
+
     // MARK: - Lifecycle
 
     public init(

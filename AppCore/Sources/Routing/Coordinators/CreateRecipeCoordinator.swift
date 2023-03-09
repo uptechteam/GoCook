@@ -34,7 +34,7 @@ final class CreateRecipeCoordinator: Coordinating {
     init(container: DependencyContainer, presentingViewController: UIViewController) {
         self.container = container
         self.presentingViewController = presentingViewController
-        self.navigationController = UINavigationController()
+        self.navigationController = BaseNavigationController()
         setupUI()
     }
 
@@ -70,7 +70,7 @@ extension CreateRecipeCoordinator: CreateRecipeCoordinating {
     func didTapInput(details: InputDetails) {
         let envelope = InputEnvelope(details: details)
         let viewController = InputViewController.resolve(from: container, envelope: envelope, coordinator: self)
-        viewController.modalPresentationStyle = .overCurrentContext
+        viewController.modalPresentationStyle = .overFullScreen
         viewController.modalTransitionStyle = .crossDissolve
         navigationController.present(viewController, animated: true)
     }

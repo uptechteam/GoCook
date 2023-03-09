@@ -51,6 +51,10 @@ public final class InputViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
+    }
+
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         contentView.activateTextField()
     }
 
@@ -94,6 +98,7 @@ public final class InputViewController: UIViewController {
     private func navigate(by route: Route) {
         switch route {
         case .finish(let details):
+            contentView.deactivateTextField()
             coordinator.didFinish(inputDetails: details)
         }
     }

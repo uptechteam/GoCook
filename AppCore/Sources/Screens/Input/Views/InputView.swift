@@ -33,6 +33,7 @@ final class InputView: UIView {
     private let saveButton = Button(config: ButtonConfig(buttonSize: .medium, colorConfig: .secondary))
     let unitView = InputUnitView()
     private var bottomConstraint: NSLayoutConstraint!
+    private var isFirstLayoutCompleted = false
     // callbacks
     var onDidChangeText: (String) -> Void = { _ in }
     var onDidTapSave: () -> Void = { }
@@ -48,13 +49,17 @@ final class InputView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func layoutIfNeeded() {
+        super.layoutIfNeeded()
+        isFirstLayoutCompleted = true
+    }
+
     // MARK: - Set up
 
     private func setup() {
         setupContentView()
         setupContainerView()
         setupBottomBackgroundView()
-        setupTitleLabel()
         setupTextField()
         setupSaveButton()
         setupStackView()
@@ -84,11 +89,6 @@ final class InputView: UIView {
             bottomBackgroundView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         bringSubviewToFront(containerView)
-    }
-
-    private func setupTitleLabel() {
-        titleLabel.render(typography: .subtitleTwo)
-        titleLabel.textColor = .textMain
     }
 
     private func setupTextField() {
@@ -130,7 +130,7 @@ final class InputView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        titleLabel.text = props.title
+        titleLabel.render(title: props.title, color: .textMain, typography: .subtitleTwo)
         textField.text = props.text
         textField.attributedPlaceholder = NSAttributedString(
             string: props.placeholder,
@@ -144,8 +144,16 @@ final class InputView: UIView {
         textField.becomeFirstResponder()
     }
 
+    func deactivateTextField() {
+        textField.resignFirstResponder()
+    }
+
     func updateBottomInset(keyboardHeight: CGFloat) {
         bottomConstraint.constant = -(keyboardHeight)
+        guard isFirstLayoutCompleted else {
+            return
+        }
+
         UIView.animate(withDuration: 0.2) {
             self.layoutIfNeeded()
         }
@@ -161,6 +169,7 @@ final class InputView: UIView {
         case .numpadPad:
             textField.keyboardType = .numberPad
         }
+
         textField.reloadInputViews()
     }
 }
