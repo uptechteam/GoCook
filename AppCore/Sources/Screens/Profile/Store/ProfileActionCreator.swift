@@ -24,19 +24,20 @@ extension ProfileViewController {
 
         // MARK: - Public methods
 
+        func observeRecipes(handler: @escaping (Action) -> Void) {
+            Task { [self] in
+                await self.dependencies.recipesFacade.observeFeed()
+                    .map(Action.updateRecipes)
+                    .sink(receiveValue: handler)
+                    .store(in: &self.cancellables)
+            }
+        }
+
         func subscribeToProfile(handler: @escaping (Action) -> Void) {
             dependencies.profileFacade.profile
                 .map(Action.updateProfile)
                 .sink(receiveValue: handler)
                 .store(in: &cancellables)
-        }
-
-        func observeRecipes(handler: @escaping (Action) -> Void) {
-            Task { [dependencies] in
-                await dependencies.recipesFacade.observeFeed()
-                    .map(Action.updateRecipes)
-                    .sink(receiveValue: handler)
-            }
         }
     }
 }

@@ -65,8 +65,7 @@ public final class ProfileViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
-
-        actionCreator.subscribeToProfile(handler: store.dispatch)
+        store.dispatch(action: .viewDidLoad)
     }
 
     // MARK: - Private methods
@@ -93,6 +92,7 @@ public final class ProfileViewController: UIViewController {
         }
 
         actionCreator.observeRecipes(handler: store.dispatch)
+        actionCreator.subscribeToProfile(handler: store.dispatch)
 
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
