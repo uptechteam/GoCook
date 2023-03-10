@@ -9,6 +9,43 @@ import Helpers
 import UIKit
 
 extension UICollectionViewDiffableDataSource {
+    public func applyWithReconfiguring(
+        sections: [SectionIdentifierType],
+        items: [[ItemIdentifierType]],
+        animatingDifferences: Bool = true,
+        completion: (() -> Void)? = nil
+    ) {
+        var existingSnapshot = snapshot()
+        let sectionsToDelete = existingSnapshot.sectionIdentifiers.filter { !sections.contains($0) }
+        existingSnapshot.deleteSections(sectionsToDelete)
+        var lastSection: SectionIdentifierType?
+        for (section, sectionItems) in zip(sections, items) {
+            let uniqueSectionItems = getUniqueItems(from: sectionItems)
+            if existingSnapshot.sectionIdentifiers.contains(section) {
+                let existingItems = existingSnapshot.itemIdentifiers(inSection: section)
+                if uniqueSectionItems == existingItems {
+                    existingSnapshot.reconfigureItems(existingItems)
+                } else {
+                    existingSnapshot.deleteItems(existingItems)
+                    existingSnapshot.appendItems(uniqueSectionItems, toSection: section)
+                }
+            } else if let previousSection = lastSection {
+                existingSnapshot.insertSections([section], afterSection: previousSection)
+                existingSnapshot.appendItems(uniqueSectionItems, toSection: section)
+            } else if let existingSection = existingSnapshot.sectionIdentifiers.first {
+                existingSnapshot.insertSections([section], beforeSection: existingSection)
+                existingSnapshot.appendItems(uniqueSectionItems, toSection: section)
+            } else {
+                existingSnapshot.appendSections([section])
+                existingSnapshot.appendItems(uniqueSectionItems, toSection: section)
+            }
+
+            lastSection = section
+        }
+
+        apply(existingSnapshot, animatingDifferences: animatingDifferences, completion: completion)
+    }
+
     public func apply(
         sections: [SectionIdentifierType],
         items: [[ItemIdentifierType]],
