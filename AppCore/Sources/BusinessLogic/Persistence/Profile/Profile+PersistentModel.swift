@@ -20,7 +20,7 @@ extension Profile: PersistenceModel {
 
     public init?(entity: PersistentProfile) {
         guard
-            let id = entity.id.flatMap(Profile.ID.init(rawValue:)),
+            let id = entity.id.flatMap(User.ID.init(rawValue:)),
             let username = entity.username
         else {
             return nil

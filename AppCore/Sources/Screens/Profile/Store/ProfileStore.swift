@@ -43,13 +43,13 @@ extension ProfileViewController {
         // MARK: - Properties
 
         public let profileFacade: ProfileFacading
-        public let recipesFacade: RecipesFacading
+        public let profileRecipesFacade: ProfileRecipesFacading
 
         // MARK: - Lifecycle
 
-        public init(profileFacade: ProfileFacading, recipesFacade: RecipesFacading) {
+        public init(profileFacade: ProfileFacading, profileRecipesFacade: ProfileRecipesFacading) {
             self.profileFacade = profileFacade
-            self.recipesFacade = recipesFacade
+            self.profileRecipesFacade = profileRecipesFacade
         }
     }
 

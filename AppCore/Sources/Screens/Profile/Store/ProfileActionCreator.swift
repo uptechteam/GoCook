@@ -26,7 +26,7 @@ extension ProfileViewController {
 
         func observeRecipes(handler: @escaping (Action) -> Void) {
             Task { [self] in
-                await self.dependencies.recipesFacade.observeFeed()
+                await self.dependencies.profileRecipesFacade.observeFeed()
                     .map(Action.updateRecipes)
                     .sink(receiveValue: handler)
                     .store(in: &self.cancellables)

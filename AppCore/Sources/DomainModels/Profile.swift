@@ -12,15 +12,13 @@ public struct Profile: Equatable {
 
     // MARK: Properties
 
-    public typealias ID = Tagged<Profile, String>
-
-    public let id: ID
+    public let id: User.ID
     public let username: String
     public let avatar: ImageSource
 
     // MARK: - Lifecycle
 
-    public init(id: ID, username: String, avatar: ImageSource) {
+    public init(id: User.ID, username: String, avatar: ImageSource) {
         self.id = id
         self.username = username
         self.avatar = avatar

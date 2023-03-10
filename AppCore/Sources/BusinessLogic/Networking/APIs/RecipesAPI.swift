@@ -38,6 +38,11 @@ struct RecipesAPI {
         try requestBuilder.makeGetRequest(path: "\(id.rawValue)", authorisation: .bearer)
     }
 
+    func makeGetRecipesRequest(authorID: User.ID) throws -> AppRequest {
+        let parameters = ["authorID": authorID.rawValue]
+        return try requestBuilder.makeGetRequest(path: "", parameters: parameters)
+    }
+
     func makeGetRecipesRequest(query: String) throws -> AppRequest {
         let parameters = ["query": query]
         return try requestBuilder.makeGetRequest(path: "", parameters: parameters)
