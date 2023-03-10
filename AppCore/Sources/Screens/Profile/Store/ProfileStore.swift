@@ -27,6 +27,7 @@ extension ProfileViewController {
         case editTapped
         case favoriteTapped(IndexPath)
         case getPage(Result<Void, Error>)
+        case recipeTapped(IndexPath)
         case scrolledToEnd
         case scrolledToRefresh
         case settingsTapped
@@ -39,6 +40,7 @@ extension ProfileViewController {
     enum Route {
         case createRecipe
         case edit
+        case recipe(Recipe)
         case settings
         case signIn
     }
@@ -110,6 +112,9 @@ extension ProfileViewController {
 
         case .getPage(let result):
             newState.recipes.adjustState(accordingTo: result)
+
+        case .recipeTapped(let indexPath):
+            break
 
         case .scrolledToEnd:
             break
