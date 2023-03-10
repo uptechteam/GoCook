@@ -49,8 +49,8 @@ extension CreateRecipeViewController {
         case nextTapped
         case recipeImageTapped
         case servingsAmountChanged(Int)
-        case uploadImage(DomainModelAction<String>)
-        case uploadRecipe(DomainModelAction<Void>)
+        case uploadImage(Result<String, Error>)
+        case uploadRecipe(Result<Void, Error>)
     }
 
     enum Alert {
@@ -260,26 +260,19 @@ extension CreateRecipeViewController {
         case .servingsAmountChanged(let amount):
             newState.stepTwoState.numberOfServings = amount
 
-        case .uploadImage(let modelAction):
-            switch modelAction {
+        case .uploadImage(let result):
+            switch result {
             case .success(let imageID):
                 newState.stepOneState.recipeImageState.upload(with: imageID)
 
             case .failure:
                 newState.stepOneState.recipeImageState = .error(message: .createRecipeStepOneUploadError)
-
-            case .trigger:
-                break
             }
 
-        case .uploadRecipe(let modelAction):
+        case .uploadRecipe(let result):
             newState.isUploadingRecipe = false
-            switch modelAction {
-            case .success:
+            if case .success = result {
                 newState.route = .init(value: .close)
-
-            default:
-                break
             }
         }
 

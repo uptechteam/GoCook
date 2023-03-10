@@ -33,7 +33,7 @@ extension SignUpViewController {
         case nameValidated(Result<Bool, Error>)
         case passwordChanged(String)
         case passwordValidated(Bool)
-        case signUp(DomainModelAction<Void>)
+        case signUp(Result<Void, Error>)
         case signUpTapped
         case signUpWithAppleTapped
         case skipTapped
@@ -120,17 +120,14 @@ extension SignUpViewController {
                 newState.isSigningUp = true
             }
 
-        case .signUp(let modelAction):
+        case .signUp(let result):
             newState.isSigningUp = false
-            switch modelAction {
+            switch result {
             case .failure(let error):
                 newState.alert = .init(value: .error(error))
 
             case .success:
                 newState.route = .init(value: .finish)
-
-            default:
-                break
             }
 
         case .signUpTapped:
