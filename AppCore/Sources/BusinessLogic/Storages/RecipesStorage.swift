@@ -19,7 +19,7 @@ public extension RecipesStoraging {
     }
 }
 
-actor RecipesStorage: RecipesStoraging {
+public actor RecipesStorage: RecipesStoraging {
 
     // MARK: - Properties
 
