@@ -12,9 +12,9 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
 
     // MARK: - Properties
 
-    private var model: Model?
-    public private(set) var isLoading: Bool = false
     public private(set) var error: Error?
+    public private(set) var isLoading: Bool = false
+    private var model: Model?
 
     /// Check wether model is not nil
     public var isPresent: Bool {
@@ -27,8 +27,16 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
 
     // MARK: - Lifecycle
 
-    public init() {
-        model = nil
+    public init(model: Model? = nil) {
+        self.error = nil
+        self.isLoading = false
+        self.model = model
+    }
+
+    private init(error: Error?, isLoading: Bool, model: Model?) {
+        self.error = error
+        self.isLoading = isLoading
+        self.model = model
     }
 
     // MARK: - Public methods
@@ -40,37 +48,8 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
         model ?? .empty
     }
 
-    /// Update state according to action
-    /// - Parameter action: Action with 3 possible cases.
-    public mutating func handle(action: DomainModelAction<Model>) {
-        switch action {
-        case .failure(let error):
-            setError(error)
-
-        case .success(let domainModel):
-            update(with: domainModel)
-
-        case .trigger:
-            toggleIsLoading(on: true)
-        }
-    }
-
-    /// Update state according to action. In case of success it only stops loading.
-    /// - Parameter voidAction: Action with 3 possible cases.
-    public mutating func handle(voidAction: DomainModelAction<Void>) {
-        switch voidAction {
-        case .failure(let error):
-            setError(error)
-
-        case .success:
-            toggleIsLoading(on: false)
-
-        case .trigger:
-            toggleIsLoading(on: true)
-        }
-    }
-
-    /// Update state with result.
+    /// Update state according to result.
+    ///
     /// - Parameter result: Result with either model or error.
     public mutating func handle(result: Result<Model, Error>) {
         switch result {
@@ -82,44 +61,86 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
         }
     }
 
+    /// Map model into new type preserving loading and error.
+    ///
+    /// - Parameter transform: Method to transform `Model` into `NewModel`.
+    /// - Returns: New `DomainModelState` with type `NewModel`.
+    public func map<NewModel>(transform: (Model) -> NewModel) -> DomainModelState<NewModel> {
+        return DomainModelState<NewModel>(
+            error: error,
+            isLoading: isLoading,
+            model: self.model.map(transform)
+        )
+    }
+
+    /// Update loading state. Reset error if loading is started.
+    ///
+    /// - Parameter on: new loading status.
+    public mutating func toggleIsLoading(on: Bool) {
+        self.isLoading = on
+        if on {
+            self.error = nil
+        }
+    }
+
+    // MARK: - Private methods
+
     /// Set error and toggle `isLoading` off.
     /// - Parameter error: error.
-    public mutating func setError(_ error: Error) {
+    private mutating func setError(_ error: Error) {
         self.error = error
         self.isLoading = false
     }
 
-    /// Update loading state. Reset error if loading is started
-    /// - Parameter on: new loading status
-    public mutating func toggleIsLoading(on: Bool) {
-        isLoading = on
-        if on {
-            error = nil
-        }
-    }
-
     /// Update domain model with new value and toggle `isLoading` off.
+    ///
     /// - Parameter model: New value.
     public mutating func update(with model: Model) {
         self.model = model
         self.isLoading = false
     }
+}
 
-    public static func == <T: EmptyDomainModel & Equatable>(lhs: DomainModelState<T>, rhs: DomainModelState<T>) -> Bool {
+// MARK: - Equatable
+
+extension DomainModelState {
+    public static func == <T: EmptyDomainModel & Equatable>(
+        lhs: DomainModelState<T>,
+        rhs: DomainModelState<T>
+    ) -> Bool {
         return lhs.model == rhs.model
-            && lhs.isLoading == rhs.isLoading
-            && lhs.error?.localizedDescription == rhs.error?.localizedDescription
+        && lhs.isLoading == rhs.isLoading
+        && lhs.error?.localizedDescription == rhs.error?.localizedDescription
     }
 }
 
-extension DomainModelState where Model: Collection {
-    public var items: Model {
-        return model ?? .empty
+// MARK: - RangeReplaceableCollection
+
+extension DomainModelState where Model: RangeReplaceableCollection {
+    public mutating func append(_ result: Result<Model, Error>) {
+        switch result {
+        case .failure(let error):
+            setError(error)
+
+        case .success(let newModel):
+            self.isLoading = false
+            self.model = items + newModel
+        }
     }
 }
+
+// MARK: - Model == Bool
 
 extension DomainModelState where Model == Bool {
     public var value: Bool {
+        model ?? .empty
+    }
+}
+
+// MARK: - Model == Collection
+
+extension DomainModelState where Model: Collection {
+    public var items: Model {
         return model ?? .empty
     }
 }

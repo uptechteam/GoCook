@@ -30,7 +30,7 @@ extension SignUpViewController {
     public enum Action {
         case loginTapped
         case nameChanged(String)
-        case nameValidated(DomainModelAction<Bool>)
+        case nameValidated(Result<Bool, Error>)
         case passwordChanged(String)
         case passwordValidated(Bool)
         case signUp(DomainModelAction<Void>)
@@ -107,8 +107,8 @@ extension SignUpViewController {
                 newState.nameValidation.toggleIsLoading(on: true)
             }
 
-        case .nameValidated(let modelAction):
-            newState.nameValidation.handle(action: modelAction)
+        case .nameValidated(let result):
+            newState.nameValidation.handle(result: result)
 
         case .passwordChanged(let text):
             newState.isPasswordValid = true

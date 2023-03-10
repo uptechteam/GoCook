@@ -35,11 +35,12 @@ public extension HomeViewController {
         case categoryTapped(IndexPath)
         case favoriteTapped(IndexPath, isTrending: Bool)
         case filtersTapped
-        case getFeed(DomainModelAction<[RecipeCategory]>)
+        case getFeed(Result<[RecipeCategory], Error>)
         case getRecipes(Result<[Recipe], Error>)
         case recipeTapped(IndexPath, isTrending: Bool)
         case searchQueryChanged(String)
         case viewAllTapped(Int, isTrending: Bool)
+        case viewDidLoad
     }
 
     enum Route {
@@ -112,8 +113,8 @@ extension HomeViewController {
         case .filtersTapped:
             newState.route = .init(value: .filters)
 
-        case .getFeed(let modelAction):
-            newState.recipeCategories.handle(action: modelAction)
+        case .getFeed(let result):
+            newState.recipeCategories.handle(result: result)
 
         case .getRecipes(let result):
             newState.isGettingRecipes = false
@@ -142,6 +143,9 @@ extension HomeViewController {
             }
 
             newState.route = .init(value: .recipeCategory(category))
+
+        case .viewDidLoad:
+            newState.recipeCategories.toggleIsLoading(on: true)
         }
 
         return newState
