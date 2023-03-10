@@ -15,6 +15,7 @@ extension ProfileViewController {
 
     public struct State: Equatable {
         var profile: Profile?
+        var recipes: DomainModelState<[Recipe]>
         var route: AnyIdentifiable<Route>?
     }
 
@@ -24,6 +25,7 @@ extension ProfileViewController {
         case settingsTapped
         case signInTapped
         case updateProfile(Profile?)
+        case viewDidLoad
     }
 
     enum Route {
@@ -57,6 +59,7 @@ extension ProfileViewController {
     private static func makeInitialState(dependencies: Dependencies) -> State {
         return State(
             profile: nil,
+            recipes: DomainModelState(),
             route: nil
         )
     }
@@ -82,6 +85,9 @@ extension ProfileViewController {
 
         case .updateProfile(let profile):
             newState.profile = profile
+
+        case .viewDidLoad:
+            newState.recipes.toggleIsLoading(on: true)
         }
 
         return newState
