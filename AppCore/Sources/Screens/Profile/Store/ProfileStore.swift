@@ -24,6 +24,7 @@ extension ProfileViewController {
         case editTapped
         case getFirstPage(Result<Void, Error>)
         case getNextPage(Result<Void, Error>)
+        case scrolledToRefresh
         case settingsTapped
         case signInTapped
         case updateProfile(Profile?)
@@ -88,6 +89,9 @@ extension ProfileViewController {
 
         case .getNextPage(let result):
             newState.recipes.adjustState(accordingTo: result)
+
+        case .scrolledToRefresh:
+            newState.recipes.toggleIsLoading(on: true)
 
         case .settingsTapped:
             newState.route = .init(value: .settings)

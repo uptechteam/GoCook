@@ -28,7 +28,10 @@ final class ProfileView: UIView {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     private lazy var dataSource = makeDataSource()
     private lazy var dataStore = [String: ProfileRecipeCell.Props]()
+    private let refreshControl = UIRefreshControl()
     let infoView = ProfileInfoView()
+    // callbacks
+    var onScrollToRefresh: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -48,6 +51,7 @@ final class ProfileView: UIView {
         setupStackView()
         setupCollectionView()
         setupLayout()
+        setupRefreshControl()
     }
 
     private func setupContentView() {
@@ -84,6 +88,17 @@ final class ProfileView: UIView {
         collectionView.setCollectionViewLayout(layout, animated: false)
     }
 
+    private func setupRefreshControl() {
+        refreshControl.addAction(
+            UIAction(handler: { [weak self] _ in
+                self?.collectionView.isScrollEnabled = false
+                self?.onScrollToRefresh()
+            }),
+            for: .valueChanged
+        )
+        collectionView.addSubview(refreshControl)
+    }
+
     // MARK: - Public methods
 
     func render(props: Props) {
@@ -91,6 +106,9 @@ final class ProfileView: UIView {
         recipesHeaderView.render(props: props.recipesHeaderViewProps)
         renderCollection(props: props)
         infoView.render(props: props.infoViewProps)
+        if refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
+        }
     }
 
     // MARK: - Private methods
@@ -115,6 +133,7 @@ final class ProfileView: UIView {
 
     private func renderCollection(props: Props) {
         collectionView.isHidden = !props.isCollectionViewVisible
+        collectionView.isScrollEnabled = true
         props.items.forEach { dataStore[$0.id] = $0 }
         dataSource.applyWithReconfiguring(
             sections: [0],
