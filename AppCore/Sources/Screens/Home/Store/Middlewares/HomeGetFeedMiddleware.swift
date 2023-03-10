@@ -10,11 +10,12 @@ import Foundation
 extension HomeViewController {
 
     static func makeGetFeedMiddleware(dependencies: Dependencies) -> Store.Middleware {
-        return Store.makeMiddleware { dispatch, _, next, action in
-
+        return Store.makeMiddleware { dispatch, getState, next, action in
+            let oldState = getState()
             await next(action)
+            let state = getState()
 
-            guard case .getFeed(.trigger) = action else {
+            guard state.recipeCategories.isLoading, !oldState.recipeCategories.isLoading else {
                 return
             }
 

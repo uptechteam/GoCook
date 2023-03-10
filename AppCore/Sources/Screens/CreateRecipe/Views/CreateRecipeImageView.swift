@@ -115,4 +115,3 @@ final class CreateRecipeImageView: UIView {
         onDidTapImage()
     }
 }
-

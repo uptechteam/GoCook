@@ -30,6 +30,24 @@ extension DependencyContainer {
             // MARK: - Facades
 
             container.register(.singleton, type: ProfileFacading.self, factory: ProfileFacade.init)
+            container.register(.singleton, type: ProfileRecipesFacading.self, factory: ProfileRecipesFacade.init)
+            container.register(.unique, type: RecipesFacading.self) { (userID: User.ID) in
+                let factory: RecipesFacadeFactory = try container.resolve()
+                return try factory.produceFacade(
+                    userID: userID,
+                    producer: {
+                        RecipesFacade(
+                            userID: userID,
+                            recipesClient: try container.resolve(),
+                            recipesStorage: try container.resolve()
+                        )
+                    }
+                )
+            }
+
+            // MARK: - Factories
+
+            container.register(.singleton, type: RecipesFacadeFactory.self, factory: RecipesFacadeFactory.init)
 
             // MARK: - Managers
 
@@ -37,15 +55,16 @@ extension DependencyContainer {
 
             // MARK: - Storages
 
-            container.register(.singleton, type: UserCredentialsStoraging.self, factory: UserCredentialsStorage.init)
-            container.register(.singleton, type: SecureStorage.self, factory: KeychainStorage.init)
-            container.register(.singleton, type: Storage.self, factory: { UserDefaults.standard })
             container.register(.singleton, type: ProfileStoraging.self) {
                 ProfileStorage(persistenceManager: try container.resolve() as PersistenceManager<Profile>)
             }
             container.register(.singleton, type: PersistenceManager<Profile>.self) {
                 PersistenceManager<Profile>(containerName: "PersistentProfile", entityName: "PersistentProfile")
             }
+            container.register(.singleton, type: RecipesStoraging.self, factory: RecipesStorage.init)
+            container.register(.singleton, type: SecureStorage.self, factory: KeychainStorage.init)
+            container.register(.singleton, type: Storage.self, factory: { UserDefaults.standard })
+            container.register(.singleton, type: UserCredentialsStoraging.self, factory: UserCredentialsStorage.init)
 
             // MARK: - View controllers injection
 

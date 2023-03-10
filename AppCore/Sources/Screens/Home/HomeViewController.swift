@@ -58,8 +58,7 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
         super.viewDidLoad()
         setupUI()
         setupBinding()
-
-        store.dispatch(action: .getFeed(.trigger))
+        store.dispatch(action: .viewDidLoad)
     }
 
     // MARK: - Private methods

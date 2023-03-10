@@ -13,25 +13,32 @@ final class ProfileView: UIView {
     struct Props: Equatable {
         let headerViewProps: ProfileHeaderView.Props
         let recipesHeaderViewProps: ProfileRecipesHeaderView.Props
+        let isCollectionViewVisible: Bool
+        let items: [ProfileRecipeCell.Props]
         let infoViewProps: ProfileInfoView.Props
     }
+
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, String>
+    typealias DataSource = UICollectionViewDiffableDataSource<Int, String>
 
     // MARK: - Properties
 
     let headerView = ProfileHeaderView()
     let recipesHeaderView = ProfileRecipesHeaderView()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
+    private lazy var dataSource = makeDataSource()
+    private lazy var dataStore = [String: ProfileRecipeCell.Props]()
     let infoView = ProfileInfoView()
 
     // MARK: - Lifecycle
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
-    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        guard subviews.isEmpty else {
+            return
+        }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        setup()
     }
 
     // MARK: - Set up
@@ -39,6 +46,8 @@ final class ProfileView: UIView {
     private func setup() {
         setupContentView()
         setupStackView()
+        setupCollectionView()
+        setupLayout()
     }
 
     private func setupContentView() {
@@ -46,7 +55,7 @@ final class ProfileView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [headerView, recipesHeaderView, infoView])
+        let stackView = UIStackView(arrangedSubviews: [headerView, recipesHeaderView, collectionView, infoView])
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.setCustomSpacing(24, after: headerView)
@@ -54,8 +63,25 @@ final class ProfileView: UIView {
         NSLayoutConstraint.activate([
             headerView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             recipesHeaderView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
+            collectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             infoView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -140)
         ])
+    }
+
+    private func setupCollectionView() {
+        collectionView.alwaysBounceVertical = true
+        collectionView.backgroundColor = .clear
+        collectionView.contentInset.top = 24
+        collectionView.delegate = self
+        collectionView.register(cell: ProfileRecipeCell.self)
+        collectionView.showsVerticalScrollIndicator = false
+    }
+
+    private func setupLayout() {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: bounds.width - 2 * 24, height: 120)
+        layout.minimumLineSpacing = 16
+        collectionView.setCollectionViewLayout(layout, animated: false)
     }
 
     // MARK: - Public methods
@@ -63,6 +89,43 @@ final class ProfileView: UIView {
     func render(props: Props) {
         headerView.render(props: props.headerViewProps)
         recipesHeaderView.render(props: props.recipesHeaderViewProps)
+        renderCollection(props: props)
         infoView.render(props: props.infoViewProps)
     }
+
+    // MARK: - Private methods
+
+    private func makeDataSource() -> DataSource {
+        return DataSource(
+            collectionView: collectionView,
+            cellProvider: { [weak self] collectionView, indexPath, id in
+                guard let props = self?.dataStore[id] else {
+                    return nil
+                }
+
+                let cell: ProfileRecipeCell = collectionView.dequeueReusableCell(for: indexPath)
+                cell.render(props: props)
+                cell.onTapFavorite = {
+
+                }
+                return cell
+            }
+        )
+    }
+
+    private func renderCollection(props: Props) {
+        collectionView.isHidden = !props.isCollectionViewVisible
+        props.items.forEach { dataStore[$0.id] = $0 }
+        dataSource.applyWithReconfiguring(
+            sections: [0],
+            items: [props.items.map(\.id)],
+            animatingDifferences: false
+        )
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension ProfileView: UICollectionViewDelegate {
+
 }
