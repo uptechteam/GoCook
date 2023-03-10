@@ -32,6 +32,7 @@ final class ProfileView: UIView {
     let infoView = ProfileInfoView()
     // callbacks
     var onScrollToRefresh: () -> Void = { }
+    var onScrollToEnd: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -126,6 +127,10 @@ final class ProfileView: UIView {
                 cell.onTapFavorite = {
 
                 }
+                if indexPath.item == collectionView.numberOfItems(inSection: 0) - 1 {
+                    self?.onScrollToEnd()
+                }
+
                 return cell
             }
         )
@@ -138,7 +143,7 @@ final class ProfileView: UIView {
         dataSource.applyWithReconfiguring(
             sections: [0],
             items: [props.items.map(\.id)],
-            animatingDifferences: false
+            animatingDifferences: true
         )
     }
 }

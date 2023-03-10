@@ -95,6 +95,10 @@ public final class ProfileViewController: UIViewController {
             store.dispatch(action: .scrolledToRefresh)
         }
 
+        contentView.onScrollToEnd = { [store] in
+            store.dispatch(action: .scrolledToEnd)
+        }
+
         actionCreator.observeRecipes(handler: store.dispatch)
         actionCreator.subscribeToProfile(handler: store.dispatch)
 

@@ -22,8 +22,8 @@ extension ProfileViewController {
     public enum Action {
         case addNewRecipeTapped
         case editTapped
-        case getFirstPage(Result<Void, Error>)
-        case getNextPage(Result<Void, Error>)
+        case getPage(Result<Void, Error>)
+        case scrolledToEnd
         case scrolledToRefresh
         case settingsTapped
         case signInTapped
@@ -56,10 +56,11 @@ extension ProfileViewController {
 
     public static func makeStore(dependencies: Dependencies) -> Store {
         let getFirstPageMiddleware = makeGetFirstPageMiddleware(dependencies: dependencies)
+        let getNextPageMiddleware = makeGetNextPageMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
             reducer: reduce,
-            middlewares: [getFirstPageMiddleware]
+            middlewares: [getFirstPageMiddleware, getNextPageMiddleware]
         )
     }
 
@@ -84,11 +85,11 @@ extension ProfileViewController {
         case .editTapped:
             newState.route = .init(value: .edit)
 
-        case .getFirstPage(let result):
+        case .getPage(let result):
             newState.recipes.adjustState(accordingTo: result)
 
-        case .getNextPage(let result):
-            newState.recipes.adjustState(accordingTo: result)
+        case .scrolledToEnd:
+            break
 
         case .scrolledToRefresh:
             newState.recipes.toggleIsLoading(on: true)
