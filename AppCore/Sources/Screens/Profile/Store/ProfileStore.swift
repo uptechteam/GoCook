@@ -7,6 +7,7 @@
 
 import BusinessLogic
 import DomainModels
+import Foundation
 import Helpers
 
 extension ProfileViewController {
@@ -14,6 +15,7 @@ extension ProfileViewController {
     public typealias Store = ReduxStore<State, Action>
 
     public struct State: Equatable {
+        var pendingRecipe: Recipe?
         var profile: Profile?
         var recipes: DomainModelState<[Recipe]>
         var route: AnyIdentifiable<Route>?
@@ -21,7 +23,9 @@ extension ProfileViewController {
 
     public enum Action {
         case addNewRecipeTapped
+        case changeIsFavorite(Result<Void, Error>)
         case editTapped
+        case favoriteTapped(IndexPath)
         case getPage(Result<Void, Error>)
         case scrolledToEnd
         case scrolledToRefresh
@@ -45,27 +49,35 @@ extension ProfileViewController {
 
         public let profileFacade: ProfileFacading
         public let profileRecipesFacade: ProfileRecipesFacading
+        public let recipesFacade: RecipesFacading
 
         // MARK: - Lifecycle
 
-        public init(profileFacade: ProfileFacading, profileRecipesFacade: ProfileRecipesFacading) {
+        public init(
+            profileFacade: ProfileFacading,
+            profileRecipesFacade: ProfileRecipesFacading,
+            recipesFacade: RecipesFacading
+        ) {
             self.profileFacade = profileFacade
             self.profileRecipesFacade = profileRecipesFacade
+            self.recipesFacade = recipesFacade
         }
     }
 
     public static func makeStore(dependencies: Dependencies) -> Store {
+        let changeIsFavoriteMiddleware = makeChangeIsFavoriteMiddleware(dependencies: dependencies)
         let getFirstPageMiddleware = makeGetFirstPageMiddleware(dependencies: dependencies)
         let getNextPageMiddleware = makeGetNextPageMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
             reducer: reduce,
-            middlewares: [getFirstPageMiddleware, getNextPageMiddleware]
+            middlewares: [changeIsFavoriteMiddleware, getFirstPageMiddleware, getNextPageMiddleware]
         )
     }
 
     private static func makeInitialState(dependencies: Dependencies) -> State {
         return State(
+            pendingRecipe: nil,
             profile: nil,
             recipes: DomainModelState(),
             route: nil
@@ -74,6 +86,7 @@ extension ProfileViewController {
 }
 
 extension ProfileViewController {
+    // swiftlint:disable:next cyclomatic_complexity
     static func reduce(state: State, action: Action) -> State {
 
         var newState = state
@@ -82,8 +95,18 @@ extension ProfileViewController {
         case .addNewRecipeTapped:
             newState.route = .init(value: .createRecipe)
 
+        case .changeIsFavorite:
+            newState.pendingRecipe = nil
+
         case .editTapped:
             newState.route = .init(value: .edit)
+
+        case .favoriteTapped(let indexPath):
+            guard let recipe = newState.recipes.items[safe: indexPath.item], newState.pendingRecipe == nil else {
+                break
+            }
+
+            newState.pendingRecipe = recipe
 
         case .getPage(let result):
             newState.recipes.adjustState(accordingTo: result)

@@ -32,6 +32,7 @@ final class ProfileView: UIView {
     let infoView = ProfileInfoView()
     // callbacks
     var onScrollToRefresh: () -> Void = { }
+    var onTapFavorite: (IndexPath) -> Void = { _ in }
     var onScrollToEnd: () -> Void = { }
 
     // MARK: - Lifecycle
@@ -124,8 +125,10 @@ final class ProfileView: UIView {
 
                 let cell: ProfileRecipeCell = collectionView.dequeueReusableCell(for: indexPath)
                 cell.render(props: props)
-                cell.onTapFavorite = {
-
+                cell.onTapFavorite = { [weak self, unowned cell] in
+                    if let indexPath = self?.collectionView.indexPath(for: cell) {
+                        self?.onTapFavorite(indexPath)
+                    }
                 }
                 if indexPath.item == collectionView.numberOfItems(inSection: 0) - 1 {
                     self?.onScrollToEnd()

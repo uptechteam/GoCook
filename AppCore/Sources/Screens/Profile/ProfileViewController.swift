@@ -95,6 +95,10 @@ public final class ProfileViewController: UIViewController {
             store.dispatch(action: .scrolledToRefresh)
         }
 
+        contentView.onTapFavorite = { [store] indexPath in
+            store.dispatch(action: .favoriteTapped(indexPath))
+        }
+
         contentView.onScrollToEnd = { [store] in
             store.dispatch(action: .scrolledToEnd)
         }
