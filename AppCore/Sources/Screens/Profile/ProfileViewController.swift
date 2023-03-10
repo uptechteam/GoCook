@@ -92,6 +92,8 @@ public final class ProfileViewController: UIViewController {
             store.dispatch(action: .addNewRecipeTapped)
         }
 
+        actionCreator.observeRecipes(handler: store.dispatch)
+
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 

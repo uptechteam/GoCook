@@ -30,6 +30,7 @@ extension DependencyContainer {
             // MARK: - Facades
 
             container.register(.singleton, type: ProfileFacading.self, factory: ProfileFacade.init)
+            container.register(.singleton, type: RecipesFacading.self, factory: RecipesFacade.init)
 
             // MARK: - Managers
 
@@ -37,15 +38,16 @@ extension DependencyContainer {
 
             // MARK: - Storages
 
-            container.register(.singleton, type: UserCredentialsStoraging.self, factory: UserCredentialsStorage.init)
-            container.register(.singleton, type: SecureStorage.self, factory: KeychainStorage.init)
-            container.register(.singleton, type: Storage.self, factory: { UserDefaults.standard })
             container.register(.singleton, type: ProfileStoraging.self) {
                 ProfileStorage(persistenceManager: try container.resolve() as PersistenceManager<Profile>)
             }
             container.register(.singleton, type: PersistenceManager<Profile>.self) {
                 PersistenceManager<Profile>(containerName: "PersistentProfile", entityName: "PersistentProfile")
             }
+            container.register(.singleton, type: RecipesStoraging.self, factory: RecipesStorage.init)
+            container.register(.singleton, type: SecureStorage.self, factory: KeychainStorage.init)
+            container.register(.singleton, type: Storage.self, factory: { UserDefaults.standard })
+            container.register(.singleton, type: UserCredentialsStoraging.self, factory: UserCredentialsStorage.init)
 
             // MARK: - View controllers injection
 

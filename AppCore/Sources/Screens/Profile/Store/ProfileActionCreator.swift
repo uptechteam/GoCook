@@ -4,7 +4,7 @@
 //
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
-import Foundation
+
 import Combine
 
 extension ProfileViewController {
@@ -29,6 +29,14 @@ extension ProfileViewController {
                 .map(Action.updateProfile)
                 .sink(receiveValue: handler)
                 .store(in: &cancellables)
+        }
+
+        func observeRecipes(handler: @escaping (Action) -> Void) {
+            Task { [dependencies] in
+                await dependencies.recipesFacade.observeFeed()
+                    .map(Action.updateRecipes)
+                    .sink(receiveValue: handler)
+            }
         }
     }
 }

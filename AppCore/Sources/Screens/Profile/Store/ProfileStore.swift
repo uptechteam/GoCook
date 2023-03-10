@@ -22,9 +22,12 @@ extension ProfileViewController {
     public enum Action {
         case addNewRecipeTapped
         case editTapped
+        case getFirstPage(Result<Void, Error>)
+        case getNextPage(Result<Void, Error>)
         case settingsTapped
         case signInTapped
         case updateProfile(Profile?)
+        case updateRecipes([Recipe])
         case viewDidLoad
     }
 
@@ -40,19 +43,22 @@ extension ProfileViewController {
         // MARK: - Properties
 
         public let profileFacade: ProfileFacading
+        public let recipesFacade: RecipesFacading
 
         // MARK: - Lifecycle
 
-        public init(profileFacade: ProfileFacading) {
+        public init(profileFacade: ProfileFacading, recipesFacade: RecipesFacading) {
             self.profileFacade = profileFacade
+            self.recipesFacade = recipesFacade
         }
     }
 
     public static func makeStore(dependencies: Dependencies) -> Store {
+        let getFirstPageMiddleware = makeGetFirstPageMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
             reducer: reduce,
-            middlewares: []
+            middlewares: [getFirstPageMiddleware]
         )
     }
 
@@ -77,6 +83,12 @@ extension ProfileViewController {
         case .editTapped:
             newState.route = .init(value: .edit)
 
+        case .getFirstPage(let result):
+            newState.recipes.adjustState(accordingTo: result)
+
+        case .getNextPage(let result):
+            newState.recipes.adjustState(accordingTo: result)
+
         case .settingsTapped:
             newState.route = .init(value: .settings)
 
@@ -85,6 +97,9 @@ extension ProfileViewController {
 
         case .updateProfile(let profile):
             newState.profile = profile
+
+        case .updateRecipes(let recipes):
+            newState.recipes.update(with: recipes)
 
         case .viewDidLoad:
             newState.recipes.toggleIsLoading(on: true)

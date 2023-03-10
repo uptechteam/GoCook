@@ -48,16 +48,26 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
         model ?? .empty
     }
 
-    /// Update state according to result.
+    /// Update model and adjust error and loading states.
     ///
     /// - Parameter result: Result with either model or error.
     public mutating func handle(result: Result<Model, Error>) {
+        adjustState(accordingTo: result)
+        if case .success(let newModel) = result {
+            update(with: newModel)
+        }
+    }
+
+    /// Update error and loading states according to result.
+    ///
+    /// - Parameter result: Result with either model or error.
+    public mutating func adjustState<T>(accordingTo result: Result<T, Error>) {
         switch result {
         case .failure(let error):
-            setError(error)
+            self.error = error
 
-        case .success(let domainModel):
-            update(with: domainModel)
+        case .success:
+            self.isLoading = false
         }
     }
 
@@ -83,21 +93,11 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
         }
     }
 
-    // MARK: - Private methods
-
-    /// Set error and toggle `isLoading` off.
-    /// - Parameter error: error.
-    private mutating func setError(_ error: Error) {
-        self.error = error
-        self.isLoading = false
-    }
-
-    /// Update domain model with new value and toggle `isLoading` off.
+    /// Update domain model with new value without changing error and loading states.
     ///
     /// - Parameter model: New value.
     public mutating func update(with model: Model) {
         self.model = model
-        self.isLoading = false
     }
 }
 
@@ -118,12 +118,12 @@ extension DomainModelState {
 
 extension DomainModelState where Model: RangeReplaceableCollection {
     public mutating func append(_ result: Result<Model, Error>) {
+        self.isLoading = false
         switch result {
         case .failure(let error):
-            setError(error)
+            self.error = error
 
         case .success(let newModel):
-            self.isLoading = false
             self.model = items + newModel
         }
     }
