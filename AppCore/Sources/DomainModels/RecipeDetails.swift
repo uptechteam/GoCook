@@ -17,7 +17,7 @@ public struct RecipeDetails: Equatable {
     public let id: Recipe.ID
     public let ingredients: [Ingredient]
     public let instructions: [String]
-    public let isFavorite: Bool
+    public var isFavorite: Bool
     public let name: String
     public var rating: Int?
     public let ratingDetails: RatingDetails

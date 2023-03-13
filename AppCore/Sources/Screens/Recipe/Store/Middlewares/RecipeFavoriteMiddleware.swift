@@ -23,12 +23,12 @@ extension RecipeViewController {
             do {
                 let recipeDetails: RecipeDetails
                 if state.recipeDetails.isFavorite {
-                    recipeDetails = try await dependencies.recipesClient.removeFromFavorites(recipeID: state.recipe.id)
+                    try await dependencies.recipesFacade.removeFromFavorites(recipeID: state.recipe.id)
                 } else {
-                    recipeDetails = try await dependencies.recipesClient.addToFavorites(recipeID: state.recipe.id)
+                    try await dependencies.recipesFacade.addToFavorites(recipeID: state.recipe.id)
                 }
 
-                await dispatch(.favorite(.success(recipeDetails)))
+                await dispatch(.favorite(.success(())))
             } catch {
                 await dispatch(.favorite(.failure(error)))
             }

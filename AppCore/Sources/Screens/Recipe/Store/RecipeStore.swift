@@ -30,7 +30,7 @@ extension RecipeViewController {
 
     public enum Action {
         case backTapped
-        case favorite(Result<RecipeDetails, Error>)
+        case favorite(Result<Void, Error>)
         case favoriteTapped
         case getRecipeDetails(Result<RecipeDetails, Error>)
         case rate(Result<RecipeDetails, Error>)
@@ -48,11 +48,13 @@ extension RecipeViewController {
         // MARK: - Properties
 
         public let recipesClient: RecipesClienting
+        public let recipesFacade: RecipesFacading
 
         // MARK: - Lifecycle
 
-        public init(recipesClient: RecipesClienting) {
+        public init(recipesClient: RecipesClienting, recipesFacade: RecipesFacading) {
             self.recipesClient = recipesClient
+            self.recipesFacade = recipesFacade
         }
     }
 
@@ -86,7 +88,15 @@ extension RecipeViewController {
             newState.route = .init(value: .back)
 
         case .favorite(let result):
-            newState.recipeDetails.handle(result: result)
+            switch result {
+            case .success:
+                var details = newState.recipeDetails.getModel()
+                details.isFavorite.toggle()
+                newState.recipeDetails.handle(result: .success(details))
+
+            case .failure(let error):
+                newState.recipeDetails.handle(result: .failure(error))
+            }
 
         case .favoriteTapped:
             break
