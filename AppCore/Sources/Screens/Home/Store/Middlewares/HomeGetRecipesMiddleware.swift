@@ -30,7 +30,7 @@ extension HomeViewController {
                         return
                     }
 
-                    let recipes = try await dependencies.recipesClient.fetchRecipes(query: query)
+                    let recipes = try await dependencies.recipesClient.fetchRecipes(query: query, page: 0)
                     guard !Task.isCancelled else {
                         return
                     }

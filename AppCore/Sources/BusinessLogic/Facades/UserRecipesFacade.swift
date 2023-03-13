@@ -1,5 +1,5 @@
 //
-//  RecipesFeedFacade.swift
+//  UserRecipesFacade.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 10.03.2023.
@@ -9,13 +9,13 @@ import Combine
 import DomainModels
 import Helpers
 
-public protocol RecipesFeedFacading: Sendable {
+public protocol UserRecipesFacading: Sendable {
     func getFirstPage() async throws
     func getNextPage() async throws
     func observeFeed() async -> AnyPublisher<[Recipe], Never>
 }
 
-public actor RecipesFeedFacade: RecipesFeedFacading {
+public actor UserRecipesFacade: UserRecipesFacading {
 
     // MARK: - Properties
 

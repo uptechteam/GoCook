@@ -48,8 +48,12 @@ struct RecipesAPI {
         return try requestBuilder.makeGetRequest(path: "", parameters: parameters)
     }
 
-    func makeGetRecipesRequest(query: String) throws -> AppRequest {
-        let parameters = ["query": query]
+    func makeGetRecipesRequest(query: String, page: Int) throws -> AppRequest {
+        let parameters = [
+            "page": "\(page)",
+            "pageSize": "\(AppConstants.Pagination.pageSize)",
+            "query": query
+        ]
         return try requestBuilder.makeGetRequest(path: "", parameters: parameters)
     }
 
