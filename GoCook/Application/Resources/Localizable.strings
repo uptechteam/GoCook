@@ -6,6 +6,11 @@
   
 */
 
+// MARK: - Favorites
+
+"favorites.title" = "Favorites";
+"favorites.search.placeholder" = "Search...";
+
 // MARK: - Home
 
 "home.search.placeholder" = "Search...";

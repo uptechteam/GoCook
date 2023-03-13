@@ -6,11 +6,19 @@
 //
 
 import Combine
+import DomainModels
+import Helpers
 
 public actor FavoritesPresenter {
 
     struct State: Equatable {
+        var query: String
+        var recipes: DomainModelState<[Recipe]>
+        var route: AnyIdentifiable<Route>?
+    }
 
+    enum Route {
+        case didTapFilter
     }
 
     public struct Dependencies {
@@ -29,13 +37,22 @@ public actor FavoritesPresenter {
     // Dependencies
     private let dependencies: Dependencies
     // Variables
-    @Published private(set) var state: State = State()
+    @Published private(set) var state: State
 
     // MARK: - Lifecycle
 
     public init(dependencies: Dependencies) {
         self.dependencies = dependencies
+        self.state = State(query: "", recipes: DomainModelState(), route: nil)
     }
 
     // MARK: - Public methods
+
+    func filterTapped() {
+        state.route = .init(value: .didTapFilter)
+    }
+
+    func searchQueryChanged(_ query: String) {
+        state.query = query
+    }
 }

@@ -23,8 +23,8 @@ final class HomeView: UIView {
     let feedView = HomeFeedView()
     let searchResultsView = HomeSearchResultsView()
     // callbacks
-    var onDidChangeSearchQuery: (String) -> Void = { _ in }
-    var onDidTapFilters: () -> Void = { }
+    var onChangeSearchQuery: (String) -> Void = { _ in }
+    var onTapFilters: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -70,7 +70,7 @@ final class HomeView: UIView {
 
     private func setupFiltersButton() {
         filtersButton.set(image: .filters)
-        filtersButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapFilters() }), for: .touchUpInside)
+        filtersButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapFilters() }), for: .touchUpInside)
         NSLayoutConstraint.activate([
             filtersButton.widthAnchor.constraint(equalToConstant: 24)
         ])
@@ -144,7 +144,7 @@ extension HomeView: UITextFieldDelegate {
             return false
         }
 
-        onDidChangeSearchQuery(newText)
+        onChangeSearchQuery(newText)
         return true
     }
 }

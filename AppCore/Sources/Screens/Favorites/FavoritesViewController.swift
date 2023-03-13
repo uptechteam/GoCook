@@ -49,6 +49,28 @@ public final class FavoritesViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupBinding() {
+        contentView.onTapFilters = asSyncClosure { [presenter] in
+            await presenter.filterTapped()
+        }
 
+        contentView.onChangeSearchQuery = asSyncClosure { [presenter] text in
+            await presenter.searchQueryChanged(text)
+        }
+    }
+}
+
+public func asSyncClosure<T>(callback: @escaping @Sendable (T) async -> Void) -> ((T) -> Void) {
+    return { argument in
+        Task {
+            await callback(argument)
+        }
+    }
+}
+
+public func asSyncClosure(callback: @escaping @Sendable () async -> Void) -> (() -> Void) {
+    return {
+        Task {
+            await callback()
+        }
     }
 }

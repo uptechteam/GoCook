@@ -73,11 +73,11 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
     }
 
     private func setupBinding() {
-        contentView.onDidChangeSearchQuery = { [store] query in
+        contentView.onChangeSearchQuery = { [store] query in
             store.dispatch(action: .searchQueryChanged(query))
         }
 
-        contentView.onDidTapFilters = { [store] in
+        contentView.onTapFilters = { [store] in
             store.dispatch(action: .filtersTapped)
         }
 
