@@ -45,7 +45,7 @@ struct RecipesAPI {
             "page": "\(page)",
             "pageSize": "\(AppConstants.Pagination.pageSize)"
         ]
-        return try requestBuilder.makeGetRequest(path: "", parameters: parameters)
+        return try requestBuilder.makeGetRequest(path: "", parameters: parameters, authorisation: .bearer)
     }
 
     func makeGetRecipesRequest(query: String, page: Int) throws -> AppRequest {
@@ -54,7 +54,7 @@ struct RecipesAPI {
             "pageSize": "\(AppConstants.Pagination.pageSize)",
             "query": query
         ]
-        return try requestBuilder.makeGetRequest(path: "", parameters: parameters)
+        return try requestBuilder.makeGetRequest(path: "", parameters: parameters, authorisation: .bearer)
     }
 
     func makePostAddToFavoritesRequest(recipeID: Recipe.ID) throws -> AppRequest {
