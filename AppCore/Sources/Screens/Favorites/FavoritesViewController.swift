@@ -16,21 +16,15 @@ public final class FavoritesViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let store: Store
-    private let actionCreator: ActionCreator
+    private let presenter: FavoritesPresenter
     private let contentView = FavoritesView()
     private unowned let coordinator: FavoritesCoordinating
     private var cancellables = [AnyCancellable]()
 
     // MARK: - Lifecycle
 
-    public init(
-        store: Store,
-        actionCreator: ActionCreator,
-        coordinator: FavoritesCoordinating
-    ) {
-        self.store = store
-        self.actionCreator = actionCreator
+    public init(presenter: FavoritesPresenter, coordinator: FavoritesCoordinating) {
+        self.presenter = presenter
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }

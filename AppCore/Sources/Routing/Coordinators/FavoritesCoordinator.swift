@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
+import Dip
 import Favorites
 import Library
 import UIKit
@@ -13,6 +14,7 @@ final class FavoritesCoordinator: Coordinating {
 
     // MARK: - Properties
 
+    private let container: DependencyContainer
     private let navigationController: UINavigationController
 
     var rootViewController: UIViewController {
@@ -21,7 +23,8 @@ final class FavoritesCoordinator: Coordinating {
 
     // MARK: - Lifecycle
 
-    init(navigationController: UINavigationController) {
+    init(container: DependencyContainer, navigationController: UINavigationController) {
+        self.container = container
         self.navigationController = navigationController
         setupUI()
     }
@@ -29,7 +32,7 @@ final class FavoritesCoordinator: Coordinating {
     // MARK: - Public methods
 
     func start() {
-        let viewController = makeViewController()
+        let viewController = FavoritesViewController.resolve(from: container, coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
     }
 
@@ -40,15 +43,6 @@ final class FavoritesCoordinator: Coordinating {
             .font: Typography.subtitleTwo.font,
             .foregroundColor: UIColor.textMain
         ]
-    }
-
-    private func makeViewController() -> FavoritesViewController {
-        let dependencies = FavoritesViewController.Dependencies()
-        return FavoritesViewController(
-            store: FavoritesViewController.makeStore(dependencies: dependencies),
-            actionCreator: FavoritesViewController.ActionCreator(dependencies: dependencies),
-            coordinator: self
-        )
     }
 }
 

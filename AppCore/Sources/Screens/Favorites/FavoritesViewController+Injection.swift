@@ -11,23 +11,17 @@ extension FavoritesViewController {
     public static func inject(into container: DependencyContainer) {
         container.register(
             .shared,
-            type: FavoritesViewController.Dependencies.self,
-            factory: FavoritesViewController.Dependencies.init
+            type: FavoritesPresenter.Dependencies.self,
+            factory: FavoritesPresenter.Dependencies.init
         )
         container.register(
             .unique,
-            type: FavoritesViewController.Store.self,
-            factory: FavoritesViewController.makeStore
-        )
-        container.register(
-            .unique,
-            type: FavoritesViewController.ActionCreator.self,
-            factory: FavoritesViewController.ActionCreator.init
+            type: FavoritesPresenter.self,
+            factory: FavoritesPresenter.init
         )
         container.register(.unique, type: FavoritesViewController.self) { coordinator in
             return FavoritesViewController(
-                store: try container.resolve(),
-                actionCreator: try container.resolve(),
+                presenter: try container.resolve(),
                 coordinator: coordinator
             )
         }

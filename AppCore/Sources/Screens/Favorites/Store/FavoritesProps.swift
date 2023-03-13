@@ -6,7 +6,7 @@
 //
 
 extension FavoritesViewController {
-    static func makeProps(from state: State) -> FavoritesView.Props {
+    static func makeProps(from state: FavoritesPresenter.State) -> FavoritesView.Props {
         .init()
     }
 }
