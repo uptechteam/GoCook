@@ -23,8 +23,8 @@ struct RecipeCategoryResponse: Decodable {
         }
 
         return RecipeCategory(
-            category: category,
-            recipes: recipes.map(\.domainModel)
+            recipes: recipes.map(\.domainModel),
+            category: category
         )
     }
 }

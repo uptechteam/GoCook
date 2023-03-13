@@ -24,7 +24,7 @@ public extension HomeViewController {
         var route: AnyIdentifiable<Route>?
 
         var trendingCategory: RecipeCategory {
-            recipeCategories.items.first(where: \.isTrendingCategory) ?? .init(category: .trending, recipes: [])
+            recipeCategories.items.first(where: \.isTrendingCategory) ?? .init(recipes: [], category: .trending)
         }
 
         var otherCategories: [RecipeCategory] {
