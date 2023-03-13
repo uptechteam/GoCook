@@ -11,7 +11,7 @@ import UIKit
 final class FavoritesView: UIView {
 
     struct Props: Equatable {
-
+        let recipesViewProps: FavoriteRecipesView.Props
     }
 
     // MARK: - Properties
@@ -20,6 +20,7 @@ final class FavoritesView: UIView {
     private let titleLabel = UILabel()
     let filtersButton = IconButton()
     let searchTextField = SearchTextField()
+    let recipesView = FavoriteRecipesView()
     // callbacks
     var onTapFilters: () -> Void = { }
     var onChangeSearchQuery: (String) -> Void = { _ in }
@@ -55,9 +56,10 @@ final class FavoritesView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [titleStackView, searchTextField, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [titleStackView, searchTextField, recipesView])
         stackView.axis = .vertical
-        stackView.spacing = 18
+        stackView.setCustomSpacing(18, after: titleStackView)
+        stackView.setCustomSpacing(24, after: searchTextField)
         addSubview(stackView, constraints: [
             stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
@@ -92,7 +94,7 @@ final class FavoritesView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-
+        recipesView.render(props: props.recipesViewProps)
     }
 
     // MARK: - Private methods

@@ -6,10 +6,11 @@
 //
 
 import Combine
+import Helpers
 import UIKit
 
 public protocol FavoritesCoordinating: AnyObject {
-
+    func didTapFilters()
 }
 
 public final class FavoritesViewController: UIViewController {
@@ -44,33 +45,42 @@ public final class FavoritesViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
+        Task { [presenter] in
+            await presenter.viewDidLoad()
+        }
     }
 
     // MARK: - Private methods
 
     private func setupBinding() {
-        contentView.onTapFilters = asSyncClosure { [presenter] in
-            await presenter.filterTapped()
+        contentView.onTapFilters = toSyncClosure { [presenter] in
+            await presenter.filtersTapped()
         }
 
-        contentView.onChangeSearchQuery = asSyncClosure { [presenter] text in
+        contentView.onChangeSearchQuery = toSyncClosure { [presenter] text in
             await presenter.searchQueryChanged(text)
         }
-    }
-}
 
-public func asSyncClosure<T>(callback: @escaping @Sendable (T) async -> Void) -> ((T) -> Void) {
-    return { argument in
-        Task {
-            await callback(argument)
-        }
-    }
-}
+        let state = presenter.$state.removeDuplicates()
+            .subscribe(on: DispatchQueue.main)
 
-public func asSyncClosure(callback: @escaping @Sendable () async -> Void) -> (() -> Void) {
-    return {
-        Task {
-            await callback()
+        state
+            .map(FavoritesViewController.makeProps)
+            .sink { [contentView] props in
+                contentView.render(props: props)
+            }
+            .store(in: &cancellables)
+
+        state.compactMap(\.route).removeDuplicates()
+            .map(\.value)
+            .sink { [unowned self] route in navigate(by: route) }
+            .store(in: &cancellables)
+    }
+
+    private func navigate(by route: FavoritesPresenter.Route) {
+        switch route {
+        case .didTapFilters:
+            coordinator.didTapFilters()
         }
     }
 }

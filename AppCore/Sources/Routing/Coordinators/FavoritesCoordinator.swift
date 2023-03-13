@@ -7,6 +7,7 @@
 
 import Dip
 import Favorites
+import Filters
 import Library
 import UIKit
 
@@ -46,8 +47,17 @@ final class FavoritesCoordinator: Coordinating {
     }
 }
 
-// MARK: - Extensions
+// MARK: - FavoritesCoordinating
 
 extension FavoritesCoordinator: FavoritesCoordinating {
+    func didTapFilters() {
+        let viewController = FiltersViewController.resolve(from: container, coordinator: self)
+        navigationController.pushViewController(viewController, animated: true)
+    }
+}
+
+// MARK: - FiltersCoordinating
+
+extension FavoritesCoordinator: FiltersCoordinating {
 
 }
