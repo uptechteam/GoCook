@@ -20,8 +20,8 @@ extension HomeViewController {
             }
 
             do {
-                let recipes = try await dependencies.recipesClient.fetchFeed()
-                await dispatch(.getFeed(.success(recipes)))
+                try await dependencies.homeFeedFacade.getFeed()
+                await dispatch(.getFeed(.success(())))
             } catch {
                 await dispatch(.getFeed(.failure(error)))
             }

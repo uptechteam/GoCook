@@ -24,6 +24,15 @@ extension HomeViewController {
 
         // MARK: - Public methods
 
+        func observeFeed(handler: @escaping (Action) -> Void) {
+            Task { [self] in
+                await self.dependencies.homeFeedFacade.observeFeed()
+                    .map(Action.updateFeed)
+                    .sink(receiveValue: handler)
+                    .store(in: &self.cancellables)
+            }
+        }
+
         func observeRecipes(handler: @escaping (Action) -> Void) {
             Task { [self] in
                 await self.dependencies.searchRecipesFacade.observeFeed()

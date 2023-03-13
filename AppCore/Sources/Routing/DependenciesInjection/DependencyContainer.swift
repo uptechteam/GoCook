@@ -29,6 +29,7 @@ extension DependencyContainer {
 
             // MARK: - Facades
 
+            container.register(.singleton, type: HomeFeedFacading.self, factory: HomeFeedFacade.init)
             container.register(.singleton, type: ProfileFacading.self, factory: ProfileFacade.init)
             container.register(.singleton, type: ProfileRecipesFacading.self, factory: ProfileRecipesFacade.init)
             container.register(.singleton, type: RecipesFacading.self, factory: RecipesFacade.init)

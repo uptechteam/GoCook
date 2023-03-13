@@ -21,7 +21,6 @@ extension RecipeViewController {
             }
 
             do {
-                let recipeDetails: RecipeDetails
                 if state.recipeDetails.isFavorite {
                     try await dependencies.recipesFacade.removeFromFavorites(recipeID: state.recipe.id)
                 } else {

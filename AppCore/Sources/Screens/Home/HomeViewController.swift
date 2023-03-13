@@ -121,6 +121,7 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
             store.dispatch(action: .scrolledSearchToEnd)
         }
 
+        actionCreator.observeFeed(handler: store.dispatch)
         actionCreator.observeRecipes(handler: store.dispatch)
 
         let state = store.$state.removeDuplicates()

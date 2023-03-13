@@ -37,13 +37,14 @@ public extension HomeViewController {
         case changeIsFavorite(Result<Void, Error>)
         case favoriteTapped(IndexPath, isTrending: Bool)
         case filtersTapped
-        case getFeed(Result<[RecipeCategory], Error>)
+        case getFeed(Result<Void, Error>)
         case getRecipes(Result<Void, Error>)
         case recipeTapped(IndexPath, isTrending: Bool)
         case scrolledSearchToEnd
         case searchFavoriteTapped(IndexPath)
         case searchQueryChanged(String)
         case searchRecipeTapped(IndexPath)
+        case updateFeed([RecipeCategory])
         case updateRecipes([Recipe])
         case viewAllTapped(Int, isTrending: Bool)
         case viewDidLoad
@@ -59,18 +60,18 @@ public extension HomeViewController {
 
         // MARK: - Properties
 
-        let recipesClient: RecipesClienting
+        let homeFeedFacade: HomeFeedFacading
         let recipesFacade: RecipesFacading
         let searchRecipesFacade: SearchRecipesFacading
 
         // MARK: - Public methods
 
         public init(
-            recipesClient: RecipesClienting,
+            homeFeedFacade: HomeFeedFacading,
             recipesFacade: RecipesFacading,
             searchRecipesFacade: SearchRecipesFacading
         ) {
-            self.recipesClient = recipesClient
+            self.homeFeedFacade = homeFeedFacade
             self.recipesFacade = recipesFacade
             self.searchRecipesFacade = searchRecipesFacade
         }
@@ -138,7 +139,7 @@ extension HomeViewController {
             newState.route = .init(value: .filters)
 
         case .getFeed(let result):
-            newState.recipeCategories.handle(result: result)
+            newState.recipeCategories.adjustState(accordingTo: result)
 
         case .getRecipes:
             newState.isGettingRecipes = false
@@ -173,6 +174,9 @@ extension HomeViewController {
             }
 
             newState.route = .init(value: .itemDetails(recipe))
+
+        case .updateFeed(let feed):
+            newState.recipeCategories.update(with: feed)
 
         case .updateRecipes(let recipes):
             newState.searchedRecipes = recipes
