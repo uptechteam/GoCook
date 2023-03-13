@@ -109,6 +109,21 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
             store.dispatch(action: .favoriteTapped(indexPath, isTrending: false))
         }
 
+        contentView.searchResultsView.onTapItem = { [store] indexPath in
+            store.dispatch(action: .searchRecipeTapped(indexPath))
+        }
+
+        contentView.searchResultsView.onTapFavorite = { [store] indexPath in
+            store.dispatch(action: .searchFavoriteTapped(indexPath))
+        }
+
+        contentView.searchResultsView.onScrollToEnd = { [store] in
+            store.dispatch(action: .scrolledSearchToEnd)
+        }
+
+        actionCreator.observeFeed(handler: store.dispatch)
+        actionCreator.observeRecipes(handler: store.dispatch)
+
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 

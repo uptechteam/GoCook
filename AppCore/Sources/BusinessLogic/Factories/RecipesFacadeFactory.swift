@@ -12,7 +12,7 @@ public final class RecipesFacadeFactory {
 
     // MARK: - Properties
 
-    private var facades: [User.ID: RecipesFeedFacading]
+    private var facades: [User.ID: UserRecipesFacading]
 
     // MARK: - Lifecycle
 
@@ -29,7 +29,10 @@ public final class RecipesFacadeFactory {
 
     // MARK: - Public methods
 
-    public func produceFacade(userID: User.ID, producer: () throws -> RecipesFeedFacading) rethrows -> RecipesFeedFacading {
+    public func produceFacade(
+        userID: User.ID,
+        producer: () throws -> UserRecipesFacading
+    ) rethrows -> UserRecipesFacading {
         if let facade = facades[userID] {
             return facade
         } else {

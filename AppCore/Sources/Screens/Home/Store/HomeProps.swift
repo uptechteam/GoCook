@@ -50,7 +50,7 @@ extension HomeViewController {
 
     private static func makeOtherCategoryViewProps(recipeCategory: RecipeCategory) -> HomeOtherCategoryView.Props {
         return .init(
-            headerProps: HomeRecipeCategoryHeaderView.Props(title: recipeCategory.category.name),
+            headerProps: HomeRecipeCategoryHeaderView.Props(title: recipeCategory.type.name),
             recipesListViewProps: makeRecipesListViewProps(category: recipeCategory)
         )
     }

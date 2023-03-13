@@ -17,13 +17,14 @@ public extension HomeViewController {
     struct State: Equatable {
         var isGettingRecipes: Bool
         var recipeCategories: DomainModelState<[RecipeCategory]>
+        var pendingRecipe: Recipe?
         var searchedRecipes: [Recipe]
         var searchQuery: String
         var selectedCategories: Set<CategoryType>
         var route: AnyIdentifiable<Route>?
 
         var trendingCategory: RecipeCategory {
-            recipeCategories.items.first(where: \.isTrendingCategory) ?? .init(category: .trending, recipes: [])
+            recipeCategories.items.first(where: \.isTrendingCategory) ?? .init(recipes: [], category: .trending)
         }
 
         var otherCategories: [RecipeCategory] {
@@ -33,12 +34,18 @@ public extension HomeViewController {
 
     enum Action {
         case categoryTapped(IndexPath)
+        case changeIsFavorite(Result<Void, Error>)
         case favoriteTapped(IndexPath, isTrending: Bool)
         case filtersTapped
-        case getFeed(Result<[RecipeCategory], Error>)
-        case getRecipes(Result<[Recipe], Error>)
+        case getFeed(Result<Void, Error>)
+        case getRecipes(Result<Void, Error>)
         case recipeTapped(IndexPath, isTrending: Bool)
+        case scrolledSearchToEnd
+        case searchFavoriteTapped(IndexPath)
         case searchQueryChanged(String)
+        case searchRecipeTapped(IndexPath)
+        case updateFeed([RecipeCategory])
+        case updateRecipes([Recipe])
         case viewAllTapped(Int, isTrending: Bool)
         case viewDidLoad
     }
@@ -53,22 +60,37 @@ public extension HomeViewController {
 
         // MARK: - Properties
 
-        let recipesClient: RecipesClienting
+        let homeFeedFacade: HomeFeedFacading
+        let recipesFacade: RecipesFacading
+        let searchRecipesFacade: SearchRecipesFacading
 
         // MARK: - Public methods
 
-        public init(recipesClient: RecipesClienting) {
-            self.recipesClient = recipesClient
+        public init(
+            homeFeedFacade: HomeFeedFacading,
+            recipesFacade: RecipesFacading,
+            searchRecipesFacade: SearchRecipesFacading
+        ) {
+            self.homeFeedFacade = homeFeedFacade
+            self.recipesFacade = recipesFacade
+            self.searchRecipesFacade = searchRecipesFacade
         }
     }
 
     static func makeStore(dependencies: Dependencies) -> Store {
+        let changeIsFavoriteMiddleware = makeChangeIsFavoriteMiddleware(dependencies: dependencies)
         let getFeedMiddleware = makeGetFeedMiddleware(dependencies: dependencies)
-        let getRecipesMiddleware = makeGetRecipesMiddleware(dependencies: dependencies)
+        let getFirstPageRecipesMiddleware = makeGetFirstPageRecipesMiddleware(dependencies: dependencies)
+        let getNextPageRecipesMiddleware = makeGetNextPageRecipesMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
             reducer: reduce,
-            middlewares: [getFeedMiddleware, getRecipesMiddleware]
+            middlewares: [
+                changeIsFavoriteMiddleware,
+                getFeedMiddleware,
+                getFirstPageRecipesMiddleware,
+                getNextPageRecipesMiddleware
+            ]
         )
     }
 
@@ -85,7 +107,7 @@ public extension HomeViewController {
 }
 
 extension HomeViewController {
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     static func reduce(state: State, action: Action) -> State {
 
         var newState = state
@@ -102,25 +124,25 @@ extension HomeViewController {
                 }
             }
 
+        case .changeIsFavorite:
+            newState.pendingRecipe = nil
+
         case let .favoriteTapped(indexPath, isTrending):
             let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: indexPath.section]
-            guard let recipe = category?.recipes[safe: indexPath.item] else {
+            guard let recipe = category?.recipes[safe: indexPath.item], newState.pendingRecipe == nil else {
                 break
             }
 
-            print("Press favorite for \(recipe)")
+            newState.pendingRecipe = recipe
 
         case .filtersTapped:
             newState.route = .init(value: .filters)
 
         case .getFeed(let result):
-            newState.recipeCategories.handle(result: result)
+            newState.recipeCategories.adjustState(accordingTo: result)
 
-        case .getRecipes(let result):
+        case .getRecipes:
             newState.isGettingRecipes = false
-            if case .success(let recipes) = result {
-                newState.searchedRecipes = recipes
-            }
 
         case let .recipeTapped(indexPath, isTrending):
             let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: indexPath.section]
@@ -130,11 +152,34 @@ extension HomeViewController {
 
             newState.route = .init(value: .itemDetails(recipe))
 
+        case .scrolledSearchToEnd:
+            break
+
+        case .searchFavoriteTapped(let indexPath):
+            guard let recipe = newState.searchedRecipes[safe: indexPath.item], newState.pendingRecipe == nil else {
+                break
+            }
+
+            newState.pendingRecipe = recipe
+
         case .searchQueryChanged(let query):
             newState.searchQuery = query
             if !query.isEmpty {
                 newState.isGettingRecipes = true
             }
+
+        case .searchRecipeTapped(let indexPath):
+            guard let recipe = newState.searchedRecipes[safe: indexPath.item] else {
+                break
+            }
+
+            newState.route = .init(value: .itemDetails(recipe))
+
+        case .updateFeed(let feed):
+            newState.recipeCategories.update(with: feed)
+
+        case .updateRecipes(let recipes):
+            newState.searchedRecipes = recipes
 
         case let .viewAllTapped(index, isTrending):
             let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: index]

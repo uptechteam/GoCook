@@ -29,15 +29,17 @@ extension DependencyContainer {
 
             // MARK: - Facades
 
+            container.register(.singleton, type: HomeFeedFacading.self, factory: HomeFeedFacade.init)
             container.register(.singleton, type: ProfileFacading.self, factory: ProfileFacade.init)
             container.register(.singleton, type: ProfileRecipesFacading.self, factory: ProfileRecipesFacade.init)
             container.register(.singleton, type: RecipesFacading.self, factory: RecipesFacade.init)
-            container.register(.unique, type: RecipesFeedFacading.self) { (userID: User.ID) in
+            container.register(.singleton, type: SearchRecipesFacading.self, factory: SearchRecipesFacade.init)
+            container.register(.unique, type: UserRecipesFacading.self) { (userID: User.ID) in
                 let factory: RecipesFacadeFactory = try container.resolve()
                 return try factory.produceFacade(
                     userID: userID,
                     producer: {
-                        RecipesFeedFacade(
+                        UserRecipesFacade(
                             userID: userID,
                             recipesClient: try container.resolve(),
                             recipesStorage: try container.resolve()

@@ -44,12 +44,16 @@ final class HomeView: UIView {
         setupTopStackView()
         setupSearchTextField()
         setupFiltersButton()
-        setupSearchTextField()
+        setupSearchResultsView()
         setupStackView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self
+        addGestureRecognizer(tapGesture)
     }
 
     private func setupTopStackView() {
@@ -60,6 +64,7 @@ final class HomeView: UIView {
 
     private func setupSearchTextField() {
         searchTextField.placeholder = .homeSearchPlaceholder
+        searchTextField.tintColor = .appBlack
         searchTextField.delegate = self
     }
 
@@ -99,9 +104,28 @@ final class HomeView: UIView {
         feedView.render(props: props.feedViewProps)
         searchResultsView.render(props: props.searchResultsViewProps)
     }
+
+    // MARK: - Private methods
+
+    @objc
+    private func handleTap() {
+        endEditing(true)
+    }
 }
 
-// MARK: - Delegate
+// MARK: - UIGestureRecognizerDelegate
+
+extension HomeView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        guard let view = touch.view else {
+            return false
+        }
+
+        return !(view is UIControl)
+    }
+}
+
+// MARK: - UITextFieldDelegate
 
 extension HomeView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

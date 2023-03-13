@@ -12,23 +12,25 @@ public struct RecipeCategory: Equatable {
 
     // MARK: - Properties
 
-    public let category: CategoryType
     public let recipes: [Recipe]
+    public let type: CategoryType
 
     public var isTrendingCategory: Bool {
-        category == .trending
+        type == .trending
     }
 
     // MARK: - Lifecycle
 
-    public init(category: CategoryType, recipes: [Recipe]) {
-        self.category = category
+    public init(recipes: [Recipe], category: CategoryType) {
         self.recipes = recipes
+        self.type = category
     }
 }
 
+// MARK: - EmptyDomainModel
+
 extension RecipeCategory: EmptyDomainModel {
     public static var empty: RecipeCategory {
-        RecipeCategory(category: .trending, recipes: [])
+        RecipeCategory(recipes: [], category: .trending)
     }
 }

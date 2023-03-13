@@ -23,9 +23,7 @@ public actor ProfileRecipesFacade: ProfileRecipesFacading {
     private let recipesClient: RecipesClienting
     private let recipesStorage: RecipesStoraging
     private var cancellables: [AnyCancellable]
-    private var identifiers: [Recipe.ID]
-    private let identifiersSubject: CurrentValueSubject<[Recipe.ID], Never>
-    private var page: Int = 0
+    private let paginator: RecipesPaginator
     private var profileID: User.ID?
 
     // MARK: - Lifecycle
@@ -35,8 +33,7 @@ public actor ProfileRecipesFacade: ProfileRecipesFacading {
         self.recipesClient = recipesClient
         self.recipesStorage = recipesStorage
         self.cancellables = []
-        self.identifiers = []
-        self.identifiersSubject = CurrentValueSubject([])
+        self.paginator = RecipesPaginator()
         Task {
             await observeProfile()
         }
@@ -50,29 +47,23 @@ public actor ProfileRecipesFacade: ProfileRecipesFacading {
         }
 
         let recipes = try await recipesClient.fetchRecipes(authorID: profileID, page: 0)
-        self.page = 1
-        await self.recipesStorage.store(recipes: recipes)
-        self.updateIdentifiers(ids: recipes.map(\.id))
+        await recipesStorage.store(recipes: recipes)
+        await paginator.handle(recipes: recipes)
     }
 
     public func getNextPage() async throws {
+        let page = await paginator.page
         guard let profileID, page > 0 else {
             return
         }
 
         let recipes = try await recipesClient.fetchRecipes(authorID: profileID, page: page)
-        if recipes.count != AppConstants.Pagination.pageSize {
-            self.page = 0
-        } else {
-            self.page += 1
-        }
-
-        await self.recipesStorage.store(recipes: recipes)
-        self.updateIdentifiers(ids: self.identifiers + recipes.map(\.id))
+        await recipesStorage.store(recipes: recipes)
+        await paginator.handle(recipes: recipes)
     }
 
     public func observeFeed() -> AnyPublisher<[Recipe], Never> {
-        return identifiersSubject.eraseToAnyPublisher()
+        return paginator.identifiersSubject.eraseToAnyPublisher()
             .mapAsync { [recipesStorage] ids in
                 await recipesStorage.observeRecipes(by: ids)
             }
@@ -88,21 +79,8 @@ public actor ProfileRecipesFacade: ProfileRecipesFacading {
                 self.profileID = profile.id
             } else {
                 self.profileID = nil
-                identifiers = []
-                identifiersSubject.send([])
+                await paginator.reset()
             }
         }
-    }
-
-    private func updateIdentifiers(ids: [Recipe.ID]) {
-        var uniqueRecipeIDs: [Recipe.ID] = []
-        var usedRecipeIDs: Set<Recipe.ID> = Set()
-        for id in ids where !usedRecipeIDs.contains(id) {
-            uniqueRecipeIDs.append(id)
-            usedRecipeIDs.insert(id)
-        }
-
-        self.identifiers = uniqueRecipeIDs
-        self.identifiersSubject.send(self.identifiers)
     }
 }

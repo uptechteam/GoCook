@@ -29,6 +29,7 @@ final class HomeSearchResultsView: UIView {
     // callbacks
     var onTapItem: (IndexPath) -> Void = { _ in }
     var onTapFavorite: (IndexPath) -> Void = { _ in }
+    var onScrollToEnd: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -118,6 +119,10 @@ final class HomeSearchResultsView: UIView {
                         self?.onTapFavorite(indexPath)
                     }
                 }
+                if indexPath.item == collectionView.numberOfItems(inSection: 0) - 1 {
+                    self?.onScrollToEnd()
+                }
+
                 return cell
             }
         )

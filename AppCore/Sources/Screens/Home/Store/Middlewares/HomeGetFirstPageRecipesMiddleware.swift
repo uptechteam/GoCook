@@ -8,11 +8,9 @@
 import Foundation
 
 extension HomeViewController {
-
-    static func makeGetRecipesMiddleware(dependencies: Dependencies) -> Store.Middleware {
+    static func makeGetFirstPageRecipesMiddleware(dependencies: Dependencies) -> Store.Middleware {
         var task: Task<(), Never>?
         return Store.makeMiddleware { dispatch, _, next, action in
-
             await next(action)
             guard case .searchQueryChanged(let query) = action else {
                 return
@@ -25,17 +23,12 @@ extension HomeViewController {
 
             task = Task {
                 do {
-                    try await Task.sleep(nanoseconds: 400_000_000)
+                    try await dependencies.searchRecipesFacade.getFirstPage(query: query)
                     guard !Task.isCancelled else {
                         return
                     }
 
-                    let recipes = try await dependencies.recipesClient.fetchRecipes(query: query)
-                    guard !Task.isCancelled else {
-                        return
-                    }
-
-                    await dispatch(.getRecipes(.success(recipes)))
+                    await dispatch(.getRecipes(.success(())))
                 } catch {
                     guard !Task.isCancelled else {
                         return
