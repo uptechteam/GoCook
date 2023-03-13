@@ -114,7 +114,11 @@ extension ProfileViewController {
             newState.recipes.adjustState(accordingTo: result)
 
         case .recipeTapped(let indexPath):
-            break
+            guard let recipe = newState.recipes[safe: indexPath.item] else {
+                break
+            }
+
+            newState.route = .init(value: .recipe(recipe))
 
         case .scrolledToEnd:
             break

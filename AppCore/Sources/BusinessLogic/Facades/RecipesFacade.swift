@@ -36,5 +36,5 @@ public actor RecipesFacade: RecipesFacading {
     public func removeFromFavorites(recipeID: Recipe.ID) async throws {
         let recipeDetails = try await recipesClient.removeFromFavorites(recipeID: recipeID)
         await recipesStorage.store(recipe: recipeDetails.recipe)
-    }   
+    }
 }

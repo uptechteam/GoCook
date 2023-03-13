@@ -32,6 +32,7 @@ final class ProfileView: UIView {
     let infoView = ProfileInfoView()
     // callbacks
     var onScrollToRefresh: () -> Void = { }
+    var onTapItem: (IndexPath) -> Void = { _ in }
     var onTapFavorite: (IndexPath) -> Void = { _ in }
     var onScrollToEnd: () -> Void = { }
 
@@ -154,5 +155,7 @@ final class ProfileView: UIView {
 // MARK: - UICollectionViewDelegate
 
 extension ProfileView: UICollectionViewDelegate {
-
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        onTapItem(indexPath)
+    }
 }

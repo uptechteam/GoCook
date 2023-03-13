@@ -96,6 +96,7 @@ extension HomeCoordinator: UINavigationControllerDelegate {
         if !viewController.isTabBarVisible {
             tabBarController?.toggleTabBarVisibility(on: false)
         }
+
         let isNavigationBarHidden = viewController is HomeViewController || viewController is RecipeViewController
         navigationController.setNavigationBarHidden(isNavigationBarHidden, animated: true)
     }
