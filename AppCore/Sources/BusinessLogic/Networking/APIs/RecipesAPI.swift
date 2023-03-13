@@ -7,6 +7,7 @@
 
 import DomainModels
 import Foundation
+import Helpers
 
 struct RecipesAPI {
 
@@ -38,8 +39,12 @@ struct RecipesAPI {
         try requestBuilder.makeGetRequest(path: "\(id.rawValue)", authorisation: .bearer)
     }
 
-    func makeGetRecipesRequest(authorID: User.ID) throws -> AppRequest {
-        let parameters = ["authorID": authorID.rawValue]
+    func makeGetRecipesRequest(authorID: User.ID, page: Int) throws -> AppRequest {
+        let parameters: [String: String] = [
+            "authorID": authorID.rawValue,
+            "page": "\(page)",
+            "pageSize": "\(AppConstants.Pagination.pageSize)"
+        ]
         return try requestBuilder.makeGetRequest(path: "", parameters: parameters)
     }
 

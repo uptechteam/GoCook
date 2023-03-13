@@ -6,17 +6,20 @@
 //
 
 import Combine
+import DomainModels
 import Helpers
+import Library
 import UIKit
 
 public protocol ProfileCoordinating: AnyObject {
     func didTapCreateRecipe()
     func didTapEdit()
+    func didTapRecipe(_ recipe: Recipe)
     func didTapSettings()
     func didTapSignIn()
 }
 
-public final class ProfileViewController: UIViewController {
+public final class ProfileViewController: UIViewController, TabBarPresentable {
 
     // MARK: - Properties
 
@@ -28,6 +31,10 @@ public final class ProfileViewController: UIViewController {
 
     public override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
+    }
+
+    public var tabBarShouldBeVisible: Bool {
+        true
     }
 
     // MARK: - Lifecycle
@@ -91,6 +98,22 @@ public final class ProfileViewController: UIViewController {
             store.dispatch(action: .addNewRecipeTapped)
         }
 
+        contentView.onScrollToRefresh = { [store] in
+            store.dispatch(action: .scrolledToRefresh)
+        }
+
+        contentView.onTapItem = { [store] indexPath in
+            store.dispatch(action: .recipeTapped(indexPath))
+        }
+
+        contentView.onTapFavorite = { [store] indexPath in
+            store.dispatch(action: .favoriteTapped(indexPath))
+        }
+
+        contentView.onScrollToEnd = { [store] in
+            store.dispatch(action: .scrolledToEnd)
+        }
+
         actionCreator.observeRecipes(handler: store.dispatch)
         actionCreator.subscribeToProfile(handler: store.dispatch)
 
@@ -117,6 +140,9 @@ public final class ProfileViewController: UIViewController {
 
         case .edit:
             coordinator.didTapEdit()
+
+        case .recipe(let recipe):
+            coordinator.didTapRecipe(recipe)
 
         case .settings:
             coordinator.didTapSettings()

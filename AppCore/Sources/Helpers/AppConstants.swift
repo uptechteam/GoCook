@@ -15,4 +15,8 @@ public enum AppConstants {
     public enum Validation {
         public static let nameLengthRange: ClosedRange<Int> = 2...20
     }
+
+    public enum Pagination {
+        public static let pageSize = 5
+    }
 }

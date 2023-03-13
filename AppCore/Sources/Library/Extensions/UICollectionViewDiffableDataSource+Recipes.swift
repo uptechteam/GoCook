@@ -26,8 +26,20 @@ extension UICollectionViewDiffableDataSource {
                 if uniqueSectionItems == existingItems {
                     existingSnapshot.reconfigureItems(existingItems)
                 } else {
-                    existingSnapshot.deleteItems(existingItems)
-                    existingSnapshot.appendItems(uniqueSectionItems, toSection: section)
+                    let itemsToDelete = existingItems.filter { !sectionItems.contains($0) }
+                    existingSnapshot.deleteItems(itemsToDelete)
+                    var lastItem: ItemIdentifierType?
+                    for item in sectionItems {
+                        if existingItems.contains(item) {
+                            existingSnapshot.reconfigureItems([item])
+                        } else if let lastItem {
+                            existingSnapshot.insertItems([item], afterItem: lastItem)
+                        } else {
+                            existingSnapshot.appendItems([item], toSection: section)
+                        }
+
+                        lastItem = item
+                    }
                 }
             } else if let previousSection = lastSection {
                 existingSnapshot.insertSections([section], afterSection: previousSection)

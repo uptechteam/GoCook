@@ -24,6 +24,16 @@ public struct RecipeDetails: Equatable {
     public let recipeImageSource: ImageSource
     public let servingsCount: Int
 
+    public var recipe: Recipe {
+        Recipe(
+            id: id,
+            isFavorite: isFavorite,
+            name: name,
+            recipeImageSource: recipeImageSource,
+            rating: ratingDetails.rating
+        )
+    }
+
     // MARK: - Lifecycle
 
     public init(

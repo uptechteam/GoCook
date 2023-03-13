@@ -5,13 +5,11 @@
 //  Created by Oleksii Andriushchenko on 10.03.2023.
 //
 
-import Combine
 import DomainModels
-import Helpers
 
 public protocol RecipesFacading: Sendable {
-    func getFirstPage() async throws
-    func observeFeed() async -> AnyPublisher<[Recipe], Never>
+    func addToFavorites(recipeID: Recipe.ID) async throws
+    func removeFromFavorites(recipeID: Recipe.ID) async throws
 }
 
 public actor RecipesFacade: RecipesFacading {
@@ -20,34 +18,23 @@ public actor RecipesFacade: RecipesFacading {
 
     private let recipesClient: RecipesClienting
     private let recipesStorage: RecipesStoraging
-    private var identifiers: [Recipe.ID]
-    private let identifiersSubject: CurrentValueSubject<[Recipe.ID], Never>
-    private let userID: User.ID
 
     // MARK: - Lifecycle
 
-    public init(userID: User.ID, recipesClient: RecipesClienting, recipesStorage: RecipesStoraging) {
+    public init(recipesClient: RecipesClienting, recipesStorage: RecipesStoraging) {
         self.recipesClient = recipesClient
         self.recipesStorage = recipesStorage
-        self.identifiers = []
-        self.identifiersSubject = CurrentValueSubject([])
-        self.userID = userID
     }
 
     // MARK: - Public methods
 
-    public func getFirstPage() async throws {
-        let recipes = try await recipesClient.fetchRecipes(authorID: userID)
-        self.identifiers = recipes.map(\.id)
-        await self.recipesStorage.store(recipes: recipes)
-        self.identifiersSubject.send(identifiers)
+    public func addToFavorites(recipeID: Recipe.ID) async throws {
+        let recipeDetails = try await recipesClient.addToFavorites(recipeID: recipeID)
+        await recipesStorage.store(recipe: recipeDetails.recipe)
     }
 
-    public func observeFeed() -> AnyPublisher<[Recipe], Never> {
-        return identifiersSubject
-            .flatMapAsync { [recipesStorage] ids in
-                await recipesStorage.observeRecipes(by: ids)
-            }
-            .eraseToAnyPublisher()
+    public func removeFromFavorites(recipeID: Recipe.ID) async throws {
+        let recipeDetails = try await recipesClient.removeFromFavorites(recipeID: recipeID)
+        await recipesStorage.store(recipe: recipeDetails.recipe)
     }
 }

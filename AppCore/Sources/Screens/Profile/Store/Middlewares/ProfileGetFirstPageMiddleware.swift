@@ -21,9 +21,9 @@ extension ProfileViewController {
 
             do {
                 try await dependencies.profileRecipesFacade.getFirstPage()
-                await dispatch(.getFirstPage(.success(())))
+                await dispatch(.getPage(.success(())))
             } catch {
-                await dispatch(.getNextPage(.failure(error)))
+                await dispatch(.getPage(.failure(error)))
             }
         }
     }

@@ -31,12 +31,13 @@ extension DependencyContainer {
 
             container.register(.singleton, type: ProfileFacading.self, factory: ProfileFacade.init)
             container.register(.singleton, type: ProfileRecipesFacading.self, factory: ProfileRecipesFacade.init)
-            container.register(.unique, type: RecipesFacading.self) { (userID: User.ID) in
+            container.register(.singleton, type: RecipesFacading.self, factory: RecipesFacade.init)
+            container.register(.unique, type: RecipesFeedFacading.self) { (userID: User.ID) in
                 let factory: RecipesFacadeFactory = try container.resolve()
                 return try factory.produceFacade(
                     userID: userID,
                     producer: {
-                        RecipesFacade(
+                        RecipesFeedFacade(
                             userID: userID,
                             recipesClient: try container.resolve(),
                             recipesStorage: try container.resolve()

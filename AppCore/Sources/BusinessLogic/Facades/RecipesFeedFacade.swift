@@ -1,5 +1,5 @@
 //
-//  ProfileRecipesFacade.swift
+//  RecipesFeedFacade.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 10.03.2023.
@@ -9,58 +9,48 @@ import Combine
 import DomainModels
 import Helpers
 
-public protocol ProfileRecipesFacading: Sendable {
+public protocol RecipesFeedFacading: Sendable {
     func getFirstPage() async throws
     func getNextPage() async throws
     func observeFeed() async -> AnyPublisher<[Recipe], Never>
 }
 
-public actor ProfileRecipesFacade: ProfileRecipesFacading {
+public actor RecipesFeedFacade: RecipesFeedFacading {
 
     // MARK: - Properties
 
-    private let profileFacade: ProfileFacading
     private let recipesClient: RecipesClienting
     private let recipesStorage: RecipesStoraging
-    private var cancellables: [AnyCancellable]
     private var identifiers: [Recipe.ID]
     private let identifiersSubject: CurrentValueSubject<[Recipe.ID], Never>
     private var page: Int = 0
-    private var profileID: User.ID?
+    private let userID: User.ID
 
     // MARK: - Lifecycle
 
-    public init(profileFacade: ProfileFacading, recipesClient: RecipesClienting, recipesStorage: RecipesStoraging) {
-        self.profileFacade = profileFacade
+    public init(userID: User.ID, recipesClient: RecipesClienting, recipesStorage: RecipesStoraging) {
         self.recipesClient = recipesClient
         self.recipesStorage = recipesStorage
-        self.cancellables = []
         self.identifiers = []
         self.identifiersSubject = CurrentValueSubject([])
-        Task {
-            await observeProfile()
-        }
+        self.userID = userID
     }
 
     // MARK: - Public methods
 
     public func getFirstPage() async throws {
-        guard let profileID else {
-            return
-        }
-
-        let recipes = try await recipesClient.fetchRecipes(authorID: profileID, page: 0)
-        self.page = 1
+        let recipes = try await recipesClient.fetchRecipes(authorID: userID, page: 0)
+        self.identifiers = recipes.map(\.id)
         await self.recipesStorage.store(recipes: recipes)
-        self.updateIdentifiers(ids: recipes.map(\.id))
+        self.identifiersSubject.send(identifiers)
     }
 
     public func getNextPage() async throws {
-        guard let profileID, page > 0 else {
+        guard page > 0 else {
             return
         }
 
-        let recipes = try await recipesClient.fetchRecipes(authorID: profileID, page: page)
+        let recipes = try await recipesClient.fetchRecipes(authorID: userID, page: page)
         if recipes.count != AppConstants.Pagination.pageSize {
             self.page = 0
         } else {
@@ -72,26 +62,12 @@ public actor ProfileRecipesFacade: ProfileRecipesFacading {
     }
 
     public func observeFeed() -> AnyPublisher<[Recipe], Never> {
-        return identifiersSubject.eraseToAnyPublisher()
+        return identifiersSubject
             .mapAsync { [recipesStorage] ids in
                 await recipesStorage.observeRecipes(by: ids)
             }
             .switchToLatest()
             .eraseToAnyPublisher()
-    }
-
-    // MARK: - Private methods
-
-    private func observeProfile() async {
-        for await profile in profileFacade.profile.values {
-            if let profile {
-                self.profileID = profile.id
-            } else {
-                self.profileID = nil
-                identifiers = []
-                identifiersSubject.send([])
-            }
-        }
     }
 
     private func updateIdentifiers(ids: [Recipe.ID]) {

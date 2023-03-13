@@ -8,11 +8,13 @@
 import AppTabBar
 import CreateRecipe
 import Dip
+import DomainModels
 import Foundation
 import Helpers
 import Library
 import Login
 import Profile
+import Recipe
 import SignUp
 import Settings
 import UIKit
@@ -27,6 +29,7 @@ final class ProfileCoordinator: NSObject, Coordinating {
 
     private var childCoordinators: [Coordinating]
     private let container: DependencyContainer
+    private var interactiveControllers: [Int: SwipeInteractionController]
     private let navigationController: UINavigationController
     weak var delegate: ProfileCoordinatorDelegate?
 
@@ -34,11 +37,16 @@ final class ProfileCoordinator: NSObject, Coordinating {
         navigationController
     }
 
+    private var tabBarController: AppTabBarController? {
+        navigationController.tabBarController as? AppTabBarController
+    }
+
     // MARK: - Lifecycle
 
     init(container: DependencyContainer, navigationController: UINavigationController) {
         self.childCoordinators = []
         self.container = container
+        self.interactiveControllers = [:]
         self.navigationController = navigationController
         super.init()
         setupUI()
@@ -75,6 +83,12 @@ extension ProfileCoordinator: ProfileCoordinating {
         print("Did tap edit.")
     }
 
+    func didTapRecipe(_ recipe: Recipe) {
+        let envelope = RecipeEnvelope(recipe: recipe)
+        let viewController = RecipeViewController.resolve(from: container, envelope: envelope, coordinator: self)
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
     func didTapSettings() {
         let viewController = SettingsViewController.resolve(from: container, coordinator: self)
         navigationController.pushViewController(viewController, animated: true)
@@ -84,6 +98,14 @@ extension ProfileCoordinator: ProfileCoordinating {
         let envelope = LoginEnvelope.profile
         let viewController = LoginViewController.resolve(from: container, envelope: envelope, coordinator: self)
         navigationController.pushViewController(viewController, animated: true)
+    }
+}
+
+// MARK: - RecipeCoordinating
+
+extension ProfileCoordinator: RecipeCoordinating {
+    func didTapBack() {
+        navigationController.popViewController(animated: true)
     }
 }
 
@@ -138,8 +160,12 @@ extension ProfileCoordinator: UINavigationControllerDelegate {
         willShow viewController: UIViewController,
         animated: Bool
     ) {
-        let isHidden = viewController is ProfileViewController
-        navigationController.setNavigationBarHidden(isHidden, animated: false)
+        if !viewController.isTabBarVisible {
+            tabBarController?.toggleTabBarVisibility(on: false)
+        }
+
+        let isNavigationBarHidden = viewController is ProfileViewController || viewController is RecipeViewController
+        navigationController.setNavigationBarHidden(isNavigationBarHidden, animated: true)
     }
 
     func navigationController(
@@ -147,7 +173,41 @@ extension ProfileCoordinator: UINavigationControllerDelegate {
         didShow viewController: UIViewController,
         animated: Bool
     ) {
-        let isTabBarVisible = viewController is ProfileViewController
-        (navigationController.tabBarController as? AppTabBarController)?.toggleTabBarVisibility(on: isTabBarVisible)
+        tabBarController?.toggleTabBarVisibility(on: viewController.isTabBarVisible)
+    }
+
+    func navigationController(
+        _ navigationController: UINavigationController,
+        interactionControllerFor animationController: UIViewControllerAnimatedTransitioning
+    ) -> UIViewControllerInteractiveTransitioning? {
+        guard
+            let transition = animationController as? PopTransition,
+            let controller = interactiveControllers[transition.fromViewController.hash],
+            controller.isInteractionInProgress
+        else {
+            return nil
+        }
+
+        return controller
+    }
+
+    func navigationController(
+        _ navigationController: UINavigationController,
+        animationControllerFor operation: UINavigationController.Operation,
+        from fromVC: UIViewController,
+        to toVC: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
+        switch operation {
+        case .push:
+            let controller = SwipeInteractionController(viewController: toVC)
+            interactiveControllers[toVC.hash] = controller
+            return PushTransition(snapshot: tabBarController?.makeTabBarSnapshot() ?? UIView())
+
+        case .pop:
+            return PopTransition(fromViewController: fromVC)
+
+        default:
+            return nil
+        }
     }
 }
