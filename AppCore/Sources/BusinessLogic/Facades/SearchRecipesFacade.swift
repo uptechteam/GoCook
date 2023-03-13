@@ -34,7 +34,12 @@ public actor SearchRecipesFacade: SearchRecipesFacading {
     // MARK: - Public methods
 
     public func getFirstPage(query: String) async throws {
+        await paginator.reset()
         let recipes = try await recipesClient.fetchRecipes(query: query, page: 0)
+        guard !Task.isCancelled else {
+            return
+        }
+
         await recipesStorage.store(recipes: recipes)
         await paginator.handle(recipes: recipes)
     }
@@ -46,6 +51,10 @@ public actor SearchRecipesFacade: SearchRecipesFacading {
         }
 
         let recipes = try await recipesClient.fetchRecipes(query: query, page: page)
+        guard !Task.isCancelled else {
+            return
+        }
+
         await recipesStorage.store(recipes: recipes)
         await paginator.handle(recipes: recipes)
     }

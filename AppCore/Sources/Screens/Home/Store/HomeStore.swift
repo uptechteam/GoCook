@@ -36,9 +36,11 @@ public extension HomeViewController {
         case favoriteTapped(IndexPath, isTrending: Bool)
         case filtersTapped
         case getFeed(Result<[RecipeCategory], Error>)
-        case getRecipes(Result<[Recipe], Error>)
+        case getRecipes(Result<Void, Error>)
         case recipeTapped(IndexPath, isTrending: Bool)
+        case scrolledSearchToEnd
         case searchQueryChanged(String)
+        case updateRecipes([Recipe])
         case viewAllTapped(Int, isTrending: Bool)
         case viewDidLoad
     }
@@ -54,21 +56,24 @@ public extension HomeViewController {
         // MARK: - Properties
 
         let recipesClient: RecipesClienting
+        let searchRecipesFacade: SearchRecipesFacading
 
         // MARK: - Public methods
 
-        public init(recipesClient: RecipesClienting) {
+        public init(recipesClient: RecipesClienting, searchRecipesFacade: SearchRecipesFacading) {
             self.recipesClient = recipesClient
+            self.searchRecipesFacade = searchRecipesFacade
         }
     }
 
     static func makeStore(dependencies: Dependencies) -> Store {
         let getFeedMiddleware = makeGetFeedMiddleware(dependencies: dependencies)
-        let getRecipesMiddleware = makeGetRecipesMiddleware(dependencies: dependencies)
+        let getFirstPageRecipesMiddleware = makeGetFirstPageRecipesMiddleware(dependencies: dependencies)
+        let getNextPageRecipesMiddleware = makeGetNextPageRecipesMiddleware(dependencies: dependencies)
         return Store(
             initialState: makeInitialState(dependencies: dependencies),
             reducer: reduce,
-            middlewares: [getFeedMiddleware, getRecipesMiddleware]
+            middlewares: [getFeedMiddleware, getFirstPageRecipesMiddleware, getNextPageRecipesMiddleware]
         )
     }
 
@@ -85,7 +90,7 @@ public extension HomeViewController {
 }
 
 extension HomeViewController {
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     static func reduce(state: State, action: Action) -> State {
 
         var newState = state
@@ -116,11 +121,8 @@ extension HomeViewController {
         case .getFeed(let result):
             newState.recipeCategories.handle(result: result)
 
-        case .getRecipes(let result):
+        case .getRecipes:
             newState.isGettingRecipes = false
-            if case .success(let recipes) = result {
-                newState.searchedRecipes = recipes
-            }
 
         case let .recipeTapped(indexPath, isTrending):
             let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: indexPath.section]
@@ -130,11 +132,17 @@ extension HomeViewController {
 
             newState.route = .init(value: .itemDetails(recipe))
 
+        case .scrolledSearchToEnd:
+            break
+
         case .searchQueryChanged(let query):
             newState.searchQuery = query
             if !query.isEmpty {
                 newState.isGettingRecipes = true
             }
+
+        case .updateRecipes(let recipes):
+            newState.searchedRecipes = recipes
 
         case let .viewAllTapped(index, isTrending):
             let category = isTrending ? newState.trendingCategory : newState.otherCategories[safe: index]

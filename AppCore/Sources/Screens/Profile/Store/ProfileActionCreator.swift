@@ -8,7 +8,6 @@
 import Combine
 
 extension ProfileViewController {
-
     public final class ActionCreator {
 
         // MARK: - Properties
