@@ -51,6 +51,7 @@ final class HomeView: UIView {
     private func setupContentView() {
         backgroundColor = .appWhite
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        tapGesture.cancelsTouchesInView = false
         tapGesture.delegate = self
         addGestureRecognizer(tapGesture)
     }
