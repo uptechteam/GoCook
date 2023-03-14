@@ -10,34 +10,10 @@ import UIKit
 /// View is used to render current state of view, it may be loading, empty or error state.
 public final class ContentStateView: UIView {
 
-    public struct Props: Equatable {
-
-        // MARK: - Properties
-
-        public let isVisible: Bool
-        public let isSpinnerVisible: Bool
-        public let isTitleVisible: Bool
-        public let title: String
-        public let isActionButtonVisible: Bool
-        public let actionButtonTitle: String
-
-        // MARK: - Lifecycle
-
-        public init(
-            isVisible: Bool,
-            isSpinnerVisible: Bool,
-            isTitleVisible: Bool,
-            title: String,
-            isActionButtonVisible: Bool,
-            actionButtonTitle: String
-        ) {
-            self.isVisible = isVisible
-            self.isSpinnerVisible = isSpinnerVisible
-            self.isTitleVisible = isTitleVisible
-            self.title = title
-            self.isActionButtonVisible = isActionButtonVisible
-            self.actionButtonTitle = actionButtonTitle
-        }
+    public enum Props: Equatable {
+        case hidden
+        case loading
+        case message(title: String, buttonTitle: String?)
     }
 
     // MARK: - Properties
@@ -62,10 +38,25 @@ public final class ContentStateView: UIView {
     // MARK: - Set up
 
     private func setup() {
-        setupSpinnerView()
-        setupSpinnerView()
-        setupActionButton()
         setupStackView()
+        setupSpinnerView()
+        setupTitleLabel()
+        setupActionButton()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [spinnerView, titleLabel, actionButton])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 16
+        addSubview(stackView, constraints: [
+            stackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+            stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
     }
 
     private func setupSpinnerView() {
@@ -75,26 +66,36 @@ public final class ContentStateView: UIView {
         ])
     }
 
-    private func setupActionButton() {
-        actionButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapAction() }), for: .touchUpInside)
+    private func setupTitleLabel() {
+        titleLabel.numberOfLines = 0
+        titleLabel.textAlignment = .center
     }
 
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [spinnerView, titleLabel, actionButton])
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = 16
-        addSubview(stackView, withEdgeInsets: .zero)
+    private func setupActionButton() {
+        actionButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapAction() }), for: .touchUpInside)
     }
 
     // MARK: - Public methods
 
     public func render(props: Props) {
-        isHidden = !props.isVisible
-        spinnerView.toggle(isAnimating: props.isSpinnerVisible)
-        titleLabel.isHidden = !props.isTitleVisible
-        titleLabel.render(title: props.title, color: .textDisabled, typography: .body)
-        actionButton.isHidden = !props.isActionButtonVisible
-        actionButton.setTitle(props.actionButtonTitle)
+        switch props {
+        case .hidden:
+            isHidden = true
+            spinnerView.toggle(isAnimating: false)
+
+        case .loading:
+            isHidden = false
+            spinnerView.toggle(isAnimating: true)
+            titleLabel.isHidden = true
+            actionButton.isHidden = true
+
+        case let .message(title, buttonTitle):
+            isHidden = false
+            titleLabel.isHidden = false
+            titleLabel.render(title: title, color: .textDisabled, typography: .body)
+            spinnerView.toggle(isAnimating: false)
+            actionButton.isHidden = buttonTitle == nil
+            actionButton.setTitle(buttonTitle ?? "")
+        }
     }
 }

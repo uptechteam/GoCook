@@ -10,12 +10,15 @@ import Library
 
 extension FavoritesViewController {
     static func makeProps(from state: FavoritesPresenter.State) -> FavoritesView.Props {
-        return .init(recipesViewProps: makeRecipesViewProps(state: state))
+        return .init(
+            recipesViewProps: makeRecipesViewProps(state: state),
+            contentStateViewProps: makeContentStateViewProps(state: state)
+        )
     }
 
     private static func makeRecipesViewProps(state: FavoritesPresenter.State) -> FavoriteRecipesView.Props {
         return .init(
-            isVisible: true,
+            isVisible: !state.recipes.isEmpty,
             items: makeItems(state: state),
             isSpinnerVisible: state.recipes.isLoading,
             isNoResultsLabelVisible: state.recipes.isPresent && state.recipes.isEmpty
@@ -40,5 +43,15 @@ extension FavoritesViewController {
             isReviewsLabelVisible: false,
             reviewsText: ""
         )
+    }
+
+    private static func makeContentStateViewProps(state: FavoritesPresenter.State) -> ContentStateView.Props {
+        if state.recipes.isLoading && state.recipes.isEmpty {
+            return .loading
+        } else if state.recipes.isEmpty && state.recipes.error == nil {
+            return .message(title: .favoritesEmptyTitle, buttonTitle: .favoritesEmptyButton)
+        } else {
+            return .hidden
+        }
     }
 }

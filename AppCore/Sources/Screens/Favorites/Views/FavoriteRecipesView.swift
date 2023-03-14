@@ -24,8 +24,6 @@ final class FavoriteRecipesView: UIView {
 
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     private lazy var dataSource = makeDataSource()
-    private let spinnerView = SpinnerView(circleColor: .appBlack)
-    private let noResultsLabel = UILabel()
     // callbacks
     var onTapItem: (IndexPath) -> Void = { _ in }
     var onTapFavorite: (IndexPath) -> Void = { _ in }
@@ -51,8 +49,6 @@ final class FavoriteRecipesView: UIView {
 
     private func setup() {
         setupCollectionView()
-        setupNoResultsLabel()
-        setupSpinnerView()
     }
 
     private func setupCollectionView() {
@@ -80,30 +76,11 @@ final class FavoriteRecipesView: UIView {
         ])
     }
 
-    private func setupSpinnerView() {
-        addSubview(spinnerView, constraints: [
-            spinnerView.topAnchor.constraint(equalTo: topAnchor, constant: 174),
-            spinnerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            spinnerView.widthAnchor.constraint(equalToConstant: 40),
-            spinnerView.heightAnchor.constraint(equalToConstant: 40)
-        ])
-    }
-
-    private func setupNoResultsLabel() {
-        noResultsLabel.render(title: "No results found", color: .textDisabled, typography: .body)
-        addSubview(noResultsLabel, constraints: [
-            noResultsLabel.topAnchor.constraint(equalTo: topAnchor, constant: 174),
-            noResultsLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
-        ])
-    }
-
     // MARK: - Public methods
 
     func render(props: Props) {
         isHidden = !props.isVisible
         dataSource.apply(sections: [0], items: [props.items])
-        spinnerView.toggle(isAnimating: props.isSpinnerVisible)
-        noResultsLabel.isHidden = !props.isNoResultsLabelVisible
     }
 
     // MARK: - Private methods

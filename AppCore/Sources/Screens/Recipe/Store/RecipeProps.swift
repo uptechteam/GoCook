@@ -65,14 +65,17 @@ extension RecipeViewController {
     }
 
     private static func makeContentStateView(state: State) -> ContentStateView.Props {
-        return .init(
-            isVisible: !state.recipeDetails.isPresent,
-            isSpinnerVisible: state.recipeDetails.isLoading,
-            isTitleVisible: state.recipeDetails.error != nil,
-            title: .recipeErrorTitle,
-            isActionButtonVisible: state.recipeDetails.error != nil,
-            actionButtonTitle: .recipeErrorRetry
-        )
+        guard state.recipeDetails.isPresent else {
+            return .hidden
+        }
+
+        if state.recipeDetails.isLoading {
+            return .loading
+        } else if state.recipeDetails.error != nil {
+            return .message(title: .recipeErrorTitle, buttonTitle: .recipeErrorRetry)
+        } else {
+            return .hidden
+        }
     }
 
     private static func makeIngredientsViewProps(state: State) -> RecipeIngredientsView.Props {

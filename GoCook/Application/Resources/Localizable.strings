@@ -10,6 +10,8 @@
 
 "favorites.title" = "Favorites";
 "favorites.search.placeholder" = "Search...";
+"favorites.empty.title" = "You have no favorited\nrecipes yet";
+"favorites.empty.button" = "Explore";
 
 // MARK: - Home
 

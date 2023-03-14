@@ -114,6 +114,12 @@ extension String {
   /// Favorites
   public static let favoritesTitle = L10n.tr("Localizable", "favorites.title")
 
+  /// Explore
+  public static let favoritesEmptyButton = L10n.tr("Localizable", "favorites.empty.button")
+
+  /// You have no favorited\nrecipes yet
+  public static let favoritesEmptyTitle = L10n.tr("Localizable", "favorites.empty.title")
+
   /// Search...
   public static let favoritesSearchPlaceholder = L10n.tr("Localizable", "favorites.search.placeholder")
 
