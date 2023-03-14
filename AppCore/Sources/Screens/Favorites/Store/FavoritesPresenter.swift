@@ -15,10 +15,34 @@ import Helpers
 public final class FavoritesPresenter {
 
     struct State: Equatable {
+
+        // MARK: - Properties
+
+        var filteredRecipes: [Recipe]
         var pendingRecipe: Recipe?
         var query: String
         var recipes: DomainModelState<[Recipe]>
         var route: AnyIdentifiable<Route>?
+
+        var areFavoriteRecipesEmpty: Bool {
+            recipes.isPresent && recipes.isEmpty
+        }
+
+        var isError: Bool {
+            recipes.isEmpty && recipes.error != nil
+        }
+
+        // MARK: - Public methods
+
+        mutating func updateFilteredRecipes() {
+            guard !query.isEmpty else {
+                self.filteredRecipes = recipes.items
+                return
+            }
+
+            let lowercasedQuery = query.lowercased()
+            self.filteredRecipes = recipes.items.filter { $0.name.lowercased().contains(lowercasedQuery) }
+        }
     }
 
     enum Route {
@@ -39,7 +63,7 @@ public final class FavoritesPresenter {
     // MARK: - Lifecycle
 
     public init() {
-        self.state = State(query: "", recipes: DomainModelState(), route: nil)
+        self.state = State(filteredRecipes: [], query: "", recipes: DomainModelState(), route: nil)
         Task {
             await observeRecipes()
         }
@@ -85,14 +109,15 @@ public final class FavoritesPresenter {
 
     func searchQueryChanged(_ query: String) {
         state.query = query
+        state.updateFilteredRecipes()
     }
 
     func viewDidAppear() async {
+        state.recipes.toggleIsLoading(on: true)
         do {
             try await favoriteRecipesFacade.getFavoriteRecipes()
             state.recipes.adjustState(accordingTo: .success(()))
         } catch {
-            print("Error: \(error.localizedDescription)")
             state.recipes.adjustState(accordingTo: Result<Void, Error>.failure(error))
         }
     }
@@ -102,6 +127,7 @@ public final class FavoritesPresenter {
     private func observeRecipes() async {
         for await recipes in await favoriteRecipesFacade.observeFeed().values {
             state.recipes.update(with: recipes)
+            state.updateFilteredRecipes()
         }
     }
 }

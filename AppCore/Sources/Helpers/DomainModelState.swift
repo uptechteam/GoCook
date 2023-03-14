@@ -65,6 +65,7 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
         switch result {
         case .failure(let error):
             self.error = error
+            self.isLoading = false
 
         case .success:
             self.isLoading = false

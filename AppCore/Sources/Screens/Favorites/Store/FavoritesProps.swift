@@ -18,7 +18,7 @@ extension FavoritesViewController {
 
     private static func makeRecipesViewProps(state: FavoritesPresenter.State) -> FavoriteRecipesView.Props {
         return .init(
-            isVisible: !state.recipes.isEmpty,
+            isVisible: !state.filteredRecipes.isEmpty,
             items: makeItems(state: state),
             isSpinnerVisible: state.recipes.isLoading,
             isNoResultsLabelVisible: state.recipes.isPresent && state.recipes.isEmpty
@@ -26,7 +26,7 @@ extension FavoritesViewController {
     }
 
     private static func makeItems(state: FavoritesPresenter.State) -> [SmallRecipeCell.Props] {
-        return state.recipes.items.map { recipe in
+        return state.filteredRecipes.map { recipe in
             return SmallRecipeCell.Props(
                 id: recipe.id.rawValue,
                 recipeImageSource: recipe.recipeImageSource,
@@ -46,10 +46,16 @@ extension FavoritesViewController {
     }
 
     private static func makeContentStateViewProps(state: FavoritesPresenter.State) -> ContentStateView.Props {
-        if state.recipes.isLoading && state.recipes.isEmpty {
+        guard state.recipes.isEmpty else {
+            return state.filteredRecipes.isEmpty ? .message(title: .favoritesNoResultsTitle, buttonTitle: nil) : .hidden
+        }
+
+        if state.recipes.isLoading {
             return .loading
-        } else if state.recipes.isEmpty && state.recipes.error == nil {
+        } else if state.areFavoriteRecipesEmpty {
             return .message(title: .favoritesEmptyTitle, buttonTitle: .favoritesEmptyButton)
+        } else if state.isError {
+            return .message(title: .favoritesErrorTitle, buttonTitle: .favoritesErrorButton)
         } else {
             return .hidden
         }
