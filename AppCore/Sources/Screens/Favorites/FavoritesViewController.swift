@@ -51,8 +51,12 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
+    }
+
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         Task { [presenter] in
-            await presenter.viewDidLoad()
+            await presenter.viewDidAppear()
         }
     }
 

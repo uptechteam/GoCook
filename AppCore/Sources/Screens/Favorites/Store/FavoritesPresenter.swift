@@ -49,7 +49,7 @@ public final class FavoritesPresenter {
         state.query = query
     }
 
-    func viewDidLoad() async {
+    func viewDidAppear() async {
         do {
             try await favoriteRecipesFacade.getFavoriteRecipes()
             state.recipes.adjustState(accordingTo: .success(()))
