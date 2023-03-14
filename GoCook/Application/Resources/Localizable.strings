@@ -100,6 +100,7 @@
 "recipe.details.reviews" = "(%d reviews)";
 "recipe.details.cooking.time" = "%d min";
 "recipe.ingredients.title" = "Ingredients";
+"recipe.ingredients.one.serving" = "1 serving";
 "recipe.ingredients.servings" = "%d servings";
 "recipe.instructions.title" = "Instructions";
 "recipe.instructions.step.title" = "%d Step";

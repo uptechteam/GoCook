@@ -291,6 +291,9 @@ extension String {
   /// Ingredients
   public static let recipeIngredientsTitle = L10n.tr("Localizable", "recipe.ingredients.title")
 
+  /// 1 serving
+  public static let recipeIngredientsOneServing = L10n.tr("Localizable", "recipe.ingredients.one.serving")
+
   /// Instructions
   public static let recipeInstructionsTitle = L10n.tr("Localizable", "recipe.instructions.title")
 

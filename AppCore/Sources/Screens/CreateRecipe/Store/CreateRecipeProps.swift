@@ -222,7 +222,7 @@ extension CreateRecipeViewController {
     private static func makeIngredientsViewProps(state: State) -> RecipeIngredientsView.Props {
         return .init(
             isVisible: true,
-            servingsDescription: .recipeIngredientsServings(state.stepTwoState.numberOfServings ?? 0),
+            servingsDescription: makeServingsDescription(state: state),
             ingredientsProps: state.stepTwoState.ingredients.map { ingredient in
                 RecipeIngredientView.Props(
                     name: ingredient.name,
@@ -230,6 +230,11 @@ extension CreateRecipeViewController {
                 )
             }
         )
+    }
+
+    private static func makeServingsDescription(state: State) -> String {
+        let numberOfServings = state.stepTwoState.numberOfServings ?? 0
+        return numberOfServings == 1 ? .recipeIngredientsOneServing : .recipeIngredientsServings(numberOfServings)
     }
 
     private static func makeRecipeInstructionsViewProps(state: State) -> RecipeInstructionsView.Props {

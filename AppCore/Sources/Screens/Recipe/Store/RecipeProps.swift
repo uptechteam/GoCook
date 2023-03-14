@@ -81,7 +81,7 @@ extension RecipeViewController {
     private static func makeIngredientsViewProps(state: State) -> RecipeIngredientsView.Props {
         return .init(
             isVisible: state.recipeDetails.isPresent,
-            servingsDescription: .recipeIngredientsServings(state.recipeDetails.servingsCount),
+            servingsDescription: makeServingsDescription(state: state),
             ingredientsProps: state.recipeDetails.ingredients.map { ingredient in
                 return RecipeIngredientView.Props(
                     name: ingredient.name,
@@ -89,6 +89,12 @@ extension RecipeViewController {
                 )
             }
         )
+    }
+
+    private static func makeServingsDescription(state: State) -> String {
+        return state.recipeDetails.servingsCount == 1
+        ? .recipeIngredientsOneServing
+        : .recipeIngredientsServings(state.recipeDetails.servingsCount)
     }
 
     private static func makeInstructionsViewProps(state: State) -> RecipeInstructionsView.Props {

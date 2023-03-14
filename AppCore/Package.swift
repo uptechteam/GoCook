@@ -31,7 +31,7 @@ let package = Package(
         ),
         // MARK: - Domain models
         .target(name: "DomainModels", dependencies: ["Helpers", "Library"]),
-        // MARK: - Heleprs
+        // MARK: - Helpers
         .target(
             name: "Helpers",
             dependencies: [
