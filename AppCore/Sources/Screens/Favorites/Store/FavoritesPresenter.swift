@@ -22,6 +22,7 @@ public final class FavoritesPresenter {
     }
 
     enum Route {
+        case didTapExplore
         case didTapFilters
         case didTapRecipe(Recipe)
     }
@@ -45,6 +46,10 @@ public final class FavoritesPresenter {
     }
 
     // MARK: - Public methods
+
+    func exploreTapped() {
+        state.route = .init(value: .didTapExplore)
+    }
 
     func favoriteTapped(indexPath: IndexPath) async {
         guard let recipe = state.recipes[safe: indexPath.item], state.pendingRecipe == nil else {

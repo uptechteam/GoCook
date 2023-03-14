@@ -12,6 +12,7 @@ import Library
 import UIKit
 
 public protocol FavoritesCoordinating: AnyObject {
+    func didTapExplore()
     func didTapFilters()
     func didTapRecipe(_ recipe: Recipe)
 }
@@ -90,6 +91,10 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
             await presenter.favoriteTapped(indexPath: indexPath)
         }
 
+        contentView.contentStateView.onTapAction = { [presenter] in
+            presenter.exploreTapped()
+        }
+
         let state = presenter.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
@@ -108,6 +113,9 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
 
     private func navigate(by route: FavoritesPresenter.Route) {
         switch route {
+        case .didTapExplore:
+            coordinator.didTapExplore()
+
         case .didTapFilters:
             coordinator.didTapFilters()
 

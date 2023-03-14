@@ -13,6 +13,10 @@ import Library
 import Recipe
 import UIKit
 
+protocol FavoritesCoordinatorDelegate: AnyObject {
+    func didTapExplore()
+}
+
 @MainActor
 final class FavoritesCoordinator: NSObject, Coordinating {
 
@@ -20,6 +24,7 @@ final class FavoritesCoordinator: NSObject, Coordinating {
 
     private let navigationController: UINavigationController
     private var interactiveControllers: [Int: SwipeInteractionController]
+    weak var delegate: FavoritesCoordinatorDelegate?
 
     var rootViewController: UIViewController {
         navigationController
@@ -59,6 +64,10 @@ final class FavoritesCoordinator: NSObject, Coordinating {
 // MARK: - FavoritesCoordinating
 
 extension FavoritesCoordinator: FavoritesCoordinating {
+    func didTapExplore() {
+        delegate?.didTapExplore()
+    }
+
     func didTapFilters() {
         let viewController = FiltersViewController.resolve(coordinator: self)
         navigationController.pushViewController(viewController, animated: true)
