@@ -53,6 +53,10 @@ public final class AppTabBarController: UITabBarController {
 
     // MARK: - Public methods
 
+    public func select(tabIndex: Int) {
+        store.dispatch(action: .itemTapped(tabIndex))
+    }
+
     public func selectInitialIndex() {
         store.dispatch(action: .selectInitialItem)
     }

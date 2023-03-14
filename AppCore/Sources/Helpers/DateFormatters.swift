@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DateFormatters {
+public enum DateFormatters {
     /// 2020-10-31T10:20:30.123
     static let fullDateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()

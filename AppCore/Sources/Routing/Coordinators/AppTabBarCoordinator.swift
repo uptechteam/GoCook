@@ -51,6 +51,7 @@ final class AppTabBarCoordinator: Coordinating {
 
     private func makeFavoritesCoordinator() {
         let coordinator = FavoritesCoordinator(navigationController: BaseNavigationController())
+        coordinator.delegate = self
         childCoordinators.append(coordinator)
     }
 
@@ -63,6 +64,14 @@ final class AppTabBarCoordinator: Coordinating {
         let coordinator = ProfileCoordinator(container: container, navigationController: BaseNavigationController())
         coordinator.delegate = self
         childCoordinators.append(coordinator)
+    }
+}
+
+// MARK: - FavoritesCoordinatorDelegate
+
+extension AppTabBarCoordinator: FavoritesCoordinatorDelegate {
+    func didTapExplore() {
+        tabBarController.select(tabIndex: 1)
     }
 }
 

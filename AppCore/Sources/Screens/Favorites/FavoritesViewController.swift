@@ -6,12 +6,15 @@
 //
 
 import Combine
+import DomainModels
 import Helpers
 import Library
 import UIKit
 
 public protocol FavoritesCoordinating: AnyObject {
+    func didTapExplore()
     func didTapFilters()
+    func didTapRecipe(_ recipe: Recipe)
 }
 
 public final class FavoritesViewController: UIViewController, TabBarPresentable {
@@ -51,8 +54,12 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
+    }
+
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         Task { [presenter] in
-            await presenter.viewDidLoad()
+            await presenter.viewDidAppear()
         }
     }
 
@@ -68,12 +75,24 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
     }
 
     private func setupBinding() {
-        contentView.onTapFilters = toSyncClosure { [presenter] in
-            await presenter.filtersTapped()
+        contentView.onTapFilters = { [presenter] in
+            presenter.filtersTapped()
         }
 
-        contentView.onChangeSearchQuery = toSyncClosure { [presenter] text in
-            await presenter.searchQueryChanged(text)
+        contentView.onChangeSearchQuery = { [presenter] text in
+            presenter.searchQueryChanged(text)
+        }
+
+        contentView.recipesView.onTapItem = { [presenter] indexPath in
+            presenter.recipeTapped(indexPath: indexPath)
+        }
+
+        contentView.recipesView.onTapFavorite = toSyncClosure { [presenter] indexPath in
+            await presenter.favoriteTapped(indexPath: indexPath)
+        }
+
+        contentView.contentStateView.onTapAction = toSyncClosure { [presenter] in
+            await presenter.contentStateActionTapped()
         }
 
         let state = presenter.$state.removeDuplicates()
@@ -94,8 +113,14 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
 
     private func navigate(by route: FavoritesPresenter.Route) {
         switch route {
+        case .didTapExplore:
+            coordinator.didTapExplore()
+
         case .didTapFilters:
             coordinator.didTapFilters()
+
+        case .didTapRecipe(let recipe):
+            coordinator.didTapRecipe(recipe)
         }
     }
 }

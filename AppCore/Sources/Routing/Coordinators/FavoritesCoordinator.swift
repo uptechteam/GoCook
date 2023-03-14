@@ -6,17 +6,25 @@
 //
 
 import AppTabBar
+import DomainModels
 import Favorites
 import Filters
 import Library
+import Recipe
 import UIKit
 
+protocol FavoritesCoordinatorDelegate: AnyObject {
+    func didTapExplore()
+}
+
+@MainActor
 final class FavoritesCoordinator: NSObject, Coordinating {
 
     // MARK: - Properties
 
     private let navigationController: UINavigationController
     private var interactiveControllers: [Int: SwipeInteractionController]
+    weak var delegate: FavoritesCoordinatorDelegate?
 
     var rootViewController: UIViewController {
         navigationController
@@ -56,8 +64,18 @@ final class FavoritesCoordinator: NSObject, Coordinating {
 // MARK: - FavoritesCoordinating
 
 extension FavoritesCoordinator: FavoritesCoordinating {
+    func didTapExplore() {
+        delegate?.didTapExplore()
+    }
+
     func didTapFilters() {
         let viewController = FiltersViewController.resolve(coordinator: self)
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
+    func didTapRecipe(_ recipe: Recipe) {
+        let envelope = RecipeEnvelope(recipe: recipe)
+        let viewController = RecipeViewController.resolve(from: .shared, envelope: envelope, coordinator: self)
         navigationController.pushViewController(viewController, animated: true)
     }
 }
@@ -66,6 +84,14 @@ extension FavoritesCoordinator: FavoritesCoordinating {
 
 extension FavoritesCoordinator: FiltersCoordinating {
 
+}
+
+// MARK: - RecipeCoordinating
+
+extension FavoritesCoordinator: RecipeCoordinating {
+    func didTapBack() {
+        navigationController.popViewController(animated: true)
+    }
 }
 
 // MARK: - UINavigationControllerdelegate
@@ -80,7 +106,7 @@ extension FavoritesCoordinator: UINavigationControllerDelegate {
             tabBarController?.toggleTabBarVisibility(on: false)
         }
 
-        let isNavigationBarHidden = viewController is FavoritesViewController
+        let isNavigationBarHidden = viewController is FavoritesViewController || viewController is RecipeViewController
         navigationController.setNavigationBarHidden(isNavigationBarHidden, animated: true)
     }
 

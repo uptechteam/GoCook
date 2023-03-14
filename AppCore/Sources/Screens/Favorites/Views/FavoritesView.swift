@@ -12,6 +12,7 @@ final class FavoritesView: UIView {
 
     struct Props: Equatable {
         let recipesViewProps: FavoriteRecipesView.Props
+        let contentStateViewProps: ContentStateView.Props
     }
 
     // MARK: - Properties
@@ -21,6 +22,7 @@ final class FavoritesView: UIView {
     let filtersButton = IconButton()
     let searchTextField = SearchTextField()
     let recipesView = FavoriteRecipesView()
+    let contentStateView = ContentStateView()
     // callbacks
     var onTapFilters: () -> Void = { }
     var onChangeSearchQuery: (String) -> Void = { _ in }
@@ -56,7 +58,7 @@ final class FavoritesView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [titleStackView, searchTextField, recipesView])
+        let stackView = UIStackView(arrangedSubviews: [titleStackView, searchTextField, recipesView, contentStateView])
         stackView.axis = .vertical
         stackView.setCustomSpacing(18, after: titleStackView)
         stackView.setCustomSpacing(24, after: searchTextField)
@@ -95,6 +97,7 @@ final class FavoritesView: UIView {
 
     func render(props: Props) {
         recipesView.render(props: props.recipesViewProps)
+        contentStateView.render(props: props.contentStateViewProps)
     }
 
     // MARK: - Private methods

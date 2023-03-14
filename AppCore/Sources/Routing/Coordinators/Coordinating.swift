@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 protocol Coordinating: AnyObject {
     var rootViewController: UIViewController { get }
 
