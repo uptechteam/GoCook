@@ -17,21 +17,15 @@ public final class FiltersViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let store: Store
-    private let actionCreator: ActionCreator
+    private let presenter: FiltersPresenter
     private let contentView = FiltersView()
     private unowned let coordinator: FiltersCoordinating
     private var cancellables = [AnyCancellable]()
 
     // MARK: - Lifecycle
 
-    public init(
-        store: Store,
-        actionCreator: ActionCreator,
-        coordinator: FiltersCoordinating
-    ) {
-        self.store = store
-        self.actionCreator = actionCreator
+    public init(presenter: FiltersPresenter, coordinator: FiltersCoordinating) {
+        self.presenter = presenter
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
         setupUI()
@@ -61,7 +55,7 @@ public final class FiltersViewController: UIViewController {
     }
 
     private func setupBinding() {
-        let state = store.$state.removeDuplicates()
+        let state = presenter.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
         state.map(FiltersViewController.makeProps)

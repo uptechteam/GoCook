@@ -64,7 +64,7 @@ final class HomeCoordinator: NSObject, Coordinating {
 
 extension HomeCoordinator: HomeCoordinating {
     func showFilters() {
-        let viewController = FiltersViewController.resolve(from: container, coordinator: self)
+        let viewController = FiltersViewController.resolve(coordinator: self)
         navigationController.pushViewController(viewController, animated: true)
     }
 

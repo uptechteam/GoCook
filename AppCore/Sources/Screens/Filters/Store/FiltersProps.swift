@@ -8,7 +8,7 @@
 import Foundation
 
 extension FiltersViewController {
-    static func makeProps(from state: State) -> FiltersView.Props {
+    static func makeProps(from state: FiltersPresenter.State) -> FiltersView.Props {
         .init()
     }
 }

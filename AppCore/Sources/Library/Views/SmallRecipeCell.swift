@@ -6,12 +6,11 @@
 //
 
 import Helpers
-import Library
 import UIKit
 
-final class SmallRecipeCell: UICollectionViewCell, ReusableCell {
+public final class SmallRecipeCell: UICollectionViewCell, ReusableCell {
 
-    struct Props: Hashable {
+    public struct Props: Hashable {
 
         // MARK: - Properties
 
@@ -21,9 +20,25 @@ final class SmallRecipeCell: UICollectionViewCell, ReusableCell {
         let name: String
         let ratingViewProps: RatingView.Props
 
+        // MARK: - Lifecycle
+
+        public init(
+            id: String,
+            recipeImageSource: ImageSource,
+            isFavorite: Bool,
+            name: String,
+            ratingViewProps: RatingView.Props
+        ) {
+            self.id = id
+            self.recipeImageSource = recipeImageSource
+            self.isFavorite = isFavorite
+            self.name = name
+            self.ratingViewProps = ratingViewProps
+        }
+
         // MARK: - Public methods
 
-        func hash(into hasher: inout Hasher) {
+        public func hash(into hasher: inout Hasher) {
             hasher.combine(id)
         }
     }
@@ -36,7 +51,7 @@ final class SmallRecipeCell: UICollectionViewCell, ReusableCell {
     private let nameLabel = UILabel()
     private let ratingView = RatingView()
     // callbacks
-    var onTapFavorite: () -> Void = { }
+    public var onTapFavorite: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -96,7 +111,7 @@ final class SmallRecipeCell: UICollectionViewCell, ReusableCell {
 
     // MARK: - Public methods
 
-    func render(props: Props) {
+    public func render(props: Props) {
         recipeImageView.set(props.recipeImageSource, placeholder: .mealPlaceholder)
         favoriteButton.set(image: props.isFavorite ? .circleWithFilledHeart : .circleWithEmptyHeart)
         nameLabel.render(title: props.name, color: .appBlack, typography: .subtitleTwo)

@@ -111,6 +111,12 @@ extension String {
   /// Number of servings
   public static let createRecipeStepTwoServingsTitle = L10n.tr("Localizable", "create.recipe.step.two.servings.title")
 
+  /// Favorites
+  public static let favoritesTitle = L10n.tr("Localizable", "favorites.title")
+
+  /// Search...
+  public static let favoritesSearchPlaceholder = L10n.tr("Localizable", "favorites.search.placeholder")
+
   /// View all
   public static let homeCategoryViewAll = L10n.tr("Localizable", "home.category.view.all")
 
