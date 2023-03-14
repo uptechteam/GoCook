@@ -47,7 +47,6 @@ public final class RatingView: UIView {
 
     private func setup() {
         setupStarImageView()
-        setupTextLabel()
         setupStackView()
     }
 
@@ -58,10 +57,6 @@ public final class RatingView: UIView {
             starImageView.widthAnchor.constraint(equalToConstant: 20),
             starImageView.heightAnchor.constraint(equalToConstant: 20)
         ])
-    }
-
-    private func setupTextLabel() {
-        textLabel.render(typography: .other)
     }
 
     private func setupStackView() {

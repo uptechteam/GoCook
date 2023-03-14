@@ -101,8 +101,6 @@ final class ProfileHeaderView: UIView {
 
     private func setupNameLabel() {
         nameLabel.isHidden = true
-        nameLabel.render(typography: .headerTwo)
-        nameLabel.textColor = .appWhite
     }
 
     private func setupStackView() {
@@ -125,6 +123,6 @@ final class ProfileHeaderView: UIView {
         avatarImageView.set(props.avatarImageSource, placeholder: .avatarPlaceholder)
         signInButton.isHidden = !props.isSignInButtonVisible
         nameLabel.isHidden = !props.isNameLabelVisible
-        nameLabel.text = props.name
+        nameLabel.render(title: props.name, color: .appWhite, typography: .headerTwo)
     }
 }

@@ -62,7 +62,6 @@ public final class UserInputView: UIView {
     private func setup() {
         setupTextField()
         setupDividerView()
-        setupErrorLabel()
         setupStackView()
     }
 
@@ -79,11 +78,6 @@ public final class UserInputView: UIView {
         ])
     }
 
-    private func setupErrorLabel() {
-        errorLabel.render(typography: .bodyTwo)
-        errorLabel.textColor = .errorMain
-    }
-
     private func setupStackView() {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, textField, dividerView, errorLabel])
         stackView.axis = .vertical
@@ -98,8 +92,8 @@ public final class UserInputView: UIView {
     public func render(props: Props) {
         titleLabel.render(title: props.title, color: props.titleColorSource.color, typography: .bodyTwo)
         dividerView.backgroundColor = props.dividerColorSource.color
-        errorLabel.text = props.errorMessage
         errorLabel.isHidden = !props.isErrorMessageVisible
+        errorLabel.render(title: props.errorMessage, color: .errorMain, typography: .bodyTwo)
     }
 }
 

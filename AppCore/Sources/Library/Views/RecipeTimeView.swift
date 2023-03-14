@@ -51,8 +51,6 @@ public final class RecipeTimeView: UIView {
     }
 
     private func setupTimelabel() {
-        timeLabel.render(typography: .description)
-        timeLabel.textColor = .textMain
         timeLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
@@ -65,6 +63,6 @@ public final class RecipeTimeView: UIView {
     // MARK: - Public methods
 
     public func render(props: Props) {
-        timeLabel.text = props.timeDescription
+        timeLabel.render(title: props.timeDescription, color: .textMain, typography: .description)
     }
 }

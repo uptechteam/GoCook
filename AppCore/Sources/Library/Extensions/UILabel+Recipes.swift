@@ -8,10 +8,6 @@
 import UIKit
 
 extension UILabel {
-    public func render(typography: Typography) {
-        font = typography.font
-    }
-
     public func render(title: String, color: UIColor, typography: Typography) {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = typography.lineHeightMultiple
@@ -19,7 +15,8 @@ extension UILabel {
             string: title,
             attributes: [
                 .foregroundColor: color,
-                .font: typography.font
+                .font: typography.font,
+                .paragraphStyle: paragraphStyle
             ]
         )
     }

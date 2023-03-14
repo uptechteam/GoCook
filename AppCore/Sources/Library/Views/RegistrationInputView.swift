@@ -94,8 +94,6 @@ public final class RegistrationInputView: UIView {
     }
 
     private func setupDescriptionLabel() {
-        descriptionLabel.render(typography: .bodyTwo)
-        descriptionLabel.textColor = .errorMain
         descriptionLabel.numberOfLines = 0
     }
 
@@ -116,8 +114,11 @@ public final class RegistrationInputView: UIView {
         validationView.render(props: props.validationViewProps)
         dividerView.backgroundColor = props.dividerColorSource.color
         descriptionLabel.isHidden = !props.isDescriptionVisible
-        descriptionLabel.text = props.description
-        descriptionLabel.textColor = props.descriptionColorSource.color
+        descriptionLabel.render(
+            title: props.description,
+            color: props.descriptionColorSource.color,
+            typography: .bodyTwo
+        )
     }
 }
 
