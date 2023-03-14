@@ -62,9 +62,10 @@ struct RecipesAPI {
     }
 
     func makePostRateRequest(recipeID: Recipe.ID, rating: Int) throws -> AppRequest {
+        let requestData = RatingRequest(rating: rating)
         return try requestBuilder.makePostJSONRequest(
             path: "\(recipeID.rawValue)/rating",
-            requestData: ["rating": "\(rating)"],
+            requestData: requestData,
             authorisation: .bearer
         )
     }

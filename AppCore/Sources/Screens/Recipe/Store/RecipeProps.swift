@@ -109,7 +109,7 @@ extension RecipeViewController {
     private static func makeFeedbackViewProps(state: State) -> RecipeFeedbackView.Props {
         return .init(
             isVisible: state.recipeDetails.isPresent,
-            text: .recipeRatingQuestion(state.recipeName),
+            text: state.recipeDetails.rating == nil ? .recipeRatingQuestion(state.recipeName) : .recipeRatingThankYou,
             rating: state.recipeDetails.rating ?? 0
         )
     }
