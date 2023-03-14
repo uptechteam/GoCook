@@ -7,13 +7,14 @@
 
 import Combine
 import Helpers
+import Library
 import UIKit
 
 public protocol FavoritesCoordinating: AnyObject {
     func didTapFilters()
 }
 
-public final class FavoritesViewController: UIViewController {
+public final class FavoritesViewController: UIViewController, TabBarPresentable {
 
     // MARK: - Properties
 
@@ -22,12 +23,17 @@ public final class FavoritesViewController: UIViewController {
     private unowned let coordinator: FavoritesCoordinating
     private var cancellables = [AnyCancellable]()
 
+    public var tabBarShouldBeVisible: Bool {
+        true
+    }
+
     // MARK: - Lifecycle
 
     public init(presenter: FavoritesPresenter, coordinator: FavoritesCoordinating) {
         self.presenter = presenter
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
+        setupUI()
     }
 
     required init?(coder: NSCoder) {
@@ -51,6 +57,15 @@ public final class FavoritesViewController: UIViewController {
     }
 
     // MARK: - Private methods
+
+    private func setupUI() {
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            image: .backButton,
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+    }
 
     private func setupBinding() {
         contentView.onTapFilters = toSyncClosure { [presenter] in

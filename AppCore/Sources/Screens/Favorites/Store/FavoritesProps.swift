@@ -14,9 +14,9 @@ extension FavoritesViewController {
     }
 
     private static func makeRecipesViewProps(state: FavoritesPresenter.State) -> FavoriteRecipesView.Props {
-        .init(
+        return .init(
             isVisible: true,
-            items: [],
+            items: makeItems(state: state),
             isSpinnerVisible: state.recipes.isLoading,
             isNoResultsLabelVisible: state.recipes.isPresent && state.recipes.isEmpty
         )

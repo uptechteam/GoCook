@@ -27,4 +27,8 @@ extension UserDefaults: Storage {
 
         removePersistentDomain(forName: bundleID)
     }
+
+    public static func resolve() -> UserDefaults {
+        .standard
+    }
 }

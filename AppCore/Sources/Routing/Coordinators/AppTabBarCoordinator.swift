@@ -50,7 +50,7 @@ final class AppTabBarCoordinator: Coordinating {
     // MARK: - Private methods
 
     private func makeFavoritesCoordinator() {
-        let coordinator = FavoritesCoordinator(container: container, navigationController: BaseNavigationController())
+        let coordinator = FavoritesCoordinator(navigationController: BaseNavigationController())
         childCoordinators.append(coordinator)
     }
 

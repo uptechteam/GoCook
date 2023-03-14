@@ -23,30 +23,16 @@ public final class FavoritesPresenter {
         case didTapFilters
     }
 
-    public struct Dependencies {
-
-        // MARK: - Properties
-
-        let favoriteRecipesFacade: FavoriteRecipesFacading
-
-        // MARK: - Lifecycle
-
-        public init(favoriteRecipesFacade: FavoriteRecipesFacading) {
-            self.favoriteRecipesFacade = favoriteRecipesFacade
-        }
-    }
-
     // MARK: - Properties
 
-    // Dependencies
-    private let dependencies: Dependencies
-    // Variables
-    @Published private(set) var state: State
+    @Dependency
+    private var favoriteRecipesFacade: FavoriteRecipesFacading
+    @Published
+    private(set) var state: State
 
     // MARK: - Lifecycle
 
-    public init(dependencies: Dependencies) {
-        self.dependencies = dependencies
+    public init() {
         self.state = State(query: "", recipes: DomainModelState(), route: nil)
         Task {
             await observeRecipes()
@@ -65,7 +51,7 @@ public final class FavoritesPresenter {
 
     func viewDidLoad() async {
         do {
-            try await dependencies.favoriteRecipesFacade.getFavoriteRecipes()
+            try await favoriteRecipesFacade.getFavoriteRecipes()
             state.recipes.adjustState(accordingTo: .success(()))
         } catch {
             print("Error: \(error.localizedDescription)")
@@ -76,7 +62,7 @@ public final class FavoritesPresenter {
     // MARK: - Private methods
 
     private func observeRecipes() async {
-        for await recipes in await dependencies.favoriteRecipesFacade.observeFeed().values {
+        for await recipes in await favoriteRecipesFacade.observeFeed().values {
             state.recipes.update(with: recipes)
         }
     }

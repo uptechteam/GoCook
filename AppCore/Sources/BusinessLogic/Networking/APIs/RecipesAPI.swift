@@ -28,7 +28,7 @@ struct RecipesAPI {
     }
 
     func makeGetFavoriteRecipesRequest() throws -> AppRequest {
-        try requestBuilder.makeGetRequest(path: "favorite", authorisation: .bearer)
+        try requestBuilder.makeGetRequest(path: "favorites", authorisation: .bearer)
     }
 
     func makeGetFeedRequest() throws -> AppRequest {
