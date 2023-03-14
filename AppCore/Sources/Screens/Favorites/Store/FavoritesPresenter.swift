@@ -8,6 +8,7 @@
 import BusinessLogic
 import Combine
 import DomainModels
+import Foundation
 import Helpers
 
 @MainActor
@@ -21,6 +22,7 @@ public final class FavoritesPresenter {
 
     enum Route {
         case didTapFilters
+        case didTapRecipe(Recipe)
     }
 
     // MARK: - Properties
@@ -43,6 +45,14 @@ public final class FavoritesPresenter {
 
     func filtersTapped() {
         state.route = .init(value: .didTapFilters)
+    }
+
+    func recipeTapped(indexPath: IndexPath) {
+        guard let recipe = state.recipes[safe: indexPath.item] else {
+            return
+        }
+
+        state.route = .init(value: .didTapRecipe(recipe))
     }
 
     func searchQueryChanged(_ query: String) {

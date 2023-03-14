@@ -6,12 +6,14 @@
 //
 
 import Combine
+import DomainModels
 import Helpers
 import Library
 import UIKit
 
 public protocol FavoritesCoordinating: AnyObject {
     func didTapFilters()
+    func didTapRecipe(_ recipe: Recipe)
 }
 
 public final class FavoritesViewController: UIViewController, TabBarPresentable {
@@ -80,6 +82,10 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
             await presenter.searchQueryChanged(text)
         }
 
+        contentView.recipesView.onTapItem = { [presenter] indexPath in
+            presenter.recipeTapped(indexPath: indexPath)
+        }
+
         let state = presenter.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
@@ -100,6 +106,9 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
         switch route {
         case .didTapFilters:
             coordinator.didTapFilters()
+
+        case .didTapRecipe(let recipe):
+            coordinator.didTapRecipe(recipe)
         }
     }
 }
