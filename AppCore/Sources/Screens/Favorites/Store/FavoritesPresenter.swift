@@ -25,7 +25,7 @@ public final class FavoritesPresenter {
         var route: AnyIdentifiable<Route>?
 
         var areFavoriteRecipesEmpty: Bool {
-            recipes.isPresent && recipes.isEmpty
+            recipes.isPresent && recipes.isEmpty && recipes.error == nil
         }
 
         var isError: Bool {
@@ -71,8 +71,12 @@ public final class FavoritesPresenter {
 
     // MARK: - Public methods
 
-    func exploreTapped() {
-        state.route = .init(value: .didTapExplore)
+    func contentStateActionTapped() async {
+        if state.areFavoriteRecipesEmpty {
+            state.route = .init(value: .didTapExplore)
+        } else if state.isError {
+            await getFavoriteRecipes()
+        }
     }
 
     func favoriteTapped(indexPath: IndexPath) async {
@@ -113,6 +117,12 @@ public final class FavoritesPresenter {
     }
 
     func viewDidAppear() async {
+        await getFavoriteRecipes()
+    }
+
+    // MARK: - Private methods
+
+    private func getFavoriteRecipes() async {
         state.recipes.toggleIsLoading(on: true)
         do {
             try await favoriteRecipesFacade.getFavoriteRecipes()
@@ -121,8 +131,6 @@ public final class FavoritesPresenter {
             state.recipes.adjustState(accordingTo: Result<Void, Error>.failure(error))
         }
     }
-
-    // MARK: - Private methods
 
     private func observeRecipes() async {
         for await recipes in await favoriteRecipesFacade.observeFeed().values {

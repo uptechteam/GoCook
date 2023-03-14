@@ -91,8 +91,8 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
             await presenter.favoriteTapped(indexPath: indexPath)
         }
 
-        contentView.contentStateView.onTapAction = { [presenter] in
-            presenter.exploreTapped()
+        contentView.contentStateView.onTapAction = toSyncClosure { [presenter] in
+            await presenter.contentStateActionTapped()
         }
 
         let state = presenter.$state.removeDuplicates()
