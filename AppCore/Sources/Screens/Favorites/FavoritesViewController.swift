@@ -74,16 +74,20 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
     }
 
     private func setupBinding() {
-        contentView.onTapFilters = toSyncClosure { [presenter] in
-            await presenter.filtersTapped()
+        contentView.onTapFilters = { [presenter] in
+            presenter.filtersTapped()
         }
 
-        contentView.onChangeSearchQuery = toSyncClosure { [presenter] text in
-            await presenter.searchQueryChanged(text)
+        contentView.onChangeSearchQuery = { [presenter] text in
+            presenter.searchQueryChanged(text)
         }
 
         contentView.recipesView.onTapItem = { [presenter] indexPath in
             presenter.recipeTapped(indexPath: indexPath)
+        }
+
+        contentView.recipesView.onTapFavorite = toSyncClosure { [presenter] indexPath in
+            await presenter.favoriteTapped(indexPath: indexPath)
         }
 
         let state = presenter.$state.removeDuplicates()

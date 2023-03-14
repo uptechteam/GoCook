@@ -15,6 +15,7 @@ import Helpers
 public final class FavoritesPresenter {
 
     struct State: Equatable {
+        var pendingRecipe: Recipe?
         var query: String
         var recipes: DomainModelState<[Recipe]>
         var route: AnyIdentifiable<Route>?
@@ -29,6 +30,8 @@ public final class FavoritesPresenter {
 
     @Dependency
     private var favoriteRecipesFacade: FavoriteRecipesFacading
+    @Dependency
+    private var recipesFacade: RecipesFacading
     @Published
     private(set) var state: State
 
@@ -42,6 +45,26 @@ public final class FavoritesPresenter {
     }
 
     // MARK: - Public methods
+
+    func favoriteTapped(indexPath: IndexPath) async {
+        guard let recipe = state.recipes[safe: indexPath.item], state.pendingRecipe == nil else {
+            return
+        }
+
+        state.pendingRecipe = recipe
+        do {
+            if recipe.isFavorite {
+                try await recipesFacade.removeFromFavorites(recipeID: recipe.id)
+            } else {
+                try await recipesFacade.addToFavorites(recipeID: recipe.id)
+            }
+
+            state.pendingRecipe = nil
+        } catch {
+            state.pendingRecipe = nil
+            print("Error: \(error.localizedDescription)")
+        }
+    }
 
     func filtersTapped() {
         state.route = .init(value: .didTapFilters)
