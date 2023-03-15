@@ -32,10 +32,11 @@ extension RecipeViewController {
         case backTapped
         case favorite(Result<Void, Error>)
         case favoriteTapped
-        case getRecipeDetails(Result<RecipeDetails, Error>)
+        case getRecipeDetails(Result<Void, Error>)
         case rate(Result<Void, Error>)
         case retryTapped
         case starTapped(Int)
+        case updateRecipeDetails(RecipeDetails)
         case viewDidLoad
     }
 
@@ -47,14 +48,12 @@ extension RecipeViewController {
 
         // MARK: - Properties
 
-        public let recipesClient: RecipesClienting
-        public let recipesFacade: RecipesFacading
+        public let recipeFacade: RecipeFacading
 
         // MARK: - Lifecycle
 
-        public init(recipesClient: RecipesClienting, recipesFacade: RecipesFacading) {
-            self.recipesClient = recipesClient
-            self.recipesFacade = recipesFacade
+        public init(recipeFacade: RecipeFacading) {
+            self.recipeFacade = recipeFacade
         }
     }
 
@@ -79,6 +78,7 @@ extension RecipeViewController {
 }
 
 extension RecipeViewController {
+    // swiftlint:disable:next cyclomatic_complexity
     static func reduce(state: State, action: Action) -> State {
 
         var newState = state
@@ -102,7 +102,7 @@ extension RecipeViewController {
             break
 
         case .getRecipeDetails(let result):
-            newState.recipeDetails.handle(result: result)
+            newState.recipeDetails.adjustState(accordingTo: result)
 
         case .rate(let result):
             newState.recipeDetails.adjustState(accordingTo: result)
@@ -114,6 +114,9 @@ extension RecipeViewController {
             var recipeDetails = newState.recipeDetails.getModel()
             recipeDetails.rating = index + 1
             newState.recipeDetails.update(with: recipeDetails)
+
+        case .updateRecipeDetails(let details):
+            newState.recipeDetails.update(with: details)
 
         case .viewDidLoad:
             newState.recipeDetails.toggleIsLoading(on: true)

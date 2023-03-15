@@ -22,9 +22,9 @@ extension RecipeViewController {
 
             do {
                 if state.recipeDetails.isFavorite {
-                    try await dependencies.recipesFacade.removeFromFavorites(recipeID: state.recipe.id)
+                    try await dependencies.recipeFacade.removeFromFavorites()
                 } else {
-                    try await dependencies.recipesFacade.addToFavorites(recipeID: state.recipe.id)
+                    try await dependencies.recipeFacade.addToFavorites()
                 }
 
                 await dispatch(.favorite(.success(())))

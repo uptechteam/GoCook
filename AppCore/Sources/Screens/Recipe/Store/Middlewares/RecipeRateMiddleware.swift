@@ -11,10 +11,9 @@ import Foundation
 extension RecipeViewController {
 
     static func makeRateMiddleware(dependencies: Dependencies) -> Store.Middleware {
-        return Store.makeMiddleware { dispatch, getState, next, action in
+        return Store.makeMiddleware { dispatch, _, next, action in
 
             await next(action)
-            let state = getState()
 
             guard case .starTapped(let index) = action else {
                 return
@@ -22,7 +21,7 @@ extension RecipeViewController {
 
             do {
                 let rating = index + 1
-                try await dependencies.recipesFacade.rate(recipeID: state.recipe.id, rating: rating)
+                try await dependencies.recipeFacade.rate(rating: rating)
                 await dispatch(.rate(.success(())))
             } catch {
                 await dispatch(.rate(.failure(error)))

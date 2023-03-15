@@ -81,6 +81,8 @@ public final class RecipeViewController: UIViewController {
             store.dispatch(action: .starTapped(index))
         }
 
+        actionCreator.observeRecipeDetails(handler: store.dispatch)
+
         let state = store.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 

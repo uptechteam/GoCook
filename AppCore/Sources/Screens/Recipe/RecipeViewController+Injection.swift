@@ -6,19 +6,25 @@
 //
 
 import Dip
+import DomainModels
 
 extension RecipeViewController {
     public static func inject(into container: DependencyContainer) {
         container.register(
             .shared,
             type: RecipeViewController.Dependencies.self,
-            factory: RecipeViewController.Dependencies.init
+            factory: { (recipeID: Recipe.ID) in
+                RecipeViewController.Dependencies(recipeFacade: try container.resolve(arguments: recipeID))
+            }
         )
         container.register(
             .unique,
             type: RecipeViewController.Store.self,
-            factory: { envelope in
-                RecipeViewController.makeStore(dependencies: try container.resolve(), envelope: envelope)
+            factory: { (envelope: RecipeEnvelope) in
+                return RecipeViewController.makeStore(
+                    dependencies: try container.resolve(arguments: envelope.recipe.id),
+                    envelope: envelope
+                )
             }
         )
         container.register(

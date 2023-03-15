@@ -8,7 +8,7 @@
 import DomainModels
 import Foundation
 
-public final class RecipesFacadeFactory {
+public final class UserRecipesFacadeFactory {
 
     // MARK: - Properties
 

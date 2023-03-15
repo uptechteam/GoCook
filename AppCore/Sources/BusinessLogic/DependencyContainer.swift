@@ -42,10 +42,23 @@ extension DependencyContainer {
         container.register(.singleton, type: HomeFeedFacading.self, factory: HomeFeedFacade.init)
         container.register(.singleton, type: ProfileFacading.self, factory: ProfileFacade.init)
         container.register(.singleton, type: ProfileRecipesFacading.self, factory: ProfileRecipesFacade.init)
+        container.register(.unique, type: RecipeFacading.self) { (recipeID: Recipe.ID) in
+            let factory: RecipeFacadeFactory = try container.resolve()
+            return try factory.produceFacade(
+                recipeID: recipeID,
+                producer: {
+                    RecipeFacade(
+                        recipeID: recipeID,
+                        recipesClient: try container.resolve(),
+                        recipesStorage: try container.resolve()
+                    )
+                }
+            )
+        }
         container.register(.singleton, type: RecipesFacading.self, factory: RecipesFacade.init)
         container.register(.singleton, type: SearchRecipesFacading.self, factory: SearchRecipesFacade.init)
         container.register(.unique, type: UserRecipesFacading.self) { (userID: User.ID) in
-            let factory: RecipesFacadeFactory = try container.resolve()
+            let factory: UserRecipesFacadeFactory = try container.resolve()
             return try factory.produceFacade(
                 userID: userID,
                 producer: {
@@ -60,7 +73,8 @@ extension DependencyContainer {
 
         // MARK: - Factories
 
-        container.register(.singleton, type: RecipesFacadeFactory.self, factory: RecipesFacadeFactory.init)
+        container.register(.singleton, type: UserRecipesFacadeFactory.self, factory: UserRecipesFacadeFactory.init)
+        container.register(.singleton, type: RecipeFacadeFactory.self, factory: RecipeFacadeFactory.init)
 
         // MARK: - Managers
 

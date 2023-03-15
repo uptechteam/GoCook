@@ -21,8 +21,8 @@ extension RecipeViewController {
             }
 
             do {
-                let details = try await dependencies.recipesClient.fetchRecipeDetails(id: state.recipe.id)
-                await dispatch(.getRecipeDetails(.success(details)))
+                try await dependencies.recipeFacade.refreshRecipe()
+                await dispatch(.getRecipeDetails(.success(())))
             } catch {
                 await dispatch(.getRecipeDetails(.failure(error)))
             }
