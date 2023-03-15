@@ -24,7 +24,7 @@
 // MARK: - Profile
 
 "profile.sign.in" = "Sign in";
-"profile.my_recipes" = "My recipes";
+"profile.my.recipes" = "My recipes";
 "profile.not.signed.in.title" = "Sign in to create recipe";
 "profile.empty.content.title" = "You haven’t create any recipe yet\nLet’s chage it";
 "profile.empty.content.button.title" = "Add recipe";

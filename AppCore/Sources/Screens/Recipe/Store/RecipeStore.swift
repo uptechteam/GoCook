@@ -33,7 +33,7 @@ extension RecipeViewController {
         case favorite(Result<Void, Error>)
         case favoriteTapped
         case getRecipeDetails(Result<RecipeDetails, Error>)
-        case rate(Result<RecipeDetails, Error>)
+        case rate(Result<Void, Error>)
         case retryTapped
         case starTapped(Int)
         case viewDidLoad
@@ -105,7 +105,7 @@ extension RecipeViewController {
             newState.recipeDetails.handle(result: result)
 
         case .rate(let result):
-            newState.recipeDetails.handle(result: result)
+            newState.recipeDetails.adjustState(accordingTo: result)
 
         case .retryTapped:
             newState.recipeDetails.toggleIsLoading(on: true)
