@@ -132,6 +132,9 @@ extension String {
   /// Search...
   public static let favoritesSearchPlaceholder = L10n.tr("Localizable", "favorites.search.placeholder")
 
+  /// Filters
+  public static let filtersTitle = L10n.tr("Localizable", "filters.title")
+
   /// View all
   public static let homeCategoryViewAll = L10n.tr("Localizable", "home.category.view.all")
 

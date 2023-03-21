@@ -7,6 +7,9 @@
 
 extension FiltersViewController {
     public static func resolve(coordinator: FiltersCoordinating) -> FiltersViewController {
-        return FiltersViewController(presenter: FiltersPresenter(), coordinator: coordinator)
+        return FiltersViewController(
+            presenter: FiltersPresenter(),
+            coordinator: coordinator
+        )
     }
 }

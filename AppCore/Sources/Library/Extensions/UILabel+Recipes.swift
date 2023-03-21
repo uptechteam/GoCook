@@ -11,6 +11,7 @@ extension UILabel {
     public func render(title: String, color: UIColor, typography: Typography) {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = typography.lineHeightMultiple
+        paragraphStyle.alignment = textAlignment
         attributedText = NSAttributedString(
             string: title,
             attributes: [

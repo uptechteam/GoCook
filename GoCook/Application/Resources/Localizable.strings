@@ -16,6 +16,10 @@
 "favorites.error.title" = "Something went bad";
 "favorites.error.button" = "Retry";
 
+// MARK: - Filters
+
+"filters.title" = "Filters";
+
 // MARK: - Home
 
 "home.search.placeholder" = "Search...";

@@ -51,14 +51,15 @@ public final class FiltersViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupUI() {
-        navigationItem.title = "Filters"
+        navigationItem.title = .filtersTitle
     }
 
     private func setupBinding() {
-        let state = presenter.$state.removeDuplicates()
-            .subscribe(on: DispatchQueue.main)
+        let state = presenter.$state
+            .removeDuplicates()
 
-        state.map(FiltersViewController.makeProps)
+        state
+            .map { state in FiltersPresenter.makeProps(from: state) }
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
