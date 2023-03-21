@@ -16,7 +16,7 @@ final class FiltersView: UIView {
 
     // MARK: - Properties
 
-    private let textLabel = UILabel()
+    private let topLineView = UIView()
 
     // MARK: - Lifecycle
 
@@ -33,18 +33,20 @@ final class FiltersView: UIView {
 
     private func setup() {
         setupContentView()
-        setupTextLabel()
+        setupTopLineView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
     }
 
-    private func setupTextLabel() {
-        textLabel.text = "Filters"
-        addSubview(textLabel, constraints: [
-            textLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            textLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+    private func setupTopLineView() {
+        topLineView.backgroundColor = .divider.withAlphaComponent(0.5)
+        addSubview(topLineView, constraints: [
+            topLineView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            topLineView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            topLineView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            topLineView.heightAnchor.constraint(equalToConstant: 1)
         ])
     }
 
