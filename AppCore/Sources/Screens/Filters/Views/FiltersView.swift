@@ -11,12 +11,15 @@ import UIKit
 final class FiltersView: UIView {
 
     struct Props: Equatable {
-
+        let categorySection: FiltersSectionView.Props
+        let cookingTimeSection: FiltersSectionView.Props
     }
 
     // MARK: - Properties
 
     private let topLineView = UIView()
+    private let categorySection = FiltersSectionView()
+    private let cookingTimeSection = FiltersSectionView()
 
     // MARK: - Lifecycle
 
@@ -40,6 +43,10 @@ final class FiltersView: UIView {
         backgroundColor = .appWhite
     }
 
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [categorySection, cookingTimeSection])
+    }
+
     private func setupTopLineView() {
         topLineView.backgroundColor = .divider.withAlphaComponent(0.5)
         addSubview(topLineView, constraints: [
@@ -53,6 +60,7 @@ final class FiltersView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-
+        categorySection.render(props: props.categorySection)
+        cookingTimeSection.render(props: props.cookingTimeSection)
     }
 }
