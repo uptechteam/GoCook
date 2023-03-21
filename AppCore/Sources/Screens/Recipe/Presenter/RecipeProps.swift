@@ -9,7 +9,7 @@ import DomainModels
 import Foundation
 import Library
 
-extension RecipeViewController {
+extension RecipePresenter {
     static func makeProps(from state: State) -> RecipeView.Props {
         return .init(
             headerViewProps: makeHeaderViewProps(state: state),

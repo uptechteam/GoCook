@@ -16,16 +16,16 @@ public final class FavoritesPresenter {
 
     // MARK: - Properties
 
-    @Dependency
-    private var favoriteRecipesFacade: FavoriteRecipesFacading
-    @Dependency
-    private var recipesFacade: RecipesFacading
+    private let favoriteRecipesFacade: FavoriteRecipesFacading
+    private let recipesFacade: RecipesFacading
     @Published
     private(set) var state: State
 
     // MARK: - Lifecycle
 
-    public init() {
+    public init(favoriteRecipesFacade: FavoriteRecipesFacading, recipesFacade: RecipesFacading) {
+        self.favoriteRecipesFacade = favoriteRecipesFacade
+        self.recipesFacade = recipesFacade
         self.state = State.makeInitialState()
         Task {
             await observeRecipes()

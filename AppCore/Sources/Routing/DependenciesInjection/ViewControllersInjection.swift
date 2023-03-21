@@ -26,7 +26,6 @@ extension DependencyContainer {
         InputViewController.inject(into: container)
         LoginViewController.inject(into: container)
         ProfileViewController.inject(into: container)
-        RecipeViewController.inject(into: container)
         SettingsViewController.inject(into: container)
         SignUpViewController.inject(into: container)
     }

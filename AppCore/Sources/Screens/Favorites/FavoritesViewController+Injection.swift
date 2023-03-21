@@ -5,10 +5,16 @@
 //  Created by Oleksii Andriushchenko on 20.11.2022.
 //
 
-import Dip
+import BusinessLogic
 
 extension FavoritesViewController {
     public static func resolve(coordinator: FavoritesCoordinating) -> FavoritesViewController {
-        return FavoritesViewController(presenter: FavoritesPresenter(), coordinator: coordinator)
+        return FavoritesViewController(
+            presenter: FavoritesPresenter(
+                favoriteRecipesFacade: AppContainer.resolve(),
+                recipesFacade: AppContainer.resolve()
+            ),
+            coordinator: coordinator
+        )
     }
 }
