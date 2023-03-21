@@ -46,7 +46,6 @@ public final class RecipeIngredientView: UIView {
     private func setup() {
         setupPointView()
         setupNameLabel()
-        setupWeightLabel()
         setupStackView()
     }
 
@@ -66,11 +65,6 @@ public final class RecipeIngredientView: UIView {
         nameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
-    private func setupWeightLabel() {
-        weightLabel.render(typography: .body)
-        weightLabel.textColor = .textMain
-    }
-
     private func setupStackView() {
         let stackView = UIStackView(arrangedSubviews: [nameLabel, UIView(), weightLabel])
         stackView.alignment = .top
@@ -82,6 +76,6 @@ public final class RecipeIngredientView: UIView {
 
     public func render(props: Props) {
         nameLabel.render(title: props.name, color: .textMain, typography: .body)
-        weightLabel.text = props.weightDescription
+        weightLabel.render(title: props.weightDescription, color: .textMain, typography: .body)
     }
 }

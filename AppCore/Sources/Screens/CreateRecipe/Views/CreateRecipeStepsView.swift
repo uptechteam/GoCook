@@ -82,8 +82,6 @@ final class CreateRecipeStepsView: UIView {
     }
 
     private func setupTitleLabel() {
-        titleLabel.render(typography: .buttonLarge)
-        titleLabel.textColor = .textMain
         titleLabel.textAlignment = .center
         titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
@@ -122,7 +120,7 @@ final class CreateRecipeStepsView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        titleLabel.text = props.title
+        titleLabel.render(title: props.title, color: .textMain, typography: .buttonLarge)
         backButton.alpha = props.isBackButtonVisible ? 1 : 0
         nextButton.isHidden = !props.isNextButtonVisible
         finishButton.isHidden = !props.isFinishButtonVisible

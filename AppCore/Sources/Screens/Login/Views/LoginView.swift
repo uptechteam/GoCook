@@ -111,8 +111,6 @@ final class LoginView: UIView {
     }
 
     private func setupTitleLabel() {
-        titleLabel.render(typography: .headerOne)
-        titleLabel.textColor = .textMain
         titleLabel.numberOfLines = 0
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
@@ -229,7 +227,7 @@ final class LoginView: UIView {
     func render(props: Props) {
         renderTopViews(isNavigationBarVisible: props.isNavigationBarVisible)
         backgroundImageView.set(props.backgroundImageSource)
-        titleLabel.text = props.title
+        titleLabel.render(title: props.title, color: .textMain, typography: .headerOne)
         loginButton.toggleLoading(on: props.isLoading)
         nameInputView.render(props: props.nameInputViewProps)
         passwordInputView.render(props: props.passwordInputViewProps)

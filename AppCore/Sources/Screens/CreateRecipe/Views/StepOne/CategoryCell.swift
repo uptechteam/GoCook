@@ -47,14 +47,8 @@ final class CategoryCell: UICollectionViewCell, ReusableCell {
     // MARK: - Set up
 
     private func setup() {
-        setupNameLabel()
         setupCheckmarkButton()
         setupStackView()
-    }
-
-    private func setupNameLabel() {
-        nameLabel.render(typography: .subtitleThree)
-        nameLabel.textColor = .textMain
     }
 
     private func setupCheckmarkButton() {
@@ -73,8 +67,7 @@ final class CategoryCell: UICollectionViewCell, ReusableCell {
     // MARK: - Public methods
 
     func render(props: Props) {
-        nameLabel.text = props.name
-        nameLabel.textColor = props.nameColorSource.color
+        nameLabel.render(title: props.name, color: props.nameColorSource.color, typography: .subtitleThree)
         checkmarkButton.set(image: props.checkmarkImageSource.image)
     }
 }

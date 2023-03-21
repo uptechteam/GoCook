@@ -86,8 +86,6 @@ final class StepThreeInstructionView: UIView {
     }
 
     private func setupErrorLabel() {
-        errorLabel.render(typography: .bodyTwo)
-        errorLabel.textColor = .errorMain
         errorLabel.textAlignment = .left
     }
 
@@ -121,12 +119,10 @@ final class StepThreeInstructionView: UIView {
 
     /// Render passed props except text.
     func updateUI(props: Props) {
-        titleLabel.text = props.title
-        titleLabel.textColor = props.titleColorSource.color
         titleLabel.render(title: props.title, color: props.titleColorSource.color, typography: .bodyThree)
         dividerView.backgroundColor = props.dividerColorSource.color
-        errorLabel.text = props.errorMessage
         errorLabel.isHidden = !props.isErrorMessageVisible
+        errorLabel.render(title: props.errorMessage, color: .errorMain, typography: .bodyTwo)
         deleteButton.isHidden = !props.isDeleteButtonVisible
     }
 

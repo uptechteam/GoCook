@@ -48,7 +48,6 @@ final class CategoryCell: UICollectionViewCell, ReusableCell {
     }
 
     private func setupTitleLabel() {
-        titleLabel.render(typography: .description)
         addSubview(titleLabel, withEdgeInsets: UIEdgeInsets(top: 6, left: 23, bottom: 6, right: 23))
     }
 
@@ -56,8 +55,7 @@ final class CategoryCell: UICollectionViewCell, ReusableCell {
 
     func render(props: Props) {
         contentView.backgroundColor = props.backgroundColorSource.color
-        titleLabel.text = props.title
-        titleLabel.textColor = props.titleColorSource.color
+        titleLabel.render(title: props.title, color: props.titleColorSource.color, typography: .description)
     }
 
     static func calculateSize(for props: Props) -> CGSize {

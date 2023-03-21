@@ -21,7 +21,11 @@ public final class Button: UIControl {
         didSet {
             backgroundColor = config.backgroundColor(for: isHighlighted ? .highlighted : .normal)
             layer.borderColor = config.borderColor(for: isHighlighted ? .highlighted : .normal).cgColor
-            titleLabel.textColor = config.titleColor(for: isHighlighted ? .highlighted : .normal)
+            titleLabel.render(
+                title: titleLabel.text ?? "",
+                color: config.titleColor(for: isHighlighted ? .highlighted : .normal),
+                typography: config.titleTypography
+            )
             imageView.tintColor = config.titleColor(for: isHighlighted ? .highlighted : .normal)
         }
     }
@@ -30,7 +34,11 @@ public final class Button: UIControl {
         didSet {
             backgroundColor = config.backgroundColor(for: isEnabled ? .normal : .disabled)
             layer.borderColor = config.borderColor(for: isEnabled ? .normal : .disabled).cgColor
-            titleLabel.textColor = config.titleColor(for: isEnabled ? .normal : .disabled)
+            titleLabel.render(
+                title: titleLabel.text ?? "",
+                color: config.titleColor(for: isEnabled ? .normal : .disabled),
+                typography: config.titleTypography
+            )
             imageView.tintColor = config.titleColor(for: isEnabled ? .normal : .disabled)
         }
     }
@@ -75,14 +83,6 @@ public final class Button: UIControl {
 
     private func setupTitleLabel() {
         titleLabel.setContentHuggingPriority(.required, for: .horizontal)
-        titleLabel.textColor = config.titleColor(for: .normal)
-        switch config.buttonSize {
-        case .large, .medium:
-            titleLabel.render(typography: .buttonLarge)
-
-        case .small:
-            titleLabel.render(typography: .buttonSmall)
-        }
     }
 
     func setupSpinnerView() {
@@ -118,7 +118,7 @@ public final class Button: UIControl {
     // MARK: - Public methods
 
     public func setTitle(_ title: String) {
-        titleLabel.text = title
+        titleLabel.render(title: title, color: config.titleColor(for: .normal), typography: config.titleTypography)
     }
 
     public func setImage(_ image: UIImage?) {

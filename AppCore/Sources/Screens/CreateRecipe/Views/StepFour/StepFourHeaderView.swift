@@ -56,8 +56,6 @@ final class StepFourHeaderView: UIView {
     }
 
     private func setupNameLabel() {
-        nameLabel.render(typography: .headerTwo)
-        nameLabel.textColor = .textMain
         nameLabel.numberOfLines = 0
         nameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
@@ -84,7 +82,7 @@ final class StepFourHeaderView: UIView {
 
     func render(props: Props) {
         recipeImageView.render(props: props.recipeImageView)
-        nameLabel.text = props.name
+        nameLabel.render(title: props.name, color: .textMain, typography: .headerTwo)
         timeView.render(props: props.timeViewProps)
     }
 }

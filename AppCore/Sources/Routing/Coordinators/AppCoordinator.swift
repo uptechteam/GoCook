@@ -26,7 +26,7 @@ public final class AppCoordinator {
 
     public init(window: UIWindow) {
         self.childCoordinators = []
-        self.container = DependencyContainer.shared
+        self.container = AppContainer.dependencyContainer
         DependencyContainer.injectViewControllers(container: self.container)
         self.window = window
         self.storage = try! container.resolve()

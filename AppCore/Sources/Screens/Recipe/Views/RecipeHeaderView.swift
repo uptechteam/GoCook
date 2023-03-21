@@ -41,7 +41,6 @@ final class RecipeHeaderView: UIView {
     private func setup() {
         setupContentView()
         setupBackButton()
-        setupTitleLabel()
         setupFavoriteButton()
         setupStackView()
         setupSeparatorView()
@@ -57,10 +56,6 @@ final class RecipeHeaderView: UIView {
             UIAction(handler: { [weak self] _ in self?.onDidTapBack() }),
             for: .touchUpInside
         )
-    }
-
-    private func setupTitleLabel() {
-        titleLabel.render(typography: .subtitleTwo)
     }
 
     private func setupFavoriteButton() {
@@ -93,7 +88,7 @@ final class RecipeHeaderView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        titleLabel.text = props.title
+        titleLabel.render(title: props.title, color: .textMain, typography: .subtitleTwo)
         favoriteButton.set(image: props.isFavorite ? .heartFilled : .heartEmpty)
     }
 }

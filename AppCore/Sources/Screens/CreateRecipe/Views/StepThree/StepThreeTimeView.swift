@@ -40,7 +40,6 @@ final class StepThreeTimeView: UIView {
     private func setup() {
         setupContentView()
         setupTitleLabel()
-        setupTimeLabel()
         setupStackView()
     }
 
@@ -52,10 +51,6 @@ final class StepThreeTimeView: UIView {
     private func setupTitleLabel() {
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         titleLabel.render(title: .createRecipeStepThreeTimeTitle, color: .textMain, typography: .subtitle)
-    }
-
-    private func setupTimeLabel() {
-        timeLabel.render(typography: .body)
     }
 
     private func setupStackView() {

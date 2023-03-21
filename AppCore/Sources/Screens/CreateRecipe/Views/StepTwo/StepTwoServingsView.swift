@@ -40,7 +40,6 @@ final class StepTwoServingsView: UIView {
     private func setup() {
         setupContentView()
         setupTitleLabel()
-        setupAmountLabel()
         setupStackView()
     }
 
@@ -51,10 +50,6 @@ final class StepTwoServingsView: UIView {
 
     private func setupTitleLabel() {
         titleLabel.render(title: .createRecipeStepTwoServingsTitle, color: .textMain, typography: .subtitle)
-    }
-
-    private func setupAmountLabel() {
-        amountLabel.render(typography: .body)
     }
 
     private func setupStackView() {

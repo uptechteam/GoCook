@@ -237,9 +237,6 @@ extension String {
   /// Log into\nGoCook
   public static let loginTextTitleRegistration = L10n.tr("Localizable", "login.text.title.registration")
 
-  /// My recipes
-  public static let profileMyRecipes = L10n.tr("Localizable", "profile.my_recipes")
-
   /// Add new
   public static let profileButtonAddMoreTitle = L10n.tr("Localizable", "profile.button.add.more.title")
 
@@ -248,6 +245,9 @@ extension String {
 
   /// Add recipe
   public static let profileEmptyContentButtonTitle = L10n.tr("Localizable", "profile.empty.content.button.title")
+
+  /// My recipes
+  public static let profileMyRecipes = L10n.tr("Localizable", "profile.my.recipes")
 
   /// Sign in to create recipe
   public static let profileNotSignedInTitle = L10n.tr("Localizable", "profile.not.signed.in.title")
@@ -290,6 +290,9 @@ extension String {
 
   /// Ingredients
   public static let recipeIngredientsTitle = L10n.tr("Localizable", "recipe.ingredients.title")
+
+  /// 1 serving
+  public static let recipeIngredientsOneServing = L10n.tr("Localizable", "recipe.ingredients.one.serving")
 
   /// Instructions
   public static let recipeInstructionsTitle = L10n.tr("Localizable", "recipe.instructions.title")

@@ -17,21 +17,15 @@ public final class RecipeViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let store: Store
-    private let actionCreator: ActionCreator
+    private let presenter: RecipePresenter
     private let contentView = RecipeView()
     private unowned let coordinator: RecipeCoordinating
     private var cancellables = [AnyCancellable]()
 
     // MARK: - Lifecycle
 
-    public init(
-        store: Store,
-        actionCreator: ActionCreator,
-        coordinator: RecipeCoordinating
-    ) {
-        self.store = store
-        self.actionCreator = actionCreator
+    public init(presenter: RecipePresenter, coordinator: RecipeCoordinating) {
+        self.presenter = presenter
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
@@ -51,40 +45,43 @@ public final class RecipeViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
-        store.dispatch(action: .viewDidLoad)
+        Task { [presenter] in
+            await presenter.viewDidLoad()
+        }
     }
 
     // MARK: - Private methods
 
     private func setupBinding() {
-        contentView.headerView.onDidTapBack = { [store] in
-            store.dispatch(action: .backTapped)
+        contentView.headerView.onDidTapBack = { [presenter] in
+            presenter.backTapped()
         }
 
-        contentView.onDidTapBack = { [store] in
-            store.dispatch(action: .backTapped)
+        contentView.onDidTapBack = { [presenter] in
+            presenter.backTapped()
         }
 
-        contentView.onDidTapFavorite = { [store] in
-            store.dispatch(action: .favoriteTapped)
+        contentView.onDidTapFavorite = toSyncClosure { [presenter] in
+            await presenter.favoriteTapped()
         }
 
-        contentView.headerView.onDidTapFavorite = { [store] in
-            store.dispatch(action: .favoriteTapped)
+        contentView.headerView.onDidTapFavorite = toSyncClosure { [presenter] in
+            await presenter.favoriteTapped()
         }
 
-        contentView.detailsView.headerView.contentStateView.onTapAction = { [store] in
-            store.dispatch(action: .retryTapped)
+        contentView.detailsView.headerView.contentStateView.onTapAction = toSyncClosure { [presenter] in
+            await presenter.retryTapped()
         }
 
-        contentView.detailsView.feedbackView.onTapStar = { [store] index in
-            store.dispatch(action: .starTapped(index))
+        contentView.detailsView.feedbackView.onTapStar = toSyncClosure { [presenter] index in
+            await presenter.starTapped(index: index)
         }
 
-        let state = store.$state.removeDuplicates()
-            .subscribe(on: DispatchQueue.main)
+        let state = presenter.$state
+            .removeDuplicates()
 
-        state.map(RecipeViewController.makeProps)
+        state
+            .map { RecipePresenter.makeProps(from: $0) }
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
@@ -96,7 +93,7 @@ public final class RecipeViewController: UIViewController {
             .store(in: &cancellables)
     }
 
-    private func navigate(by route: Route) {
+    private func navigate(by route: RecipePresenter.Route) {
         switch route {
         case .back:
             coordinator.didTapBack()

@@ -18,6 +18,7 @@ final class RecipeFeedbackView: UIView {
 
     // MARK: - Properties
 
+    private let textContainerView = UIView()
     private let textLabel = UILabel()
     private let starsStackView = UIStackView()
     // callbacks
@@ -45,11 +46,19 @@ final class RecipeFeedbackView: UIView {
 
     private func setupContentView() {
         backgroundColor = .appWhite
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: 158)
+        ])
     }
 
     private func setupTextLabel() {
         textLabel.numberOfLines = 0
         textLabel.textAlignment = .center
+        textContainerView.addSubview(textLabel, constraints: [
+            textLabel.leadingAnchor.constraint(equalTo: textContainerView.leadingAnchor),
+            textLabel.trailingAnchor.constraint(equalTo: textContainerView.trailingAnchor),
+            textLabel.centerYAnchor.constraint(equalTo: textContainerView.centerYAnchor)
+        ])
     }
 
     private func setupStarsStackView() {
@@ -64,11 +73,10 @@ final class RecipeFeedbackView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [textLabel, starsStackView])
+        let stackView = UIStackView(arrangedSubviews: [textContainerView, starsStackView])
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.spacing = 16
-        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 32, left: 24, bottom: 32, right: 24))
+        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 0, left: 24, bottom: 32, right: 24))
     }
 
     // MARK: - Public methods

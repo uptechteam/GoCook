@@ -51,8 +51,6 @@ public final class ErrorView: UIView {
     }
 
     private func setupTextLabel() {
-        textLabel.render(typography: .bodyTwo)
-        textLabel.textColor = .appWhite
         textLabel.numberOfLines = 0
         addSubview(textLabel, withEdgeInsets: UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16))
     }
@@ -61,6 +59,6 @@ public final class ErrorView: UIView {
 
     public func render(props: Props) {
         isHidden = !props.isVisible
-        textLabel.text = props.message
+        textLabel.render(title: props.message, color: .appWhite, typography: .bodyTwo)
     }
 }

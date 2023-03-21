@@ -21,6 +21,16 @@ public struct ButtonConfig: Equatable {
         isBorderVisible ? 1 : 0
     }
 
+    var titleTypography: Typography {
+        switch buttonSize {
+        case .large, .medium:
+            return .buttonLarge
+
+        case .small:
+            return .buttonSmall
+        }
+    }
+
     // MARK: - Lifecycle
 
     public init(

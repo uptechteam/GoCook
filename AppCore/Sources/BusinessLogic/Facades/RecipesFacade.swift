@@ -9,6 +9,7 @@ import DomainModels
 
 public protocol RecipesFacading: Sendable {
     func addToFavorites(recipeID: Recipe.ID) async throws
+    func rate(recipeID: Recipe.ID, rating: Int) async throws
     func removeFromFavorites(recipeID: Recipe.ID) async throws
 }
 
@@ -30,6 +31,11 @@ public actor RecipesFacade: RecipesFacading {
 
     public func addToFavorites(recipeID: Recipe.ID) async throws {
         let recipeDetails = try await recipesClient.addToFavorites(recipeID: recipeID)
+        await recipesStorage.store(recipe: recipeDetails.recipe)
+    }
+
+    public func rate(recipeID: Recipe.ID, rating: Int) async throws {
+        let recipeDetails = try await recipesClient.rate(recipeID: recipeID, rating: rating)
         await recipesStorage.store(recipe: recipeDetails.recipe)
     }
 
