@@ -9,6 +9,11 @@ import DomainModels
 import Helpers
 
 extension FiltersPresenter {
+
+    static func makeIsRightBarButtonHidden(from state: State) -> Bool {
+        state.selectedCategories.isEmpty && state.selectedTimeFilters.isEmpty
+    }
+
     static func makeProps(from state: State) -> FiltersView.Props {
         return .init(
             categorySectionViewProps: makeCategorySectionViewProps(state: state),

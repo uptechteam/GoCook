@@ -7,6 +7,7 @@
 
 import Combine
 import Helpers
+import Library
 import UIKit
 
 public protocol FiltersCoordinating: AnyObject {
@@ -67,10 +68,40 @@ public final class FiltersViewController: UIViewController {
             .removeDuplicates()
 
         state
+            .map { state in FiltersPresenter.makeIsRightBarButtonHidden(from: state) }
+            .sink { [unowned self] isHidden in
+                renderRightBarButton(isHidden: isHidden)
+            }
+            .store(in: &cancellables)
+
+        state
             .map { state in FiltersPresenter.makeProps(from: state) }
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
             .store(in: &cancellables)
+    }
+
+    private func renderRightBarButton(isHidden: Bool) {
+        guard !isHidden else {
+            navigationItem.rightBarButtonItem = nil
+            return
+        }
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: .filtersClearAll,
+            style: .plain,
+            target: self,
+            action: #selector(handleClearButtonTap)
+        )
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes(
+            Typography.buttonLarge.getParameters(color: .primaryMain),
+            for: .normal
+        )
+    }
+
+    @objc
+    private func handleClearButtonTap() {
+        presenter.clearTapped()
     }
 }
