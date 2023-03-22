@@ -86,22 +86,22 @@ struct RecipesAPI {
     private func makeCategoryFilter(category: CategoryType) -> String {
         switch category {
         case .breakfast:
-            return "Breakfast"
+            return "BREAKFAST"
 
         case .desserts:
-            return "Desserts"
+            return "DESSERTS"
 
         case .dinner:
-            return "Dinner"
+            return "DINNER"
 
         case .drinks:
-            return "Drinks"
+            return "DRINKS"
 
         case .lunch:
-            return "Lunch"
+            return "LUNCH"
 
         case .trending:
-            return ""
+            return "TRENDING"
         }
     }
 
