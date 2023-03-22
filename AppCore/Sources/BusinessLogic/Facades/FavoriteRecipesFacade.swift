@@ -11,7 +11,7 @@ import DomainModels
 import Helpers
 
 public protocol FavoriteRecipesFacading: Sendable {
-    func getFavoriteRecipes() async throws
+    func getFavoriteRecipes(query: String, filters: RecipeFilters) async throws
     func observeFeed() async -> AnyPublisher<[Recipe], Never>
 }
 
@@ -35,8 +35,8 @@ public actor FavoriteRecipesFacade: FavoriteRecipesFacading {
 
     // MARK: - Public methods
 
-    public func getFavoriteRecipes() async throws {
-        let recipes = try await recipesClient.fetchFavoriteRecipes()
+    public func getFavoriteRecipes(query: String, filters: RecipeFilters) async throws {
+        let recipes = try await recipesClient.fetchFavoriteRecipes(query: query, filters: filters)
         await recipesStorage.store(recipes: recipes)
         self.identifiers = recipes.map(\.id)
         self.identifiersSubject.send(self.identifiers)

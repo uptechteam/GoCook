@@ -37,9 +37,9 @@ struct RequestBuilder {
         return AppRequest(urlRequest: request, authorisation: authorisation)
     }
 
-    func makeGetRequest(
+    func makeGetRequest<Params: Encodable>(
         path: String,
-        parameters: [String: String] = [:],
+        parameters: Params = [String: String](),
         authorisation: Authorisation = .basic
     ) throws -> AppRequest {
         var request = try URLRequest(

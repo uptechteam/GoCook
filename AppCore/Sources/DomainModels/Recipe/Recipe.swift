@@ -9,9 +9,9 @@ import Helpers
 
 public struct Recipe: Equatable {
 
-    // MARK: - Properties
-
     public typealias ID = Tagged<Recipe, String>
+
+    // MARK: - Properties
 
     public let id: ID
     public let isFavorite: Bool

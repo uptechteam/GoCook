@@ -17,7 +17,7 @@ extension FavoritesPresenter {
 
         // MARK: - Properties
 
-        var filteredRecipes: [Recipe]
+        var filters: RecipeFilters
         var pendingRecipe: Recipe?
         var query: String
         var recipes: DomainModelState<[Recipe]>
@@ -33,19 +33,9 @@ extension FavoritesPresenter {
 
         // MARK: - Public methods
 
-        mutating func updateFilteredRecipes() {
-            guard !query.isEmpty else {
-                self.filteredRecipes = recipes.items
-                return
-            }
-
-            let lowercasedQuery = query.lowercased()
-            self.filteredRecipes = recipes.items.filter { $0.name.lowercased().contains(lowercasedQuery) }
-        }
-
         static func makeInitialState() -> State {
             return State(
-                filteredRecipes: [],
+                filters: RecipeFilters(categories: [], timeFilters: []),
                 pendingRecipe: nil,
                 query: "",
                 recipes: DomainModelState(),

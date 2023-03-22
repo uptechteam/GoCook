@@ -79,8 +79,8 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
             presenter.filtersTapped()
         }
 
-        contentView.onChangeSearchQuery = { [presenter] text in
-            presenter.searchQueryChanged(text)
+        contentView.onChangeSearchQuery = toSyncClosure { [presenter] text in
+            await presenter.searchQueryChanged(text)
         }
 
         contentView.recipesView.onTapItem = { [presenter] indexPath in

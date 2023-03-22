@@ -17,16 +17,25 @@ public final class FavoritesPresenter {
     // MARK: - Properties
 
     private let favoriteRecipesFacade: FavoriteRecipesFacading
+    private let filtersFacade: FiltersFacading
     private let recipesFacade: RecipesFacading
     @Published
     private(set) var state: State
 
     // MARK: - Lifecycle
 
-    public init(favoriteRecipesFacade: FavoriteRecipesFacading, recipesFacade: RecipesFacading) {
+    public init(
+        favoriteRecipesFacade: FavoriteRecipesFacading,
+        filtersFacade: FiltersFacading,
+        recipesFacade: RecipesFacading
+    ) {
         self.favoriteRecipesFacade = favoriteRecipesFacade
+        self.filtersFacade = filtersFacade
         self.recipesFacade = recipesFacade
         self.state = State.makeInitialState()
+        Task {
+            await observeFilters()
+        }
         Task {
             await observeRecipes()
         }
@@ -74,9 +83,9 @@ public final class FavoritesPresenter {
         state.route = .init(value: .didTapRecipe(recipe))
     }
 
-    func searchQueryChanged(_ query: String) {
+    func searchQueryChanged(_ query: String) async {
         state.query = query
-        state.updateFilteredRecipes()
+        await getFavoriteRecipes()
     }
 
     func viewDidAppear() async {
@@ -88,17 +97,23 @@ public final class FavoritesPresenter {
     private func getFavoriteRecipes() async {
         state.recipes.toggleIsLoading(on: true)
         do {
-            try await favoriteRecipesFacade.getFavoriteRecipes()
+            try await favoriteRecipesFacade.getFavoriteRecipes(query: state.query, filters: state.filters)
             state.recipes.adjustState(accordingTo: .success(()))
         } catch {
             state.recipes.adjustState(accordingTo: Result<Void, Error>.failure(error))
         }
     }
 
+    private func observeFilters() async {
+        for await filter in await filtersFacade.observeFilters().values {
+            state.filters = filter
+            await getFavoriteRecipes()
+        }
+    }
+
     private func observeRecipes() async {
         for await recipes in await favoriteRecipesFacade.observeFeed().values {
             state.recipes.update(with: recipes)
-            state.updateFilteredRecipes()
         }
     }
 }

@@ -27,8 +27,13 @@ struct RecipesAPI {
         try requestBuilder.makeDeleteRequest(path: "\(recipeID.rawValue)/favorite", authorisation: .bearer)
     }
 
-    func makeGetFavoriteRecipesRequest() throws -> AppRequest {
-        try requestBuilder.makeGetRequest(path: "favorites", authorisation: .bearer)
+    func makeGetFavoriteRecipesRequest(query: String, filters: RecipeFilters) throws -> AppRequest {
+        let parameters = GetFavoriteRecipesParams(
+            categoryFilters: filters.categories.map(makeCategoryFilter),
+            query: query,
+            timeFilters: filters.timeFilters.map(makeTimeFilter)
+        )
+        return try requestBuilder.makeGetRequest(path: "favorites", parameters: parameters, authorisation: .bearer)
     }
 
     func makeGetFeedRequest() throws -> AppRequest {
@@ -48,12 +53,14 @@ struct RecipesAPI {
         return try requestBuilder.makeGetRequest(path: "", parameters: parameters, authorisation: .bearer)
     }
 
-    func makeGetRecipesRequest(query: String, page: Int) throws -> AppRequest {
-        let parameters = [
-            "page": "\(page)",
-            "pageSize": "\(AppConstants.Pagination.pageSize)",
-            "query": query
-        ]
+    func makeGetRecipesRequest(query: String, filters: RecipeFilters, page: Int) throws -> AppRequest {
+        let parameters = GetRecipesParams(
+            categoryFilters: filters.categories.map(makeCategoryFilter),
+            page: page,
+            pageSize: AppConstants.Pagination.pageSize,
+            query: query,
+            timeFilters: filters.timeFilters.map(makeTimeFilter)
+        )
         return try requestBuilder.makeGetRequest(path: "", parameters: parameters, authorisation: .bearer)
     }
 
@@ -72,5 +79,45 @@ struct RecipesAPI {
 
     func makePostRecipeRequest(request: NewRecipeRequest) throws -> AppRequest {
         try requestBuilder.makePostJSONRequest(path: "", requestData: request, authorisation: .bearer)
+    }
+
+    // MARK: - Private methods
+
+    private func makeCategoryFilter(category: CategoryType) -> String {
+        switch category {
+        case .breakfast:
+            return "BREAKFAST"
+
+        case .desserts:
+            return "DESSERTS"
+
+        case .dinner:
+            return "DINNER"
+
+        case .drinks:
+            return "DRINKS"
+
+        case .lunch:
+            return "LUNCH"
+
+        case .trending:
+            return "TRENDING"
+        }
+    }
+
+    private func makeTimeFilter(timeFilter: RecipeTimeFilter) -> String {
+        switch timeFilter {
+        case .fifteenToThirty:
+            return "FIFTEEN_TO_THIRTY"
+
+        case .fiveToFifteen:
+            return "FIVE_TO_FIFTEEN"
+
+        case .moreThanFortyFive:
+            return "MORE_THAN_FORTY_FIVE"
+
+        case .thirtyToFortyFive:
+            return "THIRTY_TO_FORTY_FIVE"
+        }
     }
 }

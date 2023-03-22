@@ -159,11 +159,42 @@ extension String {
   /// 30 - 45 mins
   public static let filtersSectionCookingTimeThirtyToFortyFive = L10n.tr("Localizable", "filters.section.cooking.time.thirty.to.forty.five")
 
+  ///  and 
+  public static let homeCategoriesJoinText = L10n.tr("Localizable", "home.categories.join.text")
+
   /// View all
   public static let homeCategoryViewAll = L10n.tr("Localizable", "home.category.view.all")
 
+  /// 15 - 30 mins
+  public static let homeCookingTimeFifteenToThirty = L10n.tr("Localizable", "home.cooking.time.fifteen.to.thirty")
+
+  /// 5 - 15 mins
+  public static let homeCookingTimeFiveToFifteen = L10n.tr("Localizable", "home.cooking.time.five.to.fifteen")
+
+  /// 45+ mins
+  public static let homeCookingTimeMoreThanFortyFive = L10n.tr("Localizable", "home.cooking.time.more.than.forty.five")
+
+  /// 30 - 45 mins
+  public static let homeCookingTimeThirtyToFortyFive = L10n.tr("Localizable", "home.cooking.time.thirty.to.forty.five")
+
+  /// You’re looking for recipes
+  public static let homeFilterDescription = L10n.tr("Localizable", "home.filter.description")
+
+  ///  in %@ categories
+  public static func homeFilterDescriptionCategories(_ p1: String) -> String {
+    return L10n.tr("Localizable", "home.filter.description.categories", p1)
+  }
+
+  ///  with %@ cooking time
+  public static func homeFilterDescriptionCookingTime(_ p1: String) -> String {
+    return L10n.tr("Localizable", "home.filter.description.cooking.time", p1)
+  }
+
   /// Search...
   public static let homeSearchPlaceholder = L10n.tr("Localizable", "home.search.placeholder")
+
+  /// , 
+  public static let homeTimeFiltersJoinText = L10n.tr("Localizable", "home.time.filters.join.text")
 
   /// Take photo
   public static let imagePickerCamera = L10n.tr("Localizable", "image.picker.camera")

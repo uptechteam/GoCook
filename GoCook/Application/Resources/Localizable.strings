@@ -31,6 +31,15 @@
 // MARK: - Home
 
 "home.search.placeholder" = "Search...";
+"home.filter.description" = "You’re looking for recipes";
+"home.filter.description.categories" = " in %@ categories";
+"home.filter.description.cooking.time" = " with %@ cooking time";
+"home.categories.join.text" = " and ";
+"home.cooking.time.five.to.fifteen" = "5 - 15 mins";
+"home.cooking.time.fifteen.to.thirty" = "15 - 30 mins";
+"home.cooking.time.thirty.to.forty.five" = "30 - 45 mins";
+"home.cooking.time.more.than.forty.five" = "45+ mins";
+"home.time.filters.join.text" = ", ";
 "home.category.view.all" = "View all";
 
 // MARK: - Profile

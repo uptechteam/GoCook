@@ -5,12 +5,14 @@
 //  Created by Oleksii Andriushchenko on 13.06.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
 final class HomeView: UIView {
 
     struct Props: Equatable {
+        let filtersImage: ImageSource
         let feedViewProps: HomeFeedView.Props
         let searchResultsViewProps: HomeSearchResultsView.Props
     }
@@ -69,7 +71,6 @@ final class HomeView: UIView {
     }
 
     private func setupFiltersButton() {
-        filtersButton.set(image: .filters)
         filtersButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapFilters() }), for: .touchUpInside)
         NSLayoutConstraint.activate([
             filtersButton.widthAnchor.constraint(equalToConstant: 24)
@@ -101,6 +102,7 @@ final class HomeView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        filtersButton.set(image: props.filtersImage.image)
         feedView.render(props: props.feedViewProps)
         searchResultsView.render(props: props.searchResultsViewProps)
     }
