@@ -73,28 +73,22 @@ public enum Typography {
         }
     }
 
-    public var lineHeightMultiple: CGFloat {
+    public var lineHeight: CGFloat {
         switch self {
-        case .headerOne, .headerTwo, .headerThree, .subtitle:
-            return 0.91
+        case .headerOne:
+            return 48
 
-        case .headerFour:
-            return 1.13
-
-        case .subtitleTwo, .subtitleThree, .subtitleFour:
-            return 1.01
-
-        case .body:
-            return 0.94
-
-        case .bodyTwo, .description, .buttonSmall, .other:
-            return 1.08
-
-        case .bodyThree:
-            return 1.16
+        case .headerTwo, .headerThree, .headerFour:
+            return 36
 
         case .buttonLarge:
-            return 1.32
+            return 28
+
+        case .subtitle, .subtitleTwo, .subtitleThree, .subtitleFour:
+            return 24
+
+        case .body, .bodyTwo, .bodyThree, .description, .buttonSmall, .other:
+            return 20
         }
     }
 

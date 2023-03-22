@@ -69,7 +69,7 @@ extension FavoritesCoordinator: FavoritesCoordinating {
     }
 
     func didTapFilters() {
-        let viewController = FiltersViewController.resolve(coordinator: self)
+        let viewController = FiltersViewController.resolve(coordinator: self, envelope: .favorites)
         navigationController.pushViewController(viewController, animated: true)
     }
 
@@ -83,7 +83,9 @@ extension FavoritesCoordinator: FavoritesCoordinating {
 // MARK: - FiltersCoordinating
 
 extension FavoritesCoordinator: FiltersCoordinating {
-
+    func didApplyFilters() {
+        navigationController.popViewController(animated: true)
+    }
 }
 
 // MARK: - RecipeCoordinating

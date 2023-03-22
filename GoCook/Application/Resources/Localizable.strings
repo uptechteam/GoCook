@@ -16,6 +16,18 @@
 "favorites.error.title" = "Something went bad";
 "favorites.error.button" = "Retry";
 
+// MARK: - Filters
+
+"filters.title" = "Filters";
+"filters.clear.all" = "Clear all";
+"filters.section.category" = "Category";
+"filters.section.cooking.time" = "Cooling time";
+"filters.section.cooking.time.five.to.fifteen" = "5 - 15 mins";
+"filters.section.cooking.time.fifteen.to.thirty" = "15 - 30 mins";
+"filters.section.cooking.time.thirty.to.forty.five" = "30 - 45 mins";
+"filters.section.cooking.time.more.than.forty.five" = "45+ mins";
+"filters.apply" = "Apply";
+
 // MARK: - Home
 
 "home.search.placeholder" = "Search...";

@@ -7,10 +7,11 @@
 
 import Combine
 import Helpers
+import Library
 import UIKit
 
 public protocol FiltersCoordinating: AnyObject {
-
+    func didApplyFilters()
 }
 
 public final class FiltersViewController: UIViewController {
@@ -51,17 +52,73 @@ public final class FiltersViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupUI() {
-        navigationItem.title = "Filters"
+        navigationItem.title = .filtersTitle
     }
 
     private func setupBinding() {
-        let state = presenter.$state.removeDuplicates()
-            .subscribe(on: DispatchQueue.main)
+        contentView.categorySectionView.onTapOption = { [presenter] index in
+            presenter.categoryTapped(index: index)
+        }
 
-        state.map(FiltersViewController.makeProps)
+        contentView.cookingTimeSectionView.onTapOption = { [presenter] index in
+            presenter.cookingTimeTapped(index: index)
+        }
+
+        contentView.onTapApply = toSyncClosure { [presenter] in
+            await presenter.applyTapped()
+        }
+
+        let state = presenter.$state
+            .removeDuplicates()
+
+        state
+            .map { state in FiltersPresenter.makeIsRightBarButtonHidden(from: state) }
+            .sink { [unowned self] isHidden in
+                renderRightBarButton(isHidden: isHidden)
+            }
+            .store(in: &cancellables)
+
+        state
+            .map { state in FiltersPresenter.makeProps(from: state) }
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
             .store(in: &cancellables)
+
+        state.compactMap(\.route)
+            .removeDuplicates()
+            .map(\.value)
+            .sink { [unowned self] route in navigate(by: route) }
+            .store(in: &cancellables)
+    }
+
+    private func navigate(by route: FiltersPresenter.Route) {
+        switch route {
+        case .didApplyFilters:
+            coordinator.didApplyFilters()
+        }
+    }
+
+    private func renderRightBarButton(isHidden: Bool) {
+        guard !isHidden else {
+            navigationItem.rightBarButtonItem = nil
+            return
+        }
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: .filtersClearAll,
+            style: .plain,
+            target: self,
+            action: #selector(handleClearButtonTap)
+        )
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes(
+            Typography.buttonLarge.getParameters(color: .primaryMain),
+            for: .normal
+        )
+    }
+
+    @objc
+    private func handleClearButtonTap() {
+        presenter.clearTapped()
     }
 }
