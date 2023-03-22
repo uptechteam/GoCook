@@ -116,9 +116,13 @@ public final class HomePresenter {
         state.route = .init(value: .didTapRecipe(recipe))
     }
 
-    func viewAllTapped(index: Int, isTrending: Bool) {
-        let category = isTrending ? state.trendingCategory : state.otherCategories[safe: index]
-        // TODO: Update filter
+    func viewAllTapped(index: Int, isTrending: Bool) async {
+        guard !isTrending, let category = state.otherCategories[safe: index] else {
+            return
+        }
+
+        let filter = RecipeFilters(categories: [category.type], timeFilters: [])
+        await filtersFacade.update(filters: filter)
     }
 
     func viewDidLoad() async {

@@ -82,8 +82,8 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
             presenter.categoryTapped(indexPath: indexPath)
         }
 
-        contentView.feedView.trendingCategoryView.headerView.onTapViewAll = { [presenter] in
-            presenter.viewAllTapped(index: 0, isTrending: true)
+        contentView.feedView.trendingCategoryView.headerView.onTapViewAll = toSyncClosure { [presenter] in
+            await presenter.viewAllTapped(index: 0, isTrending: true)
         }
 
         contentView.feedView.trendingCategoryView.recipesListView.onTapItem = { [presenter] indexPath in
@@ -94,8 +94,8 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
             await presenter.favoriteTapped(indexPath: indexPath, isTrending: true)
         }
 
-        contentView.feedView.onTapViewAll = { [presenter] index in
-            presenter.viewAllTapped(index: index, isTrending: false)
+        contentView.feedView.onTapViewAll = toSyncClosure { [presenter] index in
+            await presenter.viewAllTapped(index: index, isTrending: false)
         }
 
         contentView.feedView.onTapRecipe = { [presenter] indexPath in
