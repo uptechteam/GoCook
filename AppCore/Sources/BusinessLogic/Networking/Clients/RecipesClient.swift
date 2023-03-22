@@ -11,7 +11,7 @@ import Helpers
 
 public protocol RecipesClienting {
     func addToFavorites(recipeID: Recipe.ID) async throws -> RecipeDetails
-    func fetchFavoriteRecipes() async throws -> [Recipe]
+    func fetchFavoriteRecipes(query: String, filters: RecipeFilters) async throws -> [Recipe]
     func fetchFeed() async throws -> [RecipeCategory]
     func fetchRecipeDetails(id: Recipe.ID) async throws -> RecipeDetails
     func fetchRecipes(authorID: User.ID, page: Int) async throws -> [Recipe]
@@ -43,8 +43,8 @@ public final class RecipesClient: RecipesClienting {
         return response.domainModel
     }
 
-    public func fetchFavoriteRecipes() async throws -> [Recipe] {
-        let request = try recipesAPI.makeGetFavoriteRecipesRequest()
+    public func fetchFavoriteRecipes(query: String, filters: RecipeFilters) async throws -> [Recipe] {
+        let request = try recipesAPI.makeGetFavoriteRecipesRequest(query: query, filters: filters)
         let response: [RecipeResponse] = try await networkClient.execute(request)
         return response.map(\.domainModel)
     }

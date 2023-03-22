@@ -27,8 +27,13 @@ struct RecipesAPI {
         try requestBuilder.makeDeleteRequest(path: "\(recipeID.rawValue)/favorite", authorisation: .bearer)
     }
 
-    func makeGetFavoriteRecipesRequest() throws -> AppRequest {
-        try requestBuilder.makeGetRequest(path: "favorites", authorisation: .bearer)
+    func makeGetFavoriteRecipesRequest(query: String, filters: RecipeFilters) throws -> AppRequest {
+        let parameters = GetFavoriteRecipesParams(
+            categoryFilters: filters.categories.map(makeCategoryFilter),
+            query: query,
+            timeFilters: filters.timeFilters.map(makeTimeFilter)
+        )
+        return try requestBuilder.makeGetRequest(path: "favorites", parameters: parameters, authorisation: .bearer)
     }
 
     func makeGetFeedRequest() throws -> AppRequest {
@@ -49,18 +54,11 @@ struct RecipesAPI {
     }
 
     func makeGetRecipesRequest(query: String, filters: RecipeFilters, page: Int) throws -> AppRequest {
-        struct GetRecipesParams: Encodable {
-            let page: Int
-            let pageSize: Int
-            let query: String
-            let categoryFilters: [String]
-            let timeFilters: [String]
-        }
         let parameters = GetRecipesParams(
+            categoryFilters: filters.categories.map(makeCategoryFilter),
             page: page,
             pageSize: AppConstants.Pagination.pageSize,
             query: query,
-            categoryFilters: filters.categories.map(makeCategoryFilter),
             timeFilters: filters.timeFilters.map(makeTimeFilter)
         )
         return try requestBuilder.makeGetRequest(path: "", parameters: parameters, authorisation: .bearer)

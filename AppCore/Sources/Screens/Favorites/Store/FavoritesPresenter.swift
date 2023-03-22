@@ -83,9 +83,9 @@ public final class FavoritesPresenter {
         state.route = .init(value: .didTapRecipe(recipe))
     }
 
-    func searchQueryChanged(_ query: String) {
+    func searchQueryChanged(_ query: String) async {
         state.query = query
-        state.updateFilteredRecipes()
+        await getFavoriteRecipes()
     }
 
     func viewDidAppear() async {
@@ -97,7 +97,7 @@ public final class FavoritesPresenter {
     private func getFavoriteRecipes() async {
         state.recipes.toggleIsLoading(on: true)
         do {
-            try await favoriteRecipesFacade.getFavoriteRecipes()
+            try await favoriteRecipesFacade.getFavoriteRecipes(query: state.query, filters: state.filters)
             state.recipes.adjustState(accordingTo: .success(()))
         } catch {
             state.recipes.adjustState(accordingTo: Result<Void, Error>.failure(error))
@@ -107,14 +107,13 @@ public final class FavoritesPresenter {
     private func observeFilters() async {
         for await filter in await filtersFacade.observeFilters().values {
             state.filters = filter
-            state.updateFilteredRecipes()
+            await getFavoriteRecipes()
         }
     }
 
     private func observeRecipes() async {
         for await recipes in await favoriteRecipesFacade.observeFeed().values {
             state.recipes.update(with: recipes)
-            state.updateFilteredRecipes()
         }
     }
 }
