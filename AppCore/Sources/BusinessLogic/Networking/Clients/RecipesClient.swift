@@ -15,7 +15,7 @@ public protocol RecipesClienting {
     func fetchFeed() async throws -> [RecipeCategory]
     func fetchRecipeDetails(id: Recipe.ID) async throws -> RecipeDetails
     func fetchRecipes(authorID: User.ID, page: Int) async throws -> [Recipe]
-    func fetchRecipes(query: String, page: Int) async throws -> [Recipe]
+    func fetchRecipes(query: String, filters: RecipeFilters, page: Int) async throws -> [Recipe]
     func rate(recipeID: Recipe.ID, rating: Int) async throws -> RecipeDetails
     func removeFromFavorites(recipeID: Recipe.ID) async throws -> RecipeDetails
     func upload(newRecipe: NewRecipe) async throws -> Recipe
@@ -67,8 +67,8 @@ public final class RecipesClient: RecipesClienting {
         return response.map(\.domainModel)
     }
 
-    public func fetchRecipes(query: String, page: Int) async throws -> [Recipe] {
-        let request = try recipesAPI.makeGetRecipesRequest(query: query, page: page)
+    public func fetchRecipes(query: String, filters: RecipeFilters, page: Int) async throws -> [Recipe] {
+        let request = try recipesAPI.makeGetRecipesRequest(query: query, filters: filters, page: page)
         let response: [RecipeResponse] = try await networkClient.execute(request)
         return response.map(\.domainModel)
     }

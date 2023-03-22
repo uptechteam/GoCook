@@ -48,12 +48,21 @@ struct RecipesAPI {
         return try requestBuilder.makeGetRequest(path: "", parameters: parameters, authorisation: .bearer)
     }
 
-    func makeGetRecipesRequest(query: String, page: Int) throws -> AppRequest {
-        let parameters = [
-            "page": "\(page)",
-            "pageSize": "\(AppConstants.Pagination.pageSize)",
-            "query": query
-        ]
+    func makeGetRecipesRequest(query: String, filters: RecipeFilters, page: Int) throws -> AppRequest {
+        struct GetRecipesParams: Encodable {
+            let page: Int
+            let pageSize: Int
+            let query: String
+            let categoryFilters: [String]
+            let timeFilters: [String]
+        }
+        let parameters = GetRecipesParams(
+            page: page,
+            pageSize: AppConstants.Pagination.pageSize,
+            query: query,
+            categoryFilters: filters.categories.map(makeCategoryFilter),
+            timeFilters: filters.timeFilters.map(makeTimeFilter)
+        )
         return try requestBuilder.makeGetRequest(path: "", parameters: parameters, authorisation: .bearer)
     }
 
@@ -72,5 +81,45 @@ struct RecipesAPI {
 
     func makePostRecipeRequest(request: NewRecipeRequest) throws -> AppRequest {
         try requestBuilder.makePostJSONRequest(path: "", requestData: request, authorisation: .bearer)
+    }
+
+    // MARK: - Private methods
+
+    private func makeCategoryFilter(category: CategoryType) -> String {
+        switch category {
+        case .breakfast:
+            return "Breakfast"
+
+        case .desserts:
+            return "Desserts"
+
+        case .dinner:
+            return "Dinner"
+
+        case .drinks:
+            return "Drinks"
+
+        case .lunch:
+            return "Lunch"
+
+        case .trending:
+            return ""
+        }
+    }
+
+    private func makeTimeFilter(timeFilter: RecipeTimeFilter) -> String {
+        switch timeFilter {
+        case .fifteenToThirty:
+            return "FIFTEEN_TO_THIRTY"
+
+        case .fiveToFifteen:
+            return "FIVE_TO_FIFTEEN"
+
+        case .moreThanFortyFive:
+            return "MORE_THAN_FORTY_FIVE"
+
+        case .thirtyToFortyFive:
+            return "THIRTY_TO_FORTY_FIVE"
+        }
     }
 }

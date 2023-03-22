@@ -85,13 +85,12 @@ public final class HomePresenter {
     }
 
     func scrolledSearchToEnd() {
-        let query = state.searchQuery
-        guard !query.isEmpty else {
+        guard !state.searchQuery.isEmpty else {
             return
         }
 
         getRecipesPageTask = Task {
-            try? await searchRecipesFacade.getNextPage(query: query)
+            try? await searchRecipesFacade.getNextPage(query: state.searchQuery, filter: state.filters)
         }
     }
 
@@ -160,7 +159,7 @@ public final class HomePresenter {
 
         state.isGettingRecipes = true
         getRecipesPageTask = Task {
-            try? await searchRecipesFacade.getFirstPage(query: state.searchQuery)
+            try? await searchRecipesFacade.getFirstPage(query: state.searchQuery, filter: state.filters)
             guard !Task.isCancelled else {
                 return
             }
