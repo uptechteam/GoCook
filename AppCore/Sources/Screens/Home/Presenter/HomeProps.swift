@@ -11,6 +11,7 @@ import Library
 extension HomePresenter {
     static func makeProps(from state: State) -> HomeView.Props {
         return .init(
+            filtersImage: .asset(state.filters.isEmpty ? .filters : .filterActive),
             feedViewProps: makeFeedViewProps(state: state),
             searchResultsViewProps: makeSearchResultsViewProps(state: state)
         )

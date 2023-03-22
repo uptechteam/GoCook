@@ -65,16 +65,20 @@ extension UIImage {
     return UIImage(named: "closeRed")!
   }
 
+  @nonobjc public class var filterActive: UIImage {
+    return UIImage(named: "filterActive")!
+  }
+
+  @nonobjc public class var filters: UIImage {
+    return UIImage(named: "filters")!
+  }
+
   @nonobjc public class var circleWithEmptyHeart: UIImage {
     return UIImage(named: "circleWithEmptyHeart")!
   }
 
   @nonobjc public class var circleWithFilledHeart: UIImage {
     return UIImage(named: "circleWithFilledHeart")!
-  }
-
-  @nonobjc public class var filters: UIImage {
-    return UIImage(named: "filters")!
   }
 
   @nonobjc public class var mealPlaceholder: UIImage {
