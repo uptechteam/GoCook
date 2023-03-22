@@ -17,16 +17,25 @@ public final class FavoritesPresenter {
     // MARK: - Properties
 
     private let favoriteRecipesFacade: FavoriteRecipesFacading
+    private let filtersFacade: FiltersFacading
     private let recipesFacade: RecipesFacading
     @Published
     private(set) var state: State
 
     // MARK: - Lifecycle
 
-    public init(favoriteRecipesFacade: FavoriteRecipesFacading, recipesFacade: RecipesFacading) {
+    public init(
+        favoriteRecipesFacade: FavoriteRecipesFacading,
+        filtersFacade: FiltersFacading,
+        recipesFacade: RecipesFacading
+    ) {
         self.favoriteRecipesFacade = favoriteRecipesFacade
+        self.filtersFacade = filtersFacade
         self.recipesFacade = recipesFacade
         self.state = State.makeInitialState()
+        Task {
+            await observeFilters()
+        }
         Task {
             await observeRecipes()
         }
@@ -92,6 +101,13 @@ public final class FavoritesPresenter {
             state.recipes.adjustState(accordingTo: .success(()))
         } catch {
             state.recipes.adjustState(accordingTo: Result<Void, Error>.failure(error))
+        }
+    }
+
+    private func observeFilters() async {
+        for await filter in await filtersFacade.observeFilters().values {
+            state.filters = filter
+            state.updateFilteredRecipes()
         }
     }
 

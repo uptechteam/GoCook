@@ -18,6 +18,7 @@ extension FavoritesPresenter {
         // MARK: - Properties
 
         var filteredRecipes: [Recipe]
+        var filters: RecipeFilters
         var pendingRecipe: Recipe?
         var query: String
         var recipes: DomainModelState<[Recipe]>
@@ -46,6 +47,7 @@ extension FavoritesPresenter {
         static func makeInitialState() -> State {
             return State(
                 filteredRecipes: [],
+                filters: RecipeFilters(categories: [], timeFilters: []),
                 pendingRecipe: nil,
                 query: "",
                 recipes: DomainModelState(),
