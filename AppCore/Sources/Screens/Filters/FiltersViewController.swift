@@ -55,6 +55,14 @@ public final class FiltersViewController: UIViewController {
     }
 
     private func setupBinding() {
+        contentView.categorySectionView.onTapOption = { [presenter] index in
+            presenter.categoryTapped(index: index)
+        }
+
+        contentView.cookingTimeSectionView.onTapOption = { [presenter] index in
+            presenter.cookingTimeTapped(index: index)
+        }
+
         let state = presenter.$state
             .removeDuplicates()
 

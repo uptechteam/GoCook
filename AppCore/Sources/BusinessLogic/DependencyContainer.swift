@@ -46,6 +46,7 @@ public final class AppContainer {
             // MARK: - Facades
 
             container.register(.singleton, type: FavoriteRecipesFacading.self, factory: FavoriteRecipesFacade.init)
+            container.register(.singleton, type: FiltersFacading.self, factory: FiltersFacade.init)
             container.register(.singleton, type: HomeFeedFacading.self, factory: HomeFeedFacade.init)
             container.register(.singleton, type: ProfileFacading.self, factory: ProfileFacade.init)
             container.register(.singleton, type: ProfileRecipesFacading.self, factory: ProfileRecipesFacade.init)

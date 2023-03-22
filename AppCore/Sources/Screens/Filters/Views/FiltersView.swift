@@ -11,15 +11,16 @@ import UIKit
 final class FiltersView: UIView {
 
     struct Props: Equatable {
-        let categorySection: FiltersSectionView.Props
-        let cookingTimeSection: FiltersSectionView.Props
+        let categorySectionViewProps: FiltersSectionView.Props
+        let cookingTimeSectionViewProps: FiltersSectionView.Props
     }
 
     // MARK: - Properties
 
     private let topLineView = UIView()
-    private let categorySection = FiltersSectionView()
-    private let cookingTimeSection = FiltersSectionView()
+    let categorySectionView = FiltersSectionView()
+    private let dividerView = UIView()
+    let cookingTimeSectionView = FiltersSectionView()
 
     // MARK: - Lifecycle
 
@@ -36,7 +37,9 @@ final class FiltersView: UIView {
 
     private func setup() {
         setupContentView()
+        setupStackView()
         setupTopLineView()
+        setupDividerView()
     }
 
     private func setupContentView() {
@@ -44,7 +47,22 @@ final class FiltersView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [categorySection, cookingTimeSection])
+        let stackView = UIStackView(
+            arrangedSubviews: [categorySectionView, dividerView, cookingTimeSectionView, UIView()]
+        )
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 24
+        addSubview(
+            stackView,
+            withEdgeInsets: UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0),
+            isSafeAreaRequired: true
+        )
+        NSLayoutConstraint.activate([
+            categorySectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -2 * 24),
+            dividerView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            cookingTimeSectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -2 * 24)
+        ])
     }
 
     private func setupTopLineView() {
@@ -57,10 +75,17 @@ final class FiltersView: UIView {
         ])
     }
 
+    private func setupDividerView() {
+        dividerView.backgroundColor = .gray100
+        NSLayoutConstraint.activate([
+            dividerView.heightAnchor.constraint(equalToConstant: 8)
+        ])
+    }
+
     // MARK: - Public methods
 
     func render(props: Props) {
-        categorySection.render(props: props.categorySection)
-        cookingTimeSection.render(props: props.cookingTimeSection)
+        categorySectionView.render(props: props.categorySectionViewProps)
+        cookingTimeSectionView.render(props: props.cookingTimeSectionViewProps)
     }
 }

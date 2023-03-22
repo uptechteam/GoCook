@@ -132,8 +132,32 @@ extension String {
   /// Search...
   public static let favoritesSearchPlaceholder = L10n.tr("Localizable", "favorites.search.placeholder")
 
+  /// Apply
+  public static let filtersApply = L10n.tr("Localizable", "filters.apply")
+
   /// Filters
   public static let filtersTitle = L10n.tr("Localizable", "filters.title")
+
+  /// Clear all
+  public static let filtersClearAll = L10n.tr("Localizable", "filters.clear.all")
+
+  /// Category
+  public static let filtersSectionCategory = L10n.tr("Localizable", "filters.section.category")
+
+  /// Cooling time
+  public static let filtersSectionCookingTime = L10n.tr("Localizable", "filters.section.cooking.time")
+
+  /// 15 - 30 mins
+  public static let filtersSectionCookingTimeFifteenToThirty = L10n.tr("Localizable", "filters.section.cooking.time.fifteen.to.thirty")
+
+  /// 5 - 15 mins
+  public static let filtersSectionCookingTimeFiveToFifteen = L10n.tr("Localizable", "filters.section.cooking.time.five.to.fifteen")
+
+  /// 45+ mins
+  public static let filtersSectionCookingTimeMoreThanFortyFive = L10n.tr("Localizable", "filters.section.cooking.time.more.than.forty.five")
+
+  /// 30 - 45 mins
+  public static let filtersSectionCookingTimeThirtyToFortyFive = L10n.tr("Localizable", "filters.section.cooking.time.thirty.to.forty.five")
 
   /// View all
   public static let homeCategoryViewAll = L10n.tr("Localizable", "home.category.view.all")
