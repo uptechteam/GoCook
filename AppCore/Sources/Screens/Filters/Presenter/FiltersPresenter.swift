@@ -32,6 +32,7 @@ public final class FiltersPresenter {
     func applyTapped() async {
         let filter = state.makeFilters()
         await filtersFacade.update(filters: filter)
+        state.route = .init(value: .didApplyFilters)
     }
 
     func categoryTapped(index: Int) {
@@ -67,7 +68,7 @@ public final class FiltersPresenter {
 
     private func observeFilters() async {
         for await filter in await filtersFacade.observeFilters().values {
-            state.appliedFilters = filter
+            state.adjustState(accordingTo: filter)
         }
     }
 }

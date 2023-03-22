@@ -83,7 +83,9 @@ extension FavoritesCoordinator: FavoritesCoordinating {
 // MARK: - FiltersCoordinating
 
 extension FavoritesCoordinator: FiltersCoordinating {
-
+    func didApplyFilters() {
+        navigationController.popViewController(animated: true)
+    }
 }
 
 // MARK: - RecipeCoordinating

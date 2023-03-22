@@ -17,7 +17,8 @@ extension FiltersPresenter {
     static func makeProps(from state: State) -> FiltersView.Props {
         return .init(
             categorySectionViewProps: makeCategorySectionViewProps(state: state),
-            cookingTimeSectionViewProps: makeCookingTimeSectionViewProps(state: state)
+            cookingTimeSectionViewProps: makeCookingTimeSectionViewProps(state: state),
+            isApplyButtonVisible: state.makeFilters() != state.appliedFilters
         )
     }
 

@@ -76,7 +76,9 @@ extension HomeCoordinator: HomeCoordinating {
 }
 
 extension HomeCoordinator: FiltersCoordinating {
-
+    func didApplyFilters() {
+        navigationController.popViewController(animated: true)
+    }
 }
 
 extension HomeCoordinator: RecipeCoordinating {

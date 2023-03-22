@@ -32,6 +32,12 @@ extension FiltersPresenter {
             )
         }
 
+        mutating func adjustState(accordingTo filters: RecipeFilters) {
+            appliedFilters = filters
+            selectedCategories = Set(filters.categories)
+            selectedTimeFilters = Set(filters.timeFilters)
+        }
+
         static func makeInitialState() -> State {
             return State(
                 allCategories: [.breakfast, .lunch, .dinner, .desserts, .drinks],
@@ -47,6 +53,6 @@ extension FiltersPresenter {
     // MARK: - Route
 
     enum Route {
-
+        case didApplyFilters
     }
 }

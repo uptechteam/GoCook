@@ -11,7 +11,7 @@ import Library
 import UIKit
 
 public protocol FiltersCoordinating: AnyObject {
-
+    func didApplyFilters()
 }
 
 public final class FiltersViewController: UIViewController {
@@ -64,6 +64,10 @@ public final class FiltersViewController: UIViewController {
             presenter.cookingTimeTapped(index: index)
         }
 
+        contentView.onTapApply = toSyncClosure { [presenter] in
+            await presenter.applyTapped()
+        }
+
         let state = presenter.$state
             .removeDuplicates()
 
@@ -80,6 +84,19 @@ public final class FiltersViewController: UIViewController {
                 contentView.render(props: props)
             }
             .store(in: &cancellables)
+
+        state.compactMap(\.route)
+            .removeDuplicates()
+            .map(\.value)
+            .sink { [unowned self] route in navigate(by: route) }
+            .store(in: &cancellables)
+    }
+
+    private func navigate(by route: FiltersPresenter.Route) {
+        switch route {
+        case .didApplyFilters:
+            coordinator.didApplyFilters()
+        }
     }
 
     private func renderRightBarButton(isHidden: Bool) {
