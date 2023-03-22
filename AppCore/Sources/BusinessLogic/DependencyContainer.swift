@@ -18,8 +18,8 @@ public final class AppContainer {
 
     // MARK: - Public methods
 
-    static public func resolve<Service>() -> Service {
-        try! dependencyContainer.resolve()
+    static public func resolve<Service>(tag: DependencyTagConvertible? = nil) -> Service {
+        try! dependencyContainer.resolve(tag: tag)
     }
 
     static public func resolve<Arguments, Service>(arguments: Arguments) -> Service {
@@ -46,7 +46,18 @@ public final class AppContainer {
             // MARK: - Facades
 
             container.register(.singleton, type: FavoriteRecipesFacading.self, factory: FavoriteRecipesFacade.init)
-            container.register(.singleton, type: FiltersFacading.self, factory: FiltersFacade.init)
+            container.register(
+                .singleton,
+                type: FiltersFacading.self,
+                tag: FiltersFacadeTag.favorites,
+                factory: FiltersFacade.init
+            )
+            container.register(
+                .singleton,
+                type: FiltersFacading.self,
+                tag: FiltersFacadeTag.home,
+                factory: FiltersFacade.init
+            )
             container.register(.singleton, type: HomeFeedFacading.self, factory: HomeFeedFacade.init)
             container.register(.singleton, type: ProfileFacading.self, factory: ProfileFacade.init)
             container.register(.singleton, type: ProfileRecipesFacading.self, factory: ProfileRecipesFacade.init)
