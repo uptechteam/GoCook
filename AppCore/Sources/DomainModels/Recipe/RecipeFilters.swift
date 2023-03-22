@@ -14,6 +14,10 @@ public struct RecipeFilters: Equatable {
     public let categories: [CategoryType]
     public let timeFilters: [RecipeTimeFilter]
 
+    public var isEmpty: Bool {
+        categories.isEmpty && timeFilters.isEmpty
+    }
+
     // MARK: - Lifecycle
 
     public init(categories: [CategoryType], timeFilters: [RecipeTimeFilter]) {

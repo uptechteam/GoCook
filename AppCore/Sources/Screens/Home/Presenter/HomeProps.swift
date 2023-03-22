@@ -18,7 +18,7 @@ extension HomePresenter {
 
     private static func makeFeedViewProps(state: State) -> HomeFeedView.Props {
         return .init(
-            isVisible: state.searchQuery.isEmpty,
+            isVisible: !state.isSearchActive,
             trendingCategoryViewProps: makeTrendingCategoryViewProps(state: state),
             otherCategoriesViewsProps: state.otherCategories.map(makeOtherCategoryViewProps)
         )
@@ -57,7 +57,7 @@ extension HomePresenter {
 
     private static func makeSearchResultsViewProps(state: State) -> HomeSearchResultsView.Props {
         return .init(
-            isVisible: !state.searchQuery.isEmpty,
+            isVisible: state.isSearchActive,
             items: state.isGettingRecipes ? [] : state.searchedRecipes.map(makeSmallRecipeCellProps),
             isSpinnerVisible: state.isGettingRecipes,
             isNoResultsLabelVisible: !state.isGettingRecipes && state.searchedRecipes.isEmpty

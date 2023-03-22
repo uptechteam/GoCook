@@ -16,6 +16,7 @@ extension HomePresenter {
 
         // MARK: - Proeprties
 
+        var filters: RecipeFilters
         var isGettingRecipes: Bool
         var recipeCategories: DomainModelState<[RecipeCategory]>
         var pendingRecipe: Recipe?
@@ -23,6 +24,10 @@ extension HomePresenter {
         var searchQuery: String
         var selectedCategories: Set<CategoryType>
         var route: AnyIdentifiable<Route>?
+
+        var isSearchActive: Bool {
+            !searchQuery.isEmpty || !filters.isEmpty
+        }
 
         var trendingCategory: RecipeCategory {
             recipeCategories.items.first(where: \.isTrendingCategory) ?? .init(recipes: [], category: .trending)
@@ -36,6 +41,7 @@ extension HomePresenter {
 
         static func makeInitialState() -> State {
             return State(
+                filters: RecipeFilters(categories: [], timeFilters: []),
                 isGettingRecipes: false,
                 recipeCategories: DomainModelState(),
                 searchedRecipes: [],

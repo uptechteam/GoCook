@@ -15,6 +15,7 @@ public final class HomePresenter {
 
     // MARK: - Properties
 
+    let filtersFacade: FiltersFacading
     let homeFeedFacade: HomeFeedFacading
     let recipesFacade: RecipesFacading
     let searchRecipesFacade: SearchRecipesFacading
@@ -24,11 +25,20 @@ public final class HomePresenter {
 
     // MARK: - Lifecycle
 
-    init(homeFeedFacade: HomeFeedFacading, recipesFacade: RecipesFacading, searchRecipesFacade: SearchRecipesFacading) {
+    init(
+        filtersFacade: FiltersFacading,
+        homeFeedFacade: HomeFeedFacading,
+        recipesFacade: RecipesFacading,
+        searchRecipesFacade: SearchRecipesFacading
+    ) {
+        self.filtersFacade = filtersFacade
         self.homeFeedFacade = homeFeedFacade
         self.recipesFacade = recipesFacade
         self.searchRecipesFacade = searchRecipesFacade
         self.state = State.makeInitialState()
+        Task {
+            await observeFilters()
+        }
         Task {
             await observeFeed()
         }
@@ -96,19 +106,7 @@ public final class HomePresenter {
 
     func searchQueryChanged(query: String) {
         state.searchQuery = query
-        guard !query.isEmpty else {
-            return
-        }
-
-        getRecipesPageTask?.cancel()
-        getRecipesPageTask = Task {
-            try? await searchRecipesFacade.getFirstPage(query: query)
-            guard !Task.isCancelled else {
-                return
-            }
-
-            state.isGettingRecipes = false
-        }
+        getFirstPage()
     }
 
     func searchRecipeTapped(indexPath: IndexPath) {
@@ -154,9 +152,33 @@ public final class HomePresenter {
         }
     }
 
+    private func getFirstPage() {
+        getRecipesPageTask?.cancel()
+        guard state.isSearchActive else {
+            return
+        }
+
+        state.isGettingRecipes = true
+        getRecipesPageTask = Task {
+            try? await searchRecipesFacade.getFirstPage(query: state.searchQuery)
+            guard !Task.isCancelled else {
+                return
+            }
+
+            state.isGettingRecipes = false
+        }
+    }
+
     private func observeFeed() async {
         for await feed in await homeFeedFacade.observeFeed().values {
             state.recipeCategories.update(with: feed)
+        }
+    }
+
+    private func observeFilters() async {
+        for await filters in await filtersFacade.observeFilters().values {
+            state.filters = filters
+            getFirstPage()
         }
     }
 
