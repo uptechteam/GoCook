@@ -45,7 +45,7 @@ final class HomeCoordinator: NSObject, Coordinating {
     // MARK: - Public methods
 
     func start() {
-        let viewController = HomeViewController.resolve(from: container, coordinator: self)
+        let viewController = HomeViewController.resolve(coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
     }
 

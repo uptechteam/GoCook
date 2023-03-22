@@ -8,7 +8,7 @@
 import DomainModels
 import Library
 
-extension HomeViewController {
+extension HomePresenter {
     static func makeProps(from state: State) -> HomeView.Props {
         return .init(
             feedViewProps: makeFeedViewProps(state: state),
