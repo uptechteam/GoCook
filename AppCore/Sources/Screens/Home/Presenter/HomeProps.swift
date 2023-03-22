@@ -58,10 +58,53 @@ extension HomePresenter {
     private static func makeSearchResultsViewProps(state: State) -> HomeSearchResultsView.Props {
         return .init(
             isVisible: state.isSearchActive,
+            filterDescriptionViewProps: makeFilterDescriptionViewProps(state: state),
             items: state.isGettingRecipes ? [] : state.searchedRecipes.map(makeSmallRecipeCellProps),
             isSpinnerVisible: state.isGettingRecipes,
             isNoResultsLabelVisible: !state.isGettingRecipes && state.searchedRecipes.isEmpty
         )
+    }
+
+    private static func makeFilterDescriptionViewProps(state: State) -> HomeFiltersDescriptionView.Props {
+        return .init(
+            isVisible: !state.filters.isEmpty,
+            description: makeDescription(state: state)
+        )
+    }
+
+    private static func makeDescription(state: State) -> String {
+        var description: String = .homeFilterDescription
+        if !state.filters.categories.isEmpty {
+            let categoriesDescription = state.filters.categories
+                .map(\.name)
+                .joined(separator: .homeCategoriesJoinText)
+            description.append(.homeFilterDescriptionCategories(categoriesDescription))
+        }
+
+        if !state.filters.timeFilters.isEmpty {
+            let timeDescription = state.filters.timeFilters
+                .map(makeTimeFilterDescription)
+                .joined(separator: .homeTimeFiltersJoinText)
+            description.append(.homeFilterDescriptionCookingTime(timeDescription))
+        }
+
+        return description
+    }
+
+    private static func makeTimeFilterDescription(timeFilter: RecipeTimeFilter) -> String {
+        switch timeFilter {
+        case .fifteenToThirty:
+            return .homeCookingTimeFifteenToThirty
+
+        case .fiveToFifteen:
+            return .homeCookingTimeFiveToFifteen
+
+        case .moreThanFortyFive:
+            return .homeCookingTimeMoreThanFortyFive
+
+        case .thirtyToFortyFive:
+            return .homeCookingTimeThirtyToFortyFive
+        }
     }
 
     // MARK: - Extra

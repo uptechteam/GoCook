@@ -12,6 +12,7 @@ final class HomeSearchResultsView: UIView {
 
     struct Props: Equatable {
         let isVisible: Bool
+        let filterDescriptionViewProps: HomeFiltersDescriptionView.Props
         let items: [SmallRecipeCell.Props]
         let isSpinnerVisible: Bool
         let isNoResultsLabelVisible: Bool
@@ -22,6 +23,7 @@ final class HomeSearchResultsView: UIView {
 
     // MARK: - Properties
 
+    private let filterDescriptionView = HomeFiltersDescriptionView()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     private lazy var dataSource = makeDataSource()
     private let spinnerView = SpinnerView(circleColor: .appBlack)
@@ -50,9 +52,21 @@ final class HomeSearchResultsView: UIView {
     // MARK: - Set up
 
     private func setup() {
+        setupStackView()
         setupCollectionView()
         setupNoResultsLabel()
         setupSpinnerView()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [filterDescriptionView, collectionView])
+        stackView.axis = .vertical
+        stackView.spacing = 16
+        addSubview(stackView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            stackView.widthAnchor.constraint(equalTo: widthAnchor),
+            collectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor)
+        ])
     }
 
     private func setupCollectionView() {
@@ -60,10 +74,6 @@ final class HomeSearchResultsView: UIView {
         collectionView.contentInset = .zero
         collectionView.delegate = self
         collectionView.register(cell: SmallRecipeCell.self)
-        addSubview(collectionView, withEdgeInsets: .zero)
-        NSLayoutConstraint.activate([
-            collectionView.widthAnchor.constraint(equalTo: widthAnchor)
-        ])
     }
 
     private func setupLayout() {
@@ -75,9 +85,6 @@ final class HomeSearchResultsView: UIView {
         flowLayout.minimumLineSpacing = 24
         flowLayout.itemSize = CGSize(width: bounds.width, height: 120)
         collectionView.setCollectionViewLayout(flowLayout, animated: false)
-        NSLayoutConstraint.activate([
-            collectionView.widthAnchor.constraint(equalTo: widthAnchor)
-        ])
     }
 
     private func setupSpinnerView() {
@@ -101,6 +108,7 @@ final class HomeSearchResultsView: UIView {
 
     func render(props: Props) {
         isHidden = !props.isVisible
+        filterDescriptionView.render(props: props.filterDescriptionViewProps)
         dataSource.apply(sections: [0], items: [props.items])
         spinnerView.toggle(isAnimating: props.isSpinnerVisible)
         noResultsLabel.isHidden = !props.isNoResultsLabelVisible
