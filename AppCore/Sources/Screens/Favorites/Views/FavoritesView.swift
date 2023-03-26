@@ -11,6 +11,7 @@ import UIKit
 final class FavoritesView: UIView {
 
     struct Props: Equatable {
+        let filterDescriptionViewProps: FiltersDescriptionView.Props
         let recipesViewProps: FavoriteRecipesView.Props
         let contentStateViewProps: ContentStateView.Props
     }
@@ -21,6 +22,7 @@ final class FavoritesView: UIView {
     private let titleLabel = UILabel()
     let filtersButton = IconButton()
     let searchTextField = SearchTextField()
+    private let filterDescriptionView = FiltersDescriptionView()
     let recipesView = FavoriteRecipesView()
     let contentStateView = ContentStateView()
     // callbacks
@@ -58,10 +60,13 @@ final class FavoritesView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [titleStackView, searchTextField, recipesView, contentStateView])
+        let stackView = UIStackView(
+            arrangedSubviews: [titleStackView, searchTextField, filterDescriptionView, recipesView, contentStateView]
+        )
         stackView.axis = .vertical
         stackView.setCustomSpacing(18, after: titleStackView)
         stackView.setCustomSpacing(24, after: searchTextField)
+        stackView.setCustomSpacing(24, after: filterDescriptionView)
         addSubview(stackView, constraints: [
             stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
@@ -96,6 +101,7 @@ final class FavoritesView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        filterDescriptionView.render(props: props.filterDescriptionViewProps)
         recipesView.render(props: props.recipesViewProps)
         contentStateView.render(props: props.contentStateViewProps)
     }

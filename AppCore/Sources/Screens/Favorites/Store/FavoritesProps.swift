@@ -8,15 +8,58 @@
 import DomainModels
 import Library
 
-extension FavoritesViewController {
-    static func makeProps(from state: FavoritesPresenter.State) -> FavoritesView.Props {
+extension FavoritesPresenter {
+    static func makeProps(from state: State) -> FavoritesView.Props {
         return .init(
+            filterDescriptionViewProps: makeFilterDescriptionViewProps(state: state),
             recipesViewProps: makeRecipesViewProps(state: state),
             contentStateViewProps: makeContentStateViewProps(state: state)
         )
     }
 
-    private static func makeRecipesViewProps(state: FavoritesPresenter.State) -> FavoriteRecipesView.Props {
+    private static func makeFilterDescriptionViewProps(state: State) -> FiltersDescriptionView.Props {
+        return .init(
+            isVisible: !state.filters.isEmpty,
+            description: makeDescription(state: state)
+        )
+    }
+
+    private static func makeDescription(state: State) -> String {
+        var description: String = .favoritesFilterDescription
+        if !state.filters.categories.isEmpty {
+            let categoriesDescription = state.filters.categories
+                .map(\.name)
+                .joined(separator: .favoritesCategoriesJoinText)
+            description.append(.favoritesFilterDescriptionCategories(categoriesDescription))
+        }
+
+        if !state.filters.timeFilters.isEmpty {
+            let timeDescription = state.filters.timeFilters
+                .map(makeTimeFilterDescription)
+                .joined(separator: .favoritesTimeFiltersJoinText)
+            description.append(.favoritesFilterDescriptionCookingTime(timeDescription))
+        }
+
+        return description
+    }
+
+    private static func makeTimeFilterDescription(timeFilter: RecipeTimeFilter) -> String {
+        switch timeFilter {
+        case .fifteenToThirty:
+            return .favoritesCookingTimeFifteenToThirty
+
+        case .fiveToFifteen:
+            return .favoritesCookingTimeFiveToFifteen
+
+        case .moreThanFortyFive:
+            return .favoritesCookingTimeMoreThanFortyFive
+
+        case .thirtyToFortyFive:
+            return .favoritesCookingTimeThirtyToFortyFive
+        }
+    }
+
+    private static func makeRecipesViewProps(state: State) -> FavoriteRecipesView.Props {
         return .init(
             isVisible: !state.recipes.isEmpty,
             items: makeItems(state: state),
@@ -25,7 +68,7 @@ extension FavoritesViewController {
         )
     }
 
-    private static func makeItems(state: FavoritesPresenter.State) -> [SmallRecipeCell.Props] {
+    private static func makeItems(state: State) -> [SmallRecipeCell.Props] {
         return state.recipes.items.map { recipe in
             return SmallRecipeCell.Props(
                 id: recipe.id.rawValue,
@@ -45,7 +88,7 @@ extension FavoritesViewController {
         )
     }
 
-    private static func makeContentStateViewProps(state: FavoritesPresenter.State) -> ContentStateView.Props {
+    private static func makeContentStateViewProps(state: State) -> ContentStateView.Props {
         guard state.recipes.isEmpty else {
             return state.recipes.isEmpty ? .message(title: .favoritesNoResultsTitle, buttonTitle: nil) : .hidden
         }

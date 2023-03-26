@@ -10,6 +10,15 @@
 
 "favorites.title" = "Favorites";
 "favorites.search.placeholder" = "Search...";
+"favorites.filter.description" = "You’re looking for recipes";
+"favorites.filter.description.categories" = " in %@ categories";
+"favorites.filter.description.cooking.time" = " with %@ cooking time";
+"favorites.categories.join.text" = " and ";
+"favorites.cooking.time.five.to.fifteen" = "5 - 15 mins";
+"favorites.cooking.time.fifteen.to.thirty" = "15 - 30 mins";
+"favorites.cooking.time.thirty.to.forty.five" = "30 - 45 mins";
+"favorites.cooking.time.more.than.forty.five" = "45+ mins";
+"favorites.time.filters.join.text" = ", ";
 "favorites.empty.title" = "You have no favorited\nrecipes yet";
 "favorites.empty.button" = "Explore";
 "favorites.no.results.title" = "No results found";
