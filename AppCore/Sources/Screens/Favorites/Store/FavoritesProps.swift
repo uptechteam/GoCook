@@ -97,6 +97,8 @@ extension FavoritesPresenter {
             return .loading
         } else if state.areFavoriteRecipesEmpty {
             return .message(title: .favoritesEmptyTitle, buttonTitle: .favoritesEmptyButton)
+        } else if state.areFilteredRecipesEmpty {
+            return .message(title: .favoritesFilteredEmptyTitle, buttonTitle: .favoritesFilteredEmptyButton)
         } else if state.isError {
             return .message(title: .favoritesErrorTitle, buttonTitle: .favoritesErrorButton)
         } else {

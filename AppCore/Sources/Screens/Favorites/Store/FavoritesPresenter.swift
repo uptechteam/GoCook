@@ -46,6 +46,8 @@ public final class FavoritesPresenter {
     func contentStateActionTapped() async {
         if state.areFavoriteRecipesEmpty {
             state.route = .init(value: .didTapExplore)
+        } else if state.areFilteredRecipesEmpty {
+            state.route = .init(value: .didTapFilters)
         } else if state.isError {
             await getFavoriteRecipes()
         }

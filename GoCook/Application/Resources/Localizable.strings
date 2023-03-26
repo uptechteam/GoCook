@@ -21,6 +21,8 @@
 "favorites.time.filters.join.text" = ", ";
 "favorites.empty.title" = "You have no favorited\nrecipes yet";
 "favorites.empty.button" = "Explore";
+"favorites.filtered.empty.title" = "No recipes found\nAdjust the filters and try again";
+"favorites.filtered.empty.button" = "Open filters";
 "favorites.no.results.title" = "No results found";
 "favorites.error.title" = "Something went bad";
 "favorites.error.button" = "Retry";

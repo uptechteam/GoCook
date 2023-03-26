@@ -154,6 +154,12 @@ extension String {
     return L10n.tr("Localizable", "favorites.filter.description.cooking.time", p1)
   }
 
+  /// Open filters
+  public static let favoritesFilteredEmptyButton = L10n.tr("Localizable", "favorites.filtered.empty.button")
+
+  /// No recipes found\nAdjust the filters and try again
+  public static let favoritesFilteredEmptyTitle = L10n.tr("Localizable", "favorites.filtered.empty.title")
+
   /// No results found
   public static let favoritesNoResultsTitle = L10n.tr("Localizable", "favorites.no.results.title")
 

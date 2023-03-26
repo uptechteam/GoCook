@@ -24,7 +24,11 @@ extension FavoritesPresenter {
         var route: AnyIdentifiable<Route>?
 
         var areFavoriteRecipesEmpty: Bool {
-            recipes.isPresent && recipes.isEmpty && recipes.error == nil
+            recipes.isPresent && recipes.isEmpty && recipes.error == nil && filters.isEmpty
+        }
+
+        var areFilteredRecipesEmpty: Bool {
+            recipes.isPresent && recipes.isEmpty && recipes.error == nil && !filters.isEmpty
         }
 
         var isError: Bool {
