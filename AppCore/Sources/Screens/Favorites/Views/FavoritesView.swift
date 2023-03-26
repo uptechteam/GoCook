@@ -5,12 +5,14 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
 final class FavoritesView: UIView {
 
     struct Props: Equatable {
+        let filtersIcon: ImageSource
         let filterDescriptionViewProps: FiltersDescriptionView.Props
         let recipesViewProps: FavoriteRecipesView.Props
         let contentStateViewProps: ContentStateView.Props
@@ -85,7 +87,6 @@ final class FavoritesView: UIView {
     }
 
     private func setupFiltersButton() {
-        filtersButton.set(image: .filters)
         filtersButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapFilters() }), for: .touchUpInside)
         NSLayoutConstraint.activate([
             filtersButton.widthAnchor.constraint(equalToConstant: 24)
@@ -101,6 +102,7 @@ final class FavoritesView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        filtersButton.set(image: props.filtersIcon.image)
         filterDescriptionView.render(props: props.filterDescriptionViewProps)
         recipesView.render(props: props.recipesViewProps)
         contentStateView.render(props: props.contentStateViewProps)

@@ -11,6 +11,7 @@ import Library
 extension FavoritesPresenter {
     static func makeProps(from state: State) -> FavoritesView.Props {
         return .init(
+            filtersIcon: .asset(state.filters.isEmpty ? .filters : .filterActive),
             filterDescriptionViewProps: makeFilterDescriptionViewProps(state: state),
             recipesViewProps: makeRecipesViewProps(state: state),
             contentStateViewProps: makeContentStateViewProps(state: state)
