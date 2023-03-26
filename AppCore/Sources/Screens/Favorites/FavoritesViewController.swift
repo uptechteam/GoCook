@@ -99,7 +99,7 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
             .subscribe(on: DispatchQueue.main)
 
         state
-            .map(FavoritesViewController.makeProps)
+            .map { state in FavoritesPresenter.makeProps(from: state) }
             .sink { [contentView] props in
                 contentView.render(props: props)
             }

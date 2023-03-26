@@ -1,18 +1,27 @@
 //
-//  HomeFiltersDescriptionView.swift
+//  FiltersDescriptionView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 22.03.2023.
 //
 
-import Library
 import UIKit
 
-final class HomeFiltersDescriptionView: UIView {
+public final class FiltersDescriptionView: UIView {
 
-    struct Props: Equatable {
-        let isVisible: Bool
-        let description: String
+    public struct Props: Equatable {
+
+        // MARK: - Properties
+
+        public let isVisible: Bool
+        public let description: String
+
+        // MARK: - Lifecycle
+
+        public init(isVisible: Bool, description: String) {
+            self.isVisible = isVisible
+            self.description = description
+        }
     }
 
     // MARK: - Properties
@@ -23,12 +32,12 @@ final class HomeFiltersDescriptionView: UIView {
 
     // MARK: - Lifecycle
 
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -74,7 +83,7 @@ final class HomeFiltersDescriptionView: UIView {
 
     // MARK: - Public methods
 
-    func render(props: Props) {
+    public func render(props: Props) {
         isHidden = !props.isVisible
         descriptionLabel.render(title: props.description, color: .appBlack, typography: .description)
     }

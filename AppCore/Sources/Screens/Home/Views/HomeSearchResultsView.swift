@@ -12,7 +12,7 @@ final class HomeSearchResultsView: UIView {
 
     struct Props: Equatable {
         let isVisible: Bool
-        let filterDescriptionViewProps: HomeFiltersDescriptionView.Props
+        let filterDescriptionViewProps: FiltersDescriptionView.Props
         let items: [SmallRecipeCell.Props]
         let isSpinnerVisible: Bool
         let isNoResultsLabelVisible: Bool
@@ -23,7 +23,7 @@ final class HomeSearchResultsView: UIView {
 
     // MARK: - Properties
 
-    private let filterDescriptionView = HomeFiltersDescriptionView()
+    private let filterDescriptionView = FiltersDescriptionView()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     private lazy var dataSource = makeDataSource()
     private let spinnerView = SpinnerView(circleColor: .appBlack)

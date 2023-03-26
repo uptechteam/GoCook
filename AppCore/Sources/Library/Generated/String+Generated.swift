@@ -114,6 +114,21 @@ extension String {
   /// Favorites
   public static let favoritesTitle = L10n.tr("Localizable", "favorites.title")
 
+  ///  and 
+  public static let favoritesCategoriesJoinText = L10n.tr("Localizable", "favorites.categories.join.text")
+
+  /// 15 - 30 mins
+  public static let favoritesCookingTimeFifteenToThirty = L10n.tr("Localizable", "favorites.cooking.time.fifteen.to.thirty")
+
+  /// 5 - 15 mins
+  public static let favoritesCookingTimeFiveToFifteen = L10n.tr("Localizable", "favorites.cooking.time.five.to.fifteen")
+
+  /// 45+ mins
+  public static let favoritesCookingTimeMoreThanFortyFive = L10n.tr("Localizable", "favorites.cooking.time.more.than.forty.five")
+
+  /// 30 - 45 mins
+  public static let favoritesCookingTimeThirtyToFortyFive = L10n.tr("Localizable", "favorites.cooking.time.thirty.to.forty.five")
+
   /// Explore
   public static let favoritesEmptyButton = L10n.tr("Localizable", "favorites.empty.button")
 
@@ -126,11 +141,33 @@ extension String {
   /// Something went bad
   public static let favoritesErrorTitle = L10n.tr("Localizable", "favorites.error.title")
 
+  /// You’re looking for recipes
+  public static let favoritesFilterDescription = L10n.tr("Localizable", "favorites.filter.description")
+
+  ///  in %@ categories
+  public static func favoritesFilterDescriptionCategories(_ p1: String) -> String {
+    return L10n.tr("Localizable", "favorites.filter.description.categories", p1)
+  }
+
+  ///  with %@ cooking time
+  public static func favoritesFilterDescriptionCookingTime(_ p1: String) -> String {
+    return L10n.tr("Localizable", "favorites.filter.description.cooking.time", p1)
+  }
+
+  /// Open filters
+  public static let favoritesFilteredEmptyButton = L10n.tr("Localizable", "favorites.filtered.empty.button")
+
+  /// No recipes found\nAdjust the filters and try again
+  public static let favoritesFilteredEmptyTitle = L10n.tr("Localizable", "favorites.filtered.empty.title")
+
   /// No results found
   public static let favoritesNoResultsTitle = L10n.tr("Localizable", "favorites.no.results.title")
 
   /// Search...
   public static let favoritesSearchPlaceholder = L10n.tr("Localizable", "favorites.search.placeholder")
+
+  /// , 
+  public static let favoritesTimeFiltersJoinText = L10n.tr("Localizable", "favorites.time.filters.join.text")
 
   /// Apply
   public static let filtersApply = L10n.tr("Localizable", "filters.apply")

@@ -66,7 +66,7 @@ extension HomePresenter {
         )
     }
 
-    private static func makeFilterDescriptionViewProps(state: State) -> HomeFiltersDescriptionView.Props {
+    private static func makeFilterDescriptionViewProps(state: State) -> FiltersDescriptionView.Props {
         return .init(
             isVisible: !state.filters.isEmpty,
             description: makeDescription(state: state)
