@@ -118,6 +118,10 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
             presenter.scrolledSearchToEnd()
         }
 
+        contentView.searchResultsView.contentStateView.onTapAction = { [presenter] in
+            presenter.contentStateActionTapped()
+        }
+
         let state = presenter.$state
             .removeDuplicates()
 
