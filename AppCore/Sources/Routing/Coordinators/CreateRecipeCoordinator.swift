@@ -41,7 +41,7 @@ final class CreateRecipeCoordinator: Coordinating {
     // MARK: - Lifecycle
 
     func start() {
-        let viewController = CreateRecipeViewController.resolve(from: container, coordinator: self)
+        let viewController = CreateRecipeViewController.resolve(coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
         navigationController.modalPresentationStyle = .overFullScreen
         presentingViewController.present(navigationController, animated: true)
