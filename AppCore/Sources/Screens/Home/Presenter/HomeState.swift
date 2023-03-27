@@ -29,6 +29,10 @@ extension HomePresenter {
             !searchQuery.isEmpty || !filters.isEmpty
         }
 
+        var areFilteredRecipesEmpty: Bool {
+            !filters.isEmpty && searchedRecipes.isEmpty
+        }
+
         var trendingCategory: RecipeCategory {
             recipeCategories.items.first(where: \.isTrendingCategory) ?? .init(recipes: [], category: .trending)
         }
