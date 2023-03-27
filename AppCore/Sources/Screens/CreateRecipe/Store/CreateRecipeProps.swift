@@ -10,7 +10,7 @@ import Helpers
 import Library
 import UIKit
 
-extension CreateRecipeViewController {
+extension CreateRecipePresenter {
     static func makeProps(from state: State) -> CreateRecipeView.Props {
         return .init(
             stepOneViewProps: makeStepOneViewProps(state: state),

@@ -21,7 +21,6 @@ import SignUp
 extension DependencyContainer {
     public static func injectViewControllers(container: DependencyContainer) {
         AppTabBarController.inject(into: container)
-        CreateRecipeViewController.inject(into: container)
         InputViewController.inject(into: container)
         LoginViewController.inject(into: container)
         ProfileViewController.inject(into: container)
