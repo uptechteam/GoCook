@@ -13,9 +13,9 @@ final class HomeSearchResultsView: UIView {
     struct Props: Equatable {
         let isVisible: Bool
         let filterDescriptionViewProps: FiltersDescriptionView.Props
+        let isCollectionViewVisible: Bool
         let items: [SmallRecipeCell.Props]
-        let isSpinnerVisible: Bool
-        let isNoResultsLabelVisible: Bool
+        let contentStateViewProps: ContentStateView.Props
     }
 
     typealias Snapshot = NSDiffableDataSourceSnapshot<Int, SmallRecipeCell.Props>
@@ -26,8 +26,7 @@ final class HomeSearchResultsView: UIView {
     private let filterDescriptionView = FiltersDescriptionView()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     private lazy var dataSource = makeDataSource()
-    private let spinnerView = SpinnerView(circleColor: .appBlack)
-    private let noResultsLabel = UILabel()
+    let contentStateView = ContentStateView()
     // callbacks
     var onTapItem: (IndexPath) -> Void = { _ in }
     var onTapFavorite: (IndexPath) -> Void = { _ in }
@@ -54,12 +53,10 @@ final class HomeSearchResultsView: UIView {
     private func setup() {
         setupStackView()
         setupCollectionView()
-        setupNoResultsLabel()
-        setupSpinnerView()
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [filterDescriptionView, collectionView])
+        let stackView = UIStackView(arrangedSubviews: [filterDescriptionView, collectionView, contentStateView])
         stackView.axis = .vertical
         stackView.spacing = 16
         addSubview(stackView, withEdgeInsets: .zero)
@@ -87,31 +84,14 @@ final class HomeSearchResultsView: UIView {
         collectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
 
-    private func setupSpinnerView() {
-        addSubview(spinnerView, constraints: [
-            spinnerView.topAnchor.constraint(equalTo: topAnchor, constant: 174),
-            spinnerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            spinnerView.widthAnchor.constraint(equalToConstant: 40),
-            spinnerView.heightAnchor.constraint(equalToConstant: 40)
-        ])
-    }
-
-    private func setupNoResultsLabel() {
-        noResultsLabel.render(title: "No results found", color: .textDisabled, typography: .body)
-        addSubview(noResultsLabel, constraints: [
-            noResultsLabel.topAnchor.constraint(equalTo: topAnchor, constant: 174),
-            noResultsLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
-        ])
-    }
-
     // MARK: - Public methods
 
     func render(props: Props) {
         isHidden = !props.isVisible
         filterDescriptionView.render(props: props.filterDescriptionViewProps)
+        collectionView.isHidden = !props.isCollectionViewVisible
         dataSource.apply(sections: [0], items: [props.items])
-        spinnerView.toggle(isAnimating: props.isSpinnerVisible)
-        noResultsLabel.isHidden = !props.isNoResultsLabelVisible
+        contentStateView.render(props: props.contentStateViewProps)
     }
 
     // MARK: - Private methods

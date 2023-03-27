@@ -15,7 +15,6 @@ final class HomeView: UIView {
         let filtersImage: ImageSource
         let feedViewProps: HomeFeedView.Props
         let searchResultsViewProps: HomeSearchResultsView.Props
-        let contentStateViewProps: ContentStateView.Props
     }
 
     // MARK: - Properties
@@ -25,7 +24,6 @@ final class HomeView: UIView {
     let filtersButton = IconButton()
     let feedView = HomeFeedView()
     let searchResultsView = HomeSearchResultsView()
-    let contentStateView = ContentStateView()
     // callbacks
     var onChangeSearchQuery: (String) -> Void = { _ in }
     var onTapFilters: () -> Void = { }
@@ -84,7 +82,7 @@ final class HomeView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [topStackView, feedView, searchResultsView, contentStateView])
+        let stackView = UIStackView(arrangedSubviews: [topStackView, feedView, searchResultsView])
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.spacing = 24
@@ -107,7 +105,6 @@ final class HomeView: UIView {
         filtersButton.set(image: props.filtersImage.image)
         feedView.render(props: props.feedViewProps)
         searchResultsView.render(props: props.searchResultsViewProps)
-        contentStateView.render(props: props.contentStateViewProps)
     }
 
     // MARK: - Private methods

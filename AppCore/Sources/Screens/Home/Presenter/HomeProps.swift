@@ -13,8 +13,7 @@ extension HomePresenter {
         return .init(
             filtersImage: .asset(state.filters.isEmpty ? .filters : .filterActive),
             feedViewProps: makeFeedViewProps(state: state),
-            searchResultsViewProps: makeSearchResultsViewProps(state: state),
-            contentStateViewProps: makeContentStateViewProps(state: state)
+            searchResultsViewProps: makeSearchResultsViewProps(state: state)
         )
     }
 
@@ -59,11 +58,11 @@ extension HomePresenter {
 
     private static func makeSearchResultsViewProps(state: State) -> HomeSearchResultsView.Props {
         return .init(
-            isVisible: state.isSearchActive && !state.searchedRecipes.isEmpty,
+            isVisible: state.isSearchActive,
             filterDescriptionViewProps: makeFilterDescriptionViewProps(state: state),
+            isCollectionViewVisible: !state.searchedRecipes.isEmpty,
             items: state.isGettingRecipes ? [] : state.searchedRecipes.map(makeSmallRecipeCellProps),
-            isSpinnerVisible: state.isGettingRecipes,
-            isNoResultsLabelVisible: !state.isGettingRecipes && state.searchedRecipes.isEmpty
+            contentStateViewProps: makeContentStateViewProps(state: state)
         )
     }
 
