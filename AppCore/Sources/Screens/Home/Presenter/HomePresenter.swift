@@ -61,6 +61,14 @@ public final class HomePresenter {
         }
     }
 
+    func contentStateActionTapped() {
+        guard state.areFilteredRecipesEmpty else {
+            return
+        }
+
+        state.route = .init(value: .didTapFilters)
+    }
+
     func favoriteTapped(indexPath: IndexPath, isTrending: Bool) async {
         let category = isTrending ? state.trendingCategory : state.otherCategories[safe: indexPath.section]
         guard let recipe = category?.recipes[safe: indexPath.item], state.pendingRecipe == nil else {

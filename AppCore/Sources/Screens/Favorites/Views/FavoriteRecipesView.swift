@@ -13,8 +13,6 @@ final class FavoriteRecipesView: UIView {
     struct Props: Equatable {
         let isVisible: Bool
         let items: [SmallRecipeCell.Props]
-        let isSpinnerVisible: Bool
-        let isNoResultsLabelVisible: Bool
     }
 
     typealias Snapshot = NSDiffableDataSourceSnapshot<Int, SmallRecipeCell.Props>

@@ -60,9 +60,9 @@ extension HomePresenter {
         return .init(
             isVisible: state.isSearchActive,
             filterDescriptionViewProps: makeFilterDescriptionViewProps(state: state),
+            isCollectionViewVisible: !state.searchedRecipes.isEmpty,
             items: state.isGettingRecipes ? [] : state.searchedRecipes.map(makeSmallRecipeCellProps),
-            isSpinnerVisible: state.isGettingRecipes,
-            isNoResultsLabelVisible: !state.isGettingRecipes && state.searchedRecipes.isEmpty
+            contentStateViewProps: makeContentStateViewProps(state: state)
         )
     }
 
@@ -105,6 +105,22 @@ extension HomePresenter {
 
         case .thirtyToFortyFive:
             return .homeCookingTimeThirtyToFortyFive
+        }
+    }
+
+    private static func makeContentStateViewProps(state: State) -> ContentStateView.Props {
+        guard state.isSearchActive else {
+            return .hidden
+        }
+
+        if state.isGettingRecipes && state.searchedRecipes.isEmpty {
+            return .loading
+        } else if state.areFilteredRecipesEmpty {
+            return .message(title: .homeFilteredEmptyTitle, buttonTitle: .homeFilteredEmptyButton)
+        } else if state.searchedRecipes.isEmpty {
+            return .message(title: .homeNoResultsTitle, buttonTitle: nil)
+        } else {
+            return .hidden
         }
     }
 

@@ -63,9 +63,7 @@ extension FavoritesPresenter {
     private static func makeRecipesViewProps(state: State) -> FavoriteRecipesView.Props {
         return .init(
             isVisible: !state.recipes.isEmpty,
-            items: makeItems(state: state),
-            isSpinnerVisible: state.recipes.isLoading,
-            isNoResultsLabelVisible: state.recipes.isPresent && state.recipes.isEmpty
+            items: makeItems(state: state)
         )
     }
 

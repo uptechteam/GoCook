@@ -227,6 +227,15 @@ extension String {
     return L10n.tr("Localizable", "home.filter.description.cooking.time", p1)
   }
 
+  /// Open filters
+  public static let homeFilteredEmptyButton = L10n.tr("Localizable", "home.filtered.empty.button")
+
+  /// No recipes found\nAdjust the filters and try again
+  public static let homeFilteredEmptyTitle = L10n.tr("Localizable", "home.filtered.empty.title")
+
+  /// No results found
+  public static let homeNoResultsTitle = L10n.tr("Localizable", "home.no.results.title")
+
   /// Search...
   public static let homeSearchPlaceholder = L10n.tr("Localizable", "home.search.placeholder")
 
