@@ -48,6 +48,9 @@ public final class AuthorViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
+        Task {
+            await presenter.viewDidLoad()
+        }
     }
 
     // MARK: - Private methods

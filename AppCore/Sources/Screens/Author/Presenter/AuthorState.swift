@@ -17,6 +17,7 @@ extension AuthorPresenter {
         // MARK: - Properties
 
         let author: User
+        var recipes: DomainModelState<[Recipe]>
         var route: AnyIdentifiable<Route>?
 
         // MARK: - Public methods
@@ -24,6 +25,7 @@ extension AuthorPresenter {
         static func makeInitialState(envelope: AuthorEnvelope) -> State {
             return State(
                 author: envelope.author,
+                recipes: DomainModelState(),
                 route: nil
             )
         }

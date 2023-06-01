@@ -73,7 +73,7 @@ final class AuthorView: UIView {
         stackView.axis = .vertical
         stackView.setCustomSpacing(32, after: headerView)
         stackView.setCustomSpacing(32, after: headerView)
-        addSubview(stackView, withEdgeInsets: .zero, isSafeAreaRequired: true)
+        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupRecipesTitleLabel() {
