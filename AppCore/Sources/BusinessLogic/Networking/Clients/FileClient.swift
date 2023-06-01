@@ -10,7 +10,7 @@ import Foundation
 import Helpers
 
 public protocol FileClienting {
-    func uploadAvatar(data: Data) async throws -> Profile
+    func uploadAvatar(data: Data) async throws -> String
     func uploadRecipeImage(data: Data) async throws -> String
 }
 
@@ -30,10 +30,10 @@ public final class FileClient: FileClienting {
 
     // MARK: - Public methods
 
-    public func uploadAvatar(data: Data) async throws -> Profile {
+    public func uploadAvatar(data: Data) async throws -> String {
         let request = try api.makePostAvatarImageRequest(data: data)
-        let response: ProfileResponse = try await networkClient.execute(request)
-        return response.domainModel
+        let response: AvatarURLResponse = try await networkClient.execute(request)
+        return response.avatarURL
     }
 
     public func uploadRecipeImage(data: Data) async throws -> String {

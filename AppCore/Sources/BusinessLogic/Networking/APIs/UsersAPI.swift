@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 22.06.2022.
 //
 
+import DomainModels
 import Foundation
 
 struct UsersAPI {
@@ -21,27 +22,32 @@ struct UsersAPI {
 
     // MARK: - Public methods
 
-    func makeIsUniqueRequest(username: String) throws -> AppRequest {
+    func makeGetIsUniqueRequest(username: String) throws -> AppRequest {
         try requestBuilder.makeGetRequest(path: "unique/\(username)")
     }
 
-    func makeLoginRequest(username: String, password: String) throws -> AppRequest {
+    func makePostLoginRequest(username: String, password: String) throws -> AppRequest {
         try requestBuilder.makePostRequest(
             path: "login",
             authorisation: .login(username: username, password: password)
         )
     }
 
-    func makeLogoutRequest() throws -> AppRequest {
+    func makeDeleteLogoutRequest() throws -> AppRequest {
         try requestBuilder.makeDeleteRequest(path: "logout", authorisation: .bearer)
     }
 
-    func makeRefreshProfileRequest() throws -> AppRequest {
+    func makeGetProfileRequest() throws -> AppRequest {
         try requestBuilder.makeGetRequest(path: "me", authorisation: .bearer)
     }
 
-    func makeSignUpRequest(username: String, password: String) throws -> AppRequest {
+    func makePostSignUpRequest(username: String, password: String) throws -> AppRequest {
         let requestData = CreateUserRequest(username: username, password: password)
         return try requestBuilder.makePostJSONRequest(path: "", requestData: requestData)
+    }
+
+    func makePutProfileRequest(update: ProfileUpdate) throws -> AppRequest {
+        let requestData = UpdateProfileRequest(update: update)
+        return try requestBuilder.makePutJSONRequest(path: "", requestData: requestData)
     }
 }
