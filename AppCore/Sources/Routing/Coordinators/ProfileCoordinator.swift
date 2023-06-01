@@ -10,6 +10,7 @@ import Author
 import CreateRecipe
 import Dip
 import DomainModels
+import EditProfile
 import Foundation
 import Helpers
 import Library
@@ -85,6 +86,12 @@ extension ProfileCoordinator: AuthorCoordinating {
     }
 }
 
+// MARK: - EditProfileCoordinating
+
+extension ProfileCoordinator: EditProfileCoordinating {
+    
+}
+
 // MARK: - ProfileCoordinating
 
 extension ProfileCoordinator: ProfileCoordinating {
@@ -95,7 +102,8 @@ extension ProfileCoordinator: ProfileCoordinating {
     }
 
     func didTapEdit() {
-        print("Did tap edit.")
+        let viewController = EditProfileViewController.resolve(coordinator: self)
+        navigationController.pushViewController(viewController, animated: true)
     }
 
     func didTapRecipe(_ recipe: Recipe) {
