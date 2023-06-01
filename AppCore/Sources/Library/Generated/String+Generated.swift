@@ -3,11 +3,8 @@
 
 import Foundation
 
-// swiftlint:disable superfluous_disable_command file_length implicit_return
-
 // MARK: - Strings
 
-// swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 extension String {
 
   /// Got invalid data from server
@@ -18,6 +15,15 @@ extension String {
 
   /// Unknown error occured
   public static let apiErrorUnknownError = L10n.tr("Localizable", "api.error.unknown.error")
+
+  /// Recipes
+  public static let authorRecipesTitle = L10n.tr("Localizable", "author.recipes.title")
+
+  /// This author has no recipes yet
+  public static let authorRecipesEmptyText = L10n.tr("Localizable", "author.recipes.empty.text")
+
+  /// No reviews yet:
+  public static let authorRecipesNoReviews = L10n.tr("Localizable", "author.recipes.no.reviews")
 
   /// Create recipe
   public static let createRecipeTitle = L10n.tr("Localizable", "create.recipe.title")
@@ -462,7 +468,6 @@ extension String {
   /// This username is taken. Try another one
   public static let validationNotUniqueUsername = L10n.tr("Localizable", "validation.not.unique.username")
 }
-// swiftlint:enable function_parameter_count identifier_name line_length type_body_length
 
 // MARK: - Implementation Details
 
@@ -472,5 +477,4 @@ fileprivate final class L10n {
     return String(format: format, locale: Locale.current, arguments: args)
   }
 }
-
-// swiftlint:enable convenience_type
+// swiftlint:enable all

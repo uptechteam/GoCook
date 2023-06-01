@@ -9,7 +9,7 @@ import Helpers
 import Library
 import UIKit
 
-final class RecipeAuthorView: UIView {
+final class RecipeAuthorView: UIControl {
 
     struct Props: Equatable {
         let isVisible: Bool
@@ -21,6 +21,8 @@ final class RecipeAuthorView: UIView {
 
     private let avatarImageView = UIImageView()
     private let usernameLabel = UILabel()
+    // callbacks
+    var onTap: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -36,8 +38,21 @@ final class RecipeAuthorView: UIView {
     // MARK: - Set up
 
     private func setup() {
-        setupAvatarImageView()
+        setupContentView()
         setupStackView()
+        setupAvatarImageView()
+    }
+
+    private func setupContentView() {
+        addAction(UIAction(handler: { [weak self] _ in self?.onTap() }), for: .touchUpInside)
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [avatarImageView, usernameLabel, UIView()])
+        stackView.alignment = .center
+        stackView.spacing = 6
+        stackView.isUserInteractionEnabled = false
+        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupAvatarImageView() {
@@ -49,13 +64,6 @@ final class RecipeAuthorView: UIView {
             avatarImageView.widthAnchor.constraint(equalToConstant: 18),
             avatarImageView.heightAnchor.constraint(equalTo: avatarImageView.widthAnchor)
         ])
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [avatarImageView, usernameLabel, UIView()])
-        stackView.alignment = .center
-        stackView.spacing = 6
-        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     // MARK: - Public methods

@@ -30,6 +30,14 @@ public final class RecipePresenter {
 
     // MARK: - Public methods
 
+    func authorTapped() {
+        guard state.recipeDetails.isPresent else {
+            return
+        }
+
+        state.route = .init(value: .didTapAuthor(state.recipeDetails.author))
+    }
+
     func backTapped() {
         state.route = .init(value: .back)
     }

@@ -24,7 +24,7 @@ final class RecipeDetailsHeaderView: UIView {
     private let separatorView = UIView()
     private let nameLabel = UILabel()
     let contentStateView = ContentStateView()
-    private let authorView = RecipeAuthorView()
+    let authorView = RecipeAuthorView()
     private let bottomStackView = UIStackView()
     private let ratingView = RatingView()
     private let timeView = RecipeTimeView()

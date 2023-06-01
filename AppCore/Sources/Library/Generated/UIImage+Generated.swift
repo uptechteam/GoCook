@@ -3,8 +3,6 @@
 
 import UIKit
 
-// swiftlint:disable file_length
-
 // MARK: - Images
 
 extension UIImage {
@@ -182,4 +180,4 @@ extension UIImage {
   }
 
 }
-// swiftlint:enable file_length
+// swiftlint:enable all

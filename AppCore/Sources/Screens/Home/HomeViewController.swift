@@ -69,6 +69,7 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
         )
     }
 
+    // swiftlint:disable:next function_body_length
     private func setupBinding() {
         contentView.onChangeSearchQuery = { [presenter] query in
             presenter.searchQueryChanged(query: query)

@@ -4,8 +4,6 @@
 {% if catalogs %}
 import UIKit
 
-// swiftlint:disable file_length
-
 // MARK: - Images
 
 {% macro casesBlock assets %}
@@ -28,7 +26,7 @@ extension UIImage {
   {% call casesBlock catalogs.first.assets %}
   {% endif %}
 }
-// swiftlint:enable file_length
+// swiftlint:enable all
 {% else %}
 // No assets found
 {% endif %}

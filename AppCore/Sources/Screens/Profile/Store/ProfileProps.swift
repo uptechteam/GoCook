@@ -34,12 +34,12 @@ extension ProfileViewController {
         .init(isAddNewButtonVisible: !state.recipes.items.isEmpty)
     }
 
-    private static func makeItems(state: State) -> [ProfileRecipeCell.Props] {
+    private static func makeItems(state: State) -> [SmallRecipeCell.Props] {
         return state.recipes.items.map { recipe in
-            return ProfileRecipeCell.Props(
+            return SmallRecipeCell.Props(
                 id: recipe.id.rawValue,
                 recipeImageSource: recipe.recipeImageSource,
-                favoriteImageSource: .asset(recipe.isFavorite ? .circleWithFilledHeart : .circleWithEmptyHeart),
+                isFavorite: recipe.isFavorite,
                 name: recipe.name,
                 ratingViewProps: makeRatingViewProps(recipe: recipe)
             )
