@@ -11,6 +11,7 @@ public extension AuthorViewController {
     static func resolve(coordinator: AuthorCoordinating, envelope: AuthorEnvelope) -> AuthorViewController {
         return AuthorViewController(
             presenter: AuthorPresenter(
+                recipesFacade: AppContainer.resolve(),
                 userRecipesFacade: AppContainer.resolve(arguments: envelope.author.id),
                 envelope: envelope
             ),

@@ -6,13 +6,17 @@
 //
 
 import Combine
+import DomainModels
+import Helpers
+import Library
 import UIKit
 
 public protocol AuthorCoordinating: AnyObject {
-    func didTapBack()
+    func didTapBackOnAuthor()
+    func didTapRecipeOnAuthor(_ recipe: Recipe)
 }
 
-public final class AuthorViewController: UIViewController {
+public final class AuthorViewController: UIViewController, ErrorPresentable {
 
     // MARK: - Properties
 
@@ -60,6 +64,22 @@ public final class AuthorViewController: UIViewController {
             presenter.backTapped()
         }
 
+        contentView.onScrollToRefresh = toSyncClosure { [presenter] in
+            await presenter.scrolledToRefresh()
+        }
+
+        contentView.onTapItem = { [presenter] indexPath in
+            presenter.recipeTapped(indexPath: indexPath)
+        }
+
+        contentView.onTapFavorite = toSyncClosure { [presenter] indexPath in
+            await presenter.isFavoriteTapped(indexPath: indexPath)
+        }
+
+        contentView.onScrollToEnd = toSyncClosure { [presenter] in
+            await presenter.scrolledToEnd()
+        }
+
         let state = presenter.$state
             .removeDuplicates()
 
@@ -70,6 +90,12 @@ public final class AuthorViewController: UIViewController {
             }
             .store(in: &cancellables)
 
+        state.compactMap(\.alert)
+            .removeDuplicates()
+            .map(\.value)
+            .sink { [unowned self] alert in show(alert: alert) }
+            .store(in: &cancellables)
+
         state.compactMap(\.route)
             .removeDuplicates()
             .map(\.value)
@@ -77,10 +103,20 @@ public final class AuthorViewController: UIViewController {
             .store(in: &cancellables)
     }
 
+    private func show(alert: AuthorPresenter.Alert) {
+        switch alert {
+        case .error(let message):
+            show(errorMessage: message)
+        }
+    }
+
     private func navigate(by route: AuthorPresenter.Route) {
         switch route {
         case .didTapBack:
-            coordinator.didTapBack()
+            coordinator.didTapBackOnAuthor()
+
+        case .didTapRecipe(let recipe):
+            coordinator.didTapRecipeOnAuthor(recipe)
         }
     }
 }

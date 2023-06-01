@@ -14,13 +14,15 @@ public final class AuthorPresenter {
 
     // MARK: - Properties
 
+    private let recipesFacade: RecipesFacading
     private let userRecipesFacade: UserRecipesFacading
     @Published
     private(set) var state: State
 
     // MARK: - Lifecycle
 
-    public init(userRecipesFacade: UserRecipesFacading, envelope: AuthorEnvelope) {
+    public init(recipesFacade: RecipesFacading, userRecipesFacade: UserRecipesFacading, envelope: AuthorEnvelope) {
+        self.recipesFacade = recipesFacade
         self.userRecipesFacade = userRecipesFacade
         self.state = State.makeInitialState(envelope: envelope)
         Task {
@@ -34,23 +36,45 @@ public final class AuthorPresenter {
         state.route = .init(value: .didTapBack)
     }
 
-    func isFavoriteTapped(indexPath: IndexPath) {
+    func isFavoriteTapped(indexPath: IndexPath) async {
+        guard let recipe = state.recipes.items[safe: indexPath.item] else {
+            return
+        }
 
+        if recipe.isFavorite {
+            try? await recipesFacade.removeFromFavorites(recipeID: recipe.id)
+        } else {
+            try? await recipesFacade.addToFavorites(recipeID: recipe.id)
+        }
     }
 
     func recipeTapped(indexPath: IndexPath) {
+        guard let recipe = state.recipes.items[safe: indexPath.item] else {
+            return
+        }
 
+        state.route = .init(value: .didTapRecipe(recipe))
     }
 
-    func scrolledToEnd() {
-
+    func scrolledToEnd() async {
+        do {
+            try await userRecipesFacade.getNextPage()
+        } catch {
+            state.alert = .init(value: .error(message: error.localizedDescription))
+        }
     }
 
-    func scrolledToRefresh() {
-
+    func scrolledToRefresh() async {
+        await getFirstPage()
     }
 
     func viewDidLoad() async {
+        await getFirstPage()
+    }
+
+    // MARK: - Private methods
+
+    private func getFirstPage() async {
         do {
             state.recipes.toggleIsLoading(on: true)
             try await userRecipesFacade.getFirstPage()
@@ -59,8 +83,6 @@ public final class AuthorPresenter {
             state.recipes.handle(result: .failure(error))
         }
     }
-
-    // MARK: - Private methods
 
     private func observeRecipes() async {
         for await recipes in await userRecipesFacade.observeFeed().values {

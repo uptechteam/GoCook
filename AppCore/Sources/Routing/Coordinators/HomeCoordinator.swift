@@ -64,7 +64,15 @@ final class HomeCoordinator: NSObject, Coordinating {
 // MARK: - AuthorCoordinating
 
 extension HomeCoordinator: AuthorCoordinating {
+    func didTapBackOnAuthor() {
+        navigationController.popViewController(animated: true)
+    }
 
+    func didTapRecipeOnAuthor(_ recipe: Recipe) {
+        let envelope = RecipeEnvelope(recipe: recipe)
+        let viewController = RecipeViewController.resolve(envelope: envelope, coordinator: self)
+        navigationController.pushViewController(viewController, animated: true)
+    }
 }
 
 // MARK: - HomeCoordinating

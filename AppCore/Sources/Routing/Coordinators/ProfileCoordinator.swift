@@ -74,7 +74,15 @@ final class ProfileCoordinator: NSObject, Coordinating {
 // MARK: - AuthorCoordinating
 
 extension ProfileCoordinator: AuthorCoordinating {
+    func didTapBackOnAuthor() {
+        navigationController.popViewController(animated: true)
+    }
 
+    func didTapRecipeOnAuthor(_ recipe: Recipe) {
+        let envelope = RecipeEnvelope(recipe: recipe)
+        let viewController = RecipeViewController.resolve(envelope: envelope, coordinator: self)
+        navigationController.pushViewController(viewController, animated: true)
+    }
 }
 
 // MARK: - ProfileCoordinating

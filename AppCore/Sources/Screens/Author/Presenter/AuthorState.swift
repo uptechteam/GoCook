@@ -18,6 +18,7 @@ extension AuthorPresenter {
 
         let author: User
         var recipes: DomainModelState<[Recipe]>
+        var alert: AnyIdentifiable<Alert>?
         var route: AnyIdentifiable<Route>?
 
         // MARK: - Public methods
@@ -26,6 +27,7 @@ extension AuthorPresenter {
             return State(
                 author: envelope.author,
                 recipes: DomainModelState(),
+                alert: nil,
                 route: nil
             )
         }
@@ -33,7 +35,12 @@ extension AuthorPresenter {
 
     // MARK: - Route
 
+    enum Alert {
+        case error(message: String)
+    }
+
     enum Route {
         case didTapBack
+        case didTapRecipe(Recipe)
     }
 }
