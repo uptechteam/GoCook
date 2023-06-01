@@ -89,7 +89,9 @@ extension ProfileCoordinator: AuthorCoordinating {
 // MARK: - EditProfileCoordinating
 
 extension ProfileCoordinator: EditProfileCoordinating {
-    
+    func didTapClose() {
+        navigationController.popViewController(animated: true)
+    }
 }
 
 // MARK: - ProfileCoordinating

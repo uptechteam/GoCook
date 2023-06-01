@@ -69,7 +69,7 @@ final class ProfileHeaderView: UIView {
 
     private func setupEditButton() {
         editButton.set(image: .editFilled)
-        editButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSettings() }), for: .touchUpInside)
+        editButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapEdit() }), for: .touchUpInside)
         addSubview(editButton, constraints: [
             editButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 14),
             editButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 23.5)

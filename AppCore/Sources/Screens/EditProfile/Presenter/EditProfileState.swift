@@ -29,6 +29,6 @@ extension EditProfilePresenter {
     // MARK: - Route
 
     enum Route {
-
+        case didTapClose
     }
 }

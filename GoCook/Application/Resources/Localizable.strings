@@ -12,6 +12,10 @@
 "author.recipes.no.reviews" = "No reviews yet:";
 "author.recipes.empty.text" = "This author has no recipes yet";
 
+// MARK: - Edit Profile
+
+"edit.profile.title" = "Edit Profile";
+
 // MARK: - Favorites
 
 "favorites.title" = "Favorites";

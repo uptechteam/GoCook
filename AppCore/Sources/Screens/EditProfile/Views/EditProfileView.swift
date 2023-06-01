@@ -16,6 +16,8 @@ final class EditProfileView: UIView {
 
     // MARK: - Properties
 
+    private let dividerView = UIView()
+
     // MARK: - Lifecycle
 
     override init(frame: CGRect) {
@@ -31,10 +33,21 @@ final class EditProfileView: UIView {
 
     private func setup() {
         setupContentView()
+        setupDividerView()
     }
 
     private func setupContentView() {
-        backgroundColor = .white
+        backgroundColor = .appWhite
+    }
+
+    private func setupDividerView() {
+        dividerView.backgroundColor = .divider
+        addSubview(dividerView, constraints: [
+            dividerView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            dividerView.heightAnchor.constraint(equalToConstant: 1)
+        ])
     }
 
     // MARK: - Public methods

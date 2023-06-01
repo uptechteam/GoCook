@@ -23,7 +23,7 @@ public final class EditProfilePresenter {
 
     // MARK: - Public methods
 
-    func method() {
-
+    func closeTapped() {
+        state.route = .init(value: .didTapClose)
     }
 }

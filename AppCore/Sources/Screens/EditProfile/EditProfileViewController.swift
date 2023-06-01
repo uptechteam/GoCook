@@ -9,7 +9,7 @@ import Combine
 import UIKit
 
 public protocol EditProfileCoordinating: AnyObject {
-
+    func didTapClose()
 }
 
 public final class EditProfileViewController: UIViewController {
@@ -27,6 +27,7 @@ public final class EditProfileViewController: UIViewController {
         self.presenter = presenter
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
+        setupUI()
     }
 
     required init?(coder: NSCoder) {
@@ -48,6 +49,16 @@ public final class EditProfileViewController: UIViewController {
 
     // MARK: - Private methods
 
+    private func setupUI() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: .close,
+            style: .plain,
+            target: self,
+            action: #selector(closeButtonTapped)
+        )
+        navigationItem.title = .editProfileTitle
+    }
+
     private func setupBinding() {
         let state = presenter.$state
             .removeDuplicates()
@@ -68,7 +79,13 @@ public final class EditProfileViewController: UIViewController {
 
     private func navigate(by route: EditProfilePresenter.Route) {
         switch route {
-
+        case .didTapClose:
+            coordinator.didTapClose()
         }
+    }
+
+    @objc
+    private func closeButtonTapped() {
+        presenter.closeTapped()
     }
 }
