@@ -14,7 +14,7 @@ extension Profile: PersistenceModel {
         let entity = PersistentProfile(context: context)
         entity.id = id.rawValue
         entity.username = username
-        entity.avatarURL = avatar.url?.absoluteString
+        entity.avatarURL = avatar?.url?.absoluteString
         return entity
     }
 
@@ -29,7 +29,7 @@ extension Profile: PersistenceModel {
         self.init(
             id: id,
             username: username,
-            avatar: entity.avatarURL.flatMap(URL.init(string:)).flatMap(ImageSource.remote) ?? .asset(nil)
+            avatar: entity.avatarURL.flatMap(URL.init(string:)).flatMap(ImageSource.remote)
         )
     }
 }

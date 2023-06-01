@@ -21,7 +21,7 @@ final class EditProfileView: UIView {
     private let dividerView = UIView()
     let avatarView = EditProfileAvatarView()
     let usernameInputView = UserInputView()
-    let submitButton = Button(config: ButtonConfig(colorConfig: .primary))
+    let submitButton = Button()
 
     // MARK: - Lifecycle
 
@@ -46,6 +46,9 @@ final class EditProfileView: UIView {
 
     private func setupContentView() {
         backgroundColor = .appWhite
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        tapGesture.delegate = self
+        addGestureRecognizer(tapGesture)
     }
 
     private func setupDividerView() {
@@ -86,5 +89,20 @@ final class EditProfileView: UIView {
         avatarView.render(props: props.avatarViewProps)
         usernameInputView.render(props: props.usernameInputViewProps)
         submitButton.isEnabled = props.isSubmitButtonEnabled
+    }
+
+    // MARK: - Private methods
+
+    @objc
+    private func handleTap() {
+        endEditing(true)
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+extension EditProfileView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        !(touch.view is UIControl)
     }
 }

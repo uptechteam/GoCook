@@ -60,6 +60,10 @@ public final class EditProfileViewController: UIViewController {
     }
 
     private func setupBinding() {
+        contentView.usernameInputView.onChangeText = { [presenter] text in
+            presenter.usernameChanged(text)
+        }
+
         let state = presenter.$state
             .removeDuplicates()
 

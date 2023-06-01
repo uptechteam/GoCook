@@ -90,7 +90,7 @@ public final class CreateRecipeViewController: UIViewController {
             presenter.recipeImageTapped()
         }
 
-        contentView.stepOneView.mealNameInputView.onDidChangeText = { [presenter] text in
+        contentView.stepOneView.mealNameInputView.onChangeText = { [presenter] text in
             presenter.mealNameChanged(name: text)
         }
 

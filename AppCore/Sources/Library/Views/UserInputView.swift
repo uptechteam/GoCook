@@ -10,9 +10,19 @@ import UIKit
 
 public final class UserInputView: UIView {
 
-    public enum Props: Equatable {
-        case error(message: String)
-        case valid
+    public struct Props: Equatable {
+
+        // MARK: - Properties
+
+        public let text: String
+        public let errorMessage: String?
+
+        // MARK: - Lifecycle
+
+        public init(text: String, errorMessage: String?) {
+            self.text = text
+            self.errorMessage = errorMessage
+        }
     }
 
     // MARK: - Properties
@@ -22,7 +32,7 @@ public final class UserInputView: UIView {
     private let dividerView = UIView()
     private let errorLabel = UILabel()
     // callbacks
-    public var onDidChangeText: (String) -> Void = { _ in }
+    public var onChangeText: (String) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -48,6 +58,12 @@ public final class UserInputView: UIView {
         textField.textColor = .appBlack
         textField.tintColor = .appBlack
         textField.delegate = self
+        textField.addAction(
+            UIAction(handler: { [weak self] _ in
+                self?.onChangeText(self?.textField.text ?? "")
+            }),
+            for: .editingChanged
+        )
     }
 
     private func setupDividerView() {
@@ -72,14 +88,13 @@ public final class UserInputView: UIView {
     }
 
     public func render(props: Props) {
-        switch props {
-        case .error(let message):
+        textField.text = props.text
+        if let message = props.errorMessage {
             titleLabel.render(title: titleLabel.text ?? "", color: .errorMain, typography: .bodyTwo)
             dividerView.backgroundColor = .errorMain
             errorLabel.isHidden = false
             errorLabel.render(title: message, color: .errorMain, typography: .bodyTwo)
-
-        case .valid:
+        } else {
             titleLabel.render(title: titleLabel.text ?? "", color: .textSecondary, typography: .bodyTwo)
             dividerView.backgroundColor = .appBlack
             errorLabel.isHidden = true
@@ -87,7 +102,7 @@ public final class UserInputView: UIView {
     }
 }
 
-// MARK: - Delegate
+// MARK: - UITextFieldDelegate
 
 extension UserInputView: UITextFieldDelegate {
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -102,11 +117,6 @@ extension UserInputView: UITextFieldDelegate {
     ) -> Bool {
         let oldText = textField.text ?? ""
         let newText = oldText.replacingCharacters(in: Range(range, in: oldText)!, with: string)
-        guard newText.count <= 80 else {
-            return false
-        }
-
-        onDidChangeText(newText)
-        return true
+        return newText.count <= 80
     }
 }

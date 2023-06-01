@@ -14,11 +14,11 @@ public struct Profile: Equatable {
 
     public let id: User.ID
     public let username: String
-    public let avatar: ImageSource
+    public let avatar: ImageSource?
 
     // MARK: - Lifecycle
 
-    public init(id: User.ID, username: String, avatar: ImageSource) {
+    public init(id: User.ID, username: String, avatar: ImageSource?) {
         self.id = id
         self.username = username
         self.avatar = avatar

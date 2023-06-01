@@ -16,7 +16,7 @@ struct ProfileResponse: Decodable {
         .init(
             id: .init(rawValue: id),
             username: username,
-            avatar: .asset(nil)
+            avatar: nil
         )
     }
 }

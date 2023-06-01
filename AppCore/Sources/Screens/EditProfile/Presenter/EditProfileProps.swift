@@ -13,18 +13,21 @@ extension EditProfilePresenter {
         return .init(
             avatarViewProps: makeAvatarViewProps(state: state),
             usernameInputViewProps: makeUsernameInputViewProps(state: state),
-            isSubmitButtonEnabled: false
+            isSubmitButtonEnabled: state.isDataChanged
         )
     }
 
     private static func makeAvatarViewProps(state: State) -> EditProfileAvatarView.Props {
         return .init(
             isSpinnerVisible: false,
-            avatar: nil
+            avatar: state.profile.avatar
         )
     }
 
     private static func makeUsernameInputViewProps(state: State) -> UserInputView.Props {
-        .valid
+        return .init(
+            text: state.username,
+            errorMessage: nil
+        )
     }
 }
