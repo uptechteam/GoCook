@@ -1,21 +1,20 @@
 //
-//  ProfileView.swift
+//  AuthorView.swift
 //  
 //
-//  Created by Oleksii Andriushchenko on 15.06.2022.
+//  Created by Oleksii Andriushchenko on 31.05.2023.
 //
 
 import Library
 import UIKit
 
-final class ProfileView: UIView {
+final class AuthorView: UIView {
 
     struct Props: Equatable {
-        let headerViewProps: ProfileHeaderView.Props
-        let recipesHeaderViewProps: ProfileRecipesHeaderView.Props
+        let headerViewProps: AuthorHeaderView.Props
         let isCollectionViewVisible: Bool
         let items: [SmallRecipeCell.Props]
-        let infoViewProps: ProfileInfoView.Props
+        let infoViewProps: ContentStateView.Props
     }
 
     typealias Snapshot = NSDiffableDataSourceSnapshot<Int, String>
@@ -23,13 +22,13 @@ final class ProfileView: UIView {
 
     // MARK: - Properties
 
-    let headerView = ProfileHeaderView()
-    let recipesHeaderView = ProfileRecipesHeaderView()
+    let headerView = AuthorHeaderView()
+    private let recipesTitleLabel = UILabel()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     private lazy var dataSource = makeDataSource()
     private lazy var dataStore = [String: SmallRecipeCell.Props]()
     private let refreshControl = UIRefreshControl()
-    let infoView = ProfileInfoView()
+    private let recipesStateView = ContentStateView()
     // callbacks
     var onScrollToRefresh: () -> Void = { }
     var onTapItem: (IndexPath) -> Void = { _ in }
@@ -58,21 +57,17 @@ final class ProfileView: UIView {
     }
 
     private func setupContentView() {
-        backgroundColor = .appWhite
+        backgroundColor = .white
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [headerView, recipesHeaderView, collectionView, infoView])
+        let stackView = UIStackView(arrangedSubviews: [headerView, recipesTitleLabel, collectionView, recipesStateView])
         stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.setCustomSpacing(24, after: headerView)
         addSubview(stackView, withEdgeInsets: .zero)
-        NSLayoutConstraint.activate([
-            headerView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            recipesHeaderView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
-            collectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            infoView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -140)
-        ])
+    }
+
+    private func setupRecipesTitleLabel() {
+        
     }
 
     private func setupCollectionView() {
@@ -106,12 +101,6 @@ final class ProfileView: UIView {
 
     func render(props: Props) {
         headerView.render(props: props.headerViewProps)
-        recipesHeaderView.render(props: props.recipesHeaderViewProps)
-        renderCollection(props: props)
-        infoView.render(props: props.infoViewProps)
-        if refreshControl.isRefreshing {
-            refreshControl.endRefreshing()
-        }
     }
 
     // MARK: - Private methods
@@ -154,7 +143,7 @@ final class ProfileView: UIView {
 
 // MARK: - UICollectionViewDelegate
 
-extension ProfileView: UICollectionViewDelegate {
+extension AuthorView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         onTapItem(indexPath)
     }

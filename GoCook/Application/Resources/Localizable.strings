@@ -6,6 +6,12 @@
   
 */
 
+// MARK: - Author
+
+"author.recipes.title" = "Recipes";
+"author.recipes.no.reviews" = "No reviews yet:";
+"author.recipes.empty.text" = "This author has no recipes yet";
+
 // MARK: - Favorites
 
 "favorites.title" = "Favorites";

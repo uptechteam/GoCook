@@ -14,7 +14,7 @@ public final class SmallRecipeCell: UICollectionViewCell, ReusableCell {
 
         // MARK: - Properties
 
-        let id: String
+        public let id: String
         let recipeImageSource: ImageSource
         let isFavorite: Bool
         let name: String

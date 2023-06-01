@@ -6,10 +6,12 @@
 //
 
 import Combine
+import DomainModels
 import Helpers
 import UIKit
 
 public protocol RecipeCoordinating: AnyObject {
+    func didTapAuthor(_ author: User)
     func didTapBack()
 }
 
@@ -69,6 +71,10 @@ public final class RecipeViewController: UIViewController {
             await presenter.favoriteTapped()
         }
 
+        contentView.detailsView.headerView.authorView.onTap = { [presenter] in
+            presenter.authorTapped()
+        }
+
         contentView.detailsView.headerView.contentStateView.onTapAction = toSyncClosure { [presenter] in
             await presenter.retryTapped()
         }
@@ -97,6 +103,9 @@ public final class RecipeViewController: UIViewController {
         switch route {
         case .back:
             coordinator.didTapBack()
+
+        case .didTapAuthor(let author):
+            coordinator.didTapAuthor(author)
         }
     }
 }

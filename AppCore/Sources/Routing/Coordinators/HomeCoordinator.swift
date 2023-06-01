@@ -6,6 +6,7 @@
 //
 
 import AppTabBar
+import Author
 import BusinessLogic
 import DomainModels
 import Dip
@@ -60,7 +61,13 @@ final class HomeCoordinator: NSObject, Coordinating {
     }
 }
 
-// MARK: - Coordinating extensions
+// MARK: - AuthorCoordinating
+
+extension HomeCoordinator: AuthorCoordinating {
+
+}
+
+// MARK: - HomeCoordinating
 
 extension HomeCoordinator: HomeCoordinating {
     func showFilters() {
@@ -75,13 +82,23 @@ extension HomeCoordinator: HomeCoordinating {
     }
 }
 
+// MARK: - FiltersCoordinating
+
 extension HomeCoordinator: FiltersCoordinating {
     func didApplyFilters() {
         navigationController.popViewController(animated: true)
     }
 }
 
+// MARK: - RecipeCoordinating
+
 extension HomeCoordinator: RecipeCoordinating {
+    func didTapAuthor(_ author: User) {
+        let envelope = AuthorEnvelope(author: author)
+        let viewController = AuthorViewController.resolve(coordinator: self, envelope: envelope)
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
     func didTapBack() {
         navigationController.popViewController(animated: true)
     }
@@ -99,7 +116,9 @@ extension HomeCoordinator: UINavigationControllerDelegate {
             tabBarController?.toggleTabBarVisibility(on: false)
         }
 
-        let isNavigationBarHidden = viewController is HomeViewController || viewController is RecipeViewController
+        let isNavigationBarHidden = viewController is HomeViewController
+        || viewController is RecipeViewController
+        || viewController is AuthorViewController
         navigationController.setNavigationBarHidden(isNavigationBarHidden, animated: true)
     }
 

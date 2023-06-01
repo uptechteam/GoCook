@@ -6,6 +6,7 @@
 //
 
 import AppTabBar
+import Author
 import DomainModels
 import Favorites
 import Filters
@@ -61,6 +62,12 @@ final class FavoritesCoordinator: NSObject, Coordinating {
     }
 }
 
+// MARK: - AuthorCoordinating
+
+extension FavoritesCoordinator: AuthorCoordinating {
+
+}
+
 // MARK: - FavoritesCoordinating
 
 extension FavoritesCoordinator: FavoritesCoordinating {
@@ -91,6 +98,12 @@ extension FavoritesCoordinator: FiltersCoordinating {
 // MARK: - RecipeCoordinating
 
 extension FavoritesCoordinator: RecipeCoordinating {
+    func didTapAuthor(_ author: User) {
+        let envelope = AuthorEnvelope(author: author)
+        let viewController = AuthorViewController.resolve(coordinator: self, envelope: envelope)
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
     func didTapBack() {
         navigationController.popViewController(animated: true)
     }
@@ -107,8 +120,10 @@ extension FavoritesCoordinator: UINavigationControllerDelegate {
         if !viewController.isTabBarVisible {
             tabBarController?.toggleTabBarVisibility(on: false)
         }
-
-        let isNavigationBarHidden = viewController is FavoritesViewController || viewController is RecipeViewController
+        
+        let isNavigationBarHidden = viewController is FavoritesViewController
+        || viewController is RecipeViewController
+        || viewController is AuthorViewController
         navigationController.setNavigationBarHidden(isNavigationBarHidden, animated: true)
     }
 

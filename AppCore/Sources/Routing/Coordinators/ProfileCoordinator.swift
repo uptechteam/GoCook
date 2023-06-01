@@ -6,6 +6,7 @@
 //
 
 import AppTabBar
+import Author
 import CreateRecipe
 import Dip
 import DomainModels
@@ -70,6 +71,12 @@ final class ProfileCoordinator: NSObject, Coordinating {
     }
 }
 
+// MARK: - AuthorCoordinating
+
+extension ProfileCoordinator: AuthorCoordinating {
+
+}
+
 // MARK: - ProfileCoordinating
 
 extension ProfileCoordinator: ProfileCoordinating {
@@ -104,6 +111,12 @@ extension ProfileCoordinator: ProfileCoordinating {
 // MARK: - RecipeCoordinating
 
 extension ProfileCoordinator: RecipeCoordinating {
+    func didTapAuthor(_ author: User) {
+        let envelope = AuthorEnvelope(author: author)
+        let viewController = AuthorViewController.resolve(coordinator: self, envelope: envelope)
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
     func didTapBack() {
         navigationController.popViewController(animated: true)
     }
@@ -164,7 +177,9 @@ extension ProfileCoordinator: UINavigationControllerDelegate {
             tabBarController?.toggleTabBarVisibility(on: false)
         }
 
-        let isNavigationBarHidden = viewController is ProfileViewController || viewController is RecipeViewController
+        let isNavigationBarHidden = viewController is ProfileViewController
+        || viewController is RecipeViewController
+        || viewController is AuthorViewController
         navigationController.setNavigationBarHidden(isNavigationBarHidden, animated: true)
     }
 
