@@ -22,6 +22,8 @@ struct UpdateProfileRequest: Encodable {
         self.avatarURL = update.avatarURL
         if update.deleteAvatar {
             self.deleteAvatar = true
+        } else {
+            self.deleteAvatar = nil
         }
 
         self.username = update.username

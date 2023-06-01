@@ -14,6 +14,7 @@ final class EditProfileView: UIView {
         let avatarViewProps: EditProfileAvatarView.Props
         let usernameInputViewProps: UserInputView.Props
         let isSubmitButtonEnabled: Bool
+        let isSpinnerVisible: Bool
     }
 
     // MARK: - Properties
@@ -89,6 +90,7 @@ final class EditProfileView: UIView {
         avatarView.render(props: props.avatarViewProps)
         usernameInputView.render(props: props.usernameInputViewProps)
         submitButton.isEnabled = props.isSubmitButtonEnabled
+        submitButton.toggleLoading(on: props.isSpinnerVisible)
     }
 
     // MARK: - Private methods

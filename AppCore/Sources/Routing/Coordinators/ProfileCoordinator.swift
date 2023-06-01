@@ -92,6 +92,10 @@ extension ProfileCoordinator: EditProfileCoordinating {
     func didTapClose() {
         navigationController.popViewController(animated: true)
     }
+
+    func didUpdateProfile() {
+        navigationController.popViewController(animated: true)
+    }
 }
 
 // MARK: - ProfileCoordinating

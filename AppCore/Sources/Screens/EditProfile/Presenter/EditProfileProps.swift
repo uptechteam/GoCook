@@ -13,7 +13,8 @@ extension EditProfilePresenter {
         return .init(
             avatarViewProps: makeAvatarViewProps(state: state),
             usernameInputViewProps: makeUsernameInputViewProps(state: state),
-            isSubmitButtonEnabled: state.isDataChanged
+            isSubmitButtonEnabled: state.isDataChanged,
+            isSpinnerVisible: state.isUpdatingProfile
         )
     }
 

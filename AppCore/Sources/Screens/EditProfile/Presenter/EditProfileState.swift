@@ -16,8 +16,10 @@ extension EditProfilePresenter {
 
         // MARK: - Properties
 
+        var isUpdatingProfile: Bool
         let profile: Profile
         var username: String
+        var alert: AnyIdentifiable<Alert>?
         var route: AnyIdentifiable<Route>?
 
         var isDataChanged: Bool {
@@ -28,8 +30,10 @@ extension EditProfilePresenter {
 
         static func makeInitialState(profile: Profile) -> State {
             return State(
+                isUpdatingProfile: false,
                 profile: profile,
                 username: profile.username,
+                alert: nil,
                 route: nil
             )
         }
@@ -37,7 +41,14 @@ extension EditProfilePresenter {
 
     // MARK: - Route
 
+    enum Alert {
+        case error(message: String)
+    }
+
+    // MARK: - Route
+
     enum Route {
         case didTapClose
+        case didUpdateProfile
     }
 }

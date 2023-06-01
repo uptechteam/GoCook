@@ -6,13 +6,16 @@
 //
 
 import Combine
+import Helpers
+import Library
 import UIKit
 
 public protocol EditProfileCoordinating: AnyObject {
     func didTapClose()
+    func didUpdateProfile()
 }
 
-public final class EditProfileViewController: UIViewController {
+public final class EditProfileViewController: UIViewController, ErrorPresentable {
 
     // MARK: - Properties
 
@@ -64,6 +67,10 @@ public final class EditProfileViewController: UIViewController {
             presenter.usernameChanged(text)
         }
 
+        contentView.submitButton.onTap = toSyncClosure { [presenter] in
+            await presenter.submitTapped()
+        }
+
         let state = presenter.$state
             .removeDuplicates()
 
@@ -74,6 +81,12 @@ public final class EditProfileViewController: UIViewController {
             }
             .store(in: &cancellables)
 
+        state.compactMap(\.alert)
+            .removeDuplicates()
+            .map(\.value)
+            .sink { [unowned self] alert in show(alert: alert) }
+            .store(in: &cancellables)
+
         state.compactMap(\.route)
             .removeDuplicates()
             .map(\.value)
@@ -81,10 +94,20 @@ public final class EditProfileViewController: UIViewController {
             .store(in: &cancellables)
     }
 
+    private func show(alert: EditProfilePresenter.Alert) {
+        switch alert {
+        case .error(let message):
+            show(errorMessage: message)
+        }
+    }
+
     private func navigate(by route: EditProfilePresenter.Route) {
         switch route {
         case .didTapClose:
             coordinator.didTapClose()
+
+        case .didUpdateProfile:
+            coordinator.didUpdateProfile()
         }
     }
 

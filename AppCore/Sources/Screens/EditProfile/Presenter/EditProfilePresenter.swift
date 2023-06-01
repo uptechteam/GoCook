@@ -7,6 +7,7 @@
 
 import BusinessLogic
 import Combine
+import DomainModels
 
 @MainActor
 public final class EditProfilePresenter {
@@ -28,6 +29,19 @@ public final class EditProfilePresenter {
 
     func closeTapped() {
         state.route = .init(value: .didTapClose)
+    }
+
+    func submitTapped() async {
+        let update = ProfileUpdate(avatarURL: nil, deleteAvatar: false, username: state.username)
+        do {
+            state.isUpdatingProfile = true
+            try await profileFacade.update(profile: update)
+            state.isUpdatingProfile = false
+            state.route = .init(value: .didUpdateProfile)
+        } catch {
+            state.isUpdatingProfile = false
+            state.alert = .init(value: .error(message: error.localizedDescription))
+        }
     }
 
     func usernameChanged(_ text: String) {
