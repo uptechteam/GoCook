@@ -60,4 +60,22 @@ extension UIView {
                 .prioritised(as: isPriorityRequired ? .required : .almostRequired)
         ])
     }
+
+    public func insetBy(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> UIView {
+        let containerView = UIView()
+        containerView.addSubview(self, withEdgeInsets: UIEdgeInsets(top: top, left: left, bottom: bottom, right: right))
+        return containerView
+    }
+
+    public func centeredHorizontally() -> UIView {
+        let containerView = UIView()
+        containerView.addSubview(self, constraints: [
+            topAnchor.constraint(equalTo: containerView.topAnchor),
+            leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor),
+            trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor),
+            bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            centerXAnchor.constraint(equalTo: containerView.centerXAnchor)
+        ])
+        return containerView
+    }
 }

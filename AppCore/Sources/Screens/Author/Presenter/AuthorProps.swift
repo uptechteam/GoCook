@@ -5,12 +5,15 @@
 //  Created by Oleksii Andriushchenko on 31.05.2023.
 //
 
-import Helpers
+import Library
 
 extension AuthorPresenter {
     static func makeProps(from state: State) -> AuthorView.Props {
         return .init(
-            headerViewProps: makeHeaderViewProps(state: state)
+            headerViewProps: makeHeaderViewProps(state: state),
+            isCollectionViewVisible: false,
+            items: [],
+            recipesStateViewProps: makeRecipesStateViewProps(state: state)
         )
     }
 
@@ -19,5 +22,9 @@ extension AuthorPresenter {
             avatarImageSource: state.author.avatar,
             name: state.author.username
         )
+    }
+
+    private static func makeRecipesStateViewProps(state: State) -> ContentStateView.Props {
+        .message(title: .authorRecipesEmptyText, buttonTitle: nil)
     }
 }

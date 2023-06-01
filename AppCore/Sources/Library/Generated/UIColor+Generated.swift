@@ -3,8 +3,6 @@
 
 import UIKit
 
-// swiftlint:disable file_length
-
 // MARK: - Colors
 
 extension UIColor {
@@ -82,4 +80,4 @@ extension UIColor {
   }
 
 }
-// swiftlint:enable file_length
+// swiftlint:enable all

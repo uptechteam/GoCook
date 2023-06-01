@@ -26,7 +26,7 @@ let package = Package(
                 "Helpers"
             ],
             resources: [
-                .process("PersistentProfile")
+                .process("Persistence/Resources")
             ]
         ),
         // MARK: - Domain models

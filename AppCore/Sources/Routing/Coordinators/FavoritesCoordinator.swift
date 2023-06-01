@@ -120,7 +120,7 @@ extension FavoritesCoordinator: UINavigationControllerDelegate {
         if !viewController.isTabBarVisible {
             tabBarController?.toggleTabBarVisibility(on: false)
         }
-        
+
         let isNavigationBarHidden = viewController is FavoritesViewController
         || viewController is RecipeViewController
         || viewController is AuthorViewController

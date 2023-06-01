@@ -4,8 +4,6 @@
 {% if tables.count > 0 %}
 import Foundation
 
-// swiftlint:disable superfluous_disable_command file_length implicit_return
-
 // MARK: - Strings
 
 {% macro parametersBlock types %}{% filter removeNewlines:"leading" %}
@@ -40,7 +38,6 @@ import Foundation
   {% call recursiveBlock table child %}
   {% endfor %}
 {% endmacro %}
-// swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 extension String {
   {% if tables.count > 1 or param.forceFileNameEnum %}
   {% for table in tables %}
@@ -52,7 +49,6 @@ extension String {
   {% call recursiveBlock tables.first.name tables.first.levels %}
   {% endif %}
 }
-// swiftlint:enable function_parameter_count identifier_name line_length type_body_length
 
 // MARK: - Implementation Details
 
@@ -63,8 +59,7 @@ fileprivate final class L10n {
   }
 }
 {% if not param.bundle and not param.lookupFunction %}
-
-// swiftlint:enable convenience_type
+// swiftlint:enable all
 {% endif %}
 {% else %}
 // No string found

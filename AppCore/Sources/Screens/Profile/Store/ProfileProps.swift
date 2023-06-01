@@ -39,7 +39,7 @@ extension ProfileViewController {
             return SmallRecipeCell.Props(
                 id: recipe.id.rawValue,
                 recipeImageSource: recipe.recipeImageSource,
-                favoriteImageSource: .asset(recipe.isFavorite ? .circleWithFilledHeart : .circleWithEmptyHeart),
+                isFavorite: recipe.isFavorite,
                 name: recipe.name,
                 ratingViewProps: makeRatingViewProps(recipe: recipe)
             )

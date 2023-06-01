@@ -14,7 +14,7 @@ final class AuthorView: UIView {
         let headerViewProps: AuthorHeaderView.Props
         let isCollectionViewVisible: Bool
         let items: [SmallRecipeCell.Props]
-        let infoViewProps: ContentStateView.Props
+        let recipesStateViewProps: ContentStateView.Props
     }
 
     typealias Snapshot = NSDiffableDataSourceSnapshot<Int, String>
@@ -51,6 +51,7 @@ final class AuthorView: UIView {
     private func setup() {
         setupContentView()
         setupStackView()
+        setupRecipesTitleLabel()
         setupCollectionView()
         setupLayout()
         setupRefreshControl()
@@ -61,13 +62,22 @@ final class AuthorView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [headerView, recipesTitleLabel, collectionView, recipesStateView])
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                headerView,
+                recipesTitleLabel.insetBy(top: 0, left: 24, bottom: 0, right: 24),
+                collectionView,
+                recipesStateView
+            ]
+        )
         stackView.axis = .vertical
-        addSubview(stackView, withEdgeInsets: .zero)
+        stackView.setCustomSpacing(32, after: headerView)
+        stackView.setCustomSpacing(32, after: headerView)
+        addSubview(stackView, withEdgeInsets: .zero, isSafeAreaRequired: true)
     }
 
     private func setupRecipesTitleLabel() {
-        
+        recipesTitleLabel.render(title: .authorRecipesTitle, color: .textMain, typography: .headerFour)
     }
 
     private func setupCollectionView() {
@@ -101,6 +111,8 @@ final class AuthorView: UIView {
 
     func render(props: Props) {
         headerView.render(props: props.headerViewProps)
+        renderCollection(props: props)
+        recipesStateView.render(props: props.recipesStateViewProps)
     }
 
     // MARK: - Private methods
