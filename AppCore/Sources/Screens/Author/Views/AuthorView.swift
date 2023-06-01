@@ -113,6 +113,9 @@ final class AuthorView: UIView {
         headerView.render(props: props.headerViewProps)
         renderCollection(props: props)
         recipesStateView.render(props: props.recipesStateViewProps)
+        if refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
+        }
     }
 
     // MARK: - Private methods
