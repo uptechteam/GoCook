@@ -43,14 +43,11 @@ extension CreateRecipePresenter {
     }
 
     private static func makeMealNameInputViewProps(state: State) -> UserInputView.Props {
-        let isValid = state.stepOneState.isMealNameValid
-        return .init(
-            title: .createRecipeStepOneMealTitle,
-            titleColorSource: .color(isValid ? .textSecondary : .errorMain),
-            dividerColorSource: .color(isValid ? .appBlack : .errorMain),
-            errorMessage: isValid ? "" : .createRecipeStepOneMealValidation,
-            isErrorMessageVisible: !isValid
-        )
+        if state.stepOneState.isMealNameValid {
+            return .error(message: .createRecipeStepOneMealValidation)
+        } else {
+            return .valid
+        }
     }
 
     private static func makeCategoryItems(state: State) -> [CategoryCell.Props] {

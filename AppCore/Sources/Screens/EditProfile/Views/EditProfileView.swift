@@ -11,12 +11,17 @@ import UIKit
 final class EditProfileView: UIView {
 
     struct Props: Equatable {
-
+        let avatarViewProps: EditProfileAvatarView.Props
+        let usernameInputViewProps: UserInputView.Props
+        let isSubmitButtonEnabled: Bool
     }
 
     // MARK: - Properties
 
     private let dividerView = UIView()
+    let avatarView = EditProfileAvatarView()
+    let usernameInputView = UserInputView()
+    let submitButton = Button(config: ButtonConfig(colorConfig: .primary))
 
     // MARK: - Lifecycle
 
@@ -34,6 +39,9 @@ final class EditProfileView: UIView {
     private func setup() {
         setupContentView()
         setupDividerView()
+        setupStackView()
+        setupUsernameInputView()
+        setupSubmitButton()
     }
 
     private func setupContentView() {
@@ -50,9 +58,33 @@ final class EditProfileView: UIView {
         ])
     }
 
+    private func setupStackView() {
+        let centeredAvatarView = avatarView.centeredHorizontally()
+        let stackView = UIStackView(
+            arrangedSubviews: [centeredAvatarView, usernameInputView, UIView(), submitButton]
+        )
+        stackView.axis = .vertical
+        stackView.setCustomSpacing(24, after: centeredAvatarView)
+        addSubview(
+            stackView,
+            withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 0, right: 24),
+            isSafeAreaRequired: true
+        )
+    }
+
+    private func setupUsernameInputView() {
+        usernameInputView.configure(title: .editProfileInputTitle)
+    }
+
+    private func setupSubmitButton() {
+        submitButton.setTitle(.editProfileSubmit)
+    }
+
     // MARK: - Public methods
 
     func render(props: Props) {
-
+        avatarView.render(props: props.avatarViewProps)
+        usernameInputView.render(props: props.usernameInputViewProps)
+        submitButton.isEnabled = props.isSubmitButtonEnabled
     }
 }

@@ -117,8 +117,14 @@ extension String {
   /// Number of servings
   public static let createRecipeStepTwoServingsTitle = L10n.tr("Localizable", "create.recipe.step.two.servings.title")
 
+  /// Submit
+  public static let editProfileSubmit = L10n.tr("Localizable", "edit.profile.submit")
+
   /// Edit Profile
   public static let editProfileTitle = L10n.tr("Localizable", "edit.profile.title")
+
+  /// USERNAME
+  public static let editProfileInputTitle = L10n.tr("Localizable", "edit.profile.input.title")
 
   /// Favorites
   public static let favoritesTitle = L10n.tr("Localizable", "favorites.title")

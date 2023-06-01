@@ -15,6 +15,8 @@
 // MARK: - Edit Profile
 
 "edit.profile.title" = "Edit Profile";
+"edit.profile.input.title" = "USERNAME";
+"edit.profile.submit" = "Submit";
 
 // MARK: - Favorites
 
