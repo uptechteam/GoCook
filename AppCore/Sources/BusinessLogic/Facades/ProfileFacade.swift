@@ -7,6 +7,7 @@
 
 import Combine
 import DomainModels
+import Foundation
 import Helpers
 
 public protocol ProfileFacading {
@@ -18,12 +19,15 @@ public protocol ProfileFacading {
     func login(username: String, password: String) async throws
     func logout() async
     func signUp(username: String, password: String) async throws
+    func update(profile: ProfileUpdate) async throws
+    func upload(avatarData: Data) async throws -> String
 }
 
 public final class ProfileFacade: ProfileFacading {
 
     // MARK: - Properties
 
+    private let fileClient: FileClienting
     private let profileClient: ProfileClienting
     private let profileStorage: ProfileStoraging
     private let userCredentialsStorage: UserCredentialsStoraging
@@ -36,10 +40,12 @@ public final class ProfileFacade: ProfileFacading {
     // MARK: - Lifecycle
 
     public init(
+        fileClient: FileClienting,
         profileClient: ProfileClienting,
         profileStorage: ProfileStoraging,
         userCredentialsStorage: UserCredentialsStoraging
     ) {
+        self.fileClient = fileClient
         self.profileClient = profileClient
         self.profileStorage = profileStorage
         self.userCredentialsStorage = userCredentialsStorage
@@ -63,8 +69,7 @@ public final class ProfileFacade: ProfileFacading {
         let token = try await profileClient.login(username: username, password: password)
         userCredentialsStorage.store(accessKey: token)
         let profile = try await profileClient.refreshProfile()
-        await profileStorage.store(profile: profile)
-        profileSubject.send(profile)
+        await store(profile: profile)
     }
 
     public func logout() async {
@@ -82,11 +87,24 @@ public final class ProfileFacade: ProfileFacading {
         let profile = try await profileClient.signUp(username: username, password: password)
         let token = try await profileClient.login(username: username, password: password)
         userCredentialsStorage.store(accessKey: token)
-        await profileStorage.store(profile: profile)
-        profileSubject.send(profile)
+        await store(profile: profile)
+    }
+
+    public func update(profile: ProfileUpdate) async throws {
+        let profile = try await profileClient.update(profile: profile)
+        await store(profile: profile)
+    }
+
+    public func upload(avatarData: Data) async throws -> String {
+        try await fileClient.uploadAvatar(data: avatarData)
     }
 
     // MARK: - Private methods
+
+    private func store(profile: Profile) async {
+        await profileStorage.store(profile: profile)
+        profileSubject.send(profile)
+    }
 
     private func loadProfile() async {
         guard let profile = await profileStorage.getProfile() else {

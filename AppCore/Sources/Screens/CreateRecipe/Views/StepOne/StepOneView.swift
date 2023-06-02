@@ -52,6 +52,7 @@ final class StepOneView: UIView {
 
     private func setup() {
         setupContentView()
+        setupMealNameInputView()
         setupCategoryLabel()
         setupLayout()
         setupCollectionView()
@@ -63,6 +64,10 @@ final class StepOneView: UIView {
 
     private func setupContentView() {
         backgroundColor = .appWhite
+    }
+
+    private func setupMealNameInputView() {
+        mealNameInputView.configure(title: .createRecipeStepOneMealTitle)
     }
 
     private func setupCategoryLabel() {

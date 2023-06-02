@@ -35,6 +35,10 @@ extension UIImage {
     return UIImage(named: "threeDots")!
   }
 
+  @nonobjc public class var camera: UIImage {
+    return UIImage(named: "camera")!
+  }
+
   @nonobjc public class var addIcon: UIImage {
     return UIImage(named: "addIcon")!
   }

@@ -16,6 +16,8 @@ public final class Button: UIControl {
     private let titleLabel = UILabel()
     private let imageView = UIImageView()
     private let spinnerView = SpinnerView()
+    // callbacks
+    public var onTap: () -> Void = { }
 
     public override var isHighlighted: Bool {
         didSet {
@@ -70,6 +72,7 @@ public final class Button: UIControl {
         backgroundColor = config.backgroundColor(for: .normal)
         layer.borderColor = config.borderColor(for: .normal).cgColor
         layer.borderWidth = config.borderWidth
+        addAction(UIAction(handler: { [weak self] _ in self?.onTap() }), for: .touchUpInside)
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: config.buttonSize.height)
         ])

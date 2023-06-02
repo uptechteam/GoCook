@@ -12,6 +12,12 @@
 "author.recipes.no.reviews" = "No reviews yet:";
 "author.recipes.empty.text" = "This author has no recipes yet";
 
+// MARK: - Edit Profile
+
+"edit.profile.title" = "Edit Profile";
+"edit.profile.input.title" = "USERNAME";
+"edit.profile.submit" = "Submit";
+
 // MARK: - Favorites
 
 "favorites.title" = "Favorites";
@@ -173,7 +179,20 @@
 "sign.up.have.an.account.first" = "Already have an account? ";
 "sign.up.have.an.account.second" = "Login";
 
-// MARK: - Domain models
+// ====================================================================================================================
+
+// MARK: - API Error
+
+"api.error.broken.data" = "Got invalid data from server";
+"api.error.connot.connect.to.server" = "Can't reach the server";
+"api.error.unknown.error" = "Unknown error occured";
+
+// MARK: - Image Picker
+
+"image.picker.alert.settings.title" = "Allow camera access";
+"image.picker.alert.settings.message" = "Enable access so you can upload photos.";
+"image.picker.alert.settings.cancel" = "Cancel";
+"image.picker.alert.settings.open.camera" = "Open camera";
 
 // MARK: - Ingredient Unit
 
@@ -191,9 +210,3 @@
 
 "validation.name.length" = "Username should contain between 2 and 20 characters";
 "validation.not.unique.username" = "This username is taken. Try another one";
-
-// MARK: - API Error
-
-"api.error.broken.data" = "Got invalid data from server";
-"api.error.connot.connect.to.server" = "Can't reach the server";
-"api.error.unknown.error" = "Unknown error occured";

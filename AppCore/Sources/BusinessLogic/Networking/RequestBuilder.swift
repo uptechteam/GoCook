@@ -92,4 +92,18 @@ struct RequestBuilder {
         request = try JSONParameterEncoder.default.encode(requestData, into: request)
         return AppRequest(urlRequest: request, authorisation: authorisation)
     }
+
+    func makePutJSONRequest<Request: Encodable>(
+        path: String,
+        requestData: Request,
+        authorisation: Authorisation = .basic
+    ) throws -> AppRequest {
+        var request = try URLRequest(
+            url: baseURL.appendingPathComponent(path),
+            method: .put,
+            headers: .default
+        )
+        request = try JSONParameterEncoder.default.encode(requestData, into: request)
+        return AppRequest(urlRequest: request, authorisation: authorisation)
+    }
 }

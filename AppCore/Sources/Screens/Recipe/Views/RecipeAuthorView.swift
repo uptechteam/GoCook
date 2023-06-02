@@ -13,7 +13,7 @@ final class RecipeAuthorView: UIControl {
 
     struct Props: Equatable {
         let isVisible: Bool
-        let avatarImageSource: ImageSource
+        let avatarImageSource: ImageSource?
         let username: String
     }
 
@@ -70,7 +70,10 @@ final class RecipeAuthorView: UIControl {
 
     func render(props: Props) {
         isHidden = !props.isVisible
-        avatarImageView.set(props.avatarImageSource)
+        if let avatar = props.avatarImageSource {
+            avatarImageView.set(avatar)
+        }
+
         renderUsername(props.username)
     }
 

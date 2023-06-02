@@ -90,7 +90,7 @@ public final class CreateRecipeViewController: UIViewController {
             presenter.recipeImageTapped()
         }
 
-        contentView.stepOneView.mealNameInputView.onDidChangeText = { [presenter] text in
+        contentView.stepOneView.mealNameInputView.onChangeText = { [presenter] text in
             presenter.mealNameChanged(name: text)
         }
 
@@ -184,8 +184,8 @@ public final class CreateRecipeViewController: UIViewController {
         case .deleteProgress:
             showDeleteProgressAlert()
 
-        case .imagePicker(let isDeleteButtonPresent):
-            showImagePicker(isDeleteButtonPresent: isDeleteButtonPresent)
+        case .imagePicker(let isDeleteButtonVisible):
+            showImagePicker(isDeleteButtonVisible: isDeleteButtonVisible)
         }
     }
 
@@ -199,12 +199,9 @@ public final class CreateRecipeViewController: UIViewController {
         }
     }
 
-    private func showImagePicker(source: UIImagePickerController.SourceType) {
-        Task { [weak self] in
-            guard
-                let self = self,
-                let image = await imagePicker.pickImage(source: source, on: self)
-            else {
+    private func showImagePicker(source: ImagePickerSource) {
+        Task {
+            guard let image = await imagePicker.pickImage(source: source, on: self) else {
                 return
             }
 
@@ -233,7 +230,7 @@ private extension CreateRecipeViewController {
         present(alertController, animated: true)
     }
 
-    private func showImagePicker(isDeleteButtonPresent: Bool) {
+    private func showImagePicker(isDeleteButtonVisible: Bool) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(
@@ -246,10 +243,10 @@ private extension CreateRecipeViewController {
             UIAlertAction(
                 title: .imagePickerLibrary,
                 style: .default,
-                handler: { [weak self] _ in self?.showImagePicker(source: .photoLibrary) }
+                handler: { [weak self] _ in self?.showImagePicker(source: .photoAlbum) }
             )
         )
-        if isDeleteButtonPresent {
+        if isDeleteButtonVisible {
             alertController.addAction(
                 UIAlertAction(
                     title: .imagePickerRemove,

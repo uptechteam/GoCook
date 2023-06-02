@@ -15,6 +15,7 @@ public protocol ProfileClienting {
     func logout() async throws
     func refreshProfile() async throws -> Profile
     func signUp(username: String, password: String) async throws -> Profile
+    func update(profile: ProfileUpdate) async throws -> Profile
 }
 
 public final class ProfileClient: ProfileClienting {
@@ -34,30 +35,36 @@ public final class ProfileClient: ProfileClienting {
     // MARK: - Public methods
 
     public func isUnique(username: String) async throws -> Bool {
-        let request = try api.makeIsUniqueRequest(username: username)
+        let request = try api.makeGetIsUniqueRequest(username: username)
         let response: IsUniqueResponse = try await networkClient.execute(request)
         return response.isUnique
     }
 
     public func login(username: String, password: String) async throws -> String {
-        let request = try api.makeLoginRequest(username: username, password: password)
+        let request = try api.makePostLoginRequest(username: username, password: password)
         let response: TokenResponse = try await networkClient.execute(request)
         return response.token
     }
 
     public func logout() async throws {
-        let request = try api.makeLogoutRequest()
+        let request = try api.makeDeleteLogoutRequest()
         let _: EmptyResponse = try await networkClient.execute(request)
     }
 
     public func refreshProfile() async throws -> Profile {
-        let request = try api.makeRefreshProfileRequest()
+        let request = try api.makeGetProfileRequest()
         let response: ProfileResponse = try await networkClient.execute(request)
         return response.domainModel
     }
 
     public func signUp(username: String, password: String) async throws -> Profile {
-        let request = try api.makeSignUpRequest(username: username, password: password)
+        let request = try api.makePostSignUpRequest(username: username, password: password)
+        let response: ProfileResponse = try await networkClient.execute(request)
+        return response.domainModel
+    }
+
+    public func update(profile: ProfileUpdate) async throws -> Profile {
+        let request = try api.makePutProfileRequest(update: profile)
         let response: ProfileResponse = try await networkClient.execute(request)
         return response.domainModel
     }

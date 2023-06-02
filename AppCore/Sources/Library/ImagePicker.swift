@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 24.06.2022.
 //
 
+import DomainModels
 import Helpers
 import PhotosUI
 import UIKit
@@ -24,27 +25,23 @@ public final class ImagePicker: NSObject {
 
     // MARK: - Public methods
 
-    public func pickImage(
-        source: UIImagePickerController.SourceType,
-        on viewController: UIViewController
-    ) async -> UIImage? {
-        guard await askPermission(on: viewController, source: source) else {
-            return nil
-        }
+    public func pickImage(source: ImagePickerSource, on viewController: UIViewController) async -> UIImage? {
+        switch source {
+        case .camera:
+            guard await checkCameraPermission(on: viewController) else {
+                return nil
+            }
 
-        return await showPicker(on: viewController, source: source)
+            return await showCameraPicker(on: viewController)
+
+        case .photoAlbum:
+            return await showPhotoPicker(on: viewController)
+        }
     }
 
     // MARK: - Private methods
 
-    private func askPermission(
-        on viewController: UIViewController,
-        source: UIImagePickerController.SourceType
-    ) async -> Bool {
-        guard source == .camera else {
-            return true
-        }
-
+    private func checkCameraPermission(on viewController: UIViewController) async -> Bool {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .notDetermined:
             return await AVCaptureDevice.requestAccess(for: .video)
@@ -58,35 +55,69 @@ public final class ImagePicker: NSObject {
         }
     }
 
-    private func showPicker(on viewController: UIViewController, source: UIImagePickerController.SourceType) async -> UIImage? {
-        var configuration = PHPickerConfiguration(photoLibrary: .shared())
-        configuration.filter = .images
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.modalPresentationStyle = .overFullScreen
+    private func showCameraPicker(on viewController: UIViewController) async -> UIImage? {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .camera
+        imagePicker.delegate = self
+        viewController.present(imagePicker, animated: true)
+        return await withCheckedContinuation { continuation in
+            completion = { continuation.resume(with: .success($0)) }
+        }
+    }
+
+    private func showPhotoPicker(on viewController: UIViewController) async -> UIImage? {
+        let picker = PHPickerViewController(configuration: makePickerConfiguration())
         picker.delegate = self
         viewController.present(picker, animated: true)
         return await withCheckedContinuation { continuation in
-            completion = { continuation.resume(with: .success($0)) }
+            completion = { image in
+                DispatchQueue.main.async {
+                    continuation.resume(with: .success(image))
+                }
+            }
+        }
+    }
+
+    private func makePickerConfiguration() -> PHPickerConfiguration {
+        var configuration = PHPickerConfiguration(photoLibrary: .shared())
+        configuration.filter = .images
+        return configuration
+    }
+
+    private func handle(results: [PHPickerResult]) {
+        guard
+            let result = results.first,
+            result.itemProvider.hasItemConformingToTypeIdentifier(Constants.imageID)
+        else {
+            completion(nil)
+            return
+        }
+
+        result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, _ in
+            let resizedImage = (image as? UIImage)?.resizeImage(sizeLimit: Constants.limitedImageSize)
+            Task { @MainActor [weak self] in
+                self?.completion(resizedImage)
+            }
         }
     }
 
     private func showSettings(on viewController: UIViewController) async {
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             let alertController = UIAlertController(
-                title: "Allow camera access",
-                message: "Enable access so you can upload photos.",
+                title: .imagePickerAlertSettingsTitle,
+                message: .imagePickerAlertSettingsMessage,
                 preferredStyle: .alert
             )
             alertController.addAction(
                 UIAlertAction(
-                    title: "Cancel",
+                    title: .imagePickerAlertSettingsCancel,
                     style: .cancel,
                     handler: { _ in continuation.resume(with: .success(())) }
                 )
             )
             alertController.addAction(
                 UIAlertAction(
-                    title: "Open camera",
+                    title: .imagePickerAlertSettingsOpenCamera,
                     style: .default,
                     handler: { _ in
                         let settingURL = URL(string: UIApplication.openSettingsURLString)!
@@ -106,19 +137,43 @@ public final class ImagePicker: NSObject {
 extension ImagePicker: PHPickerViewControllerDelegate {
     public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            self?.handle(results: results)
+        }
+    }
+}
+
+// MARK: - UIImagePickerControllerDelegate & UINavigationControllerDelegate
+
+extension ImagePicker: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+        completion(nil)
+    }
+
+    public func imagePickerController(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+    ) {
+        picker.dismiss(animated: true)
         guard
-            let result = results.first,
-            result.itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier)
+            let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
+            let resizedImage = image.resizeImage(sizeLimit: Constants.limitedImageSize)
         else {
             completion(nil)
             return
         }
 
-        result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, _ in
-            DispatchQueue.main.async {
-                let resizedImage = (image as? UIImage)?.resizeImage(targetSize: CGSize(width: 400, height: 400))
-                self?.completion(resizedImage)
-            }
-        }
+        completion(resizedImage)
+    }
+}
+
+// MARK: - Constants
+
+extension ImagePicker {
+    private enum Constants {
+        static let limitedImageSize = Int(0.9 * 1024 * 1024)
+        static let imageID = UTType.image.identifier
+        static let videoID = UTType.movie.identifier
     }
 }

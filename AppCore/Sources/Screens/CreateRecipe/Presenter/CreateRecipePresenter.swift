@@ -237,8 +237,8 @@ final class CreateRecipePresenter {
             return
         }
 
-        let isDeleteButtonPresent = state.stepOneState.recipeImageState.uploadedImageSource != nil
-        state.alert = .init(value: .imagePicker(isDeleteButtonPresent: isDeleteButtonPresent))
+        let isDeleteButtonVisible = state.stepOneState.recipeImageState.uploadedImageSource != nil
+        state.alert = .init(value: .imagePicker(isDeleteButtonVisible: isDeleteButtonVisible))
     }
 
     func servingsAmountChanged(amount: Int) {

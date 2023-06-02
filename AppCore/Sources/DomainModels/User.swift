@@ -13,13 +13,13 @@ public struct User: Equatable {
 
     public typealias ID = Tagged<User, String>
 
-    public let avatar: ImageSource
+    public let avatar: ImageSource?
     public let id: User.ID
     public let username: String
 
     // MARK: - Lifecycle
 
-    public init(avatar: ImageSource, id: ID, username: String) {
+    public init(avatar: ImageSource?, id: ID, username: String) {
         self.avatar = avatar
         self.id = id
         self.username = username

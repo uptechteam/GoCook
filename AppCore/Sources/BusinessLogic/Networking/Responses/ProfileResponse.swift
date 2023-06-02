@@ -6,17 +6,21 @@
 //
 
 import DomainModels
-import Library
+import Helpers
 
 struct ProfileResponse: Decodable {
+    let avatarURL: String?
     let id: String
     let username: String
 
     var domainModel: Profile {
-        .init(
+        let avatarImageURL = avatarURL.flatMap { avatarURL in
+            AppEnvironment.current.baseURL.appendingPathComponent("files/avatar/\(avatarURL)")
+        }
+        return .init(
             id: .init(rawValue: id),
             username: username,
-            avatar: .asset(nil)
+            avatar: avatarImageURL.flatMap(ImageSource.remote)
         )
     }
 }

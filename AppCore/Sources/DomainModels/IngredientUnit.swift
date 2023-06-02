@@ -5,7 +5,7 @@
 //  Created by Oleksii Andriushchenko on 29.06.2022.
 //
 
-import Library
+import Helpers
 
 public enum IngredientUnit: Equatable {
     case cup
