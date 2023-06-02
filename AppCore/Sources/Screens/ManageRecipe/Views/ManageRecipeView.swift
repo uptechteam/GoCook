@@ -1,5 +1,5 @@
 //
-//  CreateRecipeView.swift
+//  ManageRecipeView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 23.06.2022.
@@ -9,14 +9,14 @@ import Helpers
 import Library
 import UIKit
 
-final class CreateRecipeView: UIView {
+final class ManageRecipeView: UIView {
 
     struct Props: Equatable {
         let stepOneViewProps: StepOneView.Props
         let stepTwoViewProps: StepTwoView.Props
         let stepThreeViewProps: StepThreeView.Props
         let stepFourViewProps: StepFourView.Props
-        let stepsViewProps: CreateRecipeStepsView.Props
+        let stepsViewProps: ManageRecipeStepsView.Props
     }
 
     // MARK: - Properties
@@ -26,7 +26,7 @@ final class CreateRecipeView: UIView {
     let stepTwoView = StepTwoView()
     let stepThreeView = StepThreeView()
     let stepFourView = StepFourView()
-    let stepsView = CreateRecipeStepsView()
+    let stepsView = ManageRecipeStepsView()
 
     // MARK: - Lifecycle
 
@@ -139,7 +139,7 @@ final class CreateRecipeView: UIView {
 
 // MARK: - UIGestureRecognizerDelegate
 
-extension CreateRecipeView: UIGestureRecognizerDelegate {
+extension ManageRecipeView: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         guard let view = touch.view else {
             return false

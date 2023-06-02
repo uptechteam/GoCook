@@ -5,41 +5,18 @@
 //  Created by Oleksii Andriushchenko on 20.11.2022.
 //
 
-import Dip
+import BusinessLogic
 
 extension SignUpViewController {
-    public static func inject(into container: DependencyContainer) {
-        container.register(
-            .shared,
-            type: SignUpViewController.Dependencies.self,
-            factory: SignUpViewController.Dependencies.init
+    public static func resolve(envelope: SignUpEnvelope, coordinator: SignUpCoordinating) -> SignUpViewController {
+        let dependencies = SignUpViewController.Dependencies(
+            keyboardManager: AppContainer.resolve(),
+            profileFacade: AppContainer.resolve()
         )
-        container.register(
-            .unique,
-            type: SignUpViewController.Store.self,
-            factory: { envelope in
-                SignUpViewController.makeStore(dependencies: try container.resolve(), envelope: envelope)
-            }
+        return SignUpViewController(
+            store: SignUpViewController.makeStore(dependencies: dependencies, envelope: envelope),
+            actionCreator: SignUpViewController.ActionCreator(dependencies: dependencies),
+            coordinator: coordinator
         )
-        container.register(
-            .unique,
-            type: SignUpViewController.ActionCreator.self,
-            factory: SignUpViewController.ActionCreator.init
-        )
-        container.register(.unique, type: SignUpViewController.self) { (envelope: SignUpEnvelope, coordinator) in
-            return SignUpViewController(
-                store: try container.resolve(arguments: envelope),
-                actionCreator: try container.resolve(),
-                coordinator: coordinator
-            )
-        }
-    }
-
-    public static func resolve(
-        from container: DependencyContainer,
-        envelope: SignUpEnvelope,
-        coordinator: SignUpCoordinating
-    ) -> SignUpViewController {
-        try! container.resolve(arguments: envelope, coordinator)
     }
 }

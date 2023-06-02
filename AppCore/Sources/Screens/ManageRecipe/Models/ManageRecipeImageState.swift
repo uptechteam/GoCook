@@ -7,12 +7,13 @@
 
 import Helpers
 
-enum RecipeImageState: Equatable {
+enum ImageState: Equatable {
 
     // MARK: - Properties
 
     case empty
     case error(message: String)
+    case existing(ImageSource)
     case uploading(ImageSource)
     case uploaded(ImageSource, imageID: String)
 
@@ -48,7 +49,7 @@ enum RecipeImageState: Equatable {
 
     var uploadedImageSource: ImageSource? {
         switch self {
-        case .uploaded(let imageSource, _):
+        case .existing(let imageSource), .uploaded(let imageSource, _):
             return imageSource
 
         default:

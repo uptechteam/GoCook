@@ -49,7 +49,7 @@ let package = Package(
                 "AppTabBar",
                 "Author",
                 "BusinessLogic",
-                "CreateRecipe",
+                "ManageRecipe",
                 "EditProfile",
                 "Favorites",
                 "Filters",
@@ -65,7 +65,7 @@ let package = Package(
         // MARK: - Screens
         makeScreenModule(name: "AppTabBar"),
         makeScreenModule(name: "Author"),
-        makeScreenModule(name: "CreateRecipe"),
+        makeScreenModule(name: "ManageRecipe"),
         makeScreenModule(name: "EditProfile"),
         makeScreenModule(name: "Favorites"),
         makeScreenModule(name: "Filters"),

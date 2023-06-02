@@ -1,5 +1,5 @@
 //
-//  CreateRecipePresenter.swift
+//  ManageRecipePresenter.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 27.03.2023.
@@ -13,13 +13,13 @@ import Helpers
 import UIKit
 
 @MainActor
-final class CreateRecipePresenter {
+final class ManageRecipePresenter {
 
     // MARK: - Properties
 
     private let fileClient: FileClienting
     private let keyboardManager: KeyboardManaging
-    private let recipesClient: RecipesClienting
+    private let recipesFacade: RecipesFacading
     @Published
     private(set) var state: State
     private var uploadImageTask: Task<String, Error>?
@@ -41,11 +41,16 @@ final class CreateRecipePresenter {
 
     // MARK: - Lifecycle
 
-    init(fileClient: FileClienting, keyboardManager: KeyboardManaging, recipesClient: RecipesClienting) {
+    init(
+        envelope: ManageRecipeEnvelope,
+        fileClient: FileClienting,
+        keyboardManager: KeyboardManaging,
+        recipesFacade: RecipesFacading
+    ) {
         self.fileClient = fileClient
         self.keyboardManager = keyboardManager
-        self.recipesClient = recipesClient
-        self.state = State.makeInitialState()
+        self.recipesFacade = recipesFacade
+        self.state = State.makeInitialState(envelope: envelope)
         self.uploadImageTask = nil
     }
 
@@ -53,14 +58,17 @@ final class CreateRecipePresenter {
 
     func addIngredientTapped() {
         state.stepTwoState.ingredients.append(.makeNewIngredient())
+        state.stepTwoState.areIngredientsValid = true
     }
 
     func addInstructionTapped() {
         state.stepThreeState.instructions.append("")
+        state.stepThreeState.areInstructionsValid = true
     }
 
     func amountChanged(text: String) {
         state.stepTwoState.numberOfServings = Int(text)
+        state.stepTwoState.isNumberOfServingsValid = true
     }
 
     func amountTapped() {
@@ -82,6 +90,8 @@ final class CreateRecipePresenter {
         } else {
             state.stepOneState.categories.insert(category)
         }
+
+        state.stepOneState.areCategoriesValid = true
     }
 
     func closeConfirmed() {
@@ -103,6 +113,7 @@ final class CreateRecipePresenter {
 
     func cookingTimeChanged(amount: String) {
         state.stepThreeState.cookingTime = Int(amount)
+        state.stepThreeState.isCookingTimeValid = true
     }
 
     func deleteIngredientTapped(indexPath: IndexPath) {
@@ -111,6 +122,7 @@ final class CreateRecipePresenter {
         }
 
         state.stepTwoState.ingredients.remove(at: indexPath.item)
+        state.stepTwoState.areIngredientsValid = true
     }
 
     func deleteInstructionTapped(index: Int) {
@@ -119,6 +131,7 @@ final class CreateRecipePresenter {
         }
 
         state.stepThreeState.instructions.remove(at: index)
+        state.stepThreeState.areInstructionsValid = true
     }
 
     func deleteTapped() {
@@ -134,18 +147,14 @@ final class CreateRecipePresenter {
             return
         }
 
-        let newRecipe = NewRecipe(
-            duration: state.stepThreeState.cookingTime ?? 0,
-            imageID: state.stepOneState.recipeImageState.imageID ?? "",
-            ingredients: state.stepTwoState.ingredients,
-            instructions: state.stepThreeState.instructions,
-            name: state.stepOneState.mealName,
-            servings: state.stepTwoState.numberOfServings ?? 0,
-            tags: Array(state.stepOneState.categories)
-        )
-
+        state.isUploadingRecipe = true
         do {
-            _ = try await recipesClient.upload(newRecipe: newRecipe)
+            if let id = state.recipeID {
+                _ = try await recipesFacade.edit(recipe: state.getRecipeUpdate(recipeID: id))
+            } else {
+                _ = try await recipesFacade.create(recipe: state.getNewRecipe())
+            }
+
             state.isUploadingRecipe = false
             state.route = .init(value: .close)
         } catch {
@@ -155,6 +164,7 @@ final class CreateRecipePresenter {
 
     func imagePicked(image: ImageSource) async {
         state.stepOneState.recipeImageState = .uploading(image)
+        state.stepOneState.isRecipeImageValid = true
         do {
             guard let imageID = try await upload(imageSource: image) else {
                 return
@@ -162,7 +172,7 @@ final class CreateRecipePresenter {
 
             state.stepOneState.recipeImageState.upload(with: imageID)
         } catch {
-            state.stepOneState.recipeImageState = .error(message: .createRecipeStepOneUploadError)
+            state.stepOneState.recipeImageState = .error(message: .manageRecipeStepOneUploadError)
         }
     }
 
@@ -186,6 +196,7 @@ final class CreateRecipePresenter {
 
         state.stepTwoState.ingredients[index].amount = Int(amount)
         state.stepTwoState.ingredients[index].unit = unit
+        state.stepTwoState.areIngredientsValid = true
     }
 
     func ingredientNameTapped(indexPath: IndexPath) {
@@ -202,14 +213,17 @@ final class CreateRecipePresenter {
         }
 
         state.stepTwoState.ingredients[index].name = name
+        state.stepTwoState.areIngredientsValid = true
     }
 
     func instructionChanged(index: Int, text: String) {
         state.stepThreeState.instructions[safe: index] = text
+        state.stepThreeState.areInstructionsValid = true
     }
 
     func mealNameChanged(name: String) {
         state.stepOneState.mealName = name
+        state.stepOneState.isMealNameValid = true
     }
 
     func nextTapped() {

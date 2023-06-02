@@ -1,5 +1,5 @@
 //
-//  CreateRecipeViewController.swift
+//  ManageRecipeViewController.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 23.06.2022.
@@ -11,19 +11,19 @@ import Helpers
 import Library
 import UIKit
 
-public protocol CreateRecipeCoordinating: AnyObject {
+public protocol ManageRecipeCoordinating: AnyObject {
     func didTapClose()
     func didTapInput(details: InputDetails)
 }
 
-public final class CreateRecipeViewController: UIViewController {
+public final class ManageRecipeViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let presenter: CreateRecipePresenter
-    private let contentView = CreateRecipeView()
+    private let presenter: ManageRecipePresenter
+    private let contentView = ManageRecipeView()
     private let imagePicker = ImagePicker()
-    private unowned let coordinator: CreateRecipeCoordinating
+    private unowned let coordinator: ManageRecipeCoordinating
     private var cancellables = [AnyCancellable]()
 
     public override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -32,7 +32,7 @@ public final class CreateRecipeViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    init(presenter: CreateRecipePresenter, coordinator: CreateRecipeCoordinating) {
+    init(presenter: ManageRecipePresenter, coordinator: ManageRecipeCoordinating) {
         self.presenter = presenter
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
@@ -77,7 +77,7 @@ public final class CreateRecipeViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupUI() {
-        navigationItem.title = .createRecipeTitle
+        navigationItem.title = .manageRecipeTitle
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: .close,
             primaryAction: UIAction(handler: { [presenter] _ in presenter.closeTapped() })
@@ -160,7 +160,7 @@ public final class CreateRecipeViewController: UIViewController {
             .removeDuplicates()
 
         state
-            .map { state in CreateRecipePresenter.makeProps(from: state) }
+            .map { state in ManageRecipePresenter.makeProps(from: state) }
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
@@ -179,7 +179,7 @@ public final class CreateRecipeViewController: UIViewController {
             .store(in: &cancellables)
     }
 
-    private func show(alert: CreateRecipePresenter.Alert) {
+    private func show(alert: ManageRecipePresenter.Alert) {
         switch alert {
         case .deleteProgress:
             showDeleteProgressAlert()
@@ -189,7 +189,7 @@ public final class CreateRecipeViewController: UIViewController {
         }
     }
 
-    private func navigate(by route: CreateRecipePresenter.Route) {
+    private func navigate(by route: ManageRecipePresenter.Route) {
         switch route {
         case .close:
             coordinator.didTapClose()
@@ -212,17 +212,17 @@ public final class CreateRecipeViewController: UIViewController {
 
 // MARK: - Alerts
 
-private extension CreateRecipeViewController {
+private extension ManageRecipeViewController {
     private func showDeleteProgressAlert() {
         let alertController = UIAlertController(
-            title: .createRecipeAlertDeleteProgressTitle,
-            message: .createRecipeAlertDeleteProgressMessage,
+            title: .manageRecipeAlertDeleteProgressTitle,
+            message: .manageRecipeAlertDeleteProgressMessage,
             preferredStyle: .alert
         )
-        alertController.addAction(UIAlertAction(title: .createRecipeAlertDeleteProgressCancel, style: .cancel))
+        alertController.addAction(UIAlertAction(title: .manageRecipeAlertDeleteProgressCancel, style: .cancel))
         alertController.addAction(
             UIAlertAction(
-                title: .createRecipeAlertDeleteProgressDelete,
+                title: .manageRecipeAlertDeleteProgressDelete,
                 style: .destructive,
                 handler: { [presenter] _ in presenter.closeConfirmed() }
             )

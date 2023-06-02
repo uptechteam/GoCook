@@ -9,7 +9,6 @@ import AppTabBar
 import Author
 import BusinessLogic
 import DomainModels
-import Dip
 import Filters
 import Foundation
 import Home
@@ -21,7 +20,7 @@ final class HomeCoordinator: NSObject, Coordinating {
 
     // MARK: - Properties
 
-    private let container: DependencyContainer
+    private var childCoordinators: [Coordinating]
     private let navigationController: UINavigationController
     private var interactiveControllers: [Int: SwipeInteractionController]
 
@@ -35,8 +34,8 @@ final class HomeCoordinator: NSObject, Coordinating {
 
     // MARK: - Lifecycle
 
-    init(container: DependencyContainer, navigationController: UINavigationController) {
-        self.container = container
+    init(navigationController: UINavigationController) {
+        self.childCoordinators = []
         self.navigationController = navigationController
         self.interactiveControllers = [:]
         super.init()
@@ -109,6 +108,15 @@ extension HomeCoordinator: RecipeCoordinating {
 
     func didTapBack() {
         navigationController.popViewController(animated: true)
+    }
+
+    func didTapEditRecipe(_ recipeDetails: RecipeDetails) {
+        let coordinator = ManageRecipeCoordinator(
+            recipeDetails: recipeDetails,
+            presentingViewController: navigationController
+        )
+        childCoordinators.append(coordinator)
+        coordinator.start()
     }
 }
 

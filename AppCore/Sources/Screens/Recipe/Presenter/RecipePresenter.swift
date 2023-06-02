@@ -42,6 +42,14 @@ public final class RecipePresenter {
         state.route = .init(value: .back)
     }
 
+    func editTapped() {
+        guard state.recipeDetails.isPresent else {
+            return
+        }
+
+        state.route = .init(value: .didTapEdit(state.recipeDetails.getModel()))
+    }
+
     func favoriteTapped() async {
         do {
             if state.recipeDetails.isFavorite {

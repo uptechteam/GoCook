@@ -77,8 +77,18 @@ struct RecipesAPI {
         )
     }
 
-    func makePostRecipeRequest(request: NewRecipeRequest) throws -> AppRequest {
-        try requestBuilder.makePostJSONRequest(path: "", requestData: request, authorisation: .bearer)
+    func makePostRecipeRequest(recipe: NewRecipe) throws -> AppRequest {
+        let requestData = NewRecipeRequest(newRecipe: recipe)
+        return try requestBuilder.makePostJSONRequest(path: "", requestData: requestData, authorisation: .bearer)
+    }
+
+    func makePutRecipeRequest(recipe: RecipeUpdate) throws -> AppRequest {
+        let requestData = UpdateRecipeRequest(recipe: recipe)
+        return try requestBuilder.makePutJSONRequest(
+            path: "\(recipe.id.rawValue)",
+            requestData: requestData,
+            authorisation: .bearer
+        )
     }
 
     // MARK: - Private methods

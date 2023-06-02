@@ -6,7 +6,6 @@
 //
 
 import AppTabBar
-import Dip
 import BusinessLogic
 import Library
 import UIKit
@@ -19,7 +18,6 @@ final class AppTabBarCoordinator: Coordinating {
 
     // MARK: - Properties
 
-    private let container: DependencyContainer
     private let tabBarController: AppTabBarController
     private var childCoordinators: [Coordinating]
     weak var delegate: AppTabBarCoordinatorDelegate?
@@ -30,8 +28,7 @@ final class AppTabBarCoordinator: Coordinating {
 
     // MARK: - Lifecycle
 
-    init(container: DependencyContainer, tabBarController: AppTabBarController) {
-        self.container = container
+    init(tabBarController: AppTabBarController) {
         self.tabBarController = tabBarController
         self.childCoordinators = []
     }
@@ -56,12 +53,12 @@ final class AppTabBarCoordinator: Coordinating {
     }
 
     private func makeHomeCoordinator() {
-        let coordinator = HomeCoordinator(container: container, navigationController: BaseNavigationController())
+        let coordinator = HomeCoordinator(navigationController: BaseNavigationController())
         childCoordinators.append(coordinator)
     }
 
     private func makeProfileCoordinator() {
-        let coordinator = ProfileCoordinator(container: container, navigationController: BaseNavigationController())
+        let coordinator = ProfileCoordinator(navigationController: BaseNavigationController())
         coordinator.delegate = self
         childCoordinators.append(coordinator)
     }

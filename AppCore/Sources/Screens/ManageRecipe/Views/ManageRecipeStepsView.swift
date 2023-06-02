@@ -1,5 +1,5 @@
 //
-//  CreateRecipeStepsView.swift
+//  ManageRecipeStepsView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 23.06.2022.
@@ -8,7 +8,7 @@
 import Library
 import UIKit
 
-final class CreateRecipeStepsView: UIView {
+final class ManageRecipeStepsView: UIView {
 
     struct Props: Equatable {
         let title: String
@@ -76,7 +76,7 @@ final class CreateRecipeStepsView: UIView {
     }
 
     private func setupBackButton() {
-        backButton.setTitle(.createRecipeNavigationBack)
+        backButton.setTitle(.manageRecipeNavigationBack)
         backButton.setImage(.arrowBack)
         backButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapBack() }), for: .touchUpInside)
     }
@@ -87,13 +87,13 @@ final class CreateRecipeStepsView: UIView {
     }
 
     private func setupNextButton() {
-        nextButton.setTitle(.createRecipeNavigationNext)
+        nextButton.setTitle(.manageRecipeNavigationNext)
         nextButton.setImage(.arrowForwardGreen)
         nextButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapNext() }), for: .touchUpInside)
     }
 
     private func setupFinishButton() {
-        finishButton.setTitle(.createRecipeNavigationFinish)
+        finishButton.setTitle(.manageRecipeNavigationFinish)
         finishButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onDidTapFinish() }),
             for: .touchUpInside

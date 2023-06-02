@@ -1,26 +1,26 @@
 //
-//  StepThreeTimeView.swift
+//  StepTwoServingsView.swift
 //  
 //
-//  Created by Oleksii Andriushchenko on 30.06.2022.
+//  Created by Oleksii Andriushchenko on 28.06.2022.
 //
 
 import Helpers
 import Library
 import UIKit
 
-final class StepThreeTimeView: UIView {
+final class StepTwoServingsView: UIView {
 
     struct Props: Equatable {
-        let timeText: String
-        let timeColorSource: ColorSource
-        let timeTypography: Typography
+        let amountText: String
+        let amountColorSource: ColorSource
+        let amountTypography: Typography
     }
 
     // MARK: - Properties
 
     private let titleLabel = UILabel()
-    private let timeLabel = UILabel()
+    private let amountLabel = UILabel()
     // callbacks
     var onDidTap: () -> Void = { }
 
@@ -49,23 +49,25 @@ final class StepThreeTimeView: UIView {
     }
 
     private func setupTitleLabel() {
-        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-        titleLabel.render(title: .createRecipeStepThreeTimeTitle, color: .textMain, typography: .subtitle)
+        titleLabel.render(title: .manageRecipeStepTwoServingsTitle, color: .textMain, typography: .subtitle)
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, UIView(), timeLabel])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, UIView(), amountLabel])
         stackView.alignment = .bottom
         addSubview(stackView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: stackView.topAnchor)
+        ])
     }
 
     // MARK: - Public methods
 
     func render(props: Props) {
-        timeLabel.render(
-            title: props.timeText,
-            color: props.timeColorSource.color,
-            typography: props.timeTypography
+        amountLabel.render(
+            title: props.amountText,
+            color: props.amountColorSource.color,
+            typography: props.amountTypography
         )
     }
 

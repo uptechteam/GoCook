@@ -1,27 +1,26 @@
 //
-//  CreateRecipeCoordinator.swift
+//  ManageRecipeCoordinator.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 23.06.2022.
 //
 
-import CreateRecipe
-import Dip
 import DomainModels
 import Input
 import Library
+import ManageRecipe
 import UIKit
 
-protocol CreateRecipeCoordinatorDelegate: AnyObject {
-    func didFinish(_ coordinator: CreateRecipeCoordinator)
+protocol ManageRecipeCoordinatorDelegate: AnyObject {
+    func didFinish(_ coordinator: ManageRecipeCoordinator)
 }
 
-final class CreateRecipeCoordinator: Coordinating {
+final class ManageRecipeCoordinator: Coordinating {
 
     // MARK: - Properties
 
-    weak var delegate: CreateRecipeCoordinatorDelegate?
-    private let container: DependencyContainer
+    weak var delegate: ManageRecipeCoordinatorDelegate?
+    private let recipeDetails: RecipeDetails?
     private let presentingViewController: UIViewController
     private let navigationController: UINavigationController
 
@@ -31,8 +30,8 @@ final class CreateRecipeCoordinator: Coordinating {
 
     // MARK: - Lifecycle
 
-    init(container: DependencyContainer, presentingViewController: UIViewController) {
-        self.container = container
+    init(recipeDetails: RecipeDetails?, presentingViewController: UIViewController) {
+        self.recipeDetails = recipeDetails
         self.presentingViewController = presentingViewController
         self.navigationController = BaseNavigationController()
         setupUI()
@@ -41,7 +40,8 @@ final class CreateRecipeCoordinator: Coordinating {
     // MARK: - Lifecycle
 
     func start() {
-        let viewController = CreateRecipeViewController.resolve(coordinator: self)
+        let envelope = recipeDetails.flatMap(ManageRecipeEnvelope.edit) ?? .create
+        let viewController = ManageRecipeViewController.resolve(envelope: envelope, coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
         navigationController.modalPresentationStyle = .overFullScreen
         presentingViewController.present(navigationController, animated: true)
@@ -59,7 +59,7 @@ final class CreateRecipeCoordinator: Coordinating {
 
 // MARK: - Extensions
 
-extension CreateRecipeCoordinator: CreateRecipeCoordinating {
+extension ManageRecipeCoordinator: ManageRecipeCoordinating {
     func didTapClose() {
         presentingViewController.dismiss(animated: true) { [self] in
             delegate?.didFinish(self)
@@ -69,17 +69,17 @@ extension CreateRecipeCoordinator: CreateRecipeCoordinating {
     @MainActor
     func didTapInput(details: InputDetails) {
         let envelope = InputEnvelope(details: details)
-        let viewController = InputViewController.resolve(from: container, envelope: envelope, coordinator: self)
+        let viewController = InputViewController.resolve(envelope: envelope, coordinator: self)
         viewController.modalPresentationStyle = .overFullScreen
         viewController.modalTransitionStyle = .crossDissolve
         navigationController.present(viewController, animated: true)
     }
 }
 
-extension CreateRecipeCoordinator: InputCoordinating {
+extension ManageRecipeCoordinator: InputCoordinating {
     func didFinish(inputDetails: InputDetails) {
         navigationController.dismiss(animated: true)
-        guard let viewController = navigationController.viewControllers.first as? CreateRecipeViewController else {
+        guard let viewController = navigationController.viewControllers.first as? ManageRecipeViewController else {
             return
         }
 

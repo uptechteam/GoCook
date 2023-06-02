@@ -5,38 +5,19 @@
 //  Created by Oleksii Andriushchenko on 20.11.2022.
 //
 
-import Dip
+import BusinessLogic
 
 extension ProfileViewController {
-    public static func inject(into container: DependencyContainer) {
-        container.register(
-            .shared,
-            type: ProfileViewController.Dependencies.self,
-            factory: ProfileViewController.Dependencies.init
+    public static func resolve(coordinator: ProfileCoordinating) -> ProfileViewController {
+        let dependencies = ProfileViewController.Dependencies(
+            profileFacade: AppContainer.resolve(),
+            profileRecipesFacade: AppContainer.resolve(),
+            recipesFacade: AppContainer.resolve()
         )
-        container.register(
-            .unique,
-            type: ProfileViewController.Store.self,
-            factory: ProfileViewController.makeStore
+        return ProfileViewController(
+            store: ProfileViewController.makeStore(dependencies: dependencies),
+            actionCreator: ProfileViewController.ActionCreator(dependencies: dependencies),
+            coordinator: coordinator
         )
-        container.register(
-            .unique,
-            type: ProfileViewController.ActionCreator.self,
-            factory: ProfileViewController.ActionCreator.init
-        )
-        container.register(.unique, type: ProfileViewController.self) { coordinator in
-            return ProfileViewController(
-                store: try container.resolve(),
-                actionCreator: try container.resolve(),
-                coordinator: coordinator
-            )
-        }
-    }
-
-    public static func resolve(
-        from container: DependencyContainer,
-        coordinator: ProfileCoordinating
-    ) -> ProfileViewController {
-        try! container.resolve(arguments: coordinator)
     }
 }

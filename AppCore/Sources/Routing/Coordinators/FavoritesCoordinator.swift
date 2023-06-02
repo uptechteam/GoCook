@@ -23,6 +23,7 @@ final class FavoritesCoordinator: NSObject, Coordinating {
 
     // MARK: - Properties
 
+    private var childCoordinators: [Coordinating]
     private let navigationController: UINavigationController
     private var interactiveControllers: [Int: SwipeInteractionController]
     weak var delegate: FavoritesCoordinatorDelegate?
@@ -38,6 +39,7 @@ final class FavoritesCoordinator: NSObject, Coordinating {
     // MARK: - Lifecycle
 
     init(navigationController: UINavigationController) {
+        self.childCoordinators = []
         self.navigationController = navigationController
         self.interactiveControllers = [:]
         super.init()
@@ -114,6 +116,15 @@ extension FavoritesCoordinator: RecipeCoordinating {
 
     func didTapBack() {
         navigationController.popViewController(animated: true)
+    }
+
+    func didTapEditRecipe(_ recipeDetails: RecipeDetails) {
+        let coordinator = ManageRecipeCoordinator(
+            recipeDetails: recipeDetails,
+            presentingViewController: navigationController
+        )
+        childCoordinators.append(coordinator)
+        coordinator.start()
     }
 }
 

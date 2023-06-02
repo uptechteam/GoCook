@@ -5,7 +5,6 @@
 //  Created by Oleksii Andriushchenko on 01.07.2022.
 //
 
-import Dip
 import Foundation
 import Login
 import SignUp
@@ -19,7 +18,6 @@ final class RegistrationCoordinator: Coordinating {
 
     // MARK: - Properties
 
-    private let container: DependencyContainer
     private var childContainers: [Coordinating]
     private let navigationController: UINavigationController
     weak var delegate: RegistrationCoordinatorDelegate?
@@ -30,8 +28,7 @@ final class RegistrationCoordinator: Coordinating {
 
     // MARK: - Lifecycle
 
-    init(container: DependencyContainer, navigationController: UINavigationController) {
-        self.container = container
+    init(navigationController: UINavigationController) {
         self.navigationController = navigationController
         self.childContainers = []
         setupUI()
@@ -40,7 +37,7 @@ final class RegistrationCoordinator: Coordinating {
     // MARK: - Public methods
 
     func start() {
-        let viewController = SignUpViewController.resolve(from: container, envelope: .registration, coordinator: self)
+        let viewController = SignUpViewController.resolve(envelope: .registration, coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
     }
 
@@ -51,7 +48,7 @@ final class RegistrationCoordinator: Coordinating {
     }
 }
 
-// MARK: - Extensions
+// MARK: - SignUpCoordinating
 
 extension RegistrationCoordinator: SignUpCoordinating {
     func didFinishSignUp() {
@@ -59,10 +56,12 @@ extension RegistrationCoordinator: SignUpCoordinating {
     }
 
     func didTapLogin() {
-        let viewController = LoginViewController.resolve(from: container, envelope: .registration, coordinator: self)
+        let viewController = LoginViewController.resolve(envelope: .registration, coordinator: self)
         navigationController.setViewControllers([viewController], animated: true)
     }
 }
+
+// MARK: - LoginCoordinating
 
 extension RegistrationCoordinator: LoginCoordinating {
     func didFinishLogin() {
@@ -70,7 +69,7 @@ extension RegistrationCoordinator: LoginCoordinating {
     }
 
     func didTapSignUp() {
-        let viewController = SignUpViewController.resolve(from: container, envelope: .registration, coordinator: self)
+        let viewController = SignUpViewController.resolve(envelope: .registration, coordinator: self)
         navigationController.setViewControllers([viewController], animated: true)
     }
 }
