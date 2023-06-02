@@ -16,6 +16,7 @@ extension EditProfilePresenter {
 
         // MARK: - Properties
 
+        var avatar: ImageSource?
         var isUpdatingProfile: Bool
         let profile: Profile
         var username: String
@@ -23,13 +24,14 @@ extension EditProfilePresenter {
         var route: AnyIdentifiable<Route>?
 
         var isDataChanged: Bool {
-            username != profile.username
+            avatar != profile.avatar || username != profile.username
         }
 
         // MARK: - Public methods
 
         static func makeInitialState(profile: Profile) -> State {
             return State(
+                avatar: profile.avatar,
                 isUpdatingProfile: false,
                 profile: profile,
                 username: profile.username,
@@ -42,6 +44,7 @@ extension EditProfilePresenter {
     // MARK: - Route
 
     enum Alert {
+        case avatarActionSheet(isDeleteVisible: Bool)
         case error(message: String)
     }
 

@@ -8,6 +8,7 @@
 import BusinessLogic
 import Combine
 import DomainModels
+import Helpers
 
 @MainActor
 public final class EditProfilePresenter {
@@ -27,8 +28,20 @@ public final class EditProfilePresenter {
 
     // MARK: - Public methods
 
+    func avatarTapped() {
+        state.alert = .init(value: .avatarActionSheet(isDeleteVisible: state.profile.avatar != nil))
+    }
+
     func closeTapped() {
         state.route = .init(value: .didTapClose)
+    }
+
+    func deleteTapped() {
+        state.avatar = nil
+    }
+
+    func imagePicked(image: ImageSource) {
+        state.avatar = image
     }
 
     func submitTapped() async {

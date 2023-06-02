@@ -184,8 +184,8 @@ public final class CreateRecipeViewController: UIViewController {
         case .deleteProgress:
             showDeleteProgressAlert()
 
-        case .imagePicker(let isDeleteButtonPresent):
-            showImagePicker(isDeleteButtonPresent: isDeleteButtonPresent)
+        case .imagePicker(let isDeleteButtonVisible):
+            showImagePicker(isDeleteButtonVisible: isDeleteButtonVisible)
         }
     }
 
@@ -230,7 +230,7 @@ private extension CreateRecipeViewController {
         present(alertController, animated: true)
     }
 
-    private func showImagePicker(isDeleteButtonPresent: Bool) {
+    private func showImagePicker(isDeleteButtonVisible: Bool) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(
@@ -246,7 +246,7 @@ private extension CreateRecipeViewController {
                 handler: { [weak self] _ in self?.showImagePicker(source: .photoAlbum) }
             )
         )
-        if isDeleteButtonPresent {
+        if isDeleteButtonVisible {
             alertController.addAction(
                 UIAlertAction(
                     title: .imagePickerRemove,

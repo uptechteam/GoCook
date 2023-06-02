@@ -43,7 +43,7 @@ extension CreateRecipePresenter {
 
     enum Alert {
         case deleteProgress
-        case imagePicker(isDeleteButtonPresent: Bool)
+        case imagePicker(isDeleteButtonVisible: Bool)
     }
 
     enum Route {

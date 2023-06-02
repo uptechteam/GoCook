@@ -6,6 +6,7 @@
 //
 
 import Combine
+import DomainModels
 import Helpers
 import Library
 import UIKit
@@ -21,6 +22,7 @@ public final class EditProfileViewController: UIViewController, ErrorPresentable
 
     private let presenter: EditProfilePresenter
     private let contentView = EditProfileView()
+    private let imagePicker = ImagePicker()
     private unowned let coordinator: EditProfileCoordinating
     private var cancellables = [AnyCancellable]()
 
@@ -63,6 +65,10 @@ public final class EditProfileViewController: UIViewController, ErrorPresentable
     }
 
     private func setupBinding() {
+        contentView.avatarView.onTap = { [presenter] in
+            presenter.avatarTapped()
+        }
+
         contentView.usernameInputView.onChangeText = { [presenter] text in
             presenter.usernameChanged(text)
         }
@@ -96,6 +102,9 @@ public final class EditProfileViewController: UIViewController, ErrorPresentable
 
     private func show(alert: EditProfilePresenter.Alert) {
         switch alert {
+        case .avatarActionSheet(let isDeleteButtonVisible):
+            showAvatarActionSheet(isDeleteButtonVisible: isDeleteButtonVisible)
+
         case .error(let message):
             show(errorMessage: message)
         }
@@ -111,8 +120,51 @@ public final class EditProfileViewController: UIViewController, ErrorPresentable
         }
     }
 
+    private func showImagePicker(source: ImagePickerSource) {
+        Task {
+            guard let image = await imagePicker.pickImage(source: source, on: self) else {
+                return
+            }
+
+            presenter.imagePicked(image: .asset(image))
+        }
+    }
+
     @objc
     private func closeButtonTapped() {
         presenter.closeTapped()
+    }
+}
+
+// MARK: - Alerts
+
+extension EditProfileViewController {
+    private func showAvatarActionSheet(isDeleteButtonVisible: Bool) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(
+            UIAlertAction(
+                title: .imagePickerCamera,
+                style: .default,
+                handler: { [weak self] _ in self?.showImagePicker(source: .camera) }
+            )
+        )
+        alertController.addAction(
+            UIAlertAction(
+                title: .imagePickerLibrary,
+                style: .default,
+                handler: { [weak self] _ in self?.showImagePicker(source: .photoAlbum) }
+            )
+        )
+        if isDeleteButtonVisible {
+            alertController.addAction(
+                UIAlertAction(
+                    title: .imagePickerRemove,
+                    style: .default,
+                    handler: { [presenter] _ in presenter.deleteTapped() }
+                )
+            )
+        }
+        alertController.addAction(UIAlertAction(title: .imagePickerCancel, style: .cancel))
+        present(alertController, animated: true)
     }
 }

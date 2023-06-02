@@ -21,7 +21,7 @@ extension EditProfilePresenter {
     private static func makeAvatarViewProps(state: State) -> EditProfileAvatarView.Props {
         return .init(
             isSpinnerVisible: false,
-            avatar: state.profile.avatar
+            avatar: state.avatar
         )
     }
 
