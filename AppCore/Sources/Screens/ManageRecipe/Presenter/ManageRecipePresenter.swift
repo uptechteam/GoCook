@@ -58,14 +58,17 @@ final class ManageRecipePresenter {
 
     func addIngredientTapped() {
         state.stepTwoState.ingredients.append(.makeNewIngredient())
+        state.stepTwoState.areIngredientsValid = true
     }
 
     func addInstructionTapped() {
         state.stepThreeState.instructions.append("")
+        state.stepThreeState.areInstructionsValid = true
     }
 
     func amountChanged(text: String) {
         state.stepTwoState.numberOfServings = Int(text)
+        state.stepTwoState.isNumberOfServingsValid = true
     }
 
     func amountTapped() {
@@ -87,6 +90,8 @@ final class ManageRecipePresenter {
         } else {
             state.stepOneState.categories.insert(category)
         }
+
+        state.stepOneState.areCategoriesValid = true
     }
 
     func closeConfirmed() {
@@ -108,6 +113,7 @@ final class ManageRecipePresenter {
 
     func cookingTimeChanged(amount: String) {
         state.stepThreeState.cookingTime = Int(amount)
+        state.stepThreeState.isCookingTimeValid = true
     }
 
     func deleteIngredientTapped(indexPath: IndexPath) {
@@ -116,6 +122,7 @@ final class ManageRecipePresenter {
         }
 
         state.stepTwoState.ingredients.remove(at: indexPath.item)
+        state.stepTwoState.areIngredientsValid = true
     }
 
     func deleteInstructionTapped(index: Int) {
@@ -124,6 +131,7 @@ final class ManageRecipePresenter {
         }
 
         state.stepThreeState.instructions.remove(at: index)
+        state.stepThreeState.areInstructionsValid = true
     }
 
     func deleteTapped() {
@@ -160,6 +168,7 @@ final class ManageRecipePresenter {
 
     func imagePicked(image: ImageSource) async {
         state.stepOneState.recipeImageState = .uploading(image)
+        state.stepOneState.isRecipeImageValid = true
         do {
             guard let imageID = try await upload(imageSource: image) else {
                 return
@@ -191,6 +200,7 @@ final class ManageRecipePresenter {
 
         state.stepTwoState.ingredients[index].amount = Int(amount)
         state.stepTwoState.ingredients[index].unit = unit
+        state.stepTwoState.areIngredientsValid = true
     }
 
     func ingredientNameTapped(indexPath: IndexPath) {
@@ -207,14 +217,17 @@ final class ManageRecipePresenter {
         }
 
         state.stepTwoState.ingredients[index].name = name
+        state.stepTwoState.areIngredientsValid = true
     }
 
     func instructionChanged(index: Int, text: String) {
         state.stepThreeState.instructions[safe: index] = text
+        state.stepThreeState.areInstructionsValid = true
     }
 
     func mealNameChanged(name: String) {
         state.stepOneState.mealName = name
+        state.stepOneState.isMealNameValid = true
     }
 
     func nextTapped() {

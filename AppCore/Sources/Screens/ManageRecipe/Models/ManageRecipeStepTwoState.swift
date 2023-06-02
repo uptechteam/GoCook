@@ -13,21 +13,20 @@ extension ManageRecipePresenter {
 
         // MARK: - Properties
 
-        var numberOfServings: Int? {
-            didSet {
-                isNumberOfServingsValid = true
-            }
-        }
+        var numberOfServings: Int?
         var isNumberOfServingsValid: Bool = true
-        var ingredients: [NewIngredient] {
-            didSet {
-                areIngredientsValid = true
-            }
-        }
+        var ingredients: [NewIngredient]
         var areIngredientsValid: Bool = true
 
         var isDataValid: Bool {
             isNumberOfServingsValid && areIngredientsValid
+        }
+
+        // MARK: - Lifecycle
+
+        init(recipe: RecipeDetails?) {
+            self.numberOfServings = recipe?.servingsCount
+            self.ingredients = recipe?.ingredients.map(NewIngredient.init) ?? [.makeNewIngredient()]
         }
 
         // MARK: - Public methods

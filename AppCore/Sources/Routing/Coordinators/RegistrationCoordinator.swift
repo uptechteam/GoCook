@@ -48,7 +48,7 @@ final class RegistrationCoordinator: Coordinating {
     }
 }
 
-// MARK: - Extensions
+// MARK: - SignUpCoordinating
 
 extension RegistrationCoordinator: SignUpCoordinating {
     func didFinishSignUp() {
@@ -60,6 +60,8 @@ extension RegistrationCoordinator: SignUpCoordinating {
         navigationController.setViewControllers([viewController], animated: true)
     }
 }
+
+// MARK: - LoginCoordinating
 
 extension RegistrationCoordinator: LoginCoordinating {
     func didFinishLogin() {

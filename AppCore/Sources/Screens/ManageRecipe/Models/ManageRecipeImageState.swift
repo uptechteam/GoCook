@@ -13,6 +13,7 @@ enum ImageState: Equatable {
 
     case empty
     case error(message: String)
+    case existing(ImageSource)
     case uploading(ImageSource)
     case uploaded(ImageSource, imageID: String)
 
@@ -48,7 +49,7 @@ enum ImageState: Equatable {
 
     var uploadedImageSource: ImageSource? {
         switch self {
-        case .uploaded(let imageSource, _):
+        case .existing(let imageSource), .uploaded(let imageSource, _):
             return imageSource
 
         default:

@@ -17,6 +17,7 @@ extension ManageRecipePresenter {
         // MARK: - Properties
 
         var isUploadingRecipe: Bool
+        var recipeID: Recipe.ID?
         var step: Int
         var stepOneState: StepOneState
         var stepTwoState: StepTwoState
@@ -29,10 +30,11 @@ extension ManageRecipePresenter {
         static func makeInitialState(envelope: ManageRecipeEnvelope) -> State {
             return State(
                 isUploadingRecipe: false,
+                recipeID: envelope.recipe?.id,
                 step: 0,
-                stepOneState: StepOneState(recipeImageState: .empty, mealName: "", categories: Set()),
-                stepTwoState: StepTwoState(ingredients: [.makeNewIngredient()]),
-                stepThreeState: StepThreeState(instructions: [""]),
+                stepOneState: StepOneState(recipe: envelope.recipe),
+                stepTwoState: StepTwoState(recipe: envelope.recipe),
+                stepThreeState: StepThreeState(recipe: envelope.recipe),
                 alert: nil,
                 route: nil
             )

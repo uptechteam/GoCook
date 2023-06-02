@@ -1,32 +1,31 @@
 //
-//  File.swift
+//  ManageRecipeStepThreeState.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 30.06.2022.
 //
 
-import Foundation
+import DomainModels
 
 extension ManageRecipePresenter {
     struct StepThreeState: Equatable {
 
         // MARK: - Properties
 
-        var cookingTime: Int? {
-            didSet {
-                isCookingTimeValid = true
-            }
-        }
+        var cookingTime: Int?
         var isCookingTimeValid = true
-        var instructions: [String] {
-            didSet {
-                areInstructionsValid = true
-            }
-        }
+        var instructions: [String]
         var areInstructionsValid = true
 
         var isDataValid: Bool {
             isCookingTimeValid && areInstructionsValid
+        }
+
+        // MARK: - Lifecycle
+
+        init(recipe: RecipeDetails?) {
+            self.cookingTime = recipe?.duration
+            self.instructions = recipe?.instructions ?? [""]
         }
 
         // MARK: - Public methods

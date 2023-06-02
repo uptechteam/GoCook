@@ -29,6 +29,13 @@ public struct NewIngredient: Equatable {
         self.unit = unit
     }
 
+    public init(ingredient: Ingredient) {
+        self.id = UUID().uuidString
+        self.name = ingredient.name
+        self.amount = ingredient.amount
+        self.unit = ingredient.unit
+    }
+
     // MARK: - Public methods
 
     public static func makeNewIngredient() -> NewIngredient {
