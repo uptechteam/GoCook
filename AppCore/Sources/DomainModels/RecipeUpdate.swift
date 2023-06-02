@@ -13,7 +13,7 @@ public struct RecipeUpdate: Equatable {
 
     public let duration: Int
     public let id: Recipe.ID
-    public let imageID: String
+    public let imageID: String?
     public let ingredients: [NewIngredient]
     public let instructions: [String]
     public let name: String
@@ -25,7 +25,7 @@ public struct RecipeUpdate: Equatable {
     public init(
         duration: Int,
         id: Recipe.ID,
-        imageID: String,
+        imageID: String?,
         ingredients: [NewIngredient],
         instructions: [String],
         name: String,

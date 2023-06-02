@@ -19,7 +19,7 @@ final class ManageRecipePresenter {
 
     private let fileClient: FileClienting
     private let keyboardManager: KeyboardManaging
-    private let recipesFacade: RecipesFacade
+    private let recipesFacade: RecipesFacading
     @Published
     private(set) var state: State
     private var uploadImageTask: Task<String, Error>?
@@ -45,7 +45,7 @@ final class ManageRecipePresenter {
         envelope: ManageRecipeEnvelope,
         fileClient: FileClienting,
         keyboardManager: KeyboardManaging,
-        recipesFacade: RecipesFacade
+        recipesFacade: RecipesFacading
     ) {
         self.fileClient = fileClient
         self.keyboardManager = keyboardManager

@@ -10,6 +10,7 @@ import DomainModels
 public protocol RecipesFacading: Sendable {
     func addToFavorites(recipeID: Recipe.ID) async throws
     func create(recipe: NewRecipe) async throws
+    func edit(recipe: RecipeUpdate) async throws
     func rate(recipeID: Recipe.ID, rating: Int) async throws
     func removeFromFavorites(recipeID: Recipe.ID) async throws
     func update(recipe: RecipeUpdate) async throws

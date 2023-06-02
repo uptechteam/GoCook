@@ -41,7 +41,7 @@ extension ManageRecipePresenter {
             return RecipeUpdate(
                 duration: stepThreeState.cookingTime ?? 0,
                 id: recipeID,
-                imageID: stepOneState.recipeImageState.imageID ?? "",
+                imageID: stepOneState.recipeImageState.imageID,
                 ingredients: stepTwoState.ingredients,
                 instructions: stepThreeState.instructions,
                 name: stepOneState.mealName,

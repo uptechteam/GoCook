@@ -84,7 +84,7 @@ struct RecipesAPI {
 
     func makePutRecipeRequest(recipe: RecipeUpdate) throws -> AppRequest {
         let requestData = UpdateRecipeRequest(recipe: recipe)
-        return try requestBuilder.makePostJSONRequest(
+        return try requestBuilder.makePutJSONRequest(
             path: "\(recipe.id.rawValue)",
             requestData: requestData,
             authorisation: .bearer
