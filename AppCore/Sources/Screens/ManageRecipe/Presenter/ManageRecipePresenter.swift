@@ -19,7 +19,7 @@ final class ManageRecipePresenter {
 
     private let fileClient: FileClienting
     private let keyboardManager: KeyboardManaging
-    private let recipesClient: RecipesClienting
+    private let recipesFacade: RecipesFacade
     @Published
     private(set) var state: State
     private var uploadImageTask: Task<String, Error>?
@@ -45,11 +45,11 @@ final class ManageRecipePresenter {
         envelope: ManageRecipeEnvelope,
         fileClient: FileClienting,
         keyboardManager: KeyboardManaging,
-        recipesClient: RecipesClienting
+        recipesFacade: RecipesFacade
     ) {
         self.fileClient = fileClient
         self.keyboardManager = keyboardManager
-        self.recipesClient = recipesClient
+        self.recipesFacade = recipesFacade
         self.state = State.makeInitialState(envelope: envelope)
         self.uploadImageTask = nil
     }
@@ -147,18 +147,14 @@ final class ManageRecipePresenter {
             return
         }
 
-        let newRecipe = NewRecipe(
-            duration: state.stepThreeState.cookingTime ?? 0,
-            imageID: state.stepOneState.recipeImageState.imageID ?? "",
-            ingredients: state.stepTwoState.ingredients,
-            instructions: state.stepThreeState.instructions,
-            name: state.stepOneState.mealName,
-            servings: state.stepTwoState.numberOfServings ?? 0,
-            tags: Array(state.stepOneState.categories)
-        )
-
+        state.isUploadingRecipe = true
         do {
-            _ = try await recipesClient.upload(newRecipe: newRecipe)
+            if let id = state.recipeID {
+                _ = try await recipesFacade.edit(recipe: state.getRecipeUpdate(recipeID: id))
+            } else {
+                _ = try await recipesFacade.create(recipe: state.getNewRecipe())
+            }
+
             state.isUploadingRecipe = false
             state.route = .init(value: .close)
         } catch {

@@ -25,6 +25,31 @@ extension ManageRecipePresenter {
         var alert: AnyIdentifiable<Alert>?
         var route: AnyIdentifiable<Route>?
 
+        func getNewRecipe() -> NewRecipe {
+            return NewRecipe(
+                duration: stepThreeState.cookingTime ?? 0,
+                imageID: stepOneState.recipeImageState.imageID ?? "",
+                ingredients: stepTwoState.ingredients,
+                instructions: stepThreeState.instructions,
+                name: stepOneState.mealName,
+                servings: stepTwoState.numberOfServings ?? 0,
+                tags: Array(stepOneState.categories)
+            )
+        }
+
+        func getRecipeUpdate(recipeID: Recipe.ID) -> RecipeUpdate {
+            return RecipeUpdate(
+                duration: stepThreeState.cookingTime ?? 0,
+                id: recipeID,
+                imageID: stepOneState.recipeImageState.imageID ?? "",
+                ingredients: stepTwoState.ingredients,
+                instructions: stepThreeState.instructions,
+                name: stepOneState.mealName,
+                servings: stepTwoState.numberOfServings ?? 0,
+                tags: Array(stepOneState.categories)
+            )
+        }
+
         // MARK: - Public methods
 
         static func makeInitialState(envelope: ManageRecipeEnvelope) -> State {
