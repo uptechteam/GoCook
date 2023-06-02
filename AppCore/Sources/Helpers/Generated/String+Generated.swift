@@ -25,98 +25,6 @@ extension String {
   /// No reviews yet:
   public static let authorRecipesNoReviews = L10n.tr("Localizable", "author.recipes.no.reviews")
 
-  /// Create recipe
-  public static let createRecipeTitle = L10n.tr("Localizable", "create.recipe.title")
-
-  /// Cancel
-  public static let createRecipeAlertDeleteProgressCancel = L10n.tr("Localizable", "create.recipe.alert.delete.progress.cancel")
-
-  /// Delete
-  public static let createRecipeAlertDeleteProgressDelete = L10n.tr("Localizable", "create.recipe.alert.delete.progress.delete")
-
-  /// Closing this page will delete the progress you’ve made in recipe creation
-  public static let createRecipeAlertDeleteProgressMessage = L10n.tr("Localizable", "create.recipe.alert.delete.progress.message")
-
-  /// Delete progress?
-  public static let createRecipeAlertDeleteProgressTitle = L10n.tr("Localizable", "create.recipe.alert.delete.progress.title")
-
-  /// Back
-  public static let createRecipeNavigationBack = L10n.tr("Localizable", "create.recipe.navigation.back")
-
-  /// Finish
-  public static let createRecipeNavigationFinish = L10n.tr("Localizable", "create.recipe.navigation.finish")
-
-  /// Next
-  public static let createRecipeNavigationNext = L10n.tr("Localizable", "create.recipe.navigation.next")
-
-  /// %d / 4
-  public static func createRecipeNavigationTitle(_ p1: Int) -> String {
-    return L10n.tr("Localizable", "create.recipe.navigation.title", p1)
-  }
-
-  /// Category
-  public static let createRecipeStepOneCategoryTitle = L10n.tr("Localizable", "create.recipe.step.one.category.title")
-
-  /// Select meal category
-  public static let createRecipeStepOneCategoryValidation = L10n.tr("Localizable", "create.recipe.step.one.category.validation")
-
-  /// MEAL NAME
-  public static let createRecipeStepOneMealTitle = L10n.tr("Localizable", "create.recipe.step.one.meal.title")
-
-  /// Enter meal name
-  public static let createRecipeStepOneMealValidation = L10n.tr("Localizable", "create.recipe.step.one.meal.validation")
-
-  /// Upload meal photo
-  public static let createRecipeStepOnePhotoValidation = L10n.tr("Localizable", "create.recipe.step.one.photo.validation")
-
-  /// Uploading unsuccessfull. Please retry
-  public static let createRecipeStepOneUploadError = L10n.tr("Localizable", "create.recipe.step.one.upload.error")
-
-  /// Add step
-  public static let createRecipeStepThreeAddStep = L10n.tr("Localizable", "create.recipe.step.three.add.step")
-
-  /// Instructions
-  public static let createRecipeStepThreeInstructionsTitle = L10n.tr("Localizable", "create.recipe.step.three.instructions.title")
-
-  /// STEP %d
-  public static func createRecipeStepThreeStepTitle(_ p1: Int) -> String {
-    return L10n.tr("Localizable", "create.recipe.step.three.step.title", p1)
-  }
-
-  /// Enter step %d
-  public static func createRecipeStepThreeStepValidation(_ p1: Int) -> String {
-    return L10n.tr("Localizable", "create.recipe.step.three.step.validation", p1)
-  }
-
-  /// Enter amount
-  public static let createRecipeStepThreeTimePlaceholder = L10n.tr("Localizable", "create.recipe.step.three.time.placeholder")
-
-  /// %d min
-  public static func createRecipeStepThreeTimeText(_ p1: Int) -> String {
-    return L10n.tr("Localizable", "create.recipe.step.three.time.text", p1)
-  }
-
-  /// Cooking time, min
-  public static let createRecipeStepThreeTimeTitle = L10n.tr("Localizable", "create.recipe.step.three.time.title")
-
-  /// Add ingredient
-  public static let createRecipeStepTwoAddIngredient = L10n.tr("Localizable", "create.recipe.step.two.add.ingredient")
-
-  /// Enter amount
-  public static let createRecipeStepTwoIngredientsAmount = L10n.tr("Localizable", "create.recipe.step.two.ingredients.amount")
-
-  /// Enter name
-  public static let createRecipeStepTwoIngredientsName = L10n.tr("Localizable", "create.recipe.step.two.ingredients.name")
-
-  /// Ingredients
-  public static let createRecipeStepTwoIngredientsTitle = L10n.tr("Localizable", "create.recipe.step.two.ingredients.title")
-
-  /// Enter amount
-  public static let createRecipeStepTwoServingsPlaceholder = L10n.tr("Localizable", "create.recipe.step.two.servings.placeholder")
-
-  /// Number of servings
-  public static let createRecipeStepTwoServingsTitle = L10n.tr("Localizable", "create.recipe.step.two.servings.title")
-
   /// Submit
   public static let editProfileSubmit = L10n.tr("Localizable", "edit.profile.submit")
 
@@ -367,6 +275,98 @@ extension String {
 
   /// Log into\nGoCook
   public static let loginTextTitleRegistration = L10n.tr("Localizable", "login.text.title.registration")
+
+  /// Create recipe
+  public static let manageRecipeTitle = L10n.tr("Localizable", "manage.recipe.title")
+
+  /// Cancel
+  public static let manageRecipeAlertDeleteProgressCancel = L10n.tr("Localizable", "manage.recipe.alert.delete.progress.cancel")
+
+  /// Delete
+  public static let manageRecipeAlertDeleteProgressDelete = L10n.tr("Localizable", "manage.recipe.alert.delete.progress.delete")
+
+  /// Closing this page will delete the progress you’ve made in recipe creation
+  public static let manageRecipeAlertDeleteProgressMessage = L10n.tr("Localizable", "manage.recipe.alert.delete.progress.message")
+
+  /// Delete progress?
+  public static let manageRecipeAlertDeleteProgressTitle = L10n.tr("Localizable", "manage.recipe.alert.delete.progress.title")
+
+  /// Back
+  public static let manageRecipeNavigationBack = L10n.tr("Localizable", "manage.recipe.navigation.back")
+
+  /// Finish
+  public static let manageRecipeNavigationFinish = L10n.tr("Localizable", "manage.recipe.navigation.finish")
+
+  /// Next
+  public static let manageRecipeNavigationNext = L10n.tr("Localizable", "manage.recipe.navigation.next")
+
+  /// %d / 4
+  public static func manageRecipeNavigationTitle(_ p1: Int) -> String {
+    return L10n.tr("Localizable", "manage.recipe.navigation.title", p1)
+  }
+
+  /// Category
+  public static let manageRecipeStepOneCategoryTitle = L10n.tr("Localizable", "manage.recipe.step.one.category.title")
+
+  /// Select meal category
+  public static let manageRecipeStepOneCategoryValidation = L10n.tr("Localizable", "manage.recipe.step.one.category.validation")
+
+  /// MEAL NAME
+  public static let manageRecipeStepOneMealTitle = L10n.tr("Localizable", "manage.recipe.step.one.meal.title")
+
+  /// Enter meal name
+  public static let manageRecipeStepOneMealValidation = L10n.tr("Localizable", "manage.recipe.step.one.meal.validation")
+
+  /// Upload meal photo
+  public static let manageRecipeStepOnePhotoValidation = L10n.tr("Localizable", "manage.recipe.step.one.photo.validation")
+
+  /// Uploading unsuccessfull. Please retry
+  public static let manageRecipeStepOneUploadError = L10n.tr("Localizable", "manage.recipe.step.one.upload.error")
+
+  /// Add step
+  public static let manageRecipeStepThreeAddStep = L10n.tr("Localizable", "manage.recipe.step.three.add.step")
+
+  /// Instructions
+  public static let manageRecipeStepThreeInstructionsTitle = L10n.tr("Localizable", "manage.recipe.step.three.instructions.title")
+
+  /// STEP %d
+  public static func manageRecipeStepThreeStepTitle(_ p1: Int) -> String {
+    return L10n.tr("Localizable", "manage.recipe.step.three.step.title", p1)
+  }
+
+  /// Enter step %d
+  public static func manageRecipeStepThreeStepValidation(_ p1: Int) -> String {
+    return L10n.tr("Localizable", "manage.recipe.step.three.step.validation", p1)
+  }
+
+  /// Enter amount
+  public static let manageRecipeStepThreeTimePlaceholder = L10n.tr("Localizable", "manage.recipe.step.three.time.placeholder")
+
+  /// %d min
+  public static func manageRecipeStepThreeTimeText(_ p1: Int) -> String {
+    return L10n.tr("Localizable", "manage.recipe.step.three.time.text", p1)
+  }
+
+  /// Cooking time, min
+  public static let manageRecipeStepThreeTimeTitle = L10n.tr("Localizable", "manage.recipe.step.three.time.title")
+
+  /// Add ingredient
+  public static let manageRecipeStepTwoAddIngredient = L10n.tr("Localizable", "manage.recipe.step.two.add.ingredient")
+
+  /// Enter amount
+  public static let manageRecipeStepTwoIngredientsAmount = L10n.tr("Localizable", "manage.recipe.step.two.ingredients.amount")
+
+  /// Enter name
+  public static let manageRecipeStepTwoIngredientsName = L10n.tr("Localizable", "manage.recipe.step.two.ingredients.name")
+
+  /// Ingredients
+  public static let manageRecipeStepTwoIngredientsTitle = L10n.tr("Localizable", "manage.recipe.step.two.ingredients.title")
+
+  /// Enter amount
+  public static let manageRecipeStepTwoServingsPlaceholder = L10n.tr("Localizable", "manage.recipe.step.two.servings.placeholder")
+
+  /// Number of servings
+  public static let manageRecipeStepTwoServingsTitle = L10n.tr("Localizable", "manage.recipe.step.two.servings.title")
 
   /// Add new
   public static let profileButtonAddMoreTitle = L10n.tr("Localizable", "profile.button.add.more.title")

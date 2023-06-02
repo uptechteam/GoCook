@@ -1,5 +1,5 @@
 //
-//  CreateRecipeState.swift
+//  ManageRecipeState.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 27.03.2023.
@@ -8,7 +8,7 @@
 import DomainModels
 import Helpers
 
-extension CreateRecipePresenter {
+extension ManageRecipePresenter {
 
     // MARK: - State
 
@@ -26,7 +26,7 @@ extension CreateRecipePresenter {
 
         // MARK: - Public methods
 
-        static func makeInitialState() -> State {
+        static func makeInitialState(envelope: ManageRecipeEnvelope) -> State {
             return State(
                 isUploadingRecipe: false,
                 step: 0,

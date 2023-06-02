@@ -7,34 +7,6 @@ import UIKit
 
 extension UIImage {
 
-  @nonobjc public class var addPhoto: UIImage {
-    return UIImage(named: "addPhoto")!
-  }
-
-  @nonobjc public class var arrowBack: UIImage {
-    return UIImage(named: "arrowBack")!
-  }
-
-  @nonobjc public class var arrowForwardGreen: UIImage {
-    return UIImage(named: "arrowForwardGreen")!
-  }
-
-  @nonobjc public class var emptyCheckbox: UIImage {
-    return UIImage(named: "emptyCheckbox")!
-  }
-
-  @nonobjc public class var errorCheckbox: UIImage {
-    return UIImage(named: "errorCheckbox")!
-  }
-
-  @nonobjc public class var filledCheckbox: UIImage {
-    return UIImage(named: "filledCheckbox")!
-  }
-
-  @nonobjc public class var threeDots: UIImage {
-    return UIImage(named: "threeDots")!
-  }
-
   @nonobjc public class var camera: UIImage {
     return UIImage(named: "camera")!
   }
@@ -93,6 +65,34 @@ extension UIImage {
 
   @nonobjc public class var star: UIImage {
     return UIImage(named: "star")!
+  }
+
+  @nonobjc public class var addPhoto: UIImage {
+    return UIImage(named: "addPhoto")!
+  }
+
+  @nonobjc public class var arrowBack: UIImage {
+    return UIImage(named: "arrowBack")!
+  }
+
+  @nonobjc public class var arrowForwardGreen: UIImage {
+    return UIImage(named: "arrowForwardGreen")!
+  }
+
+  @nonobjc public class var emptyCheckbox: UIImage {
+    return UIImage(named: "emptyCheckbox")!
+  }
+
+  @nonobjc public class var errorCheckbox: UIImage {
+    return UIImage(named: "errorCheckbox")!
+  }
+
+  @nonobjc public class var filledCheckbox: UIImage {
+    return UIImage(named: "filledCheckbox")!
+  }
+
+  @nonobjc public class var threeDots: UIImage {
+    return UIImage(named: "threeDots")!
   }
 
   @nonobjc public class var avatarPlaceholder: UIImage {

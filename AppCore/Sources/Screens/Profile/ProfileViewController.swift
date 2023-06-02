@@ -12,7 +12,7 @@ import Library
 import UIKit
 
 public protocol ProfileCoordinating: AnyObject {
-    func didTapCreateRecipe()
+    func didTapManageRecipe()
     func didTapEdit()
     func didTapRecipe(_ recipe: Recipe)
     func didTapSettings()
@@ -136,7 +136,7 @@ public final class ProfileViewController: UIViewController, TabBarPresentable {
     private func navigate(by route: Route) {
         switch route {
         case .createRecipe:
-            coordinator.didTapCreateRecipe()
+            coordinator.didTapManageRecipe()
 
         case .edit:
             coordinator.didTapEdit()

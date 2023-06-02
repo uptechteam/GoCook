@@ -1,5 +1,5 @@
 //
-//  CreateRecipePresenter.swift
+//  ManageRecipePresenter.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 27.03.2023.
@@ -13,7 +13,7 @@ import Helpers
 import UIKit
 
 @MainActor
-final class CreateRecipePresenter {
+final class ManageRecipePresenter {
 
     // MARK: - Properties
 
@@ -41,11 +41,16 @@ final class CreateRecipePresenter {
 
     // MARK: - Lifecycle
 
-    init(fileClient: FileClienting, keyboardManager: KeyboardManaging, recipesClient: RecipesClienting) {
+    init(
+        envelope: ManageRecipeEnvelope,
+        fileClient: FileClienting,
+        keyboardManager: KeyboardManaging,
+        recipesClient: RecipesClienting
+    ) {
         self.fileClient = fileClient
         self.keyboardManager = keyboardManager
         self.recipesClient = recipesClient
-        self.state = State.makeInitialState()
+        self.state = State.makeInitialState(envelope: envelope)
         self.uploadImageTask = nil
     }
 
@@ -162,7 +167,7 @@ final class CreateRecipePresenter {
 
             state.stepOneState.recipeImageState.upload(with: imageID)
         } catch {
-            state.stepOneState.recipeImageState = .error(message: .createRecipeStepOneUploadError)
+            state.stepOneState.recipeImageState = .error(message: .manageRecipeStepOneUploadError)
         }
     }
 

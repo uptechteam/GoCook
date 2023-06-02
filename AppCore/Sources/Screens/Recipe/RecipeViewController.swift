@@ -13,6 +13,7 @@ import UIKit
 public protocol RecipeCoordinating: AnyObject {
     func didTapAuthor(_ author: User)
     func didTapBack()
+    func didTapEditRecipe(_ recipeDetails: RecipeDetails)
 }
 
 public final class RecipeViewController: UIViewController {
@@ -83,6 +84,10 @@ public final class RecipeViewController: UIViewController {
             await presenter.starTapped(index: index)
         }
 
+        contentView.detailsView.manageView.onDidTapEdit = { [presenter] in
+            presenter.editTapped()
+        }
+
         let state = presenter.$state
             .removeDuplicates()
 
@@ -106,6 +111,9 @@ public final class RecipeViewController: UIViewController {
 
         case .didTapAuthor(let author):
             coordinator.didTapAuthor(author)
+
+        case .didTapEdit(let recipe):
+            coordinator.didTapEditRecipe(recipe)
         }
     }
 }

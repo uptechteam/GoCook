@@ -7,14 +7,13 @@
 
 import AppTabBar
 import Author
-import CreateRecipe
-import Dip
 import DomainModels
 import EditProfile
 import Foundation
 import Helpers
 import Library
 import Login
+import ManageRecipe
 import Profile
 import Recipe
 import SignUp
@@ -30,7 +29,6 @@ final class ProfileCoordinator: NSObject, Coordinating {
     // MARK: - Properties
 
     private var childCoordinators: [Coordinating]
-    private let container: DependencyContainer
     private var interactiveControllers: [Int: SwipeInteractionController]
     private let navigationController: UINavigationController
     weak var delegate: ProfileCoordinatorDelegate?
@@ -45,9 +43,8 @@ final class ProfileCoordinator: NSObject, Coordinating {
 
     // MARK: - Lifecycle
 
-    init(container: DependencyContainer, navigationController: UINavigationController) {
+    init(navigationController: UINavigationController) {
         self.childCoordinators = []
-        self.container = container
         self.interactiveControllers = [:]
         self.navigationController = navigationController
         super.init()
@@ -57,7 +54,7 @@ final class ProfileCoordinator: NSObject, Coordinating {
     // MARK: - Lifecycle
 
     func start() {
-        let viewController = ProfileViewController.resolve(from: container, coordinator: self)
+        let viewController = ProfileViewController.resolve(coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
     }
 
@@ -101,8 +98,8 @@ extension ProfileCoordinator: EditProfileCoordinating {
 // MARK: - ProfileCoordinating
 
 extension ProfileCoordinator: ProfileCoordinating {
-    func didTapCreateRecipe() {
-        let coordinator = CreateRecipeCoordinator(container: container, presentingViewController: navigationController)
+    func didTapManageRecipe() {
+        let coordinator = ManageRecipeCoordinator(recipeDetails: nil, presentingViewController: navigationController)
         childCoordinators.append(coordinator)
         coordinator.start()
     }
@@ -119,13 +116,13 @@ extension ProfileCoordinator: ProfileCoordinating {
     }
 
     func didTapSettings() {
-        let viewController = SettingsViewController.resolve(from: container, coordinator: self)
+        let viewController = SettingsViewController.resolve(coordinator: self)
         navigationController.pushViewController(viewController, animated: true)
     }
 
     func didTapSignIn() {
         let envelope = LoginEnvelope.profile
-        let viewController = LoginViewController.resolve(from: container, envelope: envelope, coordinator: self)
+        let viewController = LoginViewController.resolve(envelope: envelope, coordinator: self)
         navigationController.pushViewController(viewController, animated: true)
     }
 }
@@ -141,6 +138,15 @@ extension ProfileCoordinator: RecipeCoordinating {
 
     func didTapBack() {
         navigationController.popViewController(animated: true)
+    }
+
+    func didTapEditRecipe(_ recipeDetails: RecipeDetails) {
+        let coordinator = ManageRecipeCoordinator(
+            recipeDetails: recipeDetails,
+            presentingViewController: navigationController
+        )
+        childCoordinators.append(coordinator)
+        coordinator.start()
     }
 }
 
@@ -160,16 +166,16 @@ extension ProfileCoordinator: SignUpCoordinating {
     }
 
     func didTapLogin() {
-        let viewController = LoginViewController.resolve(from: container, envelope: .profile, coordinator: self)
+        let viewController = LoginViewController.resolve(envelope: .profile, coordinator: self)
         let viewControllers = [navigationController.viewControllers[0], viewController]
         navigationController.setViewControllers(viewControllers, animated: true)
     }
 }
 
-// MARK: - CreateRecipeCoordinatorDelegate
+// MARK: - ManageRecipeCoordinatorDelegate
 
-extension ProfileCoordinator: CreateRecipeCoordinatorDelegate {
-    func didFinish(_ coordinator: CreateRecipeCoordinator) {
+extension ProfileCoordinator: ManageRecipeCoordinatorDelegate {
+    func didFinish(_ coordinator: ManageRecipeCoordinator) {
         childCoordinators.removeAll(where: { $0 === coordinator })
     }
 }
@@ -181,7 +187,7 @@ extension ProfileCoordinator: LoginCoordinating {
 
     func didTapSignUp() {
         let envelope = SignUpEnvelope.profile
-        let viewController = SignUpViewController.resolve(from: container, envelope: envelope, coordinator: self)
+        let viewController = SignUpViewController.resolve(envelope: envelope, coordinator: self)
         let viewControllers = [navigationController.viewControllers[0], viewController]
         navigationController.setViewControllers(viewControllers, animated: true)
     }

@@ -14,7 +14,7 @@ final class StepOneView: UIView {
     struct Props: Equatable {
         let isVisible: Bool
         let errorViewProps: ErrorView.Props
-        let recipeViewProps: CreateRecipeImageView.Props
+        let recipeViewProps: ManageRecipeImageView.Props
         let mealNameInputViewProps: UserInputView.Props
         let items: [CategoryCell.Props]
         let isCategoryErrorLabelVisible: Bool
@@ -27,7 +27,7 @@ final class StepOneView: UIView {
 
     private let scrollView = UIScrollView()
     private let errorView = ErrorView()
-    let recipeImageView = CreateRecipeImageView()
+    let recipeImageView = ManageRecipeImageView()
     let mealNameInputView = UserInputView()
     private let categoryLabel = UILabel()
     private lazy var dataSource = makeDataSource()
@@ -67,11 +67,11 @@ final class StepOneView: UIView {
     }
 
     private func setupMealNameInputView() {
-        mealNameInputView.configure(title: .createRecipeStepOneMealTitle)
+        mealNameInputView.configure(title: .manageRecipeStepOneMealTitle)
     }
 
     private func setupCategoryLabel() {
-        categoryLabel.render(title: .createRecipeStepOneCategoryTitle, color: .textMain, typography: .subtitle)
+        categoryLabel.render(title: .manageRecipeStepOneCategoryTitle, color: .textMain, typography: .subtitle)
         categoryLabel.setContentHuggingPriority(.required, for: .vertical)
     }
 
@@ -94,7 +94,7 @@ final class StepOneView: UIView {
 
     private func setupCategoryErrorLabel() {
         categoryErrorLabel.render(
-            title: .createRecipeStepOneCategoryValidation,
+            title: .manageRecipeStepOneCategoryValidation,
             color: .errorMain,
             typography: .bodyTwo
         )

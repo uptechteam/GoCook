@@ -1,5 +1,5 @@
 //
-//  CreateRecipeImageView.swift
+//  ManageRecipeImageView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 09.03.2023.
@@ -9,7 +9,7 @@ import Helpers
 import Library
 import UIKit
 
-final class CreateRecipeImageView: UIView {
+final class ManageRecipeImageView: UIView {
 
     struct Props: Equatable {
         let recipeImageSource: ImageSource?

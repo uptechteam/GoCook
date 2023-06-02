@@ -1,26 +1,26 @@
 //
-//  StepTwoServingsView.swift
+//  StepThreeTimeView.swift
 //  
 //
-//  Created by Oleksii Andriushchenko on 28.06.2022.
+//  Created by Oleksii Andriushchenko on 30.06.2022.
 //
 
 import Helpers
 import Library
 import UIKit
 
-final class StepTwoServingsView: UIView {
+final class StepThreeTimeView: UIView {
 
     struct Props: Equatable {
-        let amountText: String
-        let amountColorSource: ColorSource
-        let amountTypography: Typography
+        let timeText: String
+        let timeColorSource: ColorSource
+        let timeTypography: Typography
     }
 
     // MARK: - Properties
 
     private let titleLabel = UILabel()
-    private let amountLabel = UILabel()
+    private let timeLabel = UILabel()
     // callbacks
     var onDidTap: () -> Void = { }
 
@@ -49,25 +49,23 @@ final class StepTwoServingsView: UIView {
     }
 
     private func setupTitleLabel() {
-        titleLabel.render(title: .createRecipeStepTwoServingsTitle, color: .textMain, typography: .subtitle)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        titleLabel.render(title: .manageRecipeStepThreeTimeTitle, color: .textMain, typography: .subtitle)
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, UIView(), amountLabel])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, UIView(), timeLabel])
         stackView.alignment = .bottom
         addSubview(stackView, withEdgeInsets: .zero)
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: stackView.topAnchor)
-        ])
     }
 
     // MARK: - Public methods
 
     func render(props: Props) {
-        amountLabel.render(
-            title: props.amountText,
-            color: props.amountColorSource.color,
-            typography: props.amountTypography
+        timeLabel.render(
+            title: props.timeText,
+            color: props.timeColorSource.color,
+            typography: props.timeTypography
         )
     }
 

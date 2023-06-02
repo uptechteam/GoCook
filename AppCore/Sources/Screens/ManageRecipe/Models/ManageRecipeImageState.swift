@@ -7,7 +7,7 @@
 
 import Helpers
 
-enum RecipeImageState: Equatable {
+enum ImageState: Equatable {
 
     // MARK: - Properties
 

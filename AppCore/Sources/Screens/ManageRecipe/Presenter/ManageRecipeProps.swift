@@ -1,5 +1,5 @@
 //
-//  CreateRecipeProps.swift
+//  ManageRecipeProps.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 23.06.2022.
@@ -10,8 +10,8 @@ import Helpers
 import Library
 import UIKit
 
-extension CreateRecipePresenter {
-    static func makeProps(from state: State) -> CreateRecipeView.Props {
+extension ManageRecipePresenter {
+    static func makeProps(from state: State) -> ManageRecipeView.Props {
         return .init(
             stepOneViewProps: makeStepOneViewProps(state: state),
             stepTwoViewProps: makeStepTwoViewProps(state: state),
@@ -38,14 +38,14 @@ extension CreateRecipePresenter {
     private static func makeRecipeErrorViewProps(state: State) -> ErrorView.Props {
         return ErrorView.Props(
             isVisible: !state.stepOneState.isRecipeImageValid,
-            message: .createRecipeStepOnePhotoValidation
+            message: .manageRecipeStepOnePhotoValidation
         )
     }
 
     private static func makeMealNameInputViewProps(state: State) -> UserInputView.Props {
         return .init(
             text: state.stepOneState.mealName,
-            errorMessage: state.stepOneState.isMealNameValid ? nil : .createRecipeStepOneMealValidation
+            errorMessage: state.stepOneState.isMealNameValid ? nil : .manageRecipeStepOneMealValidation
         )
     }
 
@@ -79,7 +79,7 @@ extension CreateRecipePresenter {
 
     private static func makeServingsViewProps(state: State) -> StepTwoServingsView.Props {
         return .init(
-            amountText: state.stepTwoState.numberOfServings.flatMap(String.init) ?? .createRecipeStepTwoServingsPlaceholder,
+            amountText: state.stepTwoState.numberOfServings.flatMap(String.init) ?? .manageRecipeStepTwoServingsPlaceholder,
             amountColorSource: makeAmountColorSource(state: state),
             amountTypography: state.stepTwoState.numberOfServings == nil ? .body : .subtitleThree
         )
@@ -106,7 +106,7 @@ extension CreateRecipePresenter {
     private static func makeIngredientCellProps(state: State, ingredient: NewIngredient) -> IngredientCell.Props {
         return .init(
             id: ingredient.id,
-            name: ingredient.name.isEmpty ? .createRecipeStepTwoIngredientsName : ingredient.name,
+            name: ingredient.name.isEmpty ? .manageRecipeStepTwoIngredientsName : ingredient.name,
             nameColorSource: makeIngredientNameColorSource(state: state, ingredient: ingredient),
             nameTypography: ingredient.name.isEmpty ? .body : .subtitleThree,
             amount: makeIngredientAmountText(ingredient: ingredient),
@@ -128,7 +128,7 @@ extension CreateRecipePresenter {
 
     private static func makeIngredientAmountText(ingredient: NewIngredient) -> String {
         guard let amount = ingredient.amount else {
-            return .createRecipeStepTwoIngredientsAmount
+            return .manageRecipeStepTwoIngredientsAmount
         }
 
         return "\(amount) \(ingredient.unit.reduction)"
@@ -154,7 +154,7 @@ extension CreateRecipePresenter {
 
     private static func makeTimeViewProps(state: State) -> StepThreeTimeView.Props {
         return .init(
-            timeText: state.stepThreeState.cookingTime.flatMap(String.init) ?? .createRecipeStepThreeTimePlaceholder,
+            timeText: state.stepThreeState.cookingTime.flatMap(String.init) ?? .manageRecipeStepThreeTimePlaceholder,
             timeColorSource: makeCookingTimeColorSource(state: state),
             timeTypography: state.stepThreeState.cookingTime == nil ? .body : .subtitleThree
         )
@@ -174,11 +174,11 @@ extension CreateRecipePresenter {
         let areInstructionsValid = state.stepThreeState.areInstructionsValid
         let instruction = state.stepThreeState.instructions[index]
         return StepThreeInstructionView.Props(
-            title: .createRecipeStepThreeStepTitle(index + 1),
+            title: .manageRecipeStepThreeStepTitle(index + 1),
             titleColorSource: .color(areInstructionsValid || !instruction.isEmpty ? .textSecondary : .errorMain),
             text: instruction,
             dividerColorSource: .color(areInstructionsValid || !instruction.isEmpty ? .appBlack : .errorMain),
-            errorMessage: .createRecipeStepThreeStepValidation(index + 1),
+            errorMessage: .manageRecipeStepThreeStepValidation(index + 1),
             isErrorMessageVisible: !areInstructionsValid && instruction.isEmpty,
             isDeleteButtonVisible: state.stepThreeState.instructions.count > 1
         )
@@ -212,7 +212,7 @@ extension CreateRecipePresenter {
     }
 
     private static func makeTimeViewProps(state: State) -> RecipeTimeView.Props {
-        .init(timeDescription: .createRecipeStepThreeTimeText(state.stepThreeState.cookingTime ?? 0))
+        .init(timeDescription: .manageRecipeStepThreeTimeText(state.stepThreeState.cookingTime ?? 0))
     }
 
     private static func makeIngredientsViewProps(state: State) -> RecipeIngredientsView.Props {
@@ -248,9 +248,9 @@ extension CreateRecipePresenter {
         )
     }
 
-    private static func makeStepsViewProps(state: State) -> CreateRecipeStepsView.Props {
+    private static func makeStepsViewProps(state: State) -> ManageRecipeStepsView.Props {
         return .init(
-            title: .createRecipeNavigationTitle(state.step + 1),
+            title: .manageRecipeNavigationTitle(state.step + 1),
             isBackButtonVisible: state.step > 0,
             isNextButtonVisible: state.step != 3,
             isFinishButtonVisible: state.step == 3 && !state.isUploadingRecipe,
@@ -260,7 +260,7 @@ extension CreateRecipePresenter {
 
     // MARK: - Extra
 
-    private static func makeRecipeViewProps(state: State) -> CreateRecipeImageView.Props {
+    private static func makeRecipeViewProps(state: State) -> ManageRecipeImageView.Props {
         return .init(
             recipeImageSource: state.stepOneState.recipeImageState.uploadedImageSource,
             isThreeDostImageViewVisible: state.stepOneState.recipeImageState.uploadedImageSource != nil,

@@ -7,7 +7,6 @@
 
 import AppTabBar
 import BusinessLogic
-import Dip
 import Library
 import Home
 import UIKit
@@ -18,7 +17,6 @@ public final class AppCoordinator {
     // MARK: - Properties
 
     private var childCoordinators: [Coordinating]
-    private let container: DependencyContainer
     private let window: UIWindow
     private let storage: Storage
 
@@ -26,10 +24,8 @@ public final class AppCoordinator {
 
     public init(window: UIWindow) {
         self.childCoordinators = []
-        self.container = AppContainer.dependencyContainer
-        DependencyContainer.injectViewControllers(container: self.container)
         self.window = window
-        self.storage = try! container.resolve()
+        self.storage = AppContainer.resolve()
         loadResources()
     }
 
@@ -52,7 +48,7 @@ public final class AppCoordinator {
 
     private func showRegistration() {
         let navigationController = UINavigationController()
-        let coordinator = RegistrationCoordinator(container: container, navigationController: navigationController)
+        let coordinator = RegistrationCoordinator(navigationController: navigationController)
         coordinator.delegate = self
         coordinator.start()
         childCoordinators.append(coordinator)
@@ -60,8 +56,8 @@ public final class AppCoordinator {
     }
 
     private func showTabBar() {
-        let appTabBarController = AppTabBarController.resolve(from: container, coordinator: self)
-        let coordinator = AppTabBarCoordinator(container: container, tabBarController: appTabBarController)
+        let appTabBarController = AppTabBarController.resolve(coordinator: self)
+        let coordinator = AppTabBarCoordinator(tabBarController: appTabBarController)
         coordinator.delegate = self
         coordinator.start()
         childCoordinators.append(coordinator)

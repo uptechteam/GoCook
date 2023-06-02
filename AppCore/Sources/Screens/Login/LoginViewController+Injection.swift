@@ -5,41 +5,18 @@
 //  Created by Oleksii Andriushchenko on 20.11.2022.
 //
 
-import Dip
+import BusinessLogic
 
 extension LoginViewController {
-    public static func inject(into container: DependencyContainer) {
-        container.register(
-            .shared,
-            type: LoginViewController.Dependencies.self,
-            factory: LoginViewController.Dependencies.init
+    public static func resolve(envelope: LoginEnvelope, coordinator: LoginCoordinating) -> LoginViewController {
+        let dependencies = LoginViewController.Dependencies(
+            keyboardManager: AppContainer.resolve(),
+            profileFacade: AppContainer.resolve()
         )
-        container.register(
-            .unique,
-            type: LoginViewController.Store.self,
-            factory: { envelope in
-                LoginViewController.makeStore(dependencies: try container.resolve(), envelope: envelope)
-            }
+        return LoginViewController(
+            store: LoginViewController.makeStore(dependencies: dependencies, envelope: envelope),
+            actionCreator: LoginViewController.ActionCreator(dependencies: dependencies),
+            coordinator: coordinator
         )
-        container.register(
-            .unique,
-            type: LoginViewController.ActionCreator.self,
-            factory: LoginViewController.ActionCreator.init
-        )
-        container.register(.unique, type: LoginViewController.self) { (envelope: LoginEnvelope, coordinator) in
-            return LoginViewController(
-                store: try container.resolve(arguments: envelope),
-                actionCreator: try container.resolve(),
-                coordinator: coordinator
-            )
-        }
-    }
-
-    public static func resolve(
-        from container: DependencyContainer,
-        envelope: LoginEnvelope,
-        coordinator: LoginCoordinating
-    ) -> LoginViewController {
-        try! container.resolve(arguments: envelope, coordinator)
     }
 }

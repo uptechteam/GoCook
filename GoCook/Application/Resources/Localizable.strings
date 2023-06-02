@@ -77,37 +77,6 @@
 "profile.empty.content.button.title" = "Add recipe";
 "profile.button.add.more.title" = "Add new";
 
-// MARK: - Create Recipe
-
-"create.recipe.title" = "Create recipe";
-"create.recipe.step.one.meal.title" = "MEAL NAME";
-"create.recipe.step.one.category.title" = "Category";
-"create.recipe.step.one.upload.error" = "Uploading unsuccessfull. Please retry";
-"create.recipe.step.one.photo.validation" = "Upload meal photo";
-"create.recipe.step.one.meal.validation" = "Enter meal name";
-"create.recipe.step.one.category.validation" = "Select meal category";
-"create.recipe.step.two.servings.title" = "Number of servings";
-"create.recipe.step.two.servings.placeholder" = "Enter amount";
-"create.recipe.step.two.ingredients.title" = "Ingredients";
-"create.recipe.step.two.ingredients.name" = "Enter name";
-"create.recipe.step.two.ingredients.amount" = "Enter amount";
-"create.recipe.step.two.add.ingredient" = "Add ingredient";
-"create.recipe.step.three.time.title" = "Cooking time, min";
-"create.recipe.step.three.time.text" = "%d min";
-"create.recipe.step.three.time.placeholder" = "Enter amount";
-"create.recipe.step.three.instructions.title" = "Instructions";
-"create.recipe.step.three.step.title" = "STEP %d";
-"create.recipe.step.three.step.validation" = "Enter step %d";
-"create.recipe.step.three.add.step" = "Add step";
-"create.recipe.navigation.back" = "Back";
-"create.recipe.navigation.title" = "%d / 4";
-"create.recipe.navigation.next" = "Next";
-"create.recipe.navigation.finish" = "Finish";
-"create.recipe.alert.delete.progress.title" = "Delete progress?";
-"create.recipe.alert.delete.progress.message" = "Closing this page will delete the progress you’ve made in recipe creation";
-"create.recipe.alert.delete.progress.cancel" = "Cancel";
-"create.recipe.alert.delete.progress.delete" = "Delete";
-
 // MARK: - Input
 
 "input.servings.title" = "Number of servings";
@@ -140,6 +109,37 @@
 "login.login.with.apple" = "Login with Apple";
 "login.new.first" = "New to GoCook? ";
 "login.new.second" = "Sign up";
+
+// MARK: - Manage Recipe
+
+"manage.recipe.title" = "Create recipe";
+"manage.recipe.step.one.meal.title" = "MEAL NAME";
+"manage.recipe.step.one.category.title" = "Category";
+"manage.recipe.step.one.upload.error" = "Uploading unsuccessfull. Please retry";
+"manage.recipe.step.one.photo.validation" = "Upload meal photo";
+"manage.recipe.step.one.meal.validation" = "Enter meal name";
+"manage.recipe.step.one.category.validation" = "Select meal category";
+"manage.recipe.step.two.servings.title" = "Number of servings";
+"manage.recipe.step.two.servings.placeholder" = "Enter amount";
+"manage.recipe.step.two.ingredients.title" = "Ingredients";
+"manage.recipe.step.two.ingredients.name" = "Enter name";
+"manage.recipe.step.two.ingredients.amount" = "Enter amount";
+"manage.recipe.step.two.add.ingredient" = "Add ingredient";
+"manage.recipe.step.three.time.title" = "Cooking time, min";
+"manage.recipe.step.three.time.text" = "%d min";
+"manage.recipe.step.three.time.placeholder" = "Enter amount";
+"manage.recipe.step.three.instructions.title" = "Instructions";
+"manage.recipe.step.three.step.title" = "STEP %d";
+"manage.recipe.step.three.step.validation" = "Enter step %d";
+"manage.recipe.step.three.add.step" = "Add step";
+"manage.recipe.navigation.back" = "Back";
+"manage.recipe.navigation.title" = "%d / 4";
+"manage.recipe.navigation.next" = "Next";
+"manage.recipe.navigation.finish" = "Finish";
+"manage.recipe.alert.delete.progress.title" = "Delete progress?";
+"manage.recipe.alert.delete.progress.message" = "Closing this page will delete the progress you’ve made in recipe creation";
+"manage.recipe.alert.delete.progress.cancel" = "Cancel";
+"manage.recipe.alert.delete.progress.delete" = "Delete";
 
 // MARK: - Recipe
 
