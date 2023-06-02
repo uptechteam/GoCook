@@ -199,12 +199,9 @@ public final class CreateRecipeViewController: UIViewController {
         }
     }
 
-    private func showImagePicker(source: UIImagePickerController.SourceType) {
-        Task { [weak self] in
-            guard
-                let self = self,
-                let image = await imagePicker.pickImage(source: source, on: self)
-            else {
+    private func showImagePicker(source: ImagePickerSource) {
+        Task {
+            guard let image = await imagePicker.pickImage(source: source, on: self) else {
                 return
             }
 
@@ -246,7 +243,7 @@ private extension CreateRecipeViewController {
             UIAlertAction(
                 title: .imagePickerLibrary,
                 style: .default,
-                handler: { [weak self] _ in self?.showImagePicker(source: .photoLibrary) }
+                handler: { [weak self] _ in self?.showImagePicker(source: .photoAlbum) }
             )
         )
         if isDeleteButtonPresent {

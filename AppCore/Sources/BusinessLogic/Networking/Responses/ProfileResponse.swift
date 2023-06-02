@@ -6,7 +6,6 @@
 //
 
 import DomainModels
-import Library
 
 struct ProfileResponse: Decodable {
     let id: String

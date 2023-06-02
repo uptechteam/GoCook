@@ -269,6 +269,18 @@ extension String {
   /// Remove current photo
   public static let imagePickerRemove = L10n.tr("Localizable", "image.picker.remove")
 
+  /// Cancel
+  public static let imagePickerAlertSettingsCancel = L10n.tr("Localizable", "image.picker.alert.settings.cancel")
+
+  /// Enable access so you can upload photos.
+  public static let imagePickerAlertSettingsMessage = L10n.tr("Localizable", "image.picker.alert.settings.message")
+
+  /// Allow camera access
+  public static let imagePickerAlertSettingsTitle = L10n.tr("Localizable", "image.picker.alert.settings.title")
+
+  /// Open camera
+  public static let imagePickerAlertSettingsOpenCamera = L10n.tr("Localizable", "image.picker.alert.settings.open.camera")
+
   /// cup
   public static let ingredientUnitCupReduction = L10n.tr("Localizable", "ingredient.unit.cup.reduction")
 

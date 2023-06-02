@@ -30,7 +30,7 @@ let package = Package(
             ]
         ),
         // MARK: - Domain models
-        .target(name: "DomainModels", dependencies: ["Helpers", "Library"]),
+        .target(name: "DomainModels", dependencies: ["Helpers"]),
         // MARK: - Helpers
         .target(
             name: "Helpers",
@@ -41,7 +41,7 @@ let package = Package(
             ]
         ),
         // MARK: - Library
-        .target(name: "Library", dependencies: ["Helpers"], resources: [.process("Resources")]),
+        .target(name: "Library", dependencies: ["DomainModels", "Helpers"], resources: [.process("Resources")]),
         // MARK: - Routing
         .target(
             name: "Routing",

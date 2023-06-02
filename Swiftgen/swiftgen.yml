@@ -1,18 +1,18 @@
 input_dir: ../GoCook/Application/Resources/
-output_dir: ../AppCore/Sources/Library/Generated
+output_dir: ../AppCore/Sources/
 
 xcassets:
   - inputs: Assets.xcassets
     outputs:
       - templatePath: swiftgen_images_template.stencil
-        output: UIImage+Generated.swift
+        output: Library/Generated/UIImage+Generated.swift
   - inputs: Colors.xcassets
     outputs:
       - templatePath: swiftgen_colors_template.stencil
-        output: UIColor+Generated.swift
+        output: Library/Generated/UIColor+Generated.swift
 
 strings:
   inputs: Localizable.strings
   outputs:
     - templatePath: swiftgen_strings_template.stencil
-      output: String+Generated.swift
+      output: Helpers/Generated/String+Generated.swift
