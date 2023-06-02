@@ -20,7 +20,7 @@ extension AuthorPresenter {
 
     private static func makeHeaderViewProps(state: State) -> AuthorHeaderView.Props {
         return .init(
-            avatarImageSource: state.author.avatar,
+            avatarImageSource: state.author.avatar ?? .asset(.avatarPlaceholder),
             name: state.author.username
         )
     }

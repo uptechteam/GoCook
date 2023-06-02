@@ -16,7 +16,7 @@ extension EditProfilePresenter {
 
         // MARK: - Properties
 
-        var avatar: ImageSource?
+        var avatar: EditProfileAvatar
         var isUpdatingProfile: Bool
         let profile: Profile
         var username: String
@@ -24,14 +24,14 @@ extension EditProfilePresenter {
         var route: AnyIdentifiable<Route>?
 
         var isDataChanged: Bool {
-            avatar != profile.avatar || username != profile.username
+            avatar.image != profile.avatar || username != profile.username
         }
 
         // MARK: - Public methods
 
         static func makeInitialState(profile: Profile) -> State {
             return State(
-                avatar: profile.avatar,
+                avatar: profile.avatar.flatMap(EditProfileAvatar.avatar) ?? .empty,
                 isUpdatingProfile: false,
                 profile: profile,
                 username: profile.username,

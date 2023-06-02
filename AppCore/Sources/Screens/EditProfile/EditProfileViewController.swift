@@ -126,7 +126,7 @@ public final class EditProfileViewController: UIViewController, ErrorPresentable
                 return
             }
 
-            presenter.imagePicked(image: .asset(image))
+            await presenter.imagePicked(image: .asset(image))
         }
     }
 

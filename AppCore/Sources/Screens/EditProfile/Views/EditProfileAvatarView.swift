@@ -71,6 +71,8 @@ final class EditProfileAvatarView: UIControl {
     private func setupSpinnerView() {
         spinnerView.set(imageSource: .asset(.close))
         addSubview(spinnerView, constraints: [
+            spinnerView.widthAnchor.constraint(equalToConstant: 48),
+            spinnerView.heightAnchor.constraint(equalToConstant: 48),
             spinnerView.centerXAnchor.constraint(equalTo: centerXAnchor),
             spinnerView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
@@ -85,7 +87,7 @@ final class EditProfileAvatarView: UIControl {
             cameraImageView.isHidden = true
         } else {
             avatarImageView.image = nil
-            cameraImageView.isHidden = false
+            cameraImageView.isHidden = props.isSpinnerVisible
         }
     }
 }

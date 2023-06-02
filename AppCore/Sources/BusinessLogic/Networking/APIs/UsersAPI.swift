@@ -48,6 +48,6 @@ struct UsersAPI {
 
     func makePutProfileRequest(update: ProfileUpdate) throws -> AppRequest {
         let requestData = UpdateProfileRequest(update: update)
-        return try requestBuilder.makePutJSONRequest(path: "", requestData: requestData)
+        return try requestBuilder.makePutJSONRequest(path: "", requestData: requestData, authorisation: .bearer)
     }
 }

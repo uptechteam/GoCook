@@ -172,7 +172,7 @@ extension ImagePicker: UIImagePickerControllerDelegate, UINavigationControllerDe
 
 extension ImagePicker {
     private enum Constants {
-        static let limitedImageSize = Int(4 * 1024 * 1024)
+        static let limitedImageSize = Int(0.9 * 1024 * 1024)
         static let imageID = UTType.image.identifier
         static let videoID = UTType.movie.identifier
     }

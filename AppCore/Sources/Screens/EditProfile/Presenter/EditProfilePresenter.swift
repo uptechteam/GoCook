@@ -18,6 +18,7 @@ public final class EditProfilePresenter {
     private let profileFacade: ProfileFacading
     @Published
     private(set) var state: State
+    private var uploadImageTask: Task<String, Error>?
 
     // MARK: - Lifecycle
 
@@ -29,7 +30,11 @@ public final class EditProfilePresenter {
     // MARK: - Public methods
 
     func avatarTapped() {
-        state.alert = .init(value: .avatarActionSheet(isDeleteVisible: state.profile.avatar != nil))
+        if state.avatar.isUploading {
+            uploadImageTask?.cancel()
+        } else {
+            state.alert = .init(value: .avatarActionSheet(isDeleteVisible: state.avatar.image != nil))
+        }
     }
 
     func closeTapped() {
@@ -37,15 +42,29 @@ public final class EditProfilePresenter {
     }
 
     func deleteTapped() {
-        state.avatar = nil
+        state.avatar = .empty
     }
 
-    func imagePicked(image: ImageSource) {
-        state.avatar = image
+    func imagePicked(image: ImageSource) async {
+        state.avatar = .uploading(image)
+        do {
+            if let imageID = try await upload(imageSource: image) {
+                state.avatar = .uploaded(image, imageID: imageID)
+            } else {
+                state.avatar = state.profile.avatar.flatMap(EditProfileAvatar.avatar) ?? .empty
+            }
+        } catch {
+            state.avatar = state.profile.avatar.flatMap(EditProfileAvatar.avatar) ?? .empty
+            state.alert = .init(value: .error(message: error.localizedDescription))
+        }
     }
 
     func submitTapped() async {
-        let update = ProfileUpdate(avatarURL: nil, deleteAvatar: false, username: state.username)
+        let update = ProfileUpdate(
+            avatarURL: state.avatar.imageID,
+            deleteAvatar: state.avatar == .empty,
+            username: state.username
+        )
         do {
             state.isUpdatingProfile = true
             try await profileFacade.update(profile: update)
@@ -59,5 +78,21 @@ public final class EditProfilePresenter {
 
     func usernameChanged(_ text: String) {
         state.username = text
+    }
+
+    // MARK: - Private methods
+
+    private func upload(imageSource: ImageSource) async throws -> String? {
+        guard let data = imageSource.image?.pngData() else {
+            print("Can't get data from picked image")
+            return nil
+        }
+
+        uploadImageTask = Task {
+            try await profileFacade.upload(avatarData: data)
+        }
+        let imageID = try await uploadImageTask?.value
+        let isCancelled = uploadImageTask?.isCancelled ?? true
+        return isCancelled ? nil : imageID
     }
 }
