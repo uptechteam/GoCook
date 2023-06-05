@@ -67,6 +67,7 @@
 "home.filtered.empty.title" = "No recipes found\nAdjust the filters and try again";
 "home.filtered.empty.button" = "Open filters";
 "home.no.results.title" = "No results found";
+"home.retry" = "Retry";
 
 // MARK: - Profile
 

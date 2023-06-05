@@ -121,10 +121,7 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
 
     public func enableRefreshControl() {
         collectionRefreshControl.addAction(
-            UIAction(handler: { [weak self] _ in
-                print("Refresh control changed: \(self?.collectionRefreshControl.isRefreshing as Any)")
-                self?.onScrollToRefresh()
-            }),
+            UIAction(handler: { [weak self] _ in self?.onScrollToRefresh() }),
             for: .valueChanged
         )
         refreshControl = collectionRefreshControl

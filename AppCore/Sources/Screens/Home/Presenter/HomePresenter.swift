@@ -96,6 +96,10 @@ public final class HomePresenter {
         state.route = .init(value: .didTapRecipe(recipe))
     }
 
+    func retryTapped() async {
+        await getFeed()
+    }
+
     func scrolledSearchToEnd() {
         guard !state.searchQuery.isEmpty else {
             return

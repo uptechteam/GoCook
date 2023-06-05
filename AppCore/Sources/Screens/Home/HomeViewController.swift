@@ -114,6 +114,10 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
             presenter.contentStateActionTapped()
         }
 
+        contentView.homeStateView.onTapAction = toSyncClosure { [presenter] in
+            await presenter.retryTapped()
+        }
+
         let state = presenter.$state
             .removeDuplicates()
 

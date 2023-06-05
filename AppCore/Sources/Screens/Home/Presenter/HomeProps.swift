@@ -13,7 +13,8 @@ extension HomePresenter {
         return .init(
             filtersImage: .asset(state.filters.isEmpty ? .filters : .filterActive),
             feedViewProps: makeFeedViewProps(state: state),
-            searchResultsViewProps: makeSearchResultsViewProps(state: state)
+            searchResultsViewProps: makeSearchResultsViewProps(state: state),
+            homeStateViewProps: makeHomeStateViewProps(state: state)
         )
     }
 
@@ -135,6 +136,14 @@ extension HomePresenter {
         } else {
             return .hidden
         }
+    }
+
+    private static func makeHomeStateViewProps(state: State) -> ContentStateView.Props {
+        guard !state.isSearchActive, let error = state.recipeCategories.error else {
+            return .hidden
+        }
+
+        return .message(title: error.localizedDescription, buttonTitle: .homeRetry)
     }
 
     // MARK: - Extra

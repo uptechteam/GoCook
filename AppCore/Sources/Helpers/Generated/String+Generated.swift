@@ -119,6 +119,9 @@ extension String {
   /// 30 - 45 mins
   public static let filtersSectionCookingTimeThirtyToFortyFive = L10n.tr("Localizable", "filters.section.cooking.time.thirty.to.forty.five")
 
+  /// Retry
+  public static let homeRetry = L10n.tr("Localizable", "home.retry")
+
   ///  and 
   public static let homeCategoriesJoinText = L10n.tr("Localizable", "home.categories.join.text")
 
