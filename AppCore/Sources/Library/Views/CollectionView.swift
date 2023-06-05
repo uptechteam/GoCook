@@ -45,6 +45,16 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Set up
+
+    private func setup() {
+        setupContentView()
+    }
+
+    private func setupContentView() {
+        backgroundColor = .clear
+    }
+
     // MARK: - Public methods
 
     public func configureDataSource(

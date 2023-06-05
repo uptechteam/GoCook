@@ -69,9 +69,11 @@ public final class HomePresenter {
         state.route = .init(value: .didTapFilters)
     }
 
-    func favoriteTapped(indexPath: IndexPath, isTrending: Bool) async {
-        let category = isTrending ? state.trendingCategory : state.otherCategories[safe: indexPath.section]
-        guard let recipe = category?.recipes[safe: indexPath.item], state.pendingRecipe == nil else {
+    func favoriteTapped(indexPath: IndexPath) async {
+        guard
+            let category = state.recipeCategories[safe: indexPath.section],
+            let recipe = category.recipes[safe: indexPath.item]
+        else {
             return
         }
 
@@ -83,9 +85,11 @@ public final class HomePresenter {
         state.route = .init(value: .didTapFilters)
     }
 
-    func recipeTapped(indexPath: IndexPath, isTrending: Bool) {
-        let category = isTrending ? state.trendingCategory : state.otherCategories[safe: indexPath.section]
-        guard let recipe = category?.recipes[safe: indexPath.item] else {
+    func recipeTapped(indexPath: IndexPath) {
+        guard
+            let category = state.recipeCategories[safe: indexPath.section],
+            let recipe = category.recipes[safe: indexPath.item]
+        else {
             return
         }
 
@@ -124,8 +128,8 @@ public final class HomePresenter {
         state.route = .init(value: .didTapRecipe(recipe))
     }
 
-    func viewAllTapped(index: Int, isTrending: Bool) async {
-        guard !isTrending, let category = state.otherCategories[safe: index] else {
+    func viewAllTapped(indexPath: IndexPath) async {
+        guard let category = state.recipeCategories[safe: indexPath.section], !category.isTrendingCategory else {
             return
         }
 

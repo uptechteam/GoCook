@@ -20,17 +20,26 @@ extension HomePresenter {
     private static func makeFeedViewProps(state: State) -> HomeFeedView.Props {
         return .init(
             isVisible: !state.isSearchActive,
-            trendingCategoryViewProps: makeTrendingCategoryViewProps(state: state),
-            otherCategoriesViewsProps: state.otherCategories.map(makeOtherCategoryViewProps)
+            collectionViewProps: makeFeedCollectionViewProps(state: state)
         )
     }
 
-    private static func makeTrendingCategoryViewProps(state: State) -> HomeTrendingCategoryView.Props {
+    private static func makeFeedCollectionViewProps(state: State) -> CollectionView<Int, HomeFeedView.Item>.Props {
+        let trendingCategoryItem = makeTrendingCategoryItem(state: state)
+        let otherCategoryItems = state.otherCategories.map(makeOtherCategoryItem)
         return .init(
+            section: [0],
+            items: [[trendingCategoryItem] + otherCategoryItems]
+        )
+    }
+
+    private static func makeTrendingCategoryItem(state: State) -> HomeFeedView.Item {
+        let props = HomeTrendingCategoryCell.Props(
             headerProps: HomeRecipeCategoryHeaderView.Props(title: "Trending"),
             categoriesCollectionViewProps: makeCategoriesCollectionViewProps(state: state),
-            recipesListViewProps: makeRecipesListViewProps(category: state.trendingCategory)
+            recipesCollectionViewProps: makeRecipesCollectionViewProps(category: state.trendingCategory)
         )
+        return .trending(props)
     }
 
     private static func makeCategoriesCollectionViewProps(
@@ -51,11 +60,12 @@ extension HomePresenter {
         )
     }
 
-    private static func makeOtherCategoryViewProps(recipeCategory: RecipeCategory) -> HomeOtherCategoryView.Props {
-        return .init(
+    private static func makeOtherCategoryItem(recipeCategory: RecipeCategory) -> HomeFeedView.Item {
+        let props = HomeOtherCategoryCell.Props(
             headerProps: HomeRecipeCategoryHeaderView.Props(title: recipeCategory.type.name),
-            recipesListViewProps: makeRecipesListViewProps(category: recipeCategory)
+            recipesListViewProps: makeRecipesCollectionViewProps(category: recipeCategory)
         )
+        return .other(props, category: recipeCategory.type.name)
     }
 
     private static func makeSearchResultsViewProps(state: State) -> HomeSearchResultsView.Props {
@@ -128,8 +138,12 @@ extension HomePresenter {
 
     // MARK: - Extra
 
-    private static func makeRecipesListViewProps(category: RecipeCategory) -> HomeRecipesListView.Props {
-        .init(items: category.recipes.map(makeRecipeCellProps))
+    private static func makeRecipesCollectionViewProps(category: RecipeCategory) -> HomeRecipesCollectionView.Props {
+        let collectionViewProps = CollectionView<Int, RecipeCell.Props>.Props(
+            section: [0],
+            items: [category.recipes.map(makeRecipeCellProps)]
+        )
+        return .init(collectionViewProps: collectionViewProps)
     }
 
     private static func makeRecipeCellProps(recipe: Recipe) -> RecipeCell.Props {

@@ -8,17 +8,17 @@
 import Library
 import UIKit
 
-final class HomeOtherCategoryView: UIView {
+final class HomeOtherCategoryCell: UICollectionViewCell, ReusableCell {
 
     struct Props: Equatable {
         let headerProps: HomeRecipeCategoryHeaderView.Props
-        let recipesListViewProps: HomeRecipesListView.Props
+        let recipesListViewProps: HomeRecipesCollectionView.Props
     }
 
     // MARK: - Properties
 
     let headerView = HomeRecipeCategoryHeaderView()
-    let recipesListView = HomeRecipesListView()
+    let recipesCollectionView = HomeRecipesCollectionView()
 
     // MARK: - Lifecycle
 
@@ -38,7 +38,7 @@ final class HomeOtherCategoryView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [headerView, recipesListView])
+        let stackView = UIStackView(arrangedSubviews: [headerView, recipesCollectionView])
         stackView.axis = .vertical
         stackView.spacing = 24
         addSubview(stackView, withEdgeInsets: .zero)
@@ -48,6 +48,6 @@ final class HomeOtherCategoryView: UIView {
 
     func render(props: Props) {
         headerView.render(props: props.headerProps)
-        recipesListView.render(props: props.recipesListViewProps)
+        recipesCollectionView.render(props: props.recipesListViewProps)
     }
 }

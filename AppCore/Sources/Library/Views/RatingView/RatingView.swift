@@ -72,6 +72,7 @@ public final class RatingView: UIView {
         starImageView.image = props.isActive ? .star20 : .starGray20
         textLabel.render(title: props.ratingText, color: .appBlack, typography: .other)
         textLabel.isHidden = !props.isActive
+        textLabel.layoutIfNeeded()
         reviewsLabelLabel.render(title: props.description, color: .textSecondary, typography: .bodyTwo)
     }
 }

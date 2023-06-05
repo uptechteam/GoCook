@@ -8,19 +8,19 @@
 import Library
 import UIKit
 
-final class HomeTrendingCategoryView: UIView {
+final class HomeTrendingCategoryCell: UICollectionViewCell, ReusableCell {
 
     struct Props: Equatable {
         let headerProps: HomeRecipeCategoryHeaderView.Props
         let categoriesCollectionViewProps: CollectionView<Int, CategoryCell.Props>.Props
-        let recipesListViewProps: HomeRecipesListView.Props
+        let recipesCollectionViewProps: HomeRecipesCollectionView.Props
     }
 
     // MARK: - Properties
 
     let headerView = HomeRecipeCategoryHeaderView()
     let categoriesCollectionView = CollectionView<Int, CategoryCell.Props>()
-    let recipesListView = HomeRecipesListView()
+    let recipesCollectionView = HomeRecipesCollectionView()
     // callbacks
     var onTapCategory: (IndexPath) -> Void = { _ in }
 
@@ -44,7 +44,7 @@ final class HomeTrendingCategoryView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [headerView, categoriesCollectionView, recipesListView])
+        let stackView = UIStackView(arrangedSubviews: [headerView, categoriesCollectionView, recipesCollectionView])
         stackView.axis = .vertical
         stackView.spacing = 24
         addSubview(stackView, withEdgeInsets: .zero)
@@ -78,13 +78,13 @@ final class HomeTrendingCategoryView: UIView {
     func render(props: Props) {
         headerView.render(props: props.headerProps)
         categoriesCollectionView.render(props: props.categoriesCollectionViewProps)
-        recipesListView.render(props: props.recipesListViewProps)
+        recipesCollectionView.render(props: props.recipesCollectionViewProps)
     }
 }
 
 // MARK: - UICollectionViewDelegate
 
-extension HomeTrendingCategoryView: UICollectionViewDelegate {
+extension HomeTrendingCategoryCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         onTapCategory(indexPath)
     }
@@ -92,7 +92,7 @@ extension HomeTrendingCategoryView: UICollectionViewDelegate {
 
 // MARK: - HomeTrendingCategoryView
 
-extension HomeTrendingCategoryView: UICollectionViewDelegateFlowLayout {
+extension HomeTrendingCategoryCell: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,

@@ -79,32 +79,20 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
             presenter.filtersTapped()
         }
 
-        contentView.feedView.trendingCategoryView.onTapCategory = { [presenter] indexPath in
+        contentView.feedView.onTapCategory = { [presenter] indexPath in
             presenter.categoryTapped(indexPath: indexPath)
         }
 
-        contentView.feedView.trendingCategoryView.headerView.onTapViewAll = toSyncClosure { [presenter] in
-            await presenter.viewAllTapped(index: 0, isTrending: true)
-        }
-
-        contentView.feedView.trendingCategoryView.recipesListView.onTapItem = { [presenter] indexPath in
-            presenter.recipeTapped(indexPath: indexPath, isTrending: true)
-        }
-
-        contentView.feedView.trendingCategoryView.recipesListView.onTapFavorite = toSyncClosure { [presenter] indexPath in
-            await presenter.favoriteTapped(indexPath: indexPath, isTrending: true)
-        }
-
-        contentView.feedView.onTapViewAll = toSyncClosure { [presenter] index in
-            await presenter.viewAllTapped(index: index, isTrending: false)
+        contentView.feedView.onTapViewAll = toSyncClosure { [presenter] indexPath in
+            await presenter.viewAllTapped(indexPath: indexPath)
         }
 
         contentView.feedView.onTapRecipe = { [presenter] indexPath in
-            presenter.recipeTapped(indexPath: indexPath, isTrending: false)
+            presenter.recipeTapped(indexPath: indexPath)
         }
 
         contentView.feedView.onTapFavorite = toSyncClosure { [presenter] indexPath in
-            await presenter.favoriteTapped(indexPath: indexPath, isTrending: false)
+            await presenter.favoriteTapped(indexPath: indexPath)
         }
 
         contentView.searchResultsView.onTapItem = { [presenter] indexPath in
