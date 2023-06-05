@@ -34,11 +34,17 @@ extension HomePresenter {
     }
 
     private static func makeCategoriesListViewProps(state: State) -> HomeCategoriesListView.Props {
+        .init(collectionViewProps: makeCategoriesCollectionViewProps(state: state))
+    }
+
+    private static func makeCategoriesCollectionViewProps(
+        state: State
+    ) -> CollectionView<Int, CategoryCell.Props>.Props {
         let allItem = makeCategoryCellProps(title: "All", isSelected: state.selectedCategories.isEmpty)
         let items = CategoryType.priorityOrder.map { type in
             makeCategoryCellProps(title: type.name, isSelected: state.selectedCategories.contains(type))
         }
-        return .init(items: [allItem] + items)
+        return .init(section: [0], items: [[allItem] + items])
     }
 
     private static func makeCategoryCellProps(title: String, isSelected: Bool) -> CategoryCell.Props {

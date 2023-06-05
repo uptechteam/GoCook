@@ -11,16 +11,12 @@ import UIKit
 final class HomeCategoriesListView: UIView {
 
     struct Props: Equatable {
-        let items: [CategoryCell.Props]
+        let collectionViewProps: CollectionView<Int, CategoryCell.Props>.Props
     }
-
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, CategoryCell.Props>
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, CategoryCell.Props>
 
     // MARK: - Properties
 
-    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
-    private lazy var dataSource = makeDataSource()
+    private let collectionView = CollectionView<Int, CategoryCell.Props>()
     // callbacks
     var onTapItem: (IndexPath) -> Void = { _ in }
 
@@ -39,6 +35,7 @@ final class HomeCategoriesListView: UIView {
 
     private func setup() {
         setupContentView()
+        setupDataSource()
         setupCollectionView()
         setupLayout()
     }
@@ -58,6 +55,14 @@ final class HomeCategoriesListView: UIView {
         addSubview(collectionView, withEdgeInsets: .zero)
     }
 
+    private func setupDataSource() {
+        collectionView.configureDataSource { collectionView, indexPath, props in
+            let cell: CategoryCell = collectionView.dequeueReusableCell(for: indexPath)
+            cell.render(props: props)
+            return cell
+        }
+    }
+
     private func setupLayout() {
         let flowlayout = UICollectionViewFlowLayout()
         flowlayout.scrollDirection = .horizontal
@@ -68,17 +73,7 @@ final class HomeCategoriesListView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        dataSource.apply(sections: [0], items: [props.items])
-    }
-
-    // MARK: - Private methods
-
-    private func makeDataSource() -> DataSource {
-        return DataSource(collectionView: collectionView) { collectionView, indexPath, props in
-            let cell: CategoryCell = collectionView.dequeueReusableCell(for: indexPath)
-            cell.render(props: props)
-            return cell
-        }
+        collectionView.render(props: props.collectionViewProps)
     }
 }
 
@@ -98,7 +93,7 @@ extension HomeCategoriesListView: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        guard let props = dataSource.itemIdentifier(for: indexPath) else {
+        guard let props = self.collectionView.getItem(for: indexPath) else {
             return .zero
         }
 

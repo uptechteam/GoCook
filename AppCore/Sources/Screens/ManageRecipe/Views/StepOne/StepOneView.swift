@@ -31,7 +31,7 @@ final class StepOneView: UIView {
     let mealNameInputView = UserInputView()
     private let categoryLabel = UILabel()
     private lazy var dataSource = makeDataSource()
-    private let collectionView = CollectionView()
+    private let collectionView = CollectionViewChangeable()
     private let categoryErrorLabel = UILabel()
     private var collectionViewHeightConstraint: NSLayoutConstraint!
     // callbacks

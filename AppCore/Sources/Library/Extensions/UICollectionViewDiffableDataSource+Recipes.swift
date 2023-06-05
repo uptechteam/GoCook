@@ -34,6 +34,8 @@ extension UICollectionViewDiffableDataSource {
                             existingSnapshot.reconfigureItems([item])
                         } else if let lastItem {
                             existingSnapshot.insertItems([item], afterItem: lastItem)
+                        } else if let someExistingItem = existingSnapshot.itemIdentifiers.first {
+                            existingSnapshot.insertItems([item], beforeItem: someExistingItem)
                         } else {
                             existingSnapshot.appendItems([item], toSection: section)
                         }
