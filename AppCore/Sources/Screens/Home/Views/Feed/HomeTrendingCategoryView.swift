@@ -12,15 +12,17 @@ final class HomeTrendingCategoryView: UIView {
 
     struct Props: Equatable {
         let headerProps: HomeRecipeCategoryHeaderView.Props
-        let categoriesListViewProps: HomeCategoriesListView.Props
+        let categoriesCollectionViewProps: CollectionView<Int, CategoryCell.Props>.Props
         let recipesListViewProps: HomeRecipesListView.Props
     }
 
     // MARK: - Properties
 
     let headerView = HomeRecipeCategoryHeaderView()
-    let categoriesListView = HomeCategoriesListView()
+    let categoriesCollectionView = CollectionView<Int, CategoryCell.Props>()
     let recipesListView = HomeRecipesListView()
+    // callbacks
+    var onTapCategory: (IndexPath) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -37,20 +39,69 @@ final class HomeTrendingCategoryView: UIView {
 
     private func setup() {
         setupStackView()
+        setupCategoriesCollectionView()
+        setupCategoriesLayout()
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [headerView, categoriesListView, recipesListView])
+        let stackView = UIStackView(arrangedSubviews: [headerView, categoriesCollectionView, recipesListView])
         stackView.axis = .vertical
         stackView.spacing = 24
         addSubview(stackView, withEdgeInsets: .zero)
+    }
+
+    private func setupCategoriesCollectionView() {
+        categoriesCollectionView.backgroundColor = .clear
+        categoriesCollectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        categoriesCollectionView.showsHorizontalScrollIndicator = false
+        categoriesCollectionView.delegate = self
+        categoriesCollectionView.configureDataSource { collectionView, indexPath, props in
+            let cell: CategoryCell = collectionView.dequeueReusableCell(for: indexPath)
+            cell.render(props: props)
+            return cell
+        }
+        categoriesCollectionView.register(cell: CategoryCell.self)
+        NSLayoutConstraint.activate([
+            categoriesCollectionView.heightAnchor.constraint(equalToConstant: 32)
+        ])
+    }
+
+    private func setupCategoriesLayout() {
+        let flowlayout = UICollectionViewFlowLayout()
+        flowlayout.scrollDirection = .horizontal
+        flowlayout.minimumLineSpacing = 8
+        categoriesCollectionView.setCollectionViewLayout(flowlayout, animated: false)
     }
 
     // MARK: - Public methods
 
     func render(props: Props) {
         headerView.render(props: props.headerProps)
-        categoriesListView.render(props: props.categoriesListViewProps)
+        categoriesCollectionView.render(props: props.categoriesCollectionViewProps)
         recipesListView.render(props: props.recipesListViewProps)
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension HomeTrendingCategoryView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        onTapCategory(indexPath)
+    }
+}
+
+// MARK: - HomeTrendingCategoryView
+
+extension HomeTrendingCategoryView: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        guard let props = categoriesCollectionView.getItem(for: indexPath) else {
+            return .zero
+        }
+
+        return CategoryCell.calculateSize(for: props)
     }
 }

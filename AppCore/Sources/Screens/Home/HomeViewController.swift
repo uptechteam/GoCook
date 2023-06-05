@@ -79,7 +79,7 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
             presenter.filtersTapped()
         }
 
-        contentView.feedView.trendingCategoryView.categoriesListView.onTapItem = { [presenter] indexPath in
+        contentView.feedView.trendingCategoryView.onTapCategory = { [presenter] indexPath in
             presenter.categoryTapped(indexPath: indexPath)
         }
 

@@ -28,13 +28,9 @@ extension HomePresenter {
     private static func makeTrendingCategoryViewProps(state: State) -> HomeTrendingCategoryView.Props {
         return .init(
             headerProps: HomeRecipeCategoryHeaderView.Props(title: "Trending"),
-            categoriesListViewProps: makeCategoriesListViewProps(state: state),
+            categoriesCollectionViewProps: makeCategoriesCollectionViewProps(state: state),
             recipesListViewProps: makeRecipesListViewProps(category: state.trendingCategory)
         )
-    }
-
-    private static func makeCategoriesListViewProps(state: State) -> HomeCategoriesListView.Props {
-        .init(collectionViewProps: makeCategoriesCollectionViewProps(state: state))
     }
 
     private static func makeCategoriesCollectionViewProps(
