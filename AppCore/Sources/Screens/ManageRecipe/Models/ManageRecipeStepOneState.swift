@@ -33,7 +33,7 @@ extension ManageRecipePresenter {
         init(recipe: RecipeDetails?) {
             self.recipeImageState = recipe.flatMap { ImageState.existing($0.recipeImageSource) } ?? .empty
             self.mealName = recipe?.name ?? ""
-            self.categories = Set()
+            self.categories = Set(recipe?.tags ?? [])
         }
 
         // MARK: - Public methods
