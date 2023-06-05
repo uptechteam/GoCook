@@ -1,5 +1,5 @@
 //
-//  AppTabBarView.swift
+//  TabBarView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 15.06.2022.
@@ -10,29 +10,23 @@ import Helpers
 import Library
 import UIKit
 
-public protocol AppTabBarCoordinating: AnyObject {
+public protocol TabBarCoordinating: AnyObject {
 
 }
 
-public final class AppTabBarController: UITabBarController {
+public final class TabBarController: UITabBarController {
 
     // MARK: - Properties
 
-    private let store: Store
-    private let actionCreator: ActionCreator
-    private let contentView = AppTabBarView()
-    private unowned let coordinator: AppTabBarCoordinating
+    private let presenter: TabBarPresenter
+    private let contentView = TabBarView()
+    private unowned let coordinator: TabBarCoordinating
     private var cancellables = [AnyCancellable]()
 
     // MARK: - Lifecycle
 
-    public init(
-        store: Store,
-        actionCreator: ActionCreator,
-        coordinator: AppTabBarCoordinating
-    ) {
-        self.store = store
-        self.actionCreator = actionCreator
+    public init(presenter: TabBarPresenter, coordinator: TabBarCoordinating) {
+        self.presenter = presenter
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
@@ -54,11 +48,11 @@ public final class AppTabBarController: UITabBarController {
     // MARK: - Public methods
 
     public func select(tabIndex: Int) {
-        store.dispatch(action: .itemTapped(tabIndex))
+        presenter.itemTapped(index: tabIndex)
     }
 
     public func selectInitialIndex() {
-        store.dispatch(action: .selectInitialItem)
+        presenter.selectInitialItem()
     }
 
     public func makeTabBarSnapshot() -> UIView? {
@@ -81,11 +75,11 @@ public final class AppTabBarController: UITabBarController {
     }
 
     private func setupBinding() {
-        contentView.onTapItem = { [store] index in
-            store.dispatch(action: .itemTapped(index))
+        contentView.onTapItem = { [presenter] index in
+            presenter.itemTapped(index: index)
         }
 
-        let state = store.$state.removeDuplicates()
+        let state = presenter.$state.removeDuplicates()
             .subscribe(on: DispatchQueue.main)
 
         state
@@ -94,7 +88,7 @@ public final class AppTabBarController: UITabBarController {
             }
             .store(in: &cancellables)
 
-        state.map(AppTabBarController.makeProps)
+        state.map(TabBarPresenter.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }

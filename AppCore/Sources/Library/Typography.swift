@@ -94,7 +94,21 @@ public enum Typography {
 
     // MARK: - Public methods
 
-    public func getParameters(color: UIColor) -> [NSAttributedString.Key: Any] {
-        [.font: font, .foregroundColor: color]
+    public func getAttributes(
+        color: UIColor,
+        textAlignment: NSTextAlignment = .natural
+    ) -> [NSAttributedString.Key: Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = textAlignment
+        paragraphStyle.lineBreakMode = .byTruncatingTail
+        paragraphStyle.lineSpacing = -2
+        paragraphStyle.maximumLineHeight = lineHeight
+        paragraphStyle.minimumLineHeight = lineHeight
+        return [
+            .baselineOffset: (lineHeight - font.lineHeight) / 2,
+            .font: font,
+            .foregroundColor: color,
+            .paragraphStyle: paragraphStyle
+        ]
     }
 }

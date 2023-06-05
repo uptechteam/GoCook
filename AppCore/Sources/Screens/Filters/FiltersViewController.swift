@@ -112,7 +112,7 @@ public final class FiltersViewController: UIViewController {
             action: #selector(handleClearButtonTap)
         )
         navigationItem.rightBarButtonItem?.setTitleTextAttributes(
-            Typography.buttonLarge.getParameters(color: .primaryMain),
+            Typography.buttonLarge.getAttributes(color: .primaryMain),
             for: .normal
         )
     }

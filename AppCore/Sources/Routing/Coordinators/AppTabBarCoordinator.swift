@@ -1,26 +1,26 @@
 //
-//  AppTabBarCoordinator.swift
+//  TabBarCoordinator.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
-import AppTabBar
+import TabBar
 import BusinessLogic
 import Library
 import UIKit
 
-protocol AppTabBarCoordinatorDelegate: AnyObject {
-    func appTabBarCoordinatorDidFinish()
+protocol TabBarCoordinatorDelegate: AnyObject {
+    func tabBarCoordinatorDidFinish()
 }
 
-final class AppTabBarCoordinator: Coordinating {
+final class TabBarCoordinator: Coordinating {
 
     // MARK: - Properties
 
-    private let tabBarController: AppTabBarController
+    private let tabBarController: TabBarController
     private var childCoordinators: [Coordinating]
-    weak var delegate: AppTabBarCoordinatorDelegate?
+    weak var delegate: TabBarCoordinatorDelegate?
 
     var rootViewController: UIViewController {
         tabBarController
@@ -28,7 +28,7 @@ final class AppTabBarCoordinator: Coordinating {
 
     // MARK: - Lifecycle
 
-    init(tabBarController: AppTabBarController) {
+    init(tabBarController: TabBarController) {
         self.tabBarController = tabBarController
         self.childCoordinators = []
     }
@@ -66,7 +66,7 @@ final class AppTabBarCoordinator: Coordinating {
 
 // MARK: - FavoritesCoordinatorDelegate
 
-extension AppTabBarCoordinator: FavoritesCoordinatorDelegate {
+extension TabBarCoordinator: FavoritesCoordinatorDelegate {
     func didTapExplore() {
         tabBarController.select(tabIndex: 1)
     }
@@ -74,8 +74,8 @@ extension AppTabBarCoordinator: FavoritesCoordinatorDelegate {
 
 // MARK: - ProfileCoordinatorDelegate
 
-extension AppTabBarCoordinator: ProfileCoordinatorDelegate {
+extension TabBarCoordinator: ProfileCoordinatorDelegate {
     func profileCoordinatorDidFinish(_ coordinator: ProfileCoordinator) {
-        delegate?.appTabBarCoordinatorDidFinish()
+        delegate?.tabBarCoordinatorDidFinish()
     }
 }

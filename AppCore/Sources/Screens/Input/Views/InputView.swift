@@ -134,7 +134,7 @@ final class InputView: UIView {
         textField.text = props.text
         textField.attributedPlaceholder = NSAttributedString(
             string: props.placeholder,
-            attributes: Typography.headerThree.getParameters(color: .textDisabled)
+            attributes: Typography.headerThree.getAttributes(color: .textDisabled)
         )
         setKeyboardType(to: props.keyboardType)
         unitView.render(props: props.unitViewProps)

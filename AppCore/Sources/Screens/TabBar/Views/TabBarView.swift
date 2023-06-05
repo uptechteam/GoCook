@@ -1,5 +1,5 @@
 //
-//  AppTabBarView.swift
+//  TabBarView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 15.06.2022.
@@ -9,7 +9,7 @@ import Helpers
 import Library
 import UIKit
 
-final class AppTabBarView: UIView {
+final class TabBarView: UIView {
 
     struct Props: Equatable {
         let favoritesImageSource: ImageSource

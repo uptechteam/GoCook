@@ -46,7 +46,7 @@ let package = Package(
         .target(
             name: "Routing",
             dependencies: [
-                "AppTabBar",
+                "TabBar",
                 "Author",
                 "BusinessLogic",
                 "ManageRecipe",
@@ -63,7 +63,7 @@ let package = Package(
             ]
         ),
         // MARK: - Screens
-        makeScreenModule(name: "AppTabBar"),
+        makeScreenModule(name: "TabBar"),
         makeScreenModule(name: "Author"),
         makeScreenModule(name: "ManageRecipe"),
         makeScreenModule(name: "EditProfile"),

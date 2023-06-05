@@ -5,7 +5,7 @@
 //  Created by Oleksii Andriushchenko on 13.06.2022.
 //
 
-import AppTabBar
+import TabBar
 import BusinessLogic
 import Library
 import Home
@@ -56,8 +56,8 @@ public final class AppCoordinator {
     }
 
     private func showTabBar() {
-        let appTabBarController = AppTabBarController.resolve(coordinator: self)
-        let coordinator = AppTabBarCoordinator(tabBarController: appTabBarController)
+        let tabBarController = TabBarController.resolve(coordinator: self)
+        let coordinator = TabBarCoordinator(tabBarController: tabBarController)
         coordinator.delegate = self
         coordinator.start()
         childCoordinators.append(coordinator)
@@ -71,16 +71,16 @@ public final class AppCoordinator {
     }
 }
 
-// MARK: - AppTabBarCoordinating
+// MARK: - TabBarCoordinating
 
-extension AppCoordinator: AppTabBarCoordinating {
+extension AppCoordinator: TabBarCoordinating {
 
 }
 
-// MARK: - AppTabBarCoordinatorDelegate
+// MARK: - TabBarCoordinatorDelegate
 
-extension AppCoordinator: AppTabBarCoordinatorDelegate {
-    func appTabBarCoordinatorDidFinish() {
+extension AppCoordinator: TabBarCoordinatorDelegate {
+    func tabBarCoordinatorDidFinish() {
         childCoordinators.removeAll()
         showRegistration()
     }

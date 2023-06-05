@@ -137,7 +137,7 @@ public final class HomePresenter {
     }
 
     func viewAllTapped(indexPath: IndexPath) async {
-        guard let category = state.recipeCategories[safe: indexPath.section], !category.isTrendingCategory else {
+        guard let category = state.recipeCategories[safe: indexPath.item], !category.isTrendingCategory else {
             return
         }
 
