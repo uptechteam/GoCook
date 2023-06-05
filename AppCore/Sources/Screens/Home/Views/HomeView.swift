@@ -25,7 +25,6 @@ final class HomeView: UIView {
     let feedView = HomeFeedView()
     let searchResultsView = HomeSearchResultsView()
     // callbacks
-    var onChangeSearchQuery: (String) -> Void = { _ in }
     var onTapFilters: () -> Void = { }
 
     // MARK: - Lifecycle
@@ -67,7 +66,6 @@ final class HomeView: UIView {
     private func setupSearchTextField() {
         searchTextField.placeholder = .homeSearchPlaceholder
         searchTextField.tintColor = .appBlack
-        searchTextField.delegate = self
     }
 
     private func setupFiltersButton() {
@@ -124,29 +122,5 @@ extension HomeView: UIGestureRecognizerDelegate {
         }
 
         return !(view is UIControl)
-    }
-}
-
-// MARK: - UITextFieldDelegate
-
-extension HomeView: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-
-    func textField(
-        _ textField: UITextField,
-        shouldChangeCharactersIn range: NSRange,
-        replacementString string: String
-    ) -> Bool {
-        let oldText = textField.text ?? ""
-        let newText = oldText.replacingCharacters(in: Range(range, in: oldText)!, with: string)
-        guard newText.count <= 30 else {
-            return false
-        }
-
-        onChangeSearchQuery(newText)
-        return true
     }
 }

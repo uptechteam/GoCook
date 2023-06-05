@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 14.06.2022.
 //
 
+import Helpers
 import UIKit
 
 public final class SearchTextField: UITextField {
@@ -12,6 +13,8 @@ public final class SearchTextField: UITextField {
     // MARK: - Properties
 
     private let loopImageView = UIImageView()
+    // callbacks
+    public var onChangeText: (String) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -33,9 +36,11 @@ public final class SearchTextField: UITextField {
 
     private func setupContentView() {
         backgroundColor = .gray50
+        delegate = self
         layer.roundCornersContinuosly(radius: 8)
         leftView = UIView()
         leftViewMode = .always
+        addAction(UIAction(handler: { [weak self] _ in self?.onChangeText(self?.text ?? "") }), for: .editingChanged)
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 41)
         ])
@@ -53,5 +58,24 @@ public final class SearchTextField: UITextField {
 
     public override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
         CGRect(x: 0, y: 0, width: 41, height: bounds.height)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension SearchTextField: UITextFieldDelegate {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+    public func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        let oldText = textField.text ?? ""
+        let newText = oldText.replacingCharacters(in: Range(range, in: oldText)!, with: string)
+        return newText.count <= AppConstants.Limits.searchQuery
     }
 }
