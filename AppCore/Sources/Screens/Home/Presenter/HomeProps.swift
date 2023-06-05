@@ -29,7 +29,8 @@ extension HomePresenter {
         let otherCategoryItems = state.otherCategories.map(makeOtherCategoryItem)
         return .init(
             section: [0],
-            items: [[trendingCategoryItem] + otherCategoryItems]
+            items: [[trendingCategoryItem] + otherCategoryItems],
+            isRefreshing: state.recipeCategories.isLoading
         )
     }
 

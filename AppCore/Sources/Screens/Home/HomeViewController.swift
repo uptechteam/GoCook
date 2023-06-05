@@ -69,7 +69,6 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
         )
     }
 
-    // swiftlint:disable:next function_body_length
     private func setupBinding() {
         contentView.searchTextField.onChangeText = { [presenter] query in
             presenter.searchQueryChanged(query: query)
@@ -77,6 +76,10 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
 
         contentView.onTapFilters = { [presenter] in
             presenter.filtersTapped()
+        }
+
+        contentView.feedView.collectionView.onScrollToRefresh = toSyncClosure { [presenter] in
+            await presenter.scrolledToRefresh()
         }
 
         contentView.feedView.onTapCategory = { [presenter] indexPath in

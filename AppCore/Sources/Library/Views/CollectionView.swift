@@ -16,12 +16,14 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
 
         public let section: [Section]
         public let items: [[Item]]
+        public let isRefreshing: Bool
 
         // MARK: - Lifecycle
 
-        public init(section: [Section], items: [[Item]]) {
+        public init(section: [Section], items: [[Item]], isRefreshing: Bool = false) {
             self.section = section
             self.items = items
+            self.isRefreshing = isRefreshing
         }
     }
 
@@ -30,10 +32,13 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
 
     // MARK: - Properties
 
+    private let collectionRefreshControl = UIRefreshControl()
     public var diffableDataSource: DataSource?
     private var dataStore = [Int: Item]()
     private var isRendering = false
     private var pendingProps: Props?
+    // callbacks
+    public var onScrollToRefresh: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -73,13 +78,11 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
     }
 
     public func render(props: Props) {
-        guard !isRendering else {
-            // log.info("Rendering in progress, save props as pending")
+        guard !isRendering, !collectionRefreshControl.isRefreshing else {
             self.pendingProps = props
             return
         }
 
-        // log.info("Rendering is started")
         isRendering = true
         updateDataStore(items: props.items)
         let itemsHashes = props.items.map { sectionItems in sectionItems.map(\.hashValue) }
@@ -87,7 +90,6 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
             sections: props.section,
             items: itemsHashes,
             completion: { [weak self] in
-                // log.info("Rendering is completed")
                 self?.isRendering = false
                 if let props = self?.pendingProps {
                     self?.pendingProps = nil
@@ -95,6 +97,18 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
                 }
             }
         )
+        if collectionRefreshControl.isRefreshing {
+            collectionRefreshControl.endRefreshing()
+        }
+    }
+
+    public func refreshProps() {
+        collectionRefreshControl.endRefreshing()
+        guard let props = pendingProps else {
+            return
+        }
+
+        render(props: props)
     }
 
     public func getItem(for indexPath: IndexPath) -> Item? {
@@ -103,6 +117,17 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
         }
 
         return item
+    }
+
+    public func enableRefreshControl() {
+        collectionRefreshControl.addAction(
+            UIAction(handler: { [weak self] _ in
+                print("Refresh control changed: \(self?.collectionRefreshControl.isRefreshing as Any)")
+                self?.onScrollToRefresh()
+            }),
+            for: .valueChanged
+        )
+        refreshControl = collectionRefreshControl
     }
 
     // MARK: - Private methods

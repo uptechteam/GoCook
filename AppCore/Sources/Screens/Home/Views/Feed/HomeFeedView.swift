@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 16.11.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
@@ -35,7 +36,7 @@ final class HomeFeedView: UIView {
 
     // MARK: - Properties
 
-    private let collectionView = CollectionView<Int, Item>()
+    let collectionView = CollectionView<Int, Item>()
     // callbacks
     var onTapCategory: (IndexPath) -> Void = { _ in }
     var onTapViewAll: (IndexPath) -> Void = { _ in }
@@ -62,6 +63,32 @@ final class HomeFeedView: UIView {
 
     private func setupCollectionView() {
         collectionView.delegate = self
+        collectionView.register(cell: HomeTrendingCategoryCell.self)
+        collectionView.register(cell: HomeOtherCategoryCell.self)
+        configureDataSource()
+        collectionView.enableRefreshControl()
+        addSubview(collectionView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            collectionView.widthAnchor.constraint(equalTo: widthAnchor)
+        ])
+    }
+
+    private func setupLayout() {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 40
+        collectionView.setCollectionViewLayout(flowLayout, animated: false)
+    }
+
+    // MARK: - Public methods
+
+    func render(props: Props) {
+        isHidden = !props.isVisible
+        collectionView.render(props: props.collectionViewProps)
+    }
+
+    // MARK: - Private methods
+
+    private func configureDataSource() {
         collectionView.configureDataSource { collectionView, indexPath, item in
             switch item {
             case .other(let props, _):
@@ -108,32 +135,15 @@ final class HomeFeedView: UIView {
                 return cell
             }
         }
-        collectionView.register(cell: HomeTrendingCategoryCell.self)
-        collectionView.register(cell: HomeOtherCategoryCell.self)
-        addSubview(collectionView, withEdgeInsets: .zero)
-        NSLayoutConstraint.activate([
-            collectionView.widthAnchor.constraint(equalTo: widthAnchor)
-        ])
-    }
-
-    private func setupLayout() {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 40
-        collectionView.setCollectionViewLayout(flowLayout, animated: false)
-    }
-
-    // MARK: - Public methods
-
-    func render(props: Props) {
-        isHidden = !props.isVisible
-        collectionView.render(props: props.collectionViewProps)
     }
 }
 
 // MARK: - UICollectionViewDelegate
 
 extension HomeFeedView: UICollectionViewDelegate {
-
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        collectionView.refreshProps()
+    }
 }
 
 // MARK: - HomeTrendingCategoryView

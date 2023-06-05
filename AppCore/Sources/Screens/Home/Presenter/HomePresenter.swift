@@ -106,6 +106,10 @@ public final class HomePresenter {
         }
     }
 
+    func scrolledToRefresh() async {
+        await getFeed()
+    }
+
     func searchFavoriteTapped(indexPath: IndexPath) async {
         guard let recipe = state.searchedRecipes[safe: indexPath.item], state.pendingRecipe == nil else {
             return
@@ -138,7 +142,6 @@ public final class HomePresenter {
     }
 
     func viewDidLoad() async {
-        state.recipeCategories.toggleIsLoading(on: true)
         await getFeed()
     }
 
@@ -160,6 +163,7 @@ public final class HomePresenter {
 
     private func getFeed() async {
         do {
+            state.recipeCategories.toggleIsLoading(on: true)
             try await homeFeedFacade.getFeed()
             state.recipeCategories.adjustState(accordingTo: .success(()))
         } catch {
