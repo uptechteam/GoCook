@@ -48,8 +48,12 @@ public final class RecipeViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
+    }
+
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         Task { [presenter] in
-            await presenter.viewDidLoad()
+            await presenter.viewWillAppear()
         }
     }
 

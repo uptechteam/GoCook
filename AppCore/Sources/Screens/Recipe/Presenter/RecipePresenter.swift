@@ -84,8 +84,11 @@ public final class RecipePresenter {
         }
     }
 
-    func viewDidLoad() async {
-        state.recipeDetails.toggleIsLoading(on: true)
+    func viewWillAppear() async {
+        if !state.recipeDetails.isPresent {
+            state.recipeDetails.toggleIsLoading(on: true)
+        }
+
         await getRecipeDetails()
     }
 

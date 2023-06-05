@@ -74,6 +74,23 @@ public final class AppContainer {
                     }
                 )
             }
+            container.register(.unique, type: RecipeFacading.self) { (recipeID: Recipe.ID?) in
+                guard let recipeID else {
+                    return MockRecipeFacade()
+                }
+
+                let factory: RecipeFacadeFactory = try container.resolve()
+                return try factory.produceFacade(
+                    recipeID: recipeID,
+                    producer: {
+                        RecipeFacade(
+                            recipeID: recipeID,
+                            recipesClient: try container.resolve(),
+                            recipesStorage: try container.resolve()
+                        )
+                    }
+                )
+            }
             container.register(.singleton, type: RecipesFacading.self, factory: RecipesFacade.init)
             container.register(.singleton, type: SearchRecipesFacading.self, factory: SearchRecipesFacade.init)
             container.register(.unique, type: UserRecipesFacading.self) { (userID: User.ID) in
