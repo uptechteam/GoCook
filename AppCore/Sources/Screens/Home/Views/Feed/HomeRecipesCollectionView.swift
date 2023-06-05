@@ -1,5 +1,5 @@
 //
-//  HomeRecipesListView.swift
+//  HomeRecipesCollectionView.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 15.06.2022.
@@ -8,19 +8,20 @@
 import Library
 import UIKit
 
-final class HomeRecipesListView: UIView {
+final class HomeRecipesCollectionView: UIView {
 
     struct Props: Equatable {
-        let items: [RecipeCell.Props]
+        let collectionViewProps: CollectionView<Int, Item>.Props
     }
 
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, RecipeCell.Props>
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, RecipeCell.Props>
+    enum Item: Hashable {
+        case recipe(RecipeCell.Props)
+        case shimmering(Int)
+    }
 
     // MARK: - Properties
 
-    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
-    private lazy var dataSource = makeDataSource()
+    private let collectionView = CollectionView<Int, Item>()
     // callbacks
     var onTapItem: (IndexPath) -> Void = { _ in }
     var onTapFavorite: (IndexPath) -> Void = { _ in }
@@ -49,6 +50,8 @@ final class HomeRecipesListView: UIView {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.delegate = self
         collectionView.register(cell: RecipeCell.self)
+        collectionView.register(cell: HomeShimmeringRecipeCell.self)
+        configureDataSource()
         addSubview(collectionView, withEdgeInsets: .zero)
         NSLayoutConstraint.activate([
             collectionView.widthAnchor.constraint(equalTo: widthAnchor),
@@ -67,15 +70,15 @@ final class HomeRecipesListView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
-        dataSource.apply(sections: [0], items: [props.items])
+        collectionView.render(props: props.collectionViewProps)
     }
 
     // MARK: - Private methods
 
-    private func makeDataSource() -> DataSource {
-        return DataSource(
-            collectionView: collectionView,
-            cellProvider: { [weak self] collectionView, indexPath, props in
+    private func configureDataSource() {
+        collectionView.configureDataSource { [weak self] collectionView, indexPath, item in
+            switch item {
+            case .recipe(let props):
                 let cell: RecipeCell = collectionView.dequeueReusableCell(for: indexPath)
                 cell.render(props: props)
                 cell.onTapFavorite = { [weak self, unowned cell] in
@@ -84,14 +87,19 @@ final class HomeRecipesListView: UIView {
                     }
                 }
                 return cell
+
+            case .shimmering:
+                let cell: HomeShimmeringRecipeCell = collectionView.dequeueReusableCell(for: indexPath)
+                cell.render()
+                return cell
             }
-        )
+        }
     }
 }
 
 // MARK: - UICollectionViewDelegate
 
-extension HomeRecipesListView: UICollectionViewDelegate {
+extension HomeRecipesCollectionView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         onTapItem(indexPath)
     }

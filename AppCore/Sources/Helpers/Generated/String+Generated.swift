@@ -119,8 +119,17 @@ extension String {
   /// 30 - 45 mins
   public static let filtersSectionCookingTimeThirtyToFortyFive = L10n.tr("Localizable", "filters.section.cooking.time.thirty.to.forty.five")
 
+  /// Retry
+  public static let homeRetry = L10n.tr("Localizable", "home.retry")
+
   ///  and 
   public static let homeCategoriesJoinText = L10n.tr("Localizable", "home.categories.join.text")
+
+  /// All
+  public static let homeCategoryAll = L10n.tr("Localizable", "home.category.all")
+
+  /// Trending
+  public static let homeCategoryTrending = L10n.tr("Localizable", "home.category.trending")
 
   /// View all
   public static let homeCategoryViewAll = L10n.tr("Localizable", "home.category.view.all")

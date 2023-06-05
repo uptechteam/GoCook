@@ -5,6 +5,7 @@
 //  Created by Oleksii Andriushchenko on 16.11.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
@@ -12,17 +13,33 @@ final class HomeFeedView: UIView {
 
     struct Props: Equatable {
         let isVisible: Bool
-        let trendingCategoryViewProps: HomeTrendingCategoryView.Props
-        let otherCategoriesViewsProps: [HomeOtherCategoryView.Props]
+        let collectionViewProps: CollectionView<Int, Item>.Props
+    }
+
+    enum Item: Hashable {
+
+        case other(HomeOtherCategoryCell.Props, category: String)
+        case trending(HomeTrendingCategoryCell.Props)
+
+        // MARK: - Public methods
+
+        func hash(into hasher: inout Hasher) {
+            switch self {
+            case .other(_, let category):
+                hasher.combine(category)
+
+            case .trending:
+                hasher.combine("Trending")
+            }
+        }
     }
 
     // MARK: - Properties
 
-    private let scrollView = UIScrollView()
-    private let stackView = UIStackView()
-    let trendingCategoryView = HomeTrendingCategoryView()
+    let collectionView = CollectionView<Int, Item>()
     // callbacks
-    var onTapViewAll: (Int) -> Void = { _ in }
+    var onTapCategory: (IndexPath) -> Void = { _ in }
+    var onTapViewAll: (IndexPath) -> Void = { _ in }
     var onTapRecipe: (IndexPath) -> Void = { _ in }
     var onTapFavorite: (IndexPath) -> Void = { _ in }
 
@@ -40,62 +57,113 @@ final class HomeFeedView: UIView {
     // MARK: - Set up
 
     private func setup() {
-        setupScrollView()
-        setupStackView()
+        setupCollectionView()
+        setupLayout()
     }
 
-    private func setupScrollView() {
-        addSubview(scrollView, withEdgeInsets: .zero)
+    private func setupCollectionView() {
+        collectionView.delegate = self
+        collectionView.register(cell: HomeTrendingCategoryCell.self)
+        collectionView.register(cell: HomeOtherCategoryCell.self)
+        configureDataSource()
+        collectionView.enableRefreshControl()
+        addSubview(collectionView, withEdgeInsets: .zero)
         NSLayoutConstraint.activate([
-            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
+            collectionView.widthAnchor.constraint(equalTo: widthAnchor)
         ])
     }
 
-    private func setupStackView() {
-        stackView.axis = .vertical
-        stackView.spacing = 40
-        stackView.addArrangedSubview(trendingCategoryView)
-        scrollView.addSubview(stackView, withEdgeInsets: .zero)
-        NSLayoutConstraint.activate([
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
-        ])
+    private func setupLayout() {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 40
+        collectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
 
     // MARK: - Public methods
 
     func render(props: Props) {
         isHidden = !props.isVisible
-        trendingCategoryView.render(props: props.trendingCategoryViewProps)
-        renderOtherCategories(viewsProps: props.otherCategoriesViewsProps)
+        collectionView.render(props: props.collectionViewProps)
     }
 
     // MARK: - Private methods
 
-    private func renderOtherCategories(viewsProps: [HomeOtherCategoryView.Props]) {
-        let otherCategoriesViews = stackView.subviews.compactMap { $0 as? HomeOtherCategoryView }
-        if otherCategoriesViews.count != viewsProps.count {
-            otherCategoriesViews.forEach { $0.removeFromSuperview() }
-            viewsProps.enumerated()
-                .map(createOtherCategoryView)
-                .forEach(stackView.addArrangedSubview)
-        } else {
-            zip(otherCategoriesViews, viewsProps)
-                .forEach { view, props in view.render(props: props) }
+    private func configureDataSource() {
+        collectionView.configureDataSource { collectionView, indexPath, item in
+            switch item {
+            case .other(let props, _):
+                let cell: HomeOtherCategoryCell = collectionView.dequeueReusableCell(for: indexPath)
+                cell.render(props: props)
+                cell.headerView.onTapViewAll = { [weak self, unowned cell] in
+                    if let indexPath = self?.collectionView.indexPath(for: cell) {
+                        self?.onTapViewAll(indexPath)
+                    }
+                }
+                cell.recipesCollectionView.onTapItem = { [weak self] innerIndexPath in
+                    if let indexPath = self?.collectionView.indexPath(for: cell) {
+                        self?.onTapRecipe(IndexPath(item: innerIndexPath.item, section: indexPath.item))
+                    }
+                }
+                cell.recipesCollectionView.onTapFavorite = { [weak self] innerIndexPath in
+                    if let indexPath = self?.collectionView.indexPath(for: cell) {
+                        self?.onTapFavorite(IndexPath(item: innerIndexPath.item, section: indexPath.item))
+                    }
+                }
+                return cell
+
+            case .trending(let props):
+                let cell: HomeTrendingCategoryCell = collectionView.dequeueReusableCell(for: indexPath)
+                cell.render(props: props)
+                cell.onTapCategory = { [weak self] indexPath in
+                    self?.onTapCategory(indexPath)
+                }
+                cell.headerView.onTapViewAll = { [weak self, unowned cell] in
+                    if let indexPath = self?.collectionView.indexPath(for: cell) {
+                        self?.onTapViewAll(indexPath)
+                    }
+                }
+                cell.recipesCollectionView.onTapItem = { [weak self] innerIndexPath in
+                    if let indexPath = self?.collectionView.indexPath(for: cell) {
+                        self?.onTapRecipe(IndexPath(item: innerIndexPath.item, section: indexPath.item))
+                    }
+                }
+                cell.recipesCollectionView.onTapFavorite = { [weak self] innerIndexPath in
+                    if let indexPath = self?.collectionView.indexPath(for: cell) {
+                        self?.onTapFavorite(IndexPath(item: innerIndexPath.item, section: indexPath.item))
+                    }
+                }
+                return cell
+            }
         }
     }
+}
 
-    private func createOtherCategoryView(index: Int, props: HomeOtherCategoryView.Props) -> UIView {
-        let otherCategoryView = HomeOtherCategoryView()
-        otherCategoryView.render(props: props)
-        otherCategoryView.headerView.onTapViewAll = { [weak self] in
-            self?.onTapViewAll(index)
+// MARK: - UICollectionViewDelegate
+
+extension HomeFeedView: UICollectionViewDelegate {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        collectionView.refreshProps()
+    }
+}
+
+// MARK: - HomeTrendingCategoryView
+
+extension HomeFeedView: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        guard let item = self.collectionView.getItem(for: indexPath) else {
+            return .zero
         }
-        otherCategoryView.recipesListView.onTapItem = { [weak self] indexPath in
-            self?.onTapRecipe(IndexPath(item: indexPath.item, section: index))
+
+        switch item {
+        case .other:
+            return CGSize(width: collectionView.bounds.width, height: 324)
+
+        case .trending:
+            return CGSize(width: collectionView.bounds.width, height: 380)
         }
-        otherCategoryView.recipesListView.onTapFavorite = { [weak self] indexPath in
-            self?.onTapFavorite(IndexPath(item: indexPath.item, section: index))
-        }
-        return otherCategoryView
     }
 }

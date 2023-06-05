@@ -109,7 +109,6 @@ public final class RecipePresenter {
 
     private func observeRecipeDetails() async {
         for await recipeDetails in await recipeFacade.observeRecipe().values {
-            print(recipeDetails)
             state.recipeDetails.update(with: recipeDetails)
         }
     }

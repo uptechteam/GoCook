@@ -69,9 +69,8 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
         )
     }
 
-    // swiftlint:disable:next function_body_length
     private func setupBinding() {
-        contentView.onChangeSearchQuery = { [presenter] query in
+        contentView.searchTextField.onChangeText = { [presenter] query in
             presenter.searchQueryChanged(query: query)
         }
 
@@ -79,32 +78,24 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
             presenter.filtersTapped()
         }
 
-        contentView.feedView.trendingCategoryView.categoriesListView.onTapItem = { [presenter] indexPath in
+        contentView.feedView.collectionView.onScrollToRefresh = toSyncClosure { [presenter] in
+            await presenter.scrolledToRefresh()
+        }
+
+        contentView.feedView.onTapCategory = { [presenter] indexPath in
             presenter.categoryTapped(indexPath: indexPath)
         }
 
-        contentView.feedView.trendingCategoryView.headerView.onTapViewAll = toSyncClosure { [presenter] in
-            await presenter.viewAllTapped(index: 0, isTrending: true)
-        }
-
-        contentView.feedView.trendingCategoryView.recipesListView.onTapItem = { [presenter] indexPath in
-            presenter.recipeTapped(indexPath: indexPath, isTrending: true)
-        }
-
-        contentView.feedView.trendingCategoryView.recipesListView.onTapFavorite = toSyncClosure { [presenter] indexPath in
-            await presenter.favoriteTapped(indexPath: indexPath, isTrending: true)
-        }
-
-        contentView.feedView.onTapViewAll = toSyncClosure { [presenter] index in
-            await presenter.viewAllTapped(index: index, isTrending: false)
+        contentView.feedView.onTapViewAll = toSyncClosure { [presenter] indexPath in
+            await presenter.viewAllTapped(indexPath: indexPath)
         }
 
         contentView.feedView.onTapRecipe = { [presenter] indexPath in
-            presenter.recipeTapped(indexPath: indexPath, isTrending: false)
+            presenter.recipeTapped(indexPath: indexPath)
         }
 
         contentView.feedView.onTapFavorite = toSyncClosure { [presenter] indexPath in
-            await presenter.favoriteTapped(indexPath: indexPath, isTrending: false)
+            await presenter.favoriteTapped(indexPath: indexPath)
         }
 
         contentView.searchResultsView.onTapItem = { [presenter] indexPath in
@@ -121,6 +112,10 @@ public final class HomeViewController: UIViewController, TabBarPresentable {
 
         contentView.searchResultsView.contentStateView.onTapAction = { [presenter] in
             presenter.contentStateActionTapped()
+        }
+
+        contentView.homeStateView.onTapAction = toSyncClosure { [presenter] in
+            await presenter.retryTapped()
         }
 
         let state = presenter.$state

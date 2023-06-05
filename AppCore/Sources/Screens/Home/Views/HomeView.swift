@@ -15,6 +15,7 @@ final class HomeView: UIView {
         let filtersImage: ImageSource
         let feedViewProps: HomeFeedView.Props
         let searchResultsViewProps: HomeSearchResultsView.Props
+        let homeStateViewProps: ContentStateView.Props
     }
 
     // MARK: - Properties
@@ -24,8 +25,8 @@ final class HomeView: UIView {
     let filtersButton = IconButton()
     let feedView = HomeFeedView()
     let searchResultsView = HomeSearchResultsView()
+    let homeStateView = ContentStateView()
     // callbacks
-    var onChangeSearchQuery: (String) -> Void = { _ in }
     var onTapFilters: () -> Void = { }
 
     // MARK: - Lifecycle
@@ -67,7 +68,6 @@ final class HomeView: UIView {
     private func setupSearchTextField() {
         searchTextField.placeholder = .homeSearchPlaceholder
         searchTextField.tintColor = .appBlack
-        searchTextField.delegate = self
     }
 
     private func setupFiltersButton() {
@@ -82,7 +82,7 @@ final class HomeView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [topStackView, feedView, searchResultsView])
+        let stackView = UIStackView(arrangedSubviews: [topStackView, feedView, searchResultsView, homeStateView])
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.spacing = 24
@@ -105,6 +105,7 @@ final class HomeView: UIView {
         filtersButton.set(image: props.filtersImage.image)
         feedView.render(props: props.feedViewProps)
         searchResultsView.render(props: props.searchResultsViewProps)
+        homeStateView.render(props: props.homeStateViewProps)
     }
 
     // MARK: - Private methods
@@ -124,29 +125,5 @@ extension HomeView: UIGestureRecognizerDelegate {
         }
 
         return !(view is UIControl)
-    }
-}
-
-// MARK: - UITextFieldDelegate
-
-extension HomeView: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-
-    func textField(
-        _ textField: UITextField,
-        shouldChangeCharactersIn range: NSRange,
-        replacementString string: String
-    ) -> Bool {
-        let oldText = textField.text ?? ""
-        let newText = oldText.replacingCharacters(in: Range(range, in: oldText)!, with: string)
-        guard newText.count <= 30 else {
-            return false
-        }
-
-        onChangeSearchQuery(newText)
-        return true
     }
 }

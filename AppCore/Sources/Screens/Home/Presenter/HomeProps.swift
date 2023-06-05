@@ -13,32 +13,60 @@ extension HomePresenter {
         return .init(
             filtersImage: .asset(state.filters.isEmpty ? .filters : .filterActive),
             feedViewProps: makeFeedViewProps(state: state),
-            searchResultsViewProps: makeSearchResultsViewProps(state: state)
+            searchResultsViewProps: makeSearchResultsViewProps(state: state),
+            homeStateViewProps: makeHomeStateViewProps(state: state)
         )
     }
 
     private static func makeFeedViewProps(state: State) -> HomeFeedView.Props {
         return .init(
             isVisible: !state.isSearchActive,
-            trendingCategoryViewProps: makeTrendingCategoryViewProps(state: state),
-            otherCategoriesViewsProps: state.otherCategories.map(makeOtherCategoryViewProps)
+            collectionViewProps: makeFeedCollectionViewProps(state: state)
         )
     }
 
-    private static func makeTrendingCategoryViewProps(state: State) -> HomeTrendingCategoryView.Props {
-        return .init(
-            headerProps: HomeRecipeCategoryHeaderView.Props(title: "Trending"),
-            categoriesListViewProps: makeCategoriesListViewProps(state: state),
-            recipesListViewProps: makeRecipesListViewProps(category: state.trendingCategory)
-        )
+    private static func makeFeedCollectionViewProps(state: State) -> CollectionView<Int, HomeFeedView.Item>.Props {
+        if state.recipeCategories.isLoading {
+            return .init(
+                section: [0],
+                items: [
+                    [
+                        makeShimmeringCategoryItem(title: "Shimmering 1"),
+                        makeShimmeringCategoryItem(title: "Shimmering 2")
+                    ]
+                ],
+                isRefreshing: true
+            )
+        } else if state.recipeCategories.isPresent {
+            let trendingCategoryItem = makeTrendingCategoryItem(state: state)
+            let otherCategoryItems = state.otherCategories.map(makeOtherCategoryItem)
+            return .init(
+                section: [0],
+                items: [[trendingCategoryItem] + otherCategoryItems],
+                isRefreshing: state.recipeCategories.isLoading
+            )
+        } else {
+            return .init(section: [0], items: [[]])
+        }
     }
 
-    private static func makeCategoriesListViewProps(state: State) -> HomeCategoriesListView.Props {
-        let allItem = makeCategoryCellProps(title: "All", isSelected: state.selectedCategories.isEmpty)
+    private static func makeTrendingCategoryItem(state: State) -> HomeFeedView.Item {
+        let props = HomeTrendingCategoryCell.Props(
+            headerProps: HomeRecipeCategoryHeaderView.Props(title: .homeCategoryTrending),
+            categoriesCollectionViewProps: makeCategoriesCollectionViewProps(state: state),
+            recipesCollectionViewProps: makeRecipesCollectionViewProps(category: state.trendingCategory)
+        )
+        return .trending(props)
+    }
+
+    private static func makeCategoriesCollectionViewProps(
+        state: State
+    ) -> CollectionView<Int, CategoryCell.Props>.Props {
+        let allItem = makeCategoryCellProps(title: .homeCategoryAll, isSelected: state.selectedCategories.isEmpty)
         let items = CategoryType.priorityOrder.map { type in
             makeCategoryCellProps(title: type.name, isSelected: state.selectedCategories.contains(type))
         }
-        return .init(items: [allItem] + items)
+        return .init(section: [0], items: [[allItem] + items])
     }
 
     private static func makeCategoryCellProps(title: String, isSelected: Bool) -> CategoryCell.Props {
@@ -49,11 +77,30 @@ extension HomePresenter {
         )
     }
 
-    private static func makeOtherCategoryViewProps(recipeCategory: RecipeCategory) -> HomeOtherCategoryView.Props {
-        return .init(
+    private static func makeOtherCategoryItem(recipeCategory: RecipeCategory) -> HomeFeedView.Item {
+        let props = HomeOtherCategoryCell.Props(
+            isShimmering: false,
             headerProps: HomeRecipeCategoryHeaderView.Props(title: recipeCategory.type.name),
-            recipesListViewProps: makeRecipesListViewProps(category: recipeCategory)
+            recipesListViewProps: makeRecipesCollectionViewProps(category: recipeCategory)
         )
+        return .other(props, category: recipeCategory.type.name)
+    }
+
+    private static func makeShimmeringCategoryItem(title: String) -> HomeFeedView.Item {
+        let props = HomeOtherCategoryCell.Props(
+            isShimmering: true,
+            headerProps: HomeRecipeCategoryHeaderView.Props(title: title),
+            recipesListViewProps: makeShimmeringRecipesCollectionViewProps()
+        )
+        return .other(props, category: title)
+    }
+
+    private static func makeShimmeringRecipesCollectionViewProps() -> HomeRecipesCollectionView.Props {
+        let collectionViewProps = CollectionView<Int, HomeRecipesCollectionView.Item>.Props(
+            section: [0],
+            items: [[.shimmering(0), .shimmering(1)]]
+        )
+        return .init(collectionViewProps: collectionViewProps)
     }
 
     private static func makeSearchResultsViewProps(state: State) -> HomeSearchResultsView.Props {
@@ -124,10 +171,22 @@ extension HomePresenter {
         }
     }
 
+    private static func makeHomeStateViewProps(state: State) -> ContentStateView.Props {
+        guard !state.isSearchActive, let error = state.recipeCategories.error else {
+            return .hidden
+        }
+
+        return .message(title: error.localizedDescription, buttonTitle: .homeRetry)
+    }
+
     // MARK: - Extra
 
-    private static func makeRecipesListViewProps(category: RecipeCategory) -> HomeRecipesListView.Props {
-        .init(items: category.recipes.map(makeRecipeCellProps))
+    private static func makeRecipesCollectionViewProps(category: RecipeCategory) -> HomeRecipesCollectionView.Props {
+        let collectionViewProps = CollectionView<Int, HomeRecipesCollectionView.Item>.Props(
+            section: [0],
+            items: [category.recipes.map(makeRecipeCellProps).map(HomeRecipesCollectionView.Item.recipe)]
+        )
+        return .init(collectionViewProps: collectionViewProps)
     }
 
     private static func makeRecipeCellProps(recipe: Recipe) -> RecipeCell.Props {

@@ -1,26 +1,26 @@
 //
-//  HomeTrendingCategoryView.swift
+//  HomeOtherCategoryCell.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 16.11.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
-final class HomeTrendingCategoryView: UIView {
+final class HomeOtherCategoryCell: UICollectionViewCell, ReusableCell {
 
     struct Props: Equatable {
+        let isShimmering: Bool
         let headerProps: HomeRecipeCategoryHeaderView.Props
-        let categoriesListViewProps: HomeCategoriesListView.Props
-        let recipesListViewProps: HomeRecipesListView.Props
+        let recipesListViewProps: HomeRecipesCollectionView.Props
     }
 
     // MARK: - Properties
 
     let headerView = HomeRecipeCategoryHeaderView()
-    let categoriesListView = HomeCategoriesListView()
-    let recipesListView = HomeRecipesListView()
+    let recipesCollectionView = HomeRecipesCollectionView()
 
     // MARK: - Lifecycle
 
@@ -40,7 +40,7 @@ final class HomeTrendingCategoryView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [headerView, categoriesListView, recipesListView])
+        let stackView = UIStackView(arrangedSubviews: [headerView, recipesCollectionView])
         stackView.axis = .vertical
         stackView.spacing = 24
         addSubview(stackView, withEdgeInsets: .zero)
@@ -49,8 +49,8 @@ final class HomeTrendingCategoryView: UIView {
     // MARK: - Public methods
 
     func render(props: Props) {
+        toggle(isShimmering: props.isShimmering)
         headerView.render(props: props.headerProps)
-        categoriesListView.render(props: props.categoriesListViewProps)
-        recipesListView.render(props: props.recipesListViewProps)
+        recipesCollectionView.render(props: props.recipesListViewProps)
     }
 }

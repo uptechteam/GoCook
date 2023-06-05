@@ -96,7 +96,6 @@ final class FavoritesView: UIView {
     private func setupSearchTextField() {
         searchTextField.placeholder = .favoritesSearchPlaceholder
         searchTextField.tintColor = .appBlack
-        searchTextField.delegate = self
     }
 
     // MARK: - Public methods
@@ -125,29 +124,5 @@ extension FavoritesView: UIGestureRecognizerDelegate {
         }
 
         return !(view is UIControl)
-    }
-}
-
-// MARK: - UITextFieldDelegate
-
-extension FavoritesView: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-
-    func textField(
-        _ textField: UITextField,
-        shouldChangeCharactersIn range: NSRange,
-        replacementString string: String
-    ) -> Bool {
-        let oldText = textField.text ?? ""
-        let newText = oldText.replacingCharacters(in: Range(range, in: oldText)!, with: string)
-        guard newText.count <= 30 else {
-            return false
-        }
-
-        onChangeSearchQuery(newText)
-        return true
     }
 }

@@ -8,6 +8,10 @@
 import Foundation
 
 public enum AppConstants {
+    public enum Limits {
+        public static let searchQuery = 30
+    }
+
     public enum Time {
         public static let transitionAnimationInterval = 0.33
     }

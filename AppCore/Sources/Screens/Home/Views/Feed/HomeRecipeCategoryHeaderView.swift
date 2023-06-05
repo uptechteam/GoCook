@@ -16,7 +16,7 @@ final class HomeRecipeCategoryHeaderView: UIView {
 
     // MARK: - Properties
 
-    private let titleLabel = UILabel()
+    private let titleLabel = ShimmeringLabel()
     private let viewAllButton = UIButton()
     // callbacks
     var onTapViewAll: () -> Void = { }

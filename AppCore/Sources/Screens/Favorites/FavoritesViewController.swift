@@ -79,7 +79,7 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
             presenter.filtersTapped()
         }
 
-        contentView.onChangeSearchQuery = toSyncClosure { [presenter] text in
+        contentView.searchTextField.onChangeText = toSyncClosure { [presenter] text in
             await presenter.searchQueryChanged(text)
         }
 

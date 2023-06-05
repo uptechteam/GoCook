@@ -69,9 +69,11 @@ public final class HomePresenter {
         state.route = .init(value: .didTapFilters)
     }
 
-    func favoriteTapped(indexPath: IndexPath, isTrending: Bool) async {
-        let category = isTrending ? state.trendingCategory : state.otherCategories[safe: indexPath.section]
-        guard let recipe = category?.recipes[safe: indexPath.item], state.pendingRecipe == nil else {
+    func favoriteTapped(indexPath: IndexPath) async {
+        guard
+            let category = state.recipeCategories[safe: indexPath.section],
+            let recipe = category.recipes[safe: indexPath.item]
+        else {
             return
         }
 
@@ -83,13 +85,19 @@ public final class HomePresenter {
         state.route = .init(value: .didTapFilters)
     }
 
-    func recipeTapped(indexPath: IndexPath, isTrending: Bool) {
-        let category = isTrending ? state.trendingCategory : state.otherCategories[safe: indexPath.section]
-        guard let recipe = category?.recipes[safe: indexPath.item] else {
+    func recipeTapped(indexPath: IndexPath) {
+        guard
+            let category = state.recipeCategories[safe: indexPath.section],
+            let recipe = category.recipes[safe: indexPath.item]
+        else {
             return
         }
 
         state.route = .init(value: .didTapRecipe(recipe))
+    }
+
+    func retryTapped() async {
+        await getFeed()
     }
 
     func scrolledSearchToEnd() {
@@ -100,6 +108,10 @@ public final class HomePresenter {
         getRecipesPageTask = Task {
             try? await searchRecipesFacade.getNextPage(query: state.searchQuery, filter: state.filters)
         }
+    }
+
+    func scrolledToRefresh() async {
+        await getFeed()
     }
 
     func searchFavoriteTapped(indexPath: IndexPath) async {
@@ -124,8 +136,8 @@ public final class HomePresenter {
         state.route = .init(value: .didTapRecipe(recipe))
     }
 
-    func viewAllTapped(index: Int, isTrending: Bool) async {
-        guard !isTrending, let category = state.otherCategories[safe: index] else {
+    func viewAllTapped(indexPath: IndexPath) async {
+        guard let category = state.recipeCategories[safe: indexPath.section], !category.isTrendingCategory else {
             return
         }
 
@@ -134,7 +146,6 @@ public final class HomePresenter {
     }
 
     func viewDidLoad() async {
-        state.recipeCategories.toggleIsLoading(on: true)
         await getFeed()
     }
 
@@ -156,6 +167,7 @@ public final class HomePresenter {
 
     private func getFeed() async {
         do {
+            state.recipeCategories.toggleIsLoading(on: true)
             try await homeFeedFacade.getFeed()
             state.recipeCategories.adjustState(accordingTo: .success(()))
         } catch {
