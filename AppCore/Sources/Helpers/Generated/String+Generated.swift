@@ -243,6 +243,20 @@ extension String {
   /// Cooking time, min
   public static let inputTimeTitle = L10n.tr("Localizable", "input.time.title")
 
+  /// (%d reviews)
+  public static func libraryRatingViewReviews(_ p1: Int) -> String {
+    return L10n.tr("Localizable", "library.rating.view.reviews", p1)
+  }
+
+  /// 0.0
+  public static let libraryRatingViewZero = L10n.tr("Localizable", "library.rating.view.zero")
+
+  /// No reviews yet
+  public static let libraryRatingViewNoReviews = L10n.tr("Localizable", "library.rating.view.no.reviews")
+
+  /// (1 review)
+  public static let libraryRatingViewOneReview = L10n.tr("Localizable", "library.rating.view.one.review")
+
   /// Login
   public static let loginLogin = L10n.tr("Localizable", "login.login")
 
@@ -395,18 +409,10 @@ extension String {
   /// Share
   public static let recipeShare = L10n.tr("Localizable", "recipe.share")
 
-  /// (%d reviews)
-  public static func recipeDetailsReviews(_ p1: Int) -> String {
-    return L10n.tr("Localizable", "recipe.details.reviews", p1)
-  }
-
   /// %d min
   public static func recipeDetailsCookingTime(_ p1: Int) -> String {
     return L10n.tr("Localizable", "recipe.details.cooking.time", p1)
   }
-
-  /// (1 review)
-  public static let recipeDetailsOneReview = L10n.tr("Localizable", "recipe.details.one.review")
 
   /// Retry
   public static let recipeErrorRetry = L10n.tr("Localizable", "recipe.error.retry")

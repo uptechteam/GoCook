@@ -94,7 +94,7 @@ final class RecipeFeedbackView: UIView {
             .compactMap { $0 as? UIButton }
             .enumerated()
             .forEach { index, button in
-                button.setImage(index < rating ? .bigFilledStar : .bigEmptyStar, for: .normal)
+                button.setImage(index < rating ? .star30 : .starGray30, for: .normal)
             }
     }
 }
