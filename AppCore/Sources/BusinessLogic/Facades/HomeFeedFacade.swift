@@ -22,7 +22,7 @@ public actor HomeFeedFacade: HomeFeedFacading {
     private let recipesStorage: RecipesStoraging
     private var feed: [RecipeCategory]
     private var identifiers: [Recipe.ID]
-    private var identifiersSubject: CurrentValueSubject<[Recipe.ID], Never>
+    private var identifiersSubject: CurrentValueSubject<[Recipe.ID]?, Never>
 
     // MARK: - Lifecycle
 
@@ -31,7 +31,7 @@ public actor HomeFeedFacade: HomeFeedFacading {
         self.recipesStorage = recipesStorage
         self.feed = []
         self.identifiers = []
-        self.identifiersSubject = CurrentValueSubject([])
+        self.identifiersSubject = CurrentValueSubject(nil)
     }
 
     // MARK: - Public methods
@@ -45,6 +45,7 @@ public actor HomeFeedFacade: HomeFeedFacading {
 
     public func observeFeed() -> AnyPublisher<[RecipeCategory], Never> {
         return identifiersSubject
+            .compactMap { $0 }
             .mapAsync { [recipesStorage] ids in
                 await recipesStorage.observeRecipes(by: ids)
             }

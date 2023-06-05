@@ -1,16 +1,18 @@
 //
-//  HomeOtherCategoryViewProps.swift
+//  HomeOtherCategoryCell.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 16.11.2022.
 //
 
+import Helpers
 import Library
 import UIKit
 
 final class HomeOtherCategoryCell: UICollectionViewCell, ReusableCell {
 
     struct Props: Equatable {
+        let isShimmering: Bool
         let headerProps: HomeRecipeCategoryHeaderView.Props
         let recipesListViewProps: HomeRecipesCollectionView.Props
     }
@@ -47,6 +49,7 @@ final class HomeOtherCategoryCell: UICollectionViewCell, ReusableCell {
     // MARK: - Public methods
 
     func render(props: Props) {
+        toggle(isShimmering: props.isShimmering)
         headerView.render(props: props.headerProps)
         recipesCollectionView.render(props: props.recipesListViewProps)
     }

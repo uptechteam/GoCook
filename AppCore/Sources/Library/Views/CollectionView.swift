@@ -89,6 +89,7 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
         diffableDataSource?.applyWithReconfiguring(
             sections: props.section,
             items: itemsHashes,
+            animatingDifferences: false,
             completion: { [weak self] in
                 self?.isRendering = false
                 if let props = self?.pendingProps {

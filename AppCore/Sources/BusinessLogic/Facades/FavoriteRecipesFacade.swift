@@ -21,7 +21,7 @@ public actor FavoriteRecipesFacade: FavoriteRecipesFacading {
     private let recipesClient: RecipesClienting
     private let recipesStorage: RecipesStoraging
     private var identifiers: [Recipe.ID]
-    private var identifiersSubject: CurrentValueSubject<[Recipe.ID], Never>
+    private var identifiersSubject: CurrentValueSubject<[Recipe.ID]?, Never>
 
     // MARK: - Lifecycle
 
@@ -29,7 +29,7 @@ public actor FavoriteRecipesFacade: FavoriteRecipesFacading {
         self.recipesClient = recipesClient
         self.recipesStorage = recipesStorage
         self.identifiers = []
-        self.identifiersSubject = CurrentValueSubject([])
+        self.identifiersSubject = CurrentValueSubject(nil)
     }
 
     // MARK: - Public methods
@@ -43,6 +43,7 @@ public actor FavoriteRecipesFacade: FavoriteRecipesFacading {
 
     public func observeFeed() -> AnyPublisher<[Recipe], Never> {
         return identifiersSubject
+            .compactMap { $0 }
             .mapAsync { [recipesStorage] ids in
                 await recipesStorage.observeRecipes(by: ids)
             }

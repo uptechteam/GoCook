@@ -84,7 +84,7 @@ public final class EditProfilePresenter {
 
     private func upload(imageSource: ImageSource) async throws -> String? {
         guard let data = imageSource.image?.pngData() else {
-            print("Can't get data from picked image")
+            log.info("Can't get data from picked image")
             return nil
         }
 

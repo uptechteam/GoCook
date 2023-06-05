@@ -28,10 +28,10 @@ public extension UIImage {
         let sideRatio = sqrt(sideRatioSquared)
         let newSize = CGSize(width: size.width * sideRatio, height: size.height * sideRatio)
         let generatedImage = generateImage(size: newSize)
-//        log.info(
-//            "Generate new image",
-//            metadata: ["Size in KB": .string("\((generatedImage?.pngData()?.count ?? 0) / 1024)")]
-//        )
+        log.info(
+            "Generate new image",
+            metadata: ["Size in KB": .string("\((generatedImage?.pngData()?.count ?? 0) / 1024)")]
+        )
         print("Size in KB: \((generatedImage?.pngData()?.count ?? 0) / 1024)")
         return generatedImage
     }
