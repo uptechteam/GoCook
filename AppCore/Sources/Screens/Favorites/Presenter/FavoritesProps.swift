@@ -74,17 +74,9 @@ extension FavoritesPresenter {
                 recipeImageSource: recipe.recipeImageSource,
                 isFavorite: recipe.isFavorite,
                 name: recipe.name,
-                ratingViewProps: makeRatingViewProps(recipe: recipe)
+                ratingViewProps: RatingView.makeProps(recipe: recipe)
             )
         }
-    }
-
-    private static func makeRatingViewProps(recipe: Recipe) -> RatingView.Props {
-        return .init(
-            ratingText: "\(recipe.rating)",
-            isReviewsLabelVisible: false,
-            reviewsText: ""
-        )
     }
 
     private static func makeContentStateViewProps(state: State) -> ContentStateView.Props {

@@ -143,8 +143,6 @@
 
 // MARK: - Recipe
 
-"recipe.details.one.review" = "(1 review)";
-"recipe.details.reviews" = "(%d reviews)";
 "recipe.details.cooking.time" = "%d min";
 "recipe.ingredients.title" = "Ingredients";
 "recipe.ingredients.one.serving" = "1 serving";
@@ -205,6 +203,13 @@
 "ingredient.unit.table.spoon.reduction" = "tbsp";
 "ingredient.unit.tea.spoon.reduction" = "tsp";
 "ingredient.unit.whole.reduction" = "whole";
+
+// MARK: - Library
+
+"library.rating.view.zero" = "0.0";
+"library.rating.view.no.reviews" = "No reviews yet";
+"library.rating.view.one.review" = "(1 review)";
+"library.rating.view.reviews" = "(%d reviews)";
 
 // MARK: - Validation
 

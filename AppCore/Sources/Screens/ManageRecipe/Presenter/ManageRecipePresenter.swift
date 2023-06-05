@@ -19,6 +19,7 @@ final class ManageRecipePresenter {
 
     private let fileClient: FileClienting
     private let keyboardManager: KeyboardManaging
+    private let recipeFacade: RecipeFacading
     private let recipesFacade: RecipesFacading
     @Published
     private(set) var state: State
@@ -45,10 +46,12 @@ final class ManageRecipePresenter {
         envelope: ManageRecipeEnvelope,
         fileClient: FileClienting,
         keyboardManager: KeyboardManaging,
+        recipeFacade: RecipeFacading,
         recipesFacade: RecipesFacading
     ) {
         self.fileClient = fileClient
         self.keyboardManager = keyboardManager
+        self.recipeFacade = recipeFacade
         self.recipesFacade = recipesFacade
         self.state = State.makeInitialState(envelope: envelope)
         self.uploadImageTask = nil
@@ -151,6 +154,7 @@ final class ManageRecipePresenter {
         do {
             if let id = state.recipeID {
                 _ = try await recipesFacade.edit(recipe: state.getRecipeUpdate(recipeID: id))
+                try? await recipeFacade.refreshRecipe()
             } else {
                 _ = try await recipesFacade.create(recipe: state.getNewRecipe())
             }

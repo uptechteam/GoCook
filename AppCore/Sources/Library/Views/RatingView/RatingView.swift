@@ -13,16 +13,17 @@ public final class RatingView: UIView {
 
         // MARK: - Properties
 
+        /// isActive tells whether at least one review is left.
+        public let isActive: Bool
         public let ratingText: String
-        public let isReviewsLabelVisible: Bool
-        public let reviewsText: String
+        public let description: String
 
         // MARK: - Lifecycle
 
-        public init(ratingText: String, isReviewsLabelVisible: Bool, reviewsText: String) {
+        public init(isActive: Bool, ratingText: String, description: String) {
+            self.isActive = isActive
             self.ratingText = ratingText
-            self.isReviewsLabelVisible = isReviewsLabelVisible
-            self.reviewsText = reviewsText
+            self.description = description
         }
     }
 
@@ -51,7 +52,6 @@ public final class RatingView: UIView {
     }
 
     private func setupStarImageView() {
-        starImageView.image = .star
         starImageView.contentMode = .center
         NSLayoutConstraint.activate([
             starImageView.widthAnchor.constraint(equalToConstant: 20),
@@ -60,7 +60,7 @@ public final class RatingView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [starImageView, textLabel, reviewsLabelLabel])
+        let stackView = UIStackView(arrangedSubviews: [starImageView, textLabel, reviewsLabelLabel, UIView()])
         stackView.alignment = .center
         stackView.spacing = 6
         addSubview(stackView, withEdgeInsets: .zero)
@@ -69,8 +69,9 @@ public final class RatingView: UIView {
     // MARK: - Public methods
 
     public func render(props: Props) {
+        starImageView.image = props.isActive ? .star20 : .starGray20
         textLabel.render(title: props.ratingText, color: .appBlack, typography: .other)
-        reviewsLabelLabel.isHidden = !props.isReviewsLabelVisible
-        reviewsLabelLabel.render(title: props.reviewsText, color: .textSecondary, typography: .bodyTwo)
+        textLabel.isHidden = !props.isActive
+        reviewsLabelLabel.render(title: props.description, color: .textSecondary, typography: .bodyTwo)
     }
 }

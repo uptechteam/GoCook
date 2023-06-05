@@ -17,6 +17,7 @@ extension ManageRecipeViewController {
                 envelope: envelope,
                 fileClient: AppContainer.resolve(),
                 keyboardManager: AppContainer.resolve(),
+                recipeFacade: AppContainer.resolve(arguments: envelope.recipe?.id),
                 recipesFacade: AppContainer.resolve()
             ),
             coordinator: coordinator

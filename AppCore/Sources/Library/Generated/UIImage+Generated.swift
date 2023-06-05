@@ -47,6 +47,22 @@ extension UIImage {
     return UIImage(named: "filters")!
   }
 
+  @nonobjc public class var star20: UIImage {
+    return UIImage(named: "star20")!
+  }
+
+  @nonobjc public class var star30: UIImage {
+    return UIImage(named: "star30")!
+  }
+
+  @nonobjc public class var starGray20: UIImage {
+    return UIImage(named: "starGray20")!
+  }
+
+  @nonobjc public class var starGray30: UIImage {
+    return UIImage(named: "starGray30")!
+  }
+
   @nonobjc public class var circleWithEmptyHeart: UIImage {
     return UIImage(named: "circleWithEmptyHeart")!
   }
@@ -109,14 +125,6 @@ extension UIImage {
 
   @nonobjc public class var settings: UIImage {
     return UIImage(named: "settings")!
-  }
-
-  @nonobjc public class var bigEmptyStar: UIImage {
-    return UIImage(named: "bigEmptyStar")!
-  }
-
-  @nonobjc public class var bigFilledStar: UIImage {
-    return UIImage(named: "bigFilledStar")!
   }
 
   @nonobjc public class var delete: UIImage {

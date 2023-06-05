@@ -13,7 +13,6 @@ public protocol RecipesFacading: Sendable {
     func edit(recipe: RecipeUpdate) async throws
     func rate(recipeID: Recipe.ID, rating: Int) async throws
     func removeFromFavorites(recipeID: Recipe.ID) async throws
-    func update(recipe: RecipeUpdate) async throws
 }
 
 public actor RecipesFacade: RecipesFacading {
@@ -38,11 +37,13 @@ public actor RecipesFacade: RecipesFacading {
     }
 
     public func create(recipe: NewRecipe) async throws {
-        _ = try await recipesClient.create(recipe: recipe)
+        let createdRecipe = try await recipesClient.create(recipe: recipe)
+        await recipesStorage.store(recipe: createdRecipe)
     }
 
     public func edit(recipe: RecipeUpdate) async throws {
-        _ = try await recipesClient.edit(recipe: recipe)
+        let editedRecipe = try await recipesClient.edit(recipe: recipe)
+        await recipesStorage.store(recipe: editedRecipe)
     }
 
     public func rate(recipeID: Recipe.ID, rating: Int) async throws {
@@ -53,9 +54,5 @@ public actor RecipesFacade: RecipesFacading {
     public func removeFromFavorites(recipeID: Recipe.ID) async throws {
         let recipeDetails = try await recipesClient.removeFromFavorites(recipeID: recipeID)
         await recipesStorage.store(recipe: recipeDetails.recipe)
-    }
-
-    public func update(recipe: RecipeUpdate) async throws {
-
     }
 }
