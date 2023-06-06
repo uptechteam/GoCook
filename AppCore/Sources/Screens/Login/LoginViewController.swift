@@ -61,11 +61,11 @@ public final class LoginViewController: UIViewController, ErrorPresentable {
             presenter.skipTapped()
         }
 
-        contentView.nameInputView.onDidChangeText = { [presenter] text in
+        contentView.nameInputView.onChangeText = { [presenter] text in
             presenter.nameChanged(text)
         }
 
-        contentView.passwordInputView.onDidChangeText = { [presenter] text in
+        contentView.passwordInputView.onChangeText = { [presenter] text in
             presenter.passwordChanged(text)
         }
 

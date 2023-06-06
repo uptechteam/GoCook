@@ -37,9 +37,9 @@ final class IngredientCell: UICollectionViewCell, ReusableCell {
     private let amountLabel = UILabel()
     private let deleteImageView = IconButton()
     // callbacks
-    var onDidTapName: () -> Void = { }
-    var onDidTapAmount: () -> Void = { }
-    var onDidTapDelete: () -> Void = { }
+    var onTapName: () -> Void = { }
+    var onTapAmount: () -> Void = { }
+    var onTapDelete: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -77,7 +77,7 @@ final class IngredientCell: UICollectionViewCell, ReusableCell {
         deleteImageView.isHidden = true
         deleteImageView.set(image: .closeRed)
         deleteImageView.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapDelete() }),
+            UIAction(handler: { [weak self] _ in self?.onTapDelete() }),
             for: .touchUpInside
         )
     }
@@ -101,11 +101,11 @@ final class IngredientCell: UICollectionViewCell, ReusableCell {
 
     @objc
     private func handleNameLabelTap() {
-        onDidTapName()
+        onTapName()
     }
 
     @objc
     private func handleAmountLabelTap() {
-        onDidTapAmount()
+        onTapAmount()
     }
 }

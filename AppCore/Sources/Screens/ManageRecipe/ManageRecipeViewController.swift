@@ -86,7 +86,7 @@ public final class ManageRecipeViewController: UIViewController {
 
     // swiftlint:disable:next function_body_length
     private func setupBinding() {
-        contentView.stepOneView.recipeImageView.onDidTapImage = { [presenter] in
+        contentView.stepOneView.recipeImageView.onTapImage = { [presenter] in
             presenter.recipeImageTapped()
         }
 
@@ -94,59 +94,59 @@ public final class ManageRecipeViewController: UIViewController {
             presenter.mealNameChanged(name: text)
         }
 
-        contentView.stepOneView.onDidTapCategory = { [presenter] indexPath in
+        contentView.stepOneView.onTapCategory = { [presenter] indexPath in
             presenter.categoryItemTapped(indexPath: indexPath)
         }
 
-        contentView.stepTwoView.servingsView.onDidTap = { [presenter] in
+        contentView.stepTwoView.servingsView.onTap = { [presenter] in
             presenter.amountTapped()
         }
 
-        contentView.stepTwoView.ingredientsView.onDidTapIngredientName = { [presenter] indexPath in
+        contentView.stepTwoView.ingredientsView.onTapIngredientName = { [presenter] indexPath in
             presenter.ingredientNameTapped(indexPath: indexPath)
         }
 
-        contentView.stepTwoView.ingredientsView.onDidTapIngredientAmount = { [presenter] indexPath in
+        contentView.stepTwoView.ingredientsView.onTapIngredientAmount = { [presenter] indexPath in
             presenter.ingredientAmountTapped(indexPath: indexPath)
         }
 
-        contentView.stepTwoView.ingredientsView.onDidTapDeleteIngredient = { [presenter] indexPath in
+        contentView.stepTwoView.ingredientsView.onTapDeleteIngredient = { [presenter] indexPath in
             presenter.deleteIngredientTapped(indexPath: indexPath)
         }
 
-        contentView.stepTwoView.ingredientsView.onDidTapAddIngredient = { [presenter] in
+        contentView.stepTwoView.ingredientsView.onTapAddIngredient = { [presenter] in
             presenter.addIngredientTapped()
         }
 
-        contentView.stepThreeView.timeView.onDidTap = { [presenter] in
+        contentView.stepThreeView.timeView.onTap = { [presenter] in
             presenter.cookingTimeTapped()
         }
 
-        contentView.stepThreeView.instructionsView.onDidChangeText = { [presenter] index, text in
+        contentView.stepThreeView.instructionsView.onChangeText = { [presenter] index, text in
             presenter.instructionChanged(index: index, text: text)
         }
 
-        contentView.stepThreeView.instructionsView.onDidTapDelete = { [presenter] index in
+        contentView.stepThreeView.instructionsView.onTapDelete = { [presenter] index in
             presenter.deleteInstructionTapped(index: index)
         }
 
-        contentView.stepThreeView.instructionsView.onDidTapAddInstruction = { [presenter] in
+        contentView.stepThreeView.instructionsView.onTapAddInstruction = { [presenter] in
             presenter.addInstructionTapped()
         }
 
-        contentView.stepFourView.headerView.recipeImageView.onDidTapImage = { [presenter] in
+        contentView.stepFourView.headerView.recipeImageView.onTapImage = { [presenter] in
             presenter.recipeImageTapped()
         }
 
-        contentView.stepsView.onDidTapBack = { [presenter] in
+        contentView.stepsView.onTapBack = { [presenter] in
             presenter.backTapped()
         }
 
-        contentView.stepsView.onDidTapNext = { [presenter] in
+        contentView.stepsView.onTapNext = { [presenter] in
             presenter.nextTapped()
         }
 
-        contentView.stepsView.onDidTapFinish = toSyncClosure { [presenter] in
+        contentView.stepsView.onTapFinish = toSyncClosure { [presenter] in
             await presenter.finishTapped()
         }
 

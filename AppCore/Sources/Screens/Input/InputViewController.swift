@@ -61,15 +61,15 @@ public final class InputViewController: UIViewController {
             }
             .store(in: &cancellables)
 
-        contentView.onDidChangeText = { [presenter] text in
+        contentView.onChangeText = { [presenter] text in
             presenter.textChanged(text)
         }
 
-        contentView.onDidTapSave = { [presenter] in
+        contentView.onTapSave = { [presenter] in
             presenter.saveTapped()
         }
 
-        contentView.unitView.onDidSelectItem = { [presenter] index in
+        contentView.unitView.onSelectItem = { [presenter] index in
             presenter.unitSelected(index: index)
         }
 

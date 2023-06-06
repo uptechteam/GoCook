@@ -38,9 +38,9 @@ final class ManageRecipeStepsView: UIView {
     )
     private let spinnerView = SpinnerView()
     // callbacks
-    var onDidTapBack: () -> Void = { }
-    var onDidTapNext: () -> Void = { }
-    var onDidTapFinish: () -> Void = { }
+    var onTapBack: () -> Void = { }
+    var onTapNext: () -> Void = { }
+    var onTapFinish: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -78,7 +78,7 @@ final class ManageRecipeStepsView: UIView {
     private func setupBackButton() {
         backButton.setTitle(.manageRecipeNavigationBack)
         backButton.setImage(.arrowBack)
-        backButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapBack() }), for: .touchUpInside)
+        backButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapBack() }), for: .touchUpInside)
     }
 
     private func setupTitleLabel() {
@@ -89,13 +89,13 @@ final class ManageRecipeStepsView: UIView {
     private func setupNextButton() {
         nextButton.setTitle(.manageRecipeNavigationNext)
         nextButton.setImage(.arrowForwardGreen)
-        nextButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapNext() }), for: .touchUpInside)
+        nextButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapNext() }), for: .touchUpInside)
     }
 
     private func setupFinishButton() {
         finishButton.setTitle(.manageRecipeNavigationFinish)
         finishButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapFinish() }),
+            UIAction(handler: { [weak self] _ in self?.onTapFinish() }),
             for: .touchUpInside
         )
     }

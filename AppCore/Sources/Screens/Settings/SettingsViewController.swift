@@ -55,7 +55,7 @@ public final class SettingsViewController: UIViewController {
     }
 
     private func setupBinding() {
-        contentView.onDidTapLogout = toSyncClosure { [presenter] in
+        contentView.onTapLogout = toSyncClosure { [presenter] in
             await presenter.logoutTapped()
         }
 

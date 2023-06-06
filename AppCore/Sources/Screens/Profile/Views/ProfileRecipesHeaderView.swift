@@ -21,7 +21,7 @@ final class ProfileRecipesHeaderView: UIView {
         config: ButtonConfig(buttonSize: .medium, colorConfig: .primary, isBackgroundVisible: false)
     )
     // callbacks
-    var onDidTapAddNew: () -> Void = { }
+    var onTapAddNew: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -49,7 +49,7 @@ final class ProfileRecipesHeaderView: UIView {
     private func setupAddNewButton() {
         addNewButton.setTitle(.profileButtonAddMoreTitle)
         addNewButton.setImage(.addIcon)
-        addNewButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapAddNew() }), for: .touchUpInside)
+        addNewButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapAddNew() }), for: .touchUpInside)
     }
 
     private func setupStackView() {

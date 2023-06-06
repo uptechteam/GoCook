@@ -57,27 +57,27 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
     }
 
     private func setupBinding() {
-        contentView.onDidTapSkip = { [presenter] in
+        contentView.onTapSkip = { [presenter] in
             presenter.skipTapped()
         }
 
-        contentView.nameInputView.onDidChangeText = { [presenter] text in
+        contentView.nameInputView.onChangeText = { [presenter] text in
             presenter.nameChanged(text)
         }
 
-        contentView.passwordInputView.onDidChangeText = { [presenter] text in
+        contentView.passwordInputView.onChangeText = { [presenter] text in
             presenter.passwordChagned(text)
         }
 
-        contentView.onDidTapSignUp = toSyncClosure { [presenter] in
+        contentView.onTapSignUp = toSyncClosure { [presenter] in
             await presenter.signUpTapped()
         }
 
-        contentView.onDidTapSignUpWithApple = { [presenter] in
+        contentView.onTapSignUpWithApple = { [presenter] in
             presenter.signUpWithAppleTapped()
         }
 
-        contentView.onDidTapHaveAccount = { [presenter] in
+        contentView.onTapHaveAccount = { [presenter] in
             presenter.loginTapped()
         }
 

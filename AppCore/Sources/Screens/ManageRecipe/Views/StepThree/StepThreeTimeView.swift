@@ -22,7 +22,7 @@ final class StepThreeTimeView: UIView {
     private let titleLabel = UILabel()
     private let timeLabel = UILabel()
     // callbacks
-    var onDidTap: () -> Void = { }
+    var onTap: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -73,6 +73,6 @@ final class StepThreeTimeView: UIView {
 
     @objc
     private func handleTap() {
-        onDidTap()
+        onTap()
     }
 }

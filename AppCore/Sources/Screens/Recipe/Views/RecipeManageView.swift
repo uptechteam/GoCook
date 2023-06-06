@@ -25,9 +25,9 @@ final class RecipeManageView: UIView {
         config: ButtonConfig(colorConfig: .error, isBackgroundVisible: false, isBorderVisible: true)
     )
     // callbacks
-    var onDidTapShare: () -> Void = { }
-    var onDidTapEdit: () -> Void = { }
-    var onDidTapDelete: () -> Void = { }
+    var onTapShare: () -> Void = { }
+    var onTapEdit: () -> Void = { }
+    var onTapDelete: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -58,7 +58,7 @@ final class RecipeManageView: UIView {
         shareButton.setTitle(.recipeShare)
         shareButton.setImage(.share)
         shareButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapShare() }),
+            UIAction(handler: { [weak self] _ in self?.onTapShare() }),
             for: .touchUpInside
         )
     }
@@ -67,7 +67,7 @@ final class RecipeManageView: UIView {
         editButton.setTitle(.recipeEdit)
         editButton.setImage(.edit)
         editButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapEdit() }),
+            UIAction(handler: { [weak self] _ in self?.onTapEdit() }),
             for: .touchUpInside
         )
     }
@@ -76,7 +76,7 @@ final class RecipeManageView: UIView {
         deleteButton.setTitle(.recipeDelete)
         deleteButton.setImage(.delete)
         deleteButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapDelete() }),
+            UIAction(handler: { [weak self] _ in self?.onTapDelete() }),
             for: .touchUpInside
         )
     }

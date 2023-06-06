@@ -27,10 +27,10 @@ final class StepTwoIngredientsView: UIView {
         config: ButtonConfig(buttonSize: .medium, colorConfig: .primary, isBackgroundVisible: false)
     )
     // callbacks
-    var onDidTapIngredientName: (IndexPath) -> Void = { _ in }
-    var onDidTapIngredientAmount: (IndexPath) -> Void = { _ in }
-    var onDidTapDeleteIngredient: (IndexPath) -> Void = { _ in }
-    var onDidTapAddIngredient: () -> Void = { }
+    var onTapIngredientName: (IndexPath) -> Void = { _ in }
+    var onTapIngredientAmount: (IndexPath) -> Void = { _ in }
+    var onTapDeleteIngredient: (IndexPath) -> Void = { _ in }
+    var onTapAddIngredient: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -79,7 +79,7 @@ final class StepTwoIngredientsView: UIView {
         addIngredientButton.setTitle(.manageRecipeStepTwoAddIngredient)
         addIngredientButton.setImage(.addIcon)
         addIngredientButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapAddIngredient() }),
+            UIAction(handler: { [weak self] _ in self?.onTapAddIngredient() }),
             for: .touchUpInside
         )
     }
@@ -116,19 +116,19 @@ extension StepTwoIngredientsView {
             cellProvider: { collectionView, indexPath, props in
                 let cell: IngredientCell = collectionView.dequeueReusableCell(for: indexPath)
                 cell.render(props: props)
-                cell.onDidTapName = { [weak self] in
+                cell.onTapName = { [weak self] in
                     if let indexPath = self?.collectionView.indexPath(for: cell) {
-                        self?.onDidTapIngredientName(indexPath)
+                        self?.onTapIngredientName(indexPath)
                     }
                 }
-                cell.onDidTapAmount = { [weak self] in
+                cell.onTapAmount = { [weak self] in
                     if let indexPath = self?.collectionView.indexPath(for: cell) {
-                        self?.onDidTapIngredientAmount(indexPath)
+                        self?.onTapIngredientAmount(indexPath)
                     }
                 }
-                cell.onDidTapDelete = { [weak self] in
+                cell.onTapDelete = { [weak self] in
                     if let indexPath = self?.collectionView.indexPath(for: cell) {
-                        self?.onDidTapDeleteIngredient(indexPath)
+                        self?.onTapDeleteIngredient(indexPath)
                     }
                 }
                 return cell

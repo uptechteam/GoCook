@@ -30,8 +30,8 @@ final class StepThreeInstructionView: UIView {
     private let errorLabel = UILabel()
     private let deleteButton = IconButton()
     // callbacks
-    var onDidChangeText: (String) -> Void = { _ in }
-    var onDidTapDeleteButton: () -> Void = { }
+    var onChangeText: (String) -> Void = { _ in }
+    var onTapDeleteButton: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -92,7 +92,7 @@ final class StepThreeInstructionView: UIView {
     private func setupDeleteButton() {
         deleteButton.set(image: .closeRed)
         deleteButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapDeleteButton() }),
+            UIAction(handler: { [weak self] _ in self?.onTapDeleteButton() }),
             for: .touchUpInside
         )
     }
@@ -148,7 +148,7 @@ extension StepThreeInstructionView: UITextViewDelegate {
             return false
         }
 
-        onDidChangeText(newText)
+        onChangeText(newText)
         return true
     }
 }

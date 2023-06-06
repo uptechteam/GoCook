@@ -89,11 +89,11 @@ public final class ProfileViewController: UIViewController, TabBarPresentable {
             presenter.signInTapped()
         }
 
-        contentView.recipesHeaderView.onDidTapAddNew = { [presenter] in
+        contentView.recipesHeaderView.onTapAddNew = { [presenter] in
             presenter.addNewRecipeTapped()
         }
 
-        contentView.infoView.onDidTapAddRecipe = { [presenter] in
+        contentView.infoView.onTapAddRecipe = { [presenter] in
             presenter.addNewRecipeTapped()
         }
 
