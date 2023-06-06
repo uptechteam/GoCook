@@ -89,7 +89,6 @@ public final class LoginViewController: UIViewController, ErrorPresentable {
 
         let state = presenter.$state
             .removeDuplicates()
-            .subscribe(on: DispatchQueue.main)
 
         state
             .map(LoginPresenter.makeProps)

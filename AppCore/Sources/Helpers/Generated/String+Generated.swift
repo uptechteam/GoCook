@@ -477,6 +477,12 @@ extension String {
   /// Find your\ntasty idea\nwith GoCook
   public static let signUpTitle = L10n.tr("Localizable", "sign.up.title")
 
+  /// Ok
+  public static let signUpAlertActionOk = L10n.tr("Localizable", "sign.up.alert.action.ok")
+
+  /// Not implemented yet
+  public static let signUpAlertNotImplementedTitle = L10n.tr("Localizable", "sign.up.alert.not.implemented.title")
+
   /// Already have an account? 
   public static let signUpHaveAnAccountFirst = L10n.tr("Localizable", "sign.up.have.an.account.first")
 

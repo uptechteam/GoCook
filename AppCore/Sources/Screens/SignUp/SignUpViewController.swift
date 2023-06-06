@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Helpers
 import Library
 import UIKit
 
@@ -18,21 +19,15 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
 
     // MARK: - Properties
 
-    private let store: Store
-    private let actionCreator: ActionCreator
+    private let presenter: SignUpPresenter
     private let contentView = SignUpView()
     private unowned let coordinator: SignUpCoordinating
     private var cancellables = [AnyCancellable]()
 
     // MARK: - Lifecycle
 
-    public init(
-        store: Store,
-        actionCreator: ActionCreator,
-        coordinator: SignUpCoordinating
-    ) {
-        self.store = store
-        self.actionCreator = actionCreator
+    public init(presenter: SignUpPresenter, coordinator: SignUpCoordinating) {
+        self.presenter = presenter
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
         setupUI()
@@ -62,41 +57,41 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
     }
 
     private func setupBinding() {
-        contentView.onDidTapSkip = { [store] in
-            store.dispatch(action: .skipTapped)
+        contentView.onDidTapSkip = { [presenter] in
+            presenter.skipTapped()
         }
 
-        contentView.nameInputView.onDidChangeText = { [store] text in
-            store.dispatch(action: .nameChanged(text))
+        contentView.nameInputView.onDidChangeText = { [presenter] text in
+            presenter.nameChanged(text)
         }
 
-        contentView.passwordInputView.onDidChangeText = { [store] text in
-            store.dispatch(action: .passwordChanged(text))
+        contentView.passwordInputView.onDidChangeText = { [presenter] text in
+            presenter.passwordChagned(text)
         }
 
-        contentView.onDidTapSignUp = { [store] in
-            store.dispatch(action: .signUpTapped)
+        contentView.onDidTapSignUp = toSyncClosure { [presenter] in
+            await presenter.signUpTapped()
         }
 
-        contentView.onDidTapSignUpWithApple = { [store] in
-            store.dispatch(action: .signUpWithAppleTapped)
+        contentView.onDidTapSignUpWithApple = { [presenter] in
+            presenter.signUpWithAppleTapped()
         }
 
-        contentView.onDidTapHaveAccount = { [store] in
-            store.dispatch(action: .loginTapped)
+        contentView.onDidTapHaveAccount = { [presenter] in
+            presenter.loginTapped()
         }
 
-        actionCreator.keyboardHeightChange
+        presenter.keyboardHeightChange
             .sink { [contentView] height in
                 contentView.updateBottomInset(keyboardHeight: height)
             }
             .store(in: &cancellables)
 
-        let state = store.$state.removeDuplicates()
-            .subscribe(on: DispatchQueue.main)
+        let state = presenter.$state
+            .removeDuplicates()
 
         state
-            .map(SignUpViewController.makeProps)
+            .map(SignUpPresenter.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
@@ -113,19 +108,17 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
             .store(in: &cancellables)
     }
 
-    private func show(alert: Alert) {
+    private func show(alert: SignUpPresenter.Alert) {
         switch alert {
         case .notImplemented:
-            let alertController = UIAlertController(title: "Not implemented yet", message: nil, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Ok", style: .default))
-            present(alertController, animated: true)
+            showNotImplementedAlert()
 
         case .error(let error):
             show(errorMessage: error.localizedDescription)
         }
     }
 
-    private func navigate(by route: Route) {
+    private func navigate(by route: SignUpPresenter.Route) {
         switch route {
         case .login:
             coordinator.didTapLogin()
@@ -133,5 +126,19 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
         case .finish:
             coordinator.didFinishSignUp()
         }
+    }
+}
+
+// MARK: - Alerts
+
+extension SignUpViewController {
+    private func showNotImplementedAlert() {
+        let alertController = UIAlertController(
+            title: .signUpAlertNotImplementedTitle,
+            message: nil,
+            preferredStyle: .alert
+        )
+        alertController.addAction(UIAlertAction(title: .signUpAlertActionOk, style: .default))
+        present(alertController, animated: true)
     }
 }
