@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Helpers
 import UIKit
 
 public protocol SettingsCoordinating: AnyObject {
@@ -16,21 +17,15 @@ public final class SettingsViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let store: Store
-    private let actionCreator: ActionCreator
+    private let presenter: SettingsPresenter
     private let contentView = SettingsView()
     private unowned let coordinator: SettingsCoordinating
     private var cancellables = [AnyCancellable]()
 
     // MARK: - Lifecycle
 
-    public init(
-        store: Store,
-        actionCreator: ActionCreator,
-        coordinator: SettingsCoordinating
-    ) {
-        self.store = store
-        self.actionCreator = actionCreator
+    public init(presenter: SettingsPresenter, coordinator: SettingsCoordinating) {
+        self.presenter = presenter
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
         setupUI()
@@ -60,15 +55,15 @@ public final class SettingsViewController: UIViewController {
     }
 
     private func setupBinding() {
-        contentView.onDidTapLogout = { [store] in
-            store.dispatch(action: .logoutTapped)
+        contentView.onDidTapLogout = toSyncClosure { [presenter] in
+            await presenter.logoutTapped()
         }
 
-        let state = store.$state.removeDuplicates()
-            .subscribe(on: DispatchQueue.main)
+        let state = presenter.$state
+            .removeDuplicates()
 
         state
-            .map(SettingsViewController.makeProps)
+            .map(SettingsPresenter.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
@@ -80,7 +75,7 @@ public final class SettingsViewController: UIViewController {
             .store(in: &cancellables)
     }
 
-    private func navigate(by route: Route) {
+    private func navigate(by route: SettingsPresenter.Route) {
         switch route {
         case .logout:
             coordinator.didLogout()
