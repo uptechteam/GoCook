@@ -7,7 +7,7 @@
 
 import DomainModels
 
-extension InputViewController {
+extension InputPresenter {
     static func makeProps(from state: State) -> InputView.Props {
         return .init(
             title: makeTitle(state: state),
