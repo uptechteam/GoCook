@@ -43,10 +43,10 @@ final class SignUpView: UIView {
     private var stackViewTopConstraint: NSLayoutConstraint!
     private var stackViewHeightConstraint: NSLayoutConstraint!
     // callbacks
-    var onDidTapSkip: () -> Void = { }
-    var onDidTapSignUp: () -> Void = { }
-    var onDidTapSignUpWithApple: () -> Void = { }
-    var onDidTapHaveAccount: () -> Void = { }
+    var onTapSkip: () -> Void = { }
+    var onTapSignUp: () -> Void = { }
+    var onTapSignUpWithApple: () -> Void = { }
+    var onTapHaveAccount: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -121,7 +121,7 @@ final class SignUpView: UIView {
 
     private func setupSignUpButton() {
         signUpButton.setTitle(.signUpSignUp)
-        signUpButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapSignUp() }), for: .touchUpInside)
+        signUpButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSignUp() }), for: .touchUpInside)
     }
 
     private func setupOrLabel() {
@@ -133,7 +133,7 @@ final class SignUpView: UIView {
         signUpWithAppleButton.setTitle(.signUpSignUpWithApple)
         signUpWithAppleButton.setImage(.apple)
         signUpWithAppleButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapSignUpWithApple() }),
+            UIAction(handler: { [weak self] _ in self?.onTapSignUpWithApple() }),
             for: .touchUpInside
         )
     }
@@ -213,7 +213,7 @@ final class SignUpView: UIView {
     private func setupSkipButton() {
         skipButton.setTitle(.signUpSkip)
         skipButton.setImage(.arrowForward)
-        skipButton.addAction(UIAction(handler: { [weak self] _ in self?.onDidTapSkip() }), for: .touchUpInside)
+        skipButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSkip() }), for: .touchUpInside)
         skipButton.layer.addShadow(opacitiy: 0.1, radius: 4, offset: CGSize(width: 0, height: 4))
         addSubview(skipButton, constraints: [
             skipButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8),
@@ -255,7 +255,7 @@ final class SignUpView: UIView {
 
     @objc
     private func handleHaveAccountTap() {
-        onDidTapHaveAccount()
+        onTapHaveAccount()
     }
 }
 

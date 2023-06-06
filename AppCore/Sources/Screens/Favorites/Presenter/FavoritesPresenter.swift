@@ -100,9 +100,9 @@ public final class FavoritesPresenter {
         state.recipes.toggleIsLoading(on: true)
         do {
             try await favoriteRecipesFacade.getFavoriteRecipes(query: state.query, filters: state.filters)
-            state.recipes.adjustState(accordingTo: .success(()))
+            state.recipes.toggleIsLoading(on: false)
         } catch {
-            state.recipes.adjustState(accordingTo: Result<Void, Error>.failure(error))
+            state.recipes.handle(error: error)
         }
     }
 
@@ -115,7 +115,7 @@ public final class FavoritesPresenter {
 
     private func observeRecipes() async {
         for await recipes in await favoriteRecipesFacade.observeFeed().values {
-            state.recipes.update(with: recipes)
+            state.recipes.handle(model: recipes)
         }
     }
 }

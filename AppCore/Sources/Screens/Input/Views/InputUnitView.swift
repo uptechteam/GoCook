@@ -23,7 +23,7 @@ final class InputUnitView: UIControl {
     private let unitPickerView = UIPickerView()
     private var units: [String] = []
     // callbacks
-    var onDidSelectItem: (Int) -> Void = { _ in }
+    var onSelectItem: (Int) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -101,7 +101,7 @@ final class InputUnitView: UIControl {
 
 extension InputUnitView: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        onDidSelectItem(row)
+        onSelectItem(row)
     }
 }
 

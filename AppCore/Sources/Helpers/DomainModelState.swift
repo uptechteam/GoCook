@@ -13,7 +13,7 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
     // MARK: - Properties
 
     public private(set) var error: Error?
-    public private(set) var isLoading: Bool = false
+    public private(set) var isLoading = false
     private var model: Model?
 
     /// Check wether model is not nil
@@ -48,28 +48,20 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
         model ?? .empty
     }
 
-    /// Update model and adjust error and loading states.
+    /// Set error and stops loading.
     ///
     /// - Parameter result: Result with either model or error.
-    public mutating func handle(result: Result<Model, Error>) {
-        adjustState(accordingTo: result)
-        if case .success(let newModel) = result {
-            update(with: newModel)
-        }
+    public mutating func handle(error: Error) {
+        self.error = error
+        self.isLoading = false
     }
 
-    /// Update error and loading states according to result.
+    /// Update model and stops loading.
     ///
     /// - Parameter result: Result with either model or error.
-    public mutating func adjustState<T>(accordingTo result: Result<T, Error>) {
-        switch result {
-        case .failure(let error):
-            self.error = error
-            self.isLoading = false
-
-        case .success:
-            self.isLoading = false
-        }
+    public mutating func handle(model: Model) {
+        self.isLoading = false
+        self.model = model
     }
 
     /// Map model into new type preserving loading and error.
@@ -93,19 +85,12 @@ public struct DomainModelState<Model: EmptyDomainModel & Equatable>: Equatable {
             self.error = nil
         }
     }
-
-    /// Update domain model with new value without changing error and loading states.
-    ///
-    /// - Parameter model: New value.
-    public mutating func update(with model: Model) {
-        self.model = model
-    }
 }
 
 // MARK: - Equatable
 
-extension DomainModelState {
-    public static func == <T: EmptyDomainModel & Equatable>(
+public extension DomainModelState {
+    static func == <T: EmptyDomainModel & Equatable>(
         lhs: DomainModelState<T>,
         rhs: DomainModelState<T>
     ) -> Bool {
@@ -132,16 +117,16 @@ extension DomainModelState where Model: RangeReplaceableCollection {
 
 // MARK: - Model == Bool
 
-extension DomainModelState where Model == Bool {
-    public var value: Bool {
+public extension DomainModelState where Model == Bool {
+    var value: Bool {
         model ?? .empty
     }
 }
 
 // MARK: - Model == Collection
 
-extension DomainModelState where Model: Collection {
-    public var items: Model {
+public extension DomainModelState where Model: Collection {
+    var items: Model {
         return model ?? .empty
     }
 }

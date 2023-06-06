@@ -9,10 +9,8 @@ import BusinessLogic
 
 extension InputViewController {
     public static func resolve(envelope: InputEnvelope, coordinator: InputCoordinating) -> InputViewController {
-        let dependencies = InputViewController.Dependencies(keyboardManager: AppContainer.resolve())
         return InputViewController(
-            store: InputViewController.makeStore(dependencies: dependencies, envelope: envelope),
-            actionCreator: InputViewController.ActionCreator(dependencies: dependencies),
+            presenter: InputPresenter(keyboardManager: AppContainer.resolve(), envelope: envelope),
             coordinator: coordinator
         )
     }

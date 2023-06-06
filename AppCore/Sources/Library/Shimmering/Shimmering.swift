@@ -66,8 +66,6 @@ public extension Shimmering where Self: UIView {
         gradientLayer.frame = getFrame()
         gradientLayer.name = Constants.layerKey
         // location
-        let addition = gradientLayer.frame.height == 0 ? 0.1 : 20 / gradientLayer.frame.height
-        print()
         gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
         gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
         gradientLayer.locations = [0.3, 0.5, 0.7]

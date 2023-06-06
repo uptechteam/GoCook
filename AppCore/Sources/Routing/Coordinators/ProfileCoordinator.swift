@@ -5,7 +5,7 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
-import AppTabBar
+import TabBar
 import Author
 import DomainModels
 import EditProfile
@@ -37,8 +37,8 @@ final class ProfileCoordinator: NSObject, Coordinating {
         navigationController
     }
 
-    private var tabBarController: AppTabBarController? {
-        navigationController.tabBarController as? AppTabBarController
+    private var tabBarController: TabBarController? {
+        navigationController.tabBarController as? TabBarController
     }
 
     // MARK: - Lifecycle

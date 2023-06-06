@@ -25,7 +25,7 @@ final class ManageRecipeImageView: UIView {
     private let spinnerView = SpinnerView(circleColor: .appBlack)
     private let errorView = ErrorView()
     // callbacks
-    var onDidTapImage: () -> Void = { }
+    var onTapImage: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -112,6 +112,6 @@ final class ManageRecipeImageView: UIView {
 
     @objc
     private func handleTap() {
-        onDidTapImage()
+        onTapImage()
     }
 }

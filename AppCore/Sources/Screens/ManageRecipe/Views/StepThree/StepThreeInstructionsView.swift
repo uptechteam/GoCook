@@ -22,9 +22,9 @@ final class StepThreeInstructionsView: UIView {
         config: ButtonConfig(buttonSize: .medium, colorConfig: .primary, isBackgroundVisible: false)
     )
     // callbacks
-    var onDidChangeText: (Int, String) -> Void = { _, _ in }
-    var onDidTapDelete: (Int) -> Void = { _ in }
-    var onDidTapAddInstruction: () -> Void = { }
+    var onChangeText: (Int, String) -> Void = { _, _ in }
+    var onTapDelete: (Int) -> Void = { _ in }
+    var onTapAddInstruction: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -61,7 +61,7 @@ final class StepThreeInstructionsView: UIView {
         addInstructionButton.setTitle(.manageRecipeStepThreeAddStep)
         addInstructionButton.setImage(.addIcon)
         addInstructionButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapAddInstruction() }),
+            UIAction(handler: { [weak self] _ in self?.onTapAddInstruction() }),
             for: .touchUpInside
         )
     }
@@ -102,11 +102,11 @@ final class StepThreeInstructionsView: UIView {
     private func createInstructionView(index: Int, props: StepThreeInstructionView.Props) -> StepThreeInstructionView {
         let view = StepThreeInstructionView()
         view.render(props: props)
-        view.onDidChangeText = { [weak self] text in
-            self?.onDidChangeText(index, text)
+        view.onChangeText = { [weak self] text in
+            self?.onChangeText(index, text)
         }
-        view.onDidTapDeleteButton = { [weak self] in
-            self?.onDidTapDelete(index)
+        view.onTapDeleteButton = { [weak self] in
+            self?.onTapDelete(index)
         }
         return view
     }

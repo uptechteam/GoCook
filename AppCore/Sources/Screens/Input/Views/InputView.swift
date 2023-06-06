@@ -35,8 +35,8 @@ final class InputView: UIView {
     private var bottomConstraint: NSLayoutConstraint!
     private var isFirstLayoutCompleted = false
     // callbacks
-    var onDidChangeText: (String) -> Void = { _ in }
-    var onDidTapSave: () -> Void = { }
+    var onChangeText: (String) -> Void = { _ in }
+    var onTapSave: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -103,7 +103,7 @@ final class InputView: UIView {
     private func setupSaveButton() {
         saveButton.setTitle("Save")
         saveButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapSave() }),
+            UIAction(handler: { [weak self] _ in self?.onTapSave() }),
             for: .touchUpInside
         )
     }
@@ -134,7 +134,7 @@ final class InputView: UIView {
         textField.text = props.text
         textField.attributedPlaceholder = NSAttributedString(
             string: props.placeholder,
-            attributes: Typography.headerThree.getParameters(color: .textDisabled)
+            attributes: Typography.headerThree.getAttributes(color: .textDisabled)
         )
         setKeyboardType(to: props.keyboardType)
         unitView.render(props: props.unitViewProps)
@@ -188,7 +188,7 @@ extension InputView: UITextFieldDelegate {
             return false
         }
 
-        onDidChangeText(newText)
+        onChangeText(newText)
         return false
     }
 }

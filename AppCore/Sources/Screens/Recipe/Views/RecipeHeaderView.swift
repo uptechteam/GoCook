@@ -22,8 +22,8 @@ final class RecipeHeaderView: UIView {
     private let favoriteButton = IconButton()
     private let separatorView = UIView()
     // callbacks
-    var onDidTapBack: () -> Void = { }
-    var onDidTapFavorite: () -> Void = { }
+    var onTapBack: () -> Void = { }
+    var onTapFavorite: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -53,14 +53,14 @@ final class RecipeHeaderView: UIView {
     private func setupBackButton() {
         backButton.set(image: .backButton)
         backButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapBack() }),
+            UIAction(handler: { [weak self] _ in self?.onTapBack() }),
             for: .touchUpInside
         )
     }
 
     private func setupFavoriteButton() {
         favoriteButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapFavorite() }),
+            UIAction(handler: { [weak self] _ in self?.onTapFavorite() }),
             for: .touchUpInside
         )
     }

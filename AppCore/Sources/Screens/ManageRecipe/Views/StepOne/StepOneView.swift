@@ -35,7 +35,7 @@ final class StepOneView: UIView {
     private let categoryErrorLabel = UILabel()
     private var collectionViewHeightConstraint: NSLayoutConstraint!
     // callbacks
-    var onDidTapCategory: (IndexPath) -> Void = { _ in }
+    var onTapCategory: (IndexPath) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -156,8 +156,8 @@ extension StepOneView {
             cellProvider: { [weak self] collectionView, indexPath, props in
                 let cell: CategoryCell = collectionView.dequeueReusableCell(for: indexPath)
                 cell.render(props: props)
-                cell.onDidTapCheckmark = { [weak self] in
-                    self?.onDidTapCategory(indexPath)
+                cell.onTapCheckmark = { [weak self] in
+                    self?.onTapCategory(indexPath)
                 }
                 return cell
             }

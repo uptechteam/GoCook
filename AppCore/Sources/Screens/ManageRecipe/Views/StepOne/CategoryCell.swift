@@ -31,7 +31,7 @@ final class CategoryCell: UICollectionViewCell, ReusableCell {
     private let nameLabel = UILabel()
     private let checkmarkButton = IconButton()
     // callbacks
-    var onDidTapCheckmark: () -> Void = { }
+    var onTapCheckmark: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -54,7 +54,7 @@ final class CategoryCell: UICollectionViewCell, ReusableCell {
     private func setupCheckmarkButton() {
         checkmarkButton.set(image: .emptyCheckbox)
         checkmarkButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapCheckmark() }),
+            UIAction(handler: { [weak self] _ in self?.onTapCheckmark() }),
             for: .touchUpInside
         )
     }

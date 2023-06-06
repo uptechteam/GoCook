@@ -17,21 +17,15 @@ public final class InputViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let store: Store
-    private let actionCreator: ActionCreator
+    private let presenter: InputPresenter
     private let contentView = InputView()
     private unowned let coordinator: InputCoordinating
     private var cancellables = [AnyCancellable]()
 
     // MARK: - Lifecycle
 
-    public init(
-        store: Store,
-        actionCreator: ActionCreator,
-        coordinator: InputCoordinating
-    ) {
-        self.store = store
-        self.actionCreator = actionCreator
+    public init(presenter: InputPresenter, coordinator: InputCoordinating) {
+        self.presenter = presenter
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
@@ -61,29 +55,29 @@ public final class InputViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupBinding() {
-        actionCreator.keyboardHeightChange
+        presenter.keyboardHeightChange
             .sink { [contentView] height in
                 contentView.updateBottomInset(keyboardHeight: height)
             }
             .store(in: &cancellables)
 
-        contentView.onDidChangeText = { [store] text in
-            store.dispatch(action: .textChanged(text))
+        contentView.onChangeText = { [presenter] text in
+            presenter.textChanged(text)
         }
 
-        contentView.onDidTapSave = { [store] in
-            store.dispatch(action: .saveTapped)
+        contentView.onTapSave = { [presenter] in
+            presenter.saveTapped()
         }
 
-        contentView.unitView.onDidSelectItem = { [store] index in
-            store.dispatch(action: .unitSelected(index))
+        contentView.unitView.onSelectItem = { [presenter] index in
+            presenter.unitSelected(index: index)
         }
 
-        let state = store.$state.removeDuplicates()
-            .subscribe(on: DispatchQueue.main)
+        let state = presenter.$state
+            .removeDuplicates()
 
         state
-            .map(InputViewController.makeProps)
+            .map(InputPresenter.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
@@ -95,7 +89,7 @@ public final class InputViewController: UIViewController {
             .store(in: &cancellables)
     }
 
-    private func navigate(by route: Route) {
+    private func navigate(by route: InputPresenter.Route) {
         switch route {
         case .finish(let details):
             contentView.deactivateTextField()

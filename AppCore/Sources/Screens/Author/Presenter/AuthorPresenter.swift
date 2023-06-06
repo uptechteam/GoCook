@@ -80,13 +80,13 @@ public final class AuthorPresenter {
             try await userRecipesFacade.getFirstPage()
             state.recipes.toggleIsLoading(on: false)
         } catch {
-            state.recipes.handle(result: .failure(error))
+            state.recipes.handle(error: error)
         }
     }
 
     private func observeRecipes() async {
         for await recipes in await userRecipesFacade.observeFeed().values {
-            state.recipes.update(with: recipes)
+            state.recipes.handle(model: recipes)
         }
     }
 }

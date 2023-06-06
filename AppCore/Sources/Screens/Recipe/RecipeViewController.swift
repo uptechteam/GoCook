@@ -60,19 +60,19 @@ public final class RecipeViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupBinding() {
-        contentView.headerView.onDidTapBack = { [presenter] in
+        contentView.headerView.onTapBack = { [presenter] in
             presenter.backTapped()
         }
 
-        contentView.onDidTapBack = { [presenter] in
+        contentView.onTapBack = { [presenter] in
             presenter.backTapped()
         }
 
-        contentView.onDidTapFavorite = toSyncClosure { [presenter] in
+        contentView.onTapFavorite = toSyncClosure { [presenter] in
             await presenter.favoriteTapped()
         }
 
-        contentView.headerView.onDidTapFavorite = toSyncClosure { [presenter] in
+        contentView.headerView.onTapFavorite = toSyncClosure { [presenter] in
             await presenter.favoriteTapped()
         }
 
@@ -88,7 +88,7 @@ public final class RecipeViewController: UIViewController {
             await presenter.starTapped(index: index)
         }
 
-        contentView.detailsView.manageView.onDidTapEdit = { [presenter] in
+        contentView.detailsView.manageView.onTapEdit = { [presenter] in
             presenter.editTapped()
         }
 

@@ -22,7 +22,7 @@ final class StepTwoServingsView: UIView {
     private let titleLabel = UILabel()
     private let amountLabel = UILabel()
     // callbacks
-    var onDidTap: () -> Void = { }
+    var onTap: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -75,6 +75,6 @@ final class StepTwoServingsView: UIView {
 
     @objc
     private func handleTap() {
-        onDidTap()
+        onTap()
     }
 }

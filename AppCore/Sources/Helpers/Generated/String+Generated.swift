@@ -278,6 +278,12 @@ extension String {
   /// Sign in
   public static let loginTitle = L10n.tr("Localizable", "login.title")
 
+  /// Ok
+  public static let loginAlertActionOk = L10n.tr("Localizable", "login.alert.action.ok")
+
+  /// Not implemented yet
+  public static let loginAlertNotImplementedTitle = L10n.tr("Localizable", "login.alert.not.implemented.title")
+
   /// Login with Apple
   public static let loginLoginWithApple = L10n.tr("Localizable", "login.login.with.apple")
 
@@ -470,6 +476,12 @@ extension String {
 
   /// Find your\ntasty idea\nwith GoCook
   public static let signUpTitle = L10n.tr("Localizable", "sign.up.title")
+
+  /// Ok
+  public static let signUpAlertActionOk = L10n.tr("Localizable", "sign.up.alert.action.ok")
+
+  /// Not implemented yet
+  public static let signUpAlertNotImplementedTitle = L10n.tr("Localizable", "sign.up.alert.not.implemented.title")
 
   /// Already have an account? 
   public static let signUpHaveAnAccountFirst = L10n.tr("Localizable", "sign.up.have.an.account.first")

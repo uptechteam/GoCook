@@ -23,7 +23,7 @@ final class ProfileInfoView: UIView {
         config: ButtonConfig(buttonSize: .medium, colorConfig: .primary, isBackgroundVisible: false)
     )
     // callbacks
-    var onDidTapAddRecipe: () -> Void = { }
+    var onTapAddRecipe: () -> Void = { }
 
     // MARK: - Lifecycle
 
@@ -53,7 +53,7 @@ final class ProfileInfoView: UIView {
     private func setupAddRecipeButton() {
         addRecipeButton.setTitle(.profileEmptyContentButtonTitle)
         addRecipeButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onDidTapAddRecipe() }),
+            UIAction(handler: { [weak self] _ in self?.onTapAddRecipe() }),
             for: .touchUpInside
         )
     }

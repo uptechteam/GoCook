@@ -52,7 +52,7 @@ public final class RegistrationInputView: UIView {
     private let dividerView = UIView()
     private let descriptionLabel = UILabel()
     // callbacks
-    public var onDidChangeText: (String) -> Void = { _ in }
+    public var onChangeText: (String) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -141,7 +141,7 @@ extension RegistrationInputView: UITextFieldDelegate {
             return false
         }
 
-        onDidChangeText(newText)
+        onChangeText(newText)
         return true
     }
 }

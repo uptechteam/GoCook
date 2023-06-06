@@ -137,7 +137,7 @@ public final class HomePresenter {
     }
 
     func viewAllTapped(indexPath: IndexPath) async {
-        guard let category = state.recipeCategories[safe: indexPath.section], !category.isTrendingCategory else {
+        guard let category = state.recipeCategories[safe: indexPath.item], !category.isTrendingCategory else {
             return
         }
 
@@ -169,9 +169,9 @@ public final class HomePresenter {
         do {
             state.recipeCategories.toggleIsLoading(on: true)
             try await homeFeedFacade.getFeed()
-            state.recipeCategories.adjustState(accordingTo: .success(()))
+            state.recipeCategories.toggleIsLoading(on: false)
         } catch {
-            state.recipeCategories.adjustState(accordingTo: Result<Void, Error>.failure(error))
+            state.recipeCategories.handle(error: error)
         }
     }
 
@@ -194,7 +194,7 @@ public final class HomePresenter {
 
     private func observeFeed() async {
         for await feed in await homeFeedFacade.observeFeed().values {
-            state.recipeCategories.update(with: feed)
+            state.recipeCategories.handle(model: feed)
         }
     }
 

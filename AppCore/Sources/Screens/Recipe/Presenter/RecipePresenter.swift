@@ -60,9 +60,9 @@ public final class RecipePresenter {
 
             var details = state.recipeDetails.getModel()
             details.isFavorite.toggle()
-            state.recipeDetails.handle(result: .success(details))
+            state.recipeDetails.handle(model: details)
         } catch {
-            state.recipeDetails.handle(result: .failure(error))
+            state.recipeDetails.handle(error: error)
         }
     }
 
@@ -74,13 +74,13 @@ public final class RecipePresenter {
     func starTapped(index: Int) async {
         var recipeDetails = state.recipeDetails.getModel()
         recipeDetails.rating = index + 1
-        state.recipeDetails.update(with: recipeDetails)
+        state.recipeDetails.handle(model: recipeDetails)
         do {
             let rating = index + 1
             try await recipeFacade.rate(rating: rating)
-            state.recipeDetails.adjustState(accordingTo: .success(()))
+            state.recipeDetails.toggleIsLoading(on: false)
         } catch {
-            state.recipeDetails.adjustState(accordingTo: Result<Void, Error>.failure(error))
+            state.recipeDetails.handle(error: error)
         }
     }
 
@@ -97,19 +97,15 @@ public final class RecipePresenter {
     private func getRecipeDetails() async {
         do {
             try await recipeFacade.refreshRecipe()
-            state.recipeDetails.adjustState(accordingTo: .success(()))
+            state.recipeDetails.toggleIsLoading(on: false)
         } catch {
-            state.recipeDetails.adjustState(accordingTo: Result<Void, Error>.failure(error))
+            state.recipeDetails.handle(error: error)
         }
-    }
-
-    private func updateDetails(_ details: RecipeDetails) {
-        state.recipeDetails.update(with: details)
     }
 
     private func observeRecipeDetails() async {
         for await recipeDetails in await recipeFacade.observeRecipe().values {
-            state.recipeDetails.update(with: recipeDetails)
+            state.recipeDetails.handle(model: recipeDetails)
         }
     }
 }
