@@ -76,8 +76,9 @@
 "profile.sign.in" = "Sign in";
 "profile.my.recipes" = "My recipes";
 "profile.not.signed.in.title" = "Sign in to create recipe";
-"profile.empty.content.title" = "You haven’t create any recipe yet\nLet’s chage it";
-"profile.empty.content.button.title" = "Add recipe";
+"profile.state.empty.title" = "You haven’t create any recipe yet\nLet’s chage it";
+"profile.state.empty.button" = "Add recipe";
+"profile.state.error.button" = "Retry";
 "profile.button.add.more.title" = "Add new";
 
 // MARK: - Input

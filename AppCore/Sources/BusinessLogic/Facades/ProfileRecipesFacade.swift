@@ -63,7 +63,8 @@ public actor ProfileRecipesFacade: ProfileRecipesFacading {
     }
 
     public func observeFeed() -> AnyPublisher<[Recipe], Never> {
-        return paginator.identifiersSubject.eraseToAnyPublisher()
+        return paginator.identifiersSubject
+            .compactMap { $0 }
             .mapAsync { [recipesStorage] ids in
                 await recipesStorage.observeRecipes(by: ids)
             }

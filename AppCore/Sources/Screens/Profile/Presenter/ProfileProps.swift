@@ -10,12 +10,12 @@ import Library
 
 extension ProfilePresenter {
     static func makeProps(from state: State) -> ProfileView.Props {
-        .init(
+        return .init(
             headerViewProps: makeHeaderViewProps(state: state),
             recipesHeaderViewProps: makeRecipesHeaderViewProps(state: state),
             isCollectionViewVisible: !state.recipes.items.isEmpty || state.recipes.isLoading,
             collectionViewProps: makeCollectionViewProps(state: state),
-            infoViewProps: makeInfoViewProps(state: state)
+            profileStateView: makeProfileStateView(state: state)
         )
     }
 
@@ -65,12 +65,18 @@ extension ProfilePresenter {
             .map(ProfileView.Item.recipe)
     }
 
-    private static func makeInfoViewProps(state: State) -> ProfileInfoView.Props {
-        log.info("Is visible: \(state.recipes.items.isEmpty && !state.recipes.isLoading)")
-        return .init(
-            isVisible: state.recipes.items.isEmpty && !state.recipes.isLoading,
-            description: state.profile == nil ? .profileNotSignedInTitle : .profileEmptyContentTitle,
-            isAddRecipeButtonVisible: state.profile != nil
-        )
+    private static func makeProfileStateView(state: State) -> ContentStateView.Props {
+        if state.isEmptyContent {
+            return .message(title: .profileStateEmptyTitle, buttonTitle: .profileStateEmptyButton)
+        } else if state.isErrorPresent {
+            return .message(
+                title: state.recipes.error?.localizedDescription ?? "",
+                buttonTitle: .profileStateErrorButton
+            )
+        } else if state.isNotSignedIn {
+            return .message(title: .profileNotSignedInTitle, buttonTitle: nil)
+        } else {
+            return .hidden
+        }
     }
 }

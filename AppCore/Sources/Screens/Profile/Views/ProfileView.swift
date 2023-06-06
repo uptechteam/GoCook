@@ -15,7 +15,7 @@ final class ProfileView: UIView {
         let recipesHeaderViewProps: ProfileRecipesHeaderView.Props
         let isCollectionViewVisible: Bool
         let collectionViewProps: CollectionView<Int, Item>.Props
-        let infoViewProps: ProfileInfoView.Props
+        let profileStateView: ContentStateView.Props
     }
 
     enum Item: Hashable {
@@ -28,7 +28,7 @@ final class ProfileView: UIView {
     let headerView = ProfileHeaderView()
     let recipesHeaderView = ProfileRecipesHeaderView()
     let collectionView = CollectionView<Int, Item>()
-    let infoView = ProfileInfoView()
+    let profileStateView = ContentStateView()
     // callbacks
     var onTapItem: (IndexPath) -> Void = { _ in }
     var onTapFavorite: (IndexPath) -> Void = { _ in }
@@ -59,7 +59,7 @@ final class ProfileView: UIView {
     }
 
     private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [headerView, recipesHeaderView, collectionView, infoView])
+        let stackView = UIStackView(arrangedSubviews: [headerView, recipesHeaderView, collectionView, profileStateView])
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.setCustomSpacing(24, after: headerView)
@@ -68,7 +68,7 @@ final class ProfileView: UIView {
             headerView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             recipesHeaderView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
             collectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            infoView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -140)
+            profileStateView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -140)
         ])
     }
 
@@ -97,7 +97,7 @@ final class ProfileView: UIView {
         recipesHeaderView.render(props: props.recipesHeaderViewProps)
         collectionView.isHidden = !props.isCollectionViewVisible
         collectionView.render(props: props.collectionViewProps)
-        infoView.render(props: props.infoViewProps)
+        profileStateView.render(props: props.profileStateView)
     }
 
     // MARK: - Private methods

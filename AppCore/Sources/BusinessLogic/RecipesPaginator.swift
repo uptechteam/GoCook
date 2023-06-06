@@ -14,14 +14,14 @@ public actor RecipesPaginator {
     // MARK: - Properties
 
     private var identifiers: [Recipe.ID]
-    let identifiersSubject: CurrentValueSubject<[Recipe.ID], Never>
+    let identifiersSubject: CurrentValueSubject<[Recipe.ID]?, Never>
     private(set) var page: Int
 
     // MARK: - Lifecycle
 
     public init() {
         self.identifiers = []
-        self.identifiersSubject = CurrentValueSubject([])
+        self.identifiersSubject = CurrentValueSubject(nil)
         self.page = 0
     }
 
@@ -38,6 +38,10 @@ public actor RecipesPaginator {
     }
 
     public func reset() {
+        guard !identifiers.isEmpty else {
+            return
+        }
+
         self.identifiers = []
         self.identifiersSubject.send(self.identifiers)
     }
