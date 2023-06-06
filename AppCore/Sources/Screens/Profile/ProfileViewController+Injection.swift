@@ -9,14 +9,12 @@ import BusinessLogic
 
 extension ProfileViewController {
     public static func resolve(coordinator: ProfileCoordinating) -> ProfileViewController {
-        let dependencies = ProfileViewController.Dependencies(
-            profileFacade: AppContainer.resolve(),
-            profileRecipesFacade: AppContainer.resolve(),
-            recipesFacade: AppContainer.resolve()
-        )
         return ProfileViewController(
-            store: ProfileViewController.makeStore(dependencies: dependencies),
-            actionCreator: ProfileViewController.ActionCreator(dependencies: dependencies),
+            presenter: ProfilePresenter(
+                profileFacade: AppContainer.resolve(),
+                profileRecipesFacade: AppContainer.resolve(),
+                recipesFacade: AppContainer.resolve()
+            ),
             coordinator: coordinator
         )
     }

@@ -23,8 +23,7 @@ public final class ProfileViewController: UIViewController, TabBarPresentable {
 
     // MARK: - Properties
 
-    private let store: Store
-    private let actionCreator: ActionCreator
+    private let presenter: ProfilePresenter
     private let contentView = ProfileView()
     private unowned let coordinator: ProfileCoordinating
     private var cancellables = [AnyCancellable]()
@@ -39,22 +38,11 @@ public final class ProfileViewController: UIViewController, TabBarPresentable {
 
     // MARK: - Lifecycle
 
-    public init(
-        store: Store,
-        actionCreator: ActionCreator,
-        coordinator: ProfileCoordinating
-    ) {
-        self.store = store
-        self.actionCreator = actionCreator
+    public init(presenter: ProfilePresenter, coordinator: ProfileCoordinating) {
+        self.presenter = presenter
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
-
-        navigationItem.backBarButtonItem = UIBarButtonItem(
-            image: .backButton,
-            style: .plain,
-            target: nil,
-            action: nil
-        )
+        setupUI()
     }
 
     required init?(coder: NSCoder) {
@@ -72,56 +60,64 @@ public final class ProfileViewController: UIViewController, TabBarPresentable {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupBinding()
-        store.dispatch(action: .viewDidLoad)
+        Task { [presenter] in
+            await presenter.viewDidLoad()
+        }
     }
 
     // MARK: - Private methods
 
+    private func setupUI() {
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            image: .backButton,
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+    }
+
     private func setupBinding() {
-        contentView.headerView.onTapEdit = { [store] in
-            store.dispatch(action: .editTapped)
+        contentView.headerView.onTapEdit = { [presenter] in
+            presenter.editTapped()
         }
 
-        contentView.headerView.onTapSettings = { [store] in
-            store.dispatch(action: .settingsTapped)
+        contentView.headerView.onTapSettings = { [presenter] in
+            presenter.settingsTapped()
         }
 
-        contentView.headerView.onTapSignIn = { [store] in
-            store.dispatch(action: .signInTapped)
+        contentView.headerView.onTapSignIn = { [presenter] in
+            presenter.signInTapped()
         }
 
-        contentView.recipesHeaderView.onDidTapAddNew = { [store] in
-            store.dispatch(action: .addNewRecipeTapped)
+        contentView.recipesHeaderView.onDidTapAddNew = { [presenter] in
+            presenter.addNewRecipeTapped()
         }
 
-        contentView.infoView.onDidTapAddRecipe = { [store] in
-            store.dispatch(action: .addNewRecipeTapped)
+        contentView.infoView.onDidTapAddRecipe = { [presenter] in
+            presenter.addNewRecipeTapped()
         }
 
-        contentView.onScrollToRefresh = { [store] in
-            store.dispatch(action: .scrolledToRefresh)
+        contentView.onScrollToRefresh = toSyncClosure { [presenter] in
+            await presenter.scrolledToRefresh()
         }
 
-        contentView.onTapItem = { [store] indexPath in
-            store.dispatch(action: .recipeTapped(indexPath))
+        contentView.onTapItem = { [presenter] indexPath in
+            presenter.recipeTapped(indexPath: indexPath)
         }
 
-        contentView.onTapFavorite = { [store] indexPath in
-            store.dispatch(action: .favoriteTapped(indexPath))
+        contentView.onTapFavorite = toSyncClosure { [presenter] indexPath in
+            await presenter.favoriteTapped(indexPath: indexPath)
         }
 
-        contentView.onScrollToEnd = { [store] in
-            store.dispatch(action: .scrolledToEnd)
+        contentView.onScrollToEnd = toSyncClosure { [presenter] in
+            await presenter.scrolledToEnd()
         }
 
-        actionCreator.observeRecipes(handler: store.dispatch)
-        actionCreator.subscribeToProfile(handler: store.dispatch)
-
-        let state = store.$state.removeDuplicates()
-            .subscribe(on: DispatchQueue.main)
+        let state = presenter.$state
+            .removeDuplicates()
 
         state
-            .map(ProfileViewController.makeProps)
+            .map(ProfilePresenter.makeProps)
             .sink { [contentView] props in
                 contentView.render(props: props)
             }
@@ -133,7 +129,7 @@ public final class ProfileViewController: UIViewController, TabBarPresentable {
             .store(in: &cancellables)
     }
 
-    private func navigate(by route: Route) {
+    private func navigate(by route: ProfilePresenter.Route) {
         switch route {
         case .createRecipe:
             coordinator.didTapManageRecipe()

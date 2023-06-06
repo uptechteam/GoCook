@@ -8,7 +8,7 @@
 import DomainModels
 import Library
 
-extension ProfileViewController {
+extension ProfilePresenter {
     static func makeProps(from state: State) -> ProfileView.Props {
         .init(
             headerViewProps: makeHeaderViewProps(state: state),
