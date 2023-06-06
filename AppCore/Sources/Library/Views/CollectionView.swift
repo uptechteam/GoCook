@@ -36,6 +36,7 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
     public var diffableDataSource: DataSource?
     private var dataStore = [Int: Item]()
     private var isRendering = false
+    private var isRefreshing = false
     private var pendingProps: Props?
     // callbacks
     public var onScrollToRefresh: () -> Void = { }
@@ -78,9 +79,14 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
     }
 
     public func render(props: Props) {
-        guard !isRendering, !collectionRefreshControl.isRefreshing else {
+        isRefreshing = props.isRefreshing
+        guard !isRendering, !isDragging else {
             self.pendingProps = props
             return
+        }
+
+        if collectionRefreshControl.isRefreshing {
+            collectionRefreshControl.endRefreshing()
         }
 
         isRendering = true
@@ -98,14 +104,10 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
                 }
             }
         )
-        if collectionRefreshControl.isRefreshing {
-            collectionRefreshControl.endRefreshing()
-        }
     }
 
     public func refreshProps() {
-        collectionRefreshControl.endRefreshing()
-        guard let props = pendingProps else {
+        guard !isRefreshing, let props = pendingProps else {
             return
         }
 

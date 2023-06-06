@@ -62,21 +62,42 @@ extension FavoritesPresenter {
 
     private static func makeRecipesViewProps(state: State) -> FavoriteRecipesView.Props {
         return .init(
-            isVisible: !state.recipes.isEmpty,
-            items: makeItems(state: state)
+            isVisible: !state.recipes.isEmpty || state.recipes.isLoading,
+            collectionViewProps: makeCollectionViewProps(state: state)
         )
     }
 
-    private static func makeItems(state: State) -> [SmallRecipeCell.Props] {
-        return state.recipes.items.map { recipe in
-            return SmallRecipeCell.Props(
-                id: recipe.id.rawValue,
-                recipeImageSource: recipe.recipeImageSource,
-                isFavorite: recipe.isFavorite,
-                name: recipe.name,
-                ratingViewProps: RatingView.makeProps(recipe: recipe)
-            )
-        }
+    private static func makeCollectionViewProps(state: State) -> CollectionView<Int, FavoriteRecipesView.Item>.Props {
+        let isShimmeringVisible = state.recipes.isEmpty && state.recipes.isLoading
+        return .init(
+            section: [0],
+            items: [isShimmeringVisible ? makeShimmeringItems() : makeItems(state: state)],
+            isRefreshing: state.recipes.isLoading
+        )
+    }
+
+    private static func makeShimmeringItems() -> [FavoriteRecipesView.Item] {
+        return [
+            FavoriteRecipesView.Item.shimmering(0),
+            FavoriteRecipesView.Item.shimmering(1),
+            FavoriteRecipesView.Item.shimmering(2),
+            FavoriteRecipesView.Item.shimmering(3),
+            FavoriteRecipesView.Item.shimmering(4)
+        ]
+    }
+
+    private static func makeItems(state: State) -> [FavoriteRecipesView.Item] {
+        return state.recipes.items
+            .map { recipe in
+                return SmallRecipeCell.Props(
+                    id: recipe.id.rawValue,
+                    recipeImageSource: recipe.recipeImageSource,
+                    isFavorite: recipe.isFavorite,
+                    name: recipe.name,
+                    ratingViewProps: RatingView.makeProps(recipe: recipe)
+                )
+            }
+            .map(FavoriteRecipesView.Item.recipe)
     }
 
     private static func makeContentStateViewProps(state: State) -> ContentStateView.Props {
@@ -85,7 +106,7 @@ extension FavoritesPresenter {
         }
 
         if state.recipes.isLoading {
-            return .loading
+            return .hidden
         } else if state.areFavoriteRecipesEmpty {
             return .message(title: .favoritesEmptyTitle, buttonTitle: .favoritesEmptyButton)
         } else if state.areFilteredRecipesEmpty {

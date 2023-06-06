@@ -85,6 +85,10 @@ public final class FavoritesPresenter {
         state.route = .init(value: .didTapRecipe(recipe))
     }
 
+    func scrolledToRefresh() async {
+        await getFavoriteRecipes()
+    }
+
     func searchQueryChanged(_ query: String) async {
         state.query = query
         await getFavoriteRecipes()

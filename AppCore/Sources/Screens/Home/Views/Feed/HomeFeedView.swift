@@ -141,8 +141,14 @@ final class HomeFeedView: UIView {
 // MARK: - UICollectionViewDelegate
 
 extension HomeFeedView: UICollectionViewDelegate {
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         collectionView.refreshProps()
+    }
+
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            collectionView.refreshProps()
+        }
     }
 }
 

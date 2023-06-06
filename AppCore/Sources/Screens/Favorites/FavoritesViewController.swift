@@ -83,6 +83,10 @@ public final class FavoritesViewController: UIViewController, TabBarPresentable 
             await presenter.searchQueryChanged(text)
         }
 
+        contentView.recipesView.collectionView.onScrollToRefresh = toSyncClosure { [presenter] in
+            await presenter.scrolledToRefresh()
+        }
+
         contentView.recipesView.onTapItem = { [presenter] indexPath in
             presenter.recipeTapped(indexPath: indexPath)
         }
