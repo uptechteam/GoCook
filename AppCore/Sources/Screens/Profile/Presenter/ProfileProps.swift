@@ -13,8 +13,8 @@ extension ProfilePresenter {
         .init(
             headerViewProps: makeHeaderViewProps(state: state),
             recipesHeaderViewProps: makeRecipesHeaderViewProps(state: state),
-            isCollectionViewVisible: !state.recipes.items.isEmpty,
-            items: makeItems(state: state),
+            isCollectionViewVisible: !state.recipes.items.isEmpty || state.recipes.isLoading,
+            collectionViewProps: makeCollectionViewProps(state: state),
             infoViewProps: makeInfoViewProps(state: state)
         )
     }
@@ -34,21 +34,41 @@ extension ProfilePresenter {
         .init(isAddNewButtonVisible: !state.recipes.items.isEmpty)
     }
 
-    private static func makeItems(state: State) -> [SmallRecipeCell.Props] {
-        return state.recipes.items.map { recipe in
-            return SmallRecipeCell.Props(
-                id: recipe.id.rawValue,
-                recipeImageSource: recipe.recipeImageSource,
-                isFavorite: recipe.isFavorite,
-                name: recipe.name,
-                ratingViewProps: RatingView.makeProps(recipe: recipe)
-            )
-        }
+    private static func makeCollectionViewProps(state: State) -> CollectionView<Int, ProfileView.Item>.Props {
+        let isShimmeringVisible = state.recipes.isEmpty && state.recipes.isLoading
+        return .init(
+            section: [0],
+            items: [isShimmeringVisible ? makeShimmeringItems() : makeItems(state: state)],
+            isRefreshing: state.recipes.isLoading
+        )
+    }
+
+    private static func makeShimmeringItems() -> [ProfileView.Item] {
+        return [
+            ProfileView.Item.shimmering(0),
+            ProfileView.Item.shimmering(1),
+            ProfileView.Item.shimmering(2)
+        ]
+    }
+
+    private static func makeItems(state: State) -> [ProfileView.Item] {
+        return state.recipes.items
+            .map { recipe in
+                return SmallRecipeCell.Props(
+                    id: recipe.id.rawValue,
+                    recipeImageSource: recipe.recipeImageSource,
+                    isFavorite: recipe.isFavorite,
+                    name: recipe.name,
+                    ratingViewProps: RatingView.makeProps(recipe: recipe)
+                )
+            }
+            .map(ProfileView.Item.recipe)
     }
 
     private static func makeInfoViewProps(state: State) -> ProfileInfoView.Props {
+        log.info("Is visible: \(state.recipes.items.isEmpty && !state.recipes.isLoading)")
         return .init(
-            isVisible: state.recipes.items.isEmpty,
+            isVisible: state.recipes.items.isEmpty && !state.recipes.isLoading,
             description: state.profile == nil ? .profileNotSignedInTitle : .profileEmptyContentTitle,
             isAddRecipeButtonVisible: state.profile != nil
         )

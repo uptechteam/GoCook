@@ -1,15 +1,14 @@
 //
-//  FavoritesShimmeringRecipeCell.swift
+//  ShimmeringSmallRecipeCell.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 06.06.2023.
 //
 
 import Helpers
-import Library
 import UIKit
 
-final class FavoritesShimmeringRecipeCell: UICollectionViewCell, ReusableCell {
+public final class ShimmeringSmallRecipeCell: UICollectionViewCell, ReusableCell {
 
     // MARK: - Properties
 

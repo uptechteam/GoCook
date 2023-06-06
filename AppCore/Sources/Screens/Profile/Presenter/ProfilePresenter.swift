@@ -97,6 +97,7 @@ public final class ProfilePresenter {
     private func getRecipes() async {
         state.recipes.toggleIsLoading(on: true)
         do {
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
             try await profileRecipesFacade.getFirstPage()
             state.recipes.toggleIsLoading(on: false)
         } catch {

@@ -50,7 +50,7 @@ final class FavoriteRecipesView: UIView {
         collectionView.contentInset = .zero
         collectionView.delegate = self
         collectionView.enableRefreshControl()
-        collectionView.register(cell: FavoritesShimmeringRecipeCell.self)
+        collectionView.register(cell: ShimmeringSmallRecipeCell.self)
         collectionView.register(cell: SmallRecipeCell.self)
         configureDataSource()
         addSubview(collectionView, withEdgeInsets: .zero)
@@ -96,7 +96,7 @@ final class FavoriteRecipesView: UIView {
                 return cell
 
             case .shimmering:
-                let cell: FavoritesShimmeringRecipeCell = collectionView.dequeueReusableCell(for: indexPath)
+                let cell: ShimmeringSmallRecipeCell = collectionView.dequeueReusableCell(for: indexPath)
                 cell.render()
                 return cell
             }

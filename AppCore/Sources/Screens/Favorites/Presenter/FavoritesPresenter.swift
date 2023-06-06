@@ -111,7 +111,7 @@ public final class FavoritesPresenter {
     }
 
     private func observeFilters() async {
-        for await filter in await filtersFacade.observeFilters().values {
+        for await filter in await filtersFacade.observeFilters().dropFirst().values {
             state.filters = filter
             await getFavoriteRecipes()
         }

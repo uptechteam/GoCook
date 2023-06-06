@@ -97,7 +97,7 @@ public final class ProfileViewController: UIViewController, TabBarPresentable {
             presenter.addNewRecipeTapped()
         }
 
-        contentView.onScrollToRefresh = toSyncClosure { [presenter] in
+        contentView.collectionView.onScrollToRefresh = toSyncClosure { [presenter] in
             await presenter.scrolledToRefresh()
         }
 

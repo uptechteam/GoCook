@@ -76,11 +76,14 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
                 return cellProvider(collectionView, indexPath, item)
             }
         )
+        if let props = pendingProps {
+            render(props: props)
+        }
     }
 
     public func render(props: Props) {
         isRefreshing = props.isRefreshing
-        guard !isRendering, !isDragging else {
+        guard let dataSource = diffableDataSource, !isRendering, !isDragging else {
             self.pendingProps = props
             return
         }
@@ -92,15 +95,15 @@ public final class CollectionView<Section, Item>: UICollectionView where Section
         isRendering = true
         updateDataStore(items: props.items)
         let itemsHashes = props.items.map { sectionItems in sectionItems.map(\.hashValue) }
-        diffableDataSource?.applyWithReconfiguring(
+        dataSource.applyWithReconfiguring(
             sections: props.section,
             items: itemsHashes,
-            animatingDifferences: false,
-            completion: { [weak self] in
-                self?.isRendering = false
-                if let props = self?.pendingProps {
-                    self?.pendingProps = nil
-                    self?.render(props: props)
+            animatingDifferences: true,
+            completion: { [self] in
+                isRendering = false
+                if let props = self.pendingProps {
+                    pendingProps = nil
+                    render(props: props)
                 }
             }
         )
