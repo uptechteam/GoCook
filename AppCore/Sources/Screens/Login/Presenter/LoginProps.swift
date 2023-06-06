@@ -2,13 +2,13 @@
 //  LoginProps.swift
 //  
 //
-//  Created by Oleksii Andriushchenko on 03.07.2022.
+//  Created by Oleksii Andriushchenko on 06.06.2023.
 //
 
 import Helpers
 import Library
 
-extension LoginViewController {
+extension LoginPresenter {
     static func makeProps(from state: State) -> LoginView.Props {
         return .init(
             isNavigationBarVisible: !state.isRegistration,

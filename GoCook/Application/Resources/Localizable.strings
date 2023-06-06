@@ -112,6 +112,8 @@
 "login.login.with.apple" = "Login with Apple";
 "login.new.first" = "New to GoCook? ";
 "login.new.second" = "Sign up";
+"login.alert.not.implemented.title" = "Not implemented yet";
+"login.alert.action.ok" = "Ok";
 
 // MARK: - Manage Recipe
 

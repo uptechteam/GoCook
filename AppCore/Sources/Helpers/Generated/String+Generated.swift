@@ -278,6 +278,12 @@ extension String {
   /// Sign in
   public static let loginTitle = L10n.tr("Localizable", "login.title")
 
+  /// Ok
+  public static let loginAlertActionOk = L10n.tr("Localizable", "login.alert.action.ok")
+
+  /// Not implemented yet
+  public static let loginAlertNotImplementedTitle = L10n.tr("Localizable", "login.alert.not.implemented.title")
+
   /// Login with Apple
   public static let loginLoginWithApple = L10n.tr("Localizable", "login.login.with.apple")
 
