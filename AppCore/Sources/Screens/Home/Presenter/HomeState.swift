@@ -30,7 +30,11 @@ extension HomePresenter {
         }
 
         var areFilteredRecipesEmpty: Bool {
-            !filters.isEmpty && searchedRecipes.isEmpty
+            !filters.isEmpty && searchedRecipes.isEmpty && !isGettingRecipes
+        }
+
+        var areRecipesEmpty: Bool {
+            searchedRecipes.isEmpty && !isGettingRecipes
         }
 
         var trendingCategory: RecipeCategory {

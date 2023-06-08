@@ -14,18 +14,19 @@ final class HomeSearchResultsView: UIView {
         let isVisible: Bool
         let filterDescriptionViewProps: FiltersDescriptionView.Props
         let isCollectionViewVisible: Bool
-        let items: [SmallRecipeCell.Props]
+        let collectionViewProps: CollectionView<Int, Item>.Props
         let contentStateViewProps: ContentStateView.Props
     }
 
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, SmallRecipeCell.Props>
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, SmallRecipeCell.Props>
+    enum Item: Hashable {
+        case recipe(SmallRecipeCell.Props)
+        case shimmering(Int)
+    }
 
     // MARK: - Properties
 
     private let filterDescriptionView = FiltersDescriptionView()
-    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
-    private lazy var dataSource = makeDataSource()
+    private let collectionView = CollectionView<Int, Item>()
     let contentStateView = ContentStateView()
     // callbacks
     var onTapItem: (IndexPath) -> Void = { _ in }
@@ -34,18 +35,13 @@ final class HomeSearchResultsView: UIView {
 
     // MARK: - Lifecycle
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     override func layoutSubviews() {
         super.layoutSubviews()
-        setupLayout()
+        guard subviews.isEmpty else {
+            return
+        }
+
+        setup()
     }
 
     // MARK: - Set up
@@ -53,6 +49,7 @@ final class HomeSearchResultsView: UIView {
     private func setup() {
         setupStackView()
         setupCollectionView()
+        setupLayout()
     }
 
     private func setupStackView() {
@@ -67,17 +64,14 @@ final class HomeSearchResultsView: UIView {
     }
 
     private func setupCollectionView() {
-        collectionView.backgroundColor = .clear
         collectionView.contentInset = .zero
         collectionView.delegate = self
+        collectionView.register(cell: ShimmeringSmallRecipeCell.self)
         collectionView.register(cell: SmallRecipeCell.self)
+        configureDataSource()
     }
 
     private func setupLayout() {
-        guard !(collectionView.collectionViewLayout is UICollectionViewFlowLayout) else {
-            return
-        }
-
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = 24
         flowLayout.itemSize = CGSize(width: bounds.width, height: 120)
@@ -90,16 +84,16 @@ final class HomeSearchResultsView: UIView {
         isHidden = !props.isVisible
         filterDescriptionView.render(props: props.filterDescriptionViewProps)
         collectionView.isHidden = !props.isCollectionViewVisible
-        dataSource.apply(sections: [0], items: [props.items])
+        collectionView.render(props: props.collectionViewProps)
         contentStateView.render(props: props.contentStateViewProps)
     }
 
     // MARK: - Private methods
 
-    private func makeDataSource() -> DataSource {
-        return DataSource(
-            collectionView: collectionView,
-            cellProvider: { [weak self] collectionView, indexPath, props in
+    private func configureDataSource() {
+        collectionView.configureDataSource { [weak self] collectionView, indexPath, item in
+            switch item {
+            case .recipe(let props):
                 let cell: SmallRecipeCell = collectionView.dequeueReusableCell(for: indexPath)
                 cell.render(props: props)
                 cell.onTapFavorite = { [weak self, unowned cell] in
@@ -112,8 +106,13 @@ final class HomeSearchResultsView: UIView {
                 }
 
                 return cell
+
+            case .shimmering:
+                let cell: ShimmeringSmallRecipeCell = collectionView.dequeueReusableCell(for: indexPath)
+                cell.render()
+                return cell
             }
-        )
+        }
     }
 }
 

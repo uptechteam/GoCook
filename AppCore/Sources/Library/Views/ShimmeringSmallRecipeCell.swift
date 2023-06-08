@@ -16,7 +16,8 @@ public final class ShimmeringSmallRecipeCell: UICollectionViewCell, ReusableCell
     private let detailsStackView = UIStackView()
     private let labelShimmeringView = ShimmeringView()
     private let ratingShimmeringView = ShimmeringView()
-    private var identifier = UUID()
+    /// If identifier is null it means aither this is a new cell or it was reused.
+    private var identifier: UUID?
 
     // MARK: - Lifecycle
 
@@ -36,7 +37,7 @@ public final class ShimmeringSmallRecipeCell: UICollectionViewCell, ReusableCell
 
     override public func prepareForReuse() {
         super.prepareForReuse()
-        identifier = UUID()
+        identifier = nil
         toggle(isShimmering: false)
     }
 
@@ -72,6 +73,10 @@ public final class ShimmeringSmallRecipeCell: UICollectionViewCell, ReusableCell
     // MARK: - Public methods
 
     public func render() {
+        guard identifier == nil else {
+            return
+        }
+
         let generatedIdentifier = UUID()
         identifier = generatedIdentifier
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in

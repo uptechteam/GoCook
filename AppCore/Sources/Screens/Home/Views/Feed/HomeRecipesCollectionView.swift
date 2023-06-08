@@ -45,7 +45,6 @@ final class HomeRecipesCollectionView: UIView {
     }
 
     private func setupCollectionView() {
-        collectionView.backgroundColor = .clear
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.delegate = self

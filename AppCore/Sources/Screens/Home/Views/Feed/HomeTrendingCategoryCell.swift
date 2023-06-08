@@ -51,7 +51,6 @@ final class HomeTrendingCategoryCell: UICollectionViewCell, ReusableCell {
     }
 
     private func setupCategoriesCollectionView() {
-        categoriesCollectionView.backgroundColor = .clear
         categoriesCollectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         categoriesCollectionView.showsHorizontalScrollIndicator = false
         categoriesCollectionView.delegate = self

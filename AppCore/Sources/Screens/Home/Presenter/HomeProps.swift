@@ -107,8 +107,8 @@ extension HomePresenter {
         return .init(
             isVisible: state.isSearchActive,
             filterDescriptionViewProps: makeFilterDescriptionViewProps(state: state),
-            isCollectionViewVisible: !state.searchedRecipes.isEmpty,
-            items: state.isGettingRecipes ? [] : state.searchedRecipes.map(makeSmallRecipeCellProps),
+            isCollectionViewVisible: !state.searchedRecipes.isEmpty || state.isGettingRecipes,
+            collectionViewProps: makeSearchRecipesCollectionViewProps(state: state),
             contentStateViewProps: makeContentStateViewProps(state: state)
         )
     }
@@ -118,6 +118,38 @@ extension HomePresenter {
             isVisible: !state.filters.isEmpty,
             description: makeDescription(state: state)
         )
+    }
+
+    private static func makeSearchRecipesCollectionViewProps(
+        state: State
+    ) -> CollectionView<Int, HomeSearchResultsView.Item>.Props {
+        let isShimmeringVisible = state.isGettingRecipes && state.searchedRecipes.isEmpty
+        return .init(
+            section: [0],
+            items: isShimmeringVisible ? [makeShimmeringItems()] : [makeItems(state: state)]
+        )
+    }
+
+    private static func makeItems(state: State) -> [HomeSearchResultsView.Item] {
+        return state.searchedRecipes
+            .map { recipe in
+                return SmallRecipeCell.Props(
+                    id: recipe.id.rawValue,
+                    recipeImageSource: recipe.recipeImageSource,
+                    isFavorite: recipe.isFavorite,
+                    name: recipe.name,
+                    ratingViewProps: RatingView.makeProps(recipe: recipe)
+                )
+            }
+            .map(HomeSearchResultsView.Item.recipe)
+    }
+
+    private static func makeShimmeringItems() -> [HomeSearchResultsView.Item] {
+        return [
+            .shimmering(1),
+            .shimmering(2),
+            .shimmering(3)
+        ]
     }
 
     private static func makeDescription(state: State) -> String {
@@ -160,11 +192,9 @@ extension HomePresenter {
             return .hidden
         }
 
-        if state.isGettingRecipes && state.searchedRecipes.isEmpty {
-            return .loading
-        } else if state.areFilteredRecipesEmpty {
+        if state.areFilteredRecipesEmpty {
             return .message(title: .homeFilteredEmptyTitle, buttonTitle: .homeFilteredEmptyButton)
-        } else if state.searchedRecipes.isEmpty {
+        } else if state.areRecipesEmpty {
             return .message(title: .homeNoResultsTitle, buttonTitle: nil)
         } else {
             return .hidden
@@ -190,16 +220,6 @@ extension HomePresenter {
     }
 
     private static func makeRecipeCellProps(recipe: Recipe) -> RecipeCell.Props {
-        return .init(
-            id: recipe.id.rawValue,
-            recipeImageSource: recipe.recipeImageSource,
-            isFavorite: recipe.isFavorite,
-            name: recipe.name,
-            ratingViewProps: RatingView.makeProps(recipe: recipe)
-        )
-    }
-
-    private static func makeSmallRecipeCellProps(recipe: Recipe) -> SmallRecipeCell.Props {
         return .init(
             id: recipe.id.rawValue,
             recipeImageSource: recipe.recipeImageSource,
