@@ -9,26 +9,16 @@ import Helpers
 import Library
 import UIKit
 
-final class IngredientCell: UICollectionViewCell, ReusableCell {
+final class StepTwoIngredientView: UIView {
 
-    struct Props: Hashable {
-
-        // MARK: - Properties
-
-        let id: String
+    struct Props: Equatable {
         let name: String
-        let nameColorSource: ColorSource
+        let nameColor: ColorSource
         let nameTypography: Typography
         let amount: String
-        let amountColorSource: ColorSource
+        let amountColor: ColorSource
         let amountTypography: Typography
         let isDeleteImageViewVisible: Bool
-
-        // MARK: - Public methods
-
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
     }
 
     // MARK: - Properties
@@ -55,10 +45,17 @@ final class IngredientCell: UICollectionViewCell, ReusableCell {
     // MARK: - Set up
 
     private func setup() {
+        setupStackView()
         setupNameLabel()
         setupAmountLabel()
         setupDeleteImageView()
-        setupStackView()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [nameLabel, UIView(), amountLabel, deleteImageView])
+        stackView.alignment = .center
+        stackView.setCustomSpacing(16, after: amountLabel)
+        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupNameLabel() {
@@ -82,18 +79,11 @@ final class IngredientCell: UICollectionViewCell, ReusableCell {
         )
     }
 
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [nameLabel, UIView(), amountLabel, deleteImageView])
-        stackView.alignment = .center
-        stackView.setCustomSpacing(16, after: amountLabel)
-        contentView.addSubview(stackView, withEdgeInsets: .zero)
-    }
-
     // MARK: - Public methods
 
     func render(props: Props) {
-        nameLabel.render(title: props.name, color: props.nameColorSource.color, typography: props.nameTypography)
-        amountLabel.render(title: props.amount, color: props.amountColorSource.color, typography: props.amountTypography)
+        nameLabel.render(title: props.name, color: props.nameColor.color, typography: props.nameTypography)
+        amountLabel.render(title: props.amount, color: props.amountColor.color, typography: props.amountTypography)
         deleteImageView.isHidden = !props.isDeleteImageViewVisible
     }
 

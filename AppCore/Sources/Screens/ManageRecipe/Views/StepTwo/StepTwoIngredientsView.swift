@@ -11,25 +11,20 @@ import UIKit
 final class StepTwoIngredientsView: UIView {
 
     struct Props: Equatable {
-        let items: [IngredientCell.Props]
+        let ingredientViewsProps: [StepTwoIngredientView.Props]
     }
-
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, IngredientCell.Props>
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, IngredientCell.Props>
 
     // MARK: - Properties
 
     private let titleLabel = UILabel()
-    private lazy var dataSource = makeDataSource()
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
-    private var collectionViewHeightConstraint: NSLayoutConstraint!
+    private let ingredientsStackView = UIStackView()
     private let addIngredientButton = Button(
         config: ButtonConfig(buttonSize: .medium, colorConfig: .primary, isBackgroundVisible: false)
     )
     // callbacks
-    var onTapIngredientName: (IndexPath) -> Void = { _ in }
-    var onTapIngredientAmount: (IndexPath) -> Void = { _ in }
-    var onTapDeleteIngredient: (IndexPath) -> Void = { _ in }
+    var onTapIngredientName: (Int) -> Void = { _ in }
+    var onTapIngredientAmount: (Int) -> Void = { _ in }
+    var onTapDeleteIngredient: (Int) -> Void = { _ in }
     var onTapAddIngredient: () -> Void = { }
 
     // MARK: - Lifecycle
@@ -43,18 +38,23 @@ final class StepTwoIngredientsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        setupLayout()
-    }
-
     // MARK: - Set up
 
     private func setup() {
-        setupTitleLabel()
-        setupCollectionView()
-        setupAddIngredientButton()
         setupStackView()
+        setupTitleLabel()
+        setupIngredientsStackView()
+        setupAddIngredientButton()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(
+            arrangedSubviews: [titleLabel, ingredientsStackView, addIngredientButton.centeredHorizontally()]
+        )
+        stackView.axis = .vertical
+        stackView.setCustomSpacing(24, after: titleLabel)
+        stackView.setCustomSpacing(34, after: ingredientsStackView)
+        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupTitleLabel() {
@@ -62,17 +62,9 @@ final class StepTwoIngredientsView: UIView {
         titleLabel.render(title: .manageRecipeStepTwoIngredientsTitle, color: .textMain, typography: .subtitle)
     }
 
-    private func setupLayout() {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 26
-        flowLayout.itemSize = CGSize(width: bounds.width, height: 24)
-        collectionView.setCollectionViewLayout(flowLayout, animated: false)
-    }
-
-    private func setupCollectionView() {
-        collectionView.backgroundColor = nil
-        collectionView.isScrollEnabled = false
-        collectionView.register(cell: IngredientCell.self)
+    private func setupIngredientsStackView() {
+        ingredientsStackView.axis = .vertical
+        ingredientsStackView.spacing = 26
     }
 
     private func setupAddIngredientButton() {
@@ -84,56 +76,38 @@ final class StepTwoIngredientsView: UIView {
         )
     }
 
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, collectionView, addIngredientButton])
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.setCustomSpacing(24, after: titleLabel)
-        stackView.setCustomSpacing(34, after: collectionView)
-        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
-        collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 0)
-        NSLayoutConstraint.activate([
-            titleLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            collectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            collectionViewHeightConstraint
-        ])
-    }
-
     // MARK: - Public methods
 
     func render(props: Props) {
-        collectionViewHeightConstraint.constant = CGFloat((props.items.count) * 24 + (props.items.count - 1) * 26)
-        dataSource.apply(sections: [0], items: [props.items], animatingDifferences: false)
+        renderIngredients(viewsProps: props.ingredientViewsProps)
     }
-}
 
-// MARK: - Data Source
+    // MARK: - Private methods
 
-extension StepTwoIngredientsView {
-    func makeDataSource() -> DataSource {
-        let dataSource = DataSource(
-            collectionView: collectionView,
-            cellProvider: { collectionView, indexPath, props in
-                let cell: IngredientCell = collectionView.dequeueReusableCell(for: indexPath)
-                cell.render(props: props)
-                cell.onTapName = { [weak self] in
-                    if let indexPath = self?.collectionView.indexPath(for: cell) {
-                        self?.onTapIngredientName(indexPath)
-                    }
-                }
-                cell.onTapAmount = { [weak self] in
-                    if let indexPath = self?.collectionView.indexPath(for: cell) {
-                        self?.onTapIngredientAmount(indexPath)
-                    }
-                }
-                cell.onTapDelete = { [weak self] in
-                    if let indexPath = self?.collectionView.indexPath(for: cell) {
-                        self?.onTapDeleteIngredient(indexPath)
-                    }
-                }
-                return cell
-            }
-        )
-        return dataSource
+    private func renderIngredients(viewsProps: [StepTwoIngredientView.Props]) {
+        let ingredientViews = ingredientsStackView.subviews.compactMap { $0 as? StepTwoIngredientView }
+        if ingredientViews.count == viewsProps.count {
+            zip(ingredientViews, viewsProps).forEach { view, props in view.render(props: props) }
+        } else {
+            ingredientsStackView.subviews.forEach { $0.removeFromSuperview() }
+            viewsProps.enumerated()
+                .map(makeIngredientView)
+                .forEach(ingredientsStackView.addArrangedSubview)
+        }
+    }
+
+    private func makeIngredientView(index: Int, props: StepTwoIngredientView.Props) -> UIView {
+        let ingredientView = StepTwoIngredientView()
+        ingredientView.render(props: props)
+        ingredientView.onTapName = { [weak self] in
+            self?.onTapIngredientName(index)
+        }
+        ingredientView.onTapAmount = { [weak self] in
+            self?.onTapIngredientAmount(index)
+        }
+        ingredientView.onTapDelete = { [weak self] in
+            self?.onTapDeleteIngredient(index)
+        }
+        return ingredientView
     }
 }

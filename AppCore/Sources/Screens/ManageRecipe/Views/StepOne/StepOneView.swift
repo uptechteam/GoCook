@@ -142,12 +142,12 @@ final class StepOneView: UIView {
         } else {
             categoriesStackView.subviews.forEach { $0.removeFromSuperview() }
             viewsProps.enumerated()
-                .map(createCategoryView)
+                .map(makeCategoryView)
                 .forEach(categoriesStackView.addArrangedSubview)
         }
     }
 
-    private func createCategoryView(index: Int, props: StepOneCategoryView.Props) -> StepOneCategoryView {
+    private func makeCategoryView(index: Int, props: StepOneCategoryView.Props) -> UIView {
         let categoryView = StepOneCategoryView()
         categoryView.render(props: props)
         categoryView.onTapCheckmark = { [weak self] in

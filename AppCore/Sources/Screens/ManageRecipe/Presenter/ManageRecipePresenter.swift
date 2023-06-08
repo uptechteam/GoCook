@@ -119,12 +119,12 @@ final class ManageRecipePresenter {
         state.stepThreeState.isCookingTimeValid = true
     }
 
-    func deleteIngredientTapped(indexPath: IndexPath) {
-        guard state.stepTwoState.ingredients.indices.contains(indexPath.item) else {
+    func deleteIngredientTapped(index: Int) {
+        guard state.stepTwoState.ingredients.indices.contains(index) else {
             return
         }
 
-        state.stepTwoState.ingredients.remove(at: indexPath.item)
+        state.stepTwoState.ingredients.remove(at: index)
         state.stepTwoState.areIngredientsValid = true
     }
 
@@ -180,8 +180,8 @@ final class ManageRecipePresenter {
         }
     }
 
-    func ingredientAmountTapped(indexPath: IndexPath) {
-        guard let ingredient = state.stepTwoState.ingredients[safe: indexPath.item] else {
+    func ingredientAmountTapped(index: Int) {
+        guard let ingredient = state.stepTwoState.ingredients[safe: index] else {
             return
         }
 
@@ -203,8 +203,8 @@ final class ManageRecipePresenter {
         state.stepTwoState.areIngredientsValid = true
     }
 
-    func ingredientNameTapped(indexPath: IndexPath) {
-        guard let ingredient = state.stepTwoState.ingredients[safe: indexPath.item] else {
+    func ingredientNameTapped(index: Int) {
+        guard let ingredient = state.stepTwoState.ingredients[safe: index] else {
             return
         }
 

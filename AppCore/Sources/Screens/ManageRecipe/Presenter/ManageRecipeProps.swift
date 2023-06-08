@@ -96,21 +96,20 @@ extension ManageRecipePresenter {
     }
 
     private static func makeIngredientsViewProps(state: State) -> StepTwoIngredientsView.Props {
-        return .init(
-            items: state.stepTwoState.ingredients.map { ingredient in
+        let viewsProps = state.stepTwoState.ingredients
+            .map { ingredient in
                 makeIngredientCellProps(state: state, ingredient: ingredient)
             }
-        )
+        return .init(ingredientViewsProps: viewsProps)
     }
 
-    private static func makeIngredientCellProps(state: State, ingredient: NewIngredient) -> IngredientCell.Props {
+    private static func makeIngredientCellProps(state: State, ingredient: NewIngredient) -> StepTwoIngredientView.Props {
         return .init(
-            id: ingredient.id,
             name: ingredient.name.isEmpty ? .manageRecipeStepTwoIngredientsName : ingredient.name,
-            nameColorSource: makeIngredientNameColorSource(state: state, ingredient: ingredient),
+            nameColor: makeIngredientNameColorSource(state: state, ingredient: ingredient),
             nameTypography: ingredient.name.isEmpty ? .body : .subtitleThree,
             amount: makeIngredientAmountText(ingredient: ingredient),
-            amountColorSource: makeIngredientAmountColorSource(state: state, ingredient: ingredient),
+            amountColor: makeIngredientAmountColorSource(state: state, ingredient: ingredient),
             amountTypography: ingredient.amount == nil ? .body : .subtitleThree,
             isDeleteImageViewVisible: state.stepTwoState.ingredients.count > 1
         )
