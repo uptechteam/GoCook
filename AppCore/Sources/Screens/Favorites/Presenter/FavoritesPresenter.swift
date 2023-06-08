@@ -85,6 +85,10 @@ public final class FavoritesPresenter {
         state.route = .init(value: .didTapRecipe(recipe))
     }
 
+    func scrolledToRefresh() async {
+        await getFavoriteRecipes()
+    }
+
     func searchQueryChanged(_ query: String) async {
         state.query = query
         await getFavoriteRecipes()
@@ -107,7 +111,7 @@ public final class FavoritesPresenter {
     }
 
     private func observeFilters() async {
-        for await filter in await filtersFacade.observeFilters().values {
+        for await filter in await filtersFacade.observeFilters().dropFirst().values {
             state.filters = filter
             await getFavoriteRecipes()
         }

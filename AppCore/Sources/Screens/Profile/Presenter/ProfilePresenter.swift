@@ -44,6 +44,14 @@ public final class ProfilePresenter {
         state.route = .init(value: .createRecipe)
     }
 
+    func contentActionTapped() async {
+        if state.isEmptyContent {
+            state.route = .init(value: .createRecipe)
+        } else if state.isErrorPresent {
+            await getRecipes()
+        }
+    }
+
     func editTapped() {
         state.route = .init(value: .edit)
     }

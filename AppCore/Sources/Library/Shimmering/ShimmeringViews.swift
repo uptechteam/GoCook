@@ -13,7 +13,8 @@ open class ShimmeringCollectionViewCell: UICollectionViewCell, ReusableCell, Shi
 
     // MARK: - Properties
 
-    private var identifier = UUID()
+    /// If identifier is null it means aither this is a new cell or it was reused.
+    private var identifier: UUID?
 
     // MARK: - Lifecycle
 
@@ -24,13 +25,17 @@ open class ShimmeringCollectionViewCell: UICollectionViewCell, ReusableCell, Shi
 
     override public func prepareForReuse() {
         super.prepareForReuse()
-        identifier = UUID()
+        identifier = nil
         toggle(isShimmering: false)
     }
 
     // MARK: - Public methods
 
     public func render() {
+        guard identifier == nil else {
+            return
+        }
+
         let generatedIdentifier = UUID()
         identifier = generatedIdentifier
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in

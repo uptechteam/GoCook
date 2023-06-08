@@ -21,6 +21,14 @@ extension AuthorPresenter {
         var alert: AnyIdentifiable<Alert>?
         var route: AnyIdentifiable<Route>?
 
+        var isEmptyContent: Bool {
+            recipes.isPresent && recipes.isEmpty
+        }
+
+        var isErrorPresent: Bool {
+            recipes.isEmpty && recipes.error != nil
+        }
+
         // MARK: - Public methods
 
         static func makeInitialState(envelope: AuthorEnvelope) -> State {

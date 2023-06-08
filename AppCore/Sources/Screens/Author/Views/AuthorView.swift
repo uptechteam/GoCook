@@ -13,24 +13,22 @@ final class AuthorView: UIView {
     struct Props: Equatable {
         let headerViewProps: AuthorHeaderView.Props
         let isCollectionViewVisible: Bool
-        let items: [SmallRecipeCell.Props]
+        let collectionViewProps: CollectionView<Int, Item>.Props
         let recipesStateViewProps: ContentStateView.Props
     }
 
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, String>
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, String>
+    enum Item: Hashable {
+        case recipe(SmallRecipeCell.Props)
+        case shimmering(Int)
+    }
 
     // MARK: - Properties
 
     let headerView = AuthorHeaderView()
     private let recipesTitleLabel = UILabel()
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
-    private lazy var dataSource = makeDataSource()
-    private lazy var dataStore = [String: SmallRecipeCell.Props]()
-    private let refreshControl = UIRefreshControl()
-    private let recipesStateView = ContentStateView()
+    let collectionView = CollectionView<Int, Item>()
+    let recipesStateView = ContentStateView()
     // callbacks
-    var onScrollToRefresh: () -> Void = { }
     var onTapItem: (IndexPath) -> Void = { _ in }
     var onTapFavorite: (IndexPath) -> Void = { _ in }
     var onScrollToEnd: () -> Void = { }
@@ -54,7 +52,6 @@ final class AuthorView: UIView {
         setupRecipesTitleLabel()
         setupCollectionView()
         setupLayout()
-        setupRefreshControl()
     }
 
     private func setupContentView() {
@@ -82,11 +79,12 @@ final class AuthorView: UIView {
 
     private func setupCollectionView() {
         collectionView.alwaysBounceVertical = true
-        collectionView.backgroundColor = .clear
         collectionView.contentInset.top = 24
         collectionView.delegate = self
-        collectionView.register(cell: SmallRecipeCell.self)
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.register(cell: ShimmeringSmallRecipeCell.self)
+        collectionView.register(cell: SmallRecipeCell.self)
+        configureDataSource()
     }
 
     private func setupLayout() {
@@ -96,38 +94,21 @@ final class AuthorView: UIView {
         collectionView.setCollectionViewLayout(layout, animated: false)
     }
 
-    private func setupRefreshControl() {
-        refreshControl.addAction(
-            UIAction(handler: { [weak self] _ in
-                self?.collectionView.isScrollEnabled = false
-                self?.onScrollToRefresh()
-            }),
-            for: .valueChanged
-        )
-        collectionView.addSubview(refreshControl)
-    }
-
     // MARK: - Public methods
 
     func render(props: Props) {
         headerView.render(props: props.headerViewProps)
-        renderCollection(props: props)
+        collectionView.isHidden = !props.isCollectionViewVisible
+        collectionView.render(props: props.collectionViewProps)
         recipesStateView.render(props: props.recipesStateViewProps)
-        if refreshControl.isRefreshing {
-            refreshControl.endRefreshing()
-        }
     }
 
     // MARK: - Private methods
 
-    private func makeDataSource() -> DataSource {
-        return DataSource(
-            collectionView: collectionView,
-            cellProvider: { [weak self] collectionView, indexPath, id in
-                guard let props = self?.dataStore[id] else {
-                    return nil
-                }
-
+    private func configureDataSource() {
+        collectionView.configureDataSource { [weak self] collectionView, indexPath, item in
+            switch item {
+            case .recipe(let props):
                 let cell: SmallRecipeCell = collectionView.dequeueReusableCell(for: indexPath)
                 cell.render(props: props)
                 cell.onTapFavorite = { [weak self, unowned cell] in
@@ -140,19 +121,13 @@ final class AuthorView: UIView {
                 }
 
                 return cell
-            }
-        )
-    }
 
-    private func renderCollection(props: Props) {
-        collectionView.isHidden = !props.isCollectionViewVisible
-        collectionView.isScrollEnabled = true
-        props.items.forEach { dataStore[$0.id] = $0 }
-        dataSource.applyWithReconfiguring(
-            sections: [0],
-            items: [props.items.map(\.id)],
-            animatingDifferences: true
-        )
+            case .shimmering:
+                let cell: ShimmeringSmallRecipeCell = collectionView.dequeueReusableCell(for: indexPath)
+                cell.render()
+                return cell
+            }
+        }
     }
 }
 

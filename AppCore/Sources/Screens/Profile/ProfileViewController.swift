@@ -93,11 +93,11 @@ public final class ProfileViewController: UIViewController, TabBarPresentable {
             presenter.addNewRecipeTapped()
         }
 
-        contentView.infoView.onTapAddRecipe = { [presenter] in
-            presenter.addNewRecipeTapped()
+        contentView.profileStateView.onTapAction = toSyncClosure { [presenter] in
+            await presenter.contentActionTapped()
         }
 
-        contentView.onScrollToRefresh = toSyncClosure { [presenter] in
+        contentView.collectionView.onScrollToRefresh = toSyncClosure { [presenter] in
             await presenter.scrolledToRefresh()
         }
 

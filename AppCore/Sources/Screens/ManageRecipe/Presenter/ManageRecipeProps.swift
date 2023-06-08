@@ -30,7 +30,7 @@ extension ManageRecipePresenter {
             ),
             recipeViewProps: makeRecipeViewProps(state: state),
             mealNameInputViewProps: makeMealNameInputViewProps(state: state),
-            items: makeCategoryItems(state: state),
+            categoryViewsProps: makeCategoryViewsProps(state: state),
             isCategoryErrorLabelVisible: !state.stepOneState.areCategoriesValid
         )
     }
@@ -49,9 +49,9 @@ extension ManageRecipePresenter {
         )
     }
 
-    private static func makeCategoryItems(state: State) -> [CategoryCell.Props] {
-        CategoryType.priorityOrder.map { category in
-            CategoryCell.Props(
+    private static func makeCategoryViewsProps(state: State) -> [StepOneCategoryView.Props] {
+        return CategoryType.priorityOrder.map { category in
+            StepOneCategoryView.Props(
                 name: category.name,
                 nameColorSource: .color(state.stepOneState.areCategoriesValid ? .textMain : .errorMain),
                 checkmarkImageSource: makeCheckmarkImageSource(state: state, category: category)
@@ -70,7 +70,7 @@ extension ManageRecipePresenter {
     }
 
     private static func makeStepTwoViewProps(state: State) -> StepTwoView.Props {
-        .init(
+        return .init(
             isVisible: state.step == 1,
             servingsViewProps: makeServingsViewProps(state: state),
             ingredientsViewProps: makeIngredientsViewProps(state: state)
@@ -96,21 +96,20 @@ extension ManageRecipePresenter {
     }
 
     private static func makeIngredientsViewProps(state: State) -> StepTwoIngredientsView.Props {
-        return .init(
-            items: state.stepTwoState.ingredients.map { ingredient in
+        let viewsProps = state.stepTwoState.ingredients
+            .map { ingredient in
                 makeIngredientCellProps(state: state, ingredient: ingredient)
             }
-        )
+        return .init(ingredientViewsProps: viewsProps)
     }
 
-    private static func makeIngredientCellProps(state: State, ingredient: NewIngredient) -> IngredientCell.Props {
+    private static func makeIngredientCellProps(state: State, ingredient: NewIngredient) -> StepTwoIngredientView.Props {
         return .init(
-            id: ingredient.id,
             name: ingredient.name.isEmpty ? .manageRecipeStepTwoIngredientsName : ingredient.name,
-            nameColorSource: makeIngredientNameColorSource(state: state, ingredient: ingredient),
+            nameColor: makeIngredientNameColorSource(state: state, ingredient: ingredient),
             nameTypography: ingredient.name.isEmpty ? .body : .subtitleThree,
             amount: makeIngredientAmountText(ingredient: ingredient),
-            amountColorSource: makeIngredientAmountColorSource(state: state, ingredient: ingredient),
+            amountColor: makeIngredientAmountColorSource(state: state, ingredient: ingredient),
             amountTypography: ingredient.amount == nil ? .body : .subtitleThree,
             isDeleteImageViewVisible: state.stepTwoState.ingredients.count > 1
         )

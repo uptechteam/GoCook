@@ -9,6 +9,7 @@ import BusinessLogic
 import Combine
 import DomainModels
 import Foundation
+import Helpers
 
 @MainActor
 public final class HomePresenter {
@@ -183,6 +184,7 @@ public final class HomePresenter {
 
         state.isGettingRecipes = true
         getRecipesPageTask = Task {
+            try? await Task.sleep(nanoseconds: 400_000_000)
             try? await searchRecipesFacade.getFirstPage(query: state.searchQuery, filter: state.filters)
             guard !Task.isCancelled else {
                 return

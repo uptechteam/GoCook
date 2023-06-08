@@ -20,6 +20,18 @@ extension ProfilePresenter {
         var recipes: DomainModelState<[Recipe]>
         var route: AnyIdentifiable<Route>?
 
+        var isEmptyContent: Bool {
+            profile != nil && recipes.isPresent && recipes.isEmpty
+        }
+
+        var isErrorPresent: Bool {
+            recipes.isEmpty && recipes.error != nil
+        }
+
+        var isNotSignedIn: Bool {
+            profile == nil
+        }
+
         // MARK: - Public methods
 
         static func makeInitialState() -> State {

@@ -16,6 +16,9 @@ extension String {
   /// Unknown error occured
   public static let apiErrorUnknownError = L10n.tr("Localizable", "api.error.unknown.error")
 
+  /// Retry
+  public static let authorRetry = L10n.tr("Localizable", "author.retry")
+
   /// Recipes
   public static let authorRecipesTitle = L10n.tr("Localizable", "author.recipes.title")
 
@@ -400,12 +403,6 @@ extension String {
   /// Add new
   public static let profileButtonAddMoreTitle = L10n.tr("Localizable", "profile.button.add.more.title")
 
-  /// You haven’t create any recipe yet\nLet’s chage it
-  public static let profileEmptyContentTitle = L10n.tr("Localizable", "profile.empty.content.title")
-
-  /// Add recipe
-  public static let profileEmptyContentButtonTitle = L10n.tr("Localizable", "profile.empty.content.button.title")
-
   /// My recipes
   public static let profileMyRecipes = L10n.tr("Localizable", "profile.my.recipes")
 
@@ -414,6 +411,15 @@ extension String {
 
   /// Sign in
   public static let profileSignIn = L10n.tr("Localizable", "profile.sign.in")
+
+  /// Add recipe
+  public static let profileStateEmptyButton = L10n.tr("Localizable", "profile.state.empty.button")
+
+  /// You haven’t create any recipe yet\nLet’s chage it
+  public static let profileStateEmptyTitle = L10n.tr("Localizable", "profile.state.empty.title")
+
+  /// Retry
+  public static let profileStateErrorButton = L10n.tr("Localizable", "profile.state.error.button")
 
   /// Delete
   public static let recipeDelete = L10n.tr("Localizable", "recipe.delete")

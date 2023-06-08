@@ -35,6 +35,7 @@ public actor SearchRecipesFacade: SearchRecipesFacading {
 
     public func getFirstPage(query: String, filter: RecipeFilters) async throws {
         await paginator.reset()
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
         let recipes = try await recipesClient.fetchRecipes(query: query, filters: filter, page: 0)
         guard !Task.isCancelled else {
             return
@@ -61,6 +62,7 @@ public actor SearchRecipesFacade: SearchRecipesFacading {
 
     public func observeFeed() -> AnyPublisher<[Recipe], Never> {
         return paginator.identifiersSubject
+            .compactMap { $0 }
             .mapAsync { [recipesStorage] ids in
                 await recipesStorage.observeRecipes(by: ids)
             }
