@@ -9,21 +9,12 @@ import Helpers
 import Library
 import UIKit
 
-final class CategoryCell: UICollectionViewCell, ReusableCell {
+final class StepOneCategoryView: UIView {
 
-    struct Props: Hashable {
-
-        // MARK: - Properties
-
+    struct Props: Equatable {
         let name: String
         let nameColorSource: ColorSource
         let checkmarkImageSource: ImageSource
-
-        // MARK: - Public methods
-
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(name)
-        }
     }
 
     // MARK: - Properties
@@ -47,8 +38,13 @@ final class CategoryCell: UICollectionViewCell, ReusableCell {
     // MARK: - Set up
 
     private func setup() {
-        setupCheckmarkButton()
         setupStackView()
+        setupCheckmarkButton()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [nameLabel, UIView(), checkmarkButton])
+        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupCheckmarkButton() {
@@ -57,11 +53,6 @@ final class CategoryCell: UICollectionViewCell, ReusableCell {
             UIAction(handler: { [weak self] _ in self?.onTapCheckmark() }),
             for: .touchUpInside
         )
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [nameLabel, UIView(), checkmarkButton])
-        contentView.addSubview(stackView, withEdgeInsets: .zero)
     }
 
     // MARK: - Public methods

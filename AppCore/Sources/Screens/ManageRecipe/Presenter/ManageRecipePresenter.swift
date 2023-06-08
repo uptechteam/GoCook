@@ -83,8 +83,8 @@ final class ManageRecipePresenter {
         state.step = max(0, state.step - 1)
     }
 
-    func categoryItemTapped(indexPath: IndexPath) {
-        guard let category = CategoryType.priorityOrder[safe: indexPath.item] else {
+    func categoryItemTapped(index: Int) {
+        guard let category = CategoryType.priorityOrder[safe: index] else {
             return
         }
 

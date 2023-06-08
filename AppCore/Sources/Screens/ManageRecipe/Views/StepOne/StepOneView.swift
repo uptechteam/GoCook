@@ -16,12 +16,9 @@ final class StepOneView: UIView {
         let errorViewProps: ErrorView.Props
         let recipeViewProps: ManageRecipeImageView.Props
         let mealNameInputViewProps: UserInputView.Props
-        let items: [CategoryCell.Props]
+        let categoryViewsProps: [StepOneCategoryView.Props]
         let isCategoryErrorLabelVisible: Bool
     }
-
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, CategoryCell.Props>
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, CategoryCell.Props>
 
     // MARK: - Properties
 
@@ -30,12 +27,10 @@ final class StepOneView: UIView {
     let recipeImageView = ManageRecipeImageView()
     let mealNameInputView = UserInputView()
     private let categoryLabel = UILabel()
-    private lazy var dataSource = makeDataSource()
-    private let collectionView = CollectionViewChangeable()
+    private let categoriesStackView = UIStackView()
     private let categoryErrorLabel = UILabel()
-    private var collectionViewHeightConstraint: NSLayoutConstraint!
     // callbacks
-    var onTapCategory: (IndexPath) -> Void = { _ in }
+    var onTapCategory: (Int) -> Void = { _ in }
 
     // MARK: - Lifecycle
 
@@ -51,19 +46,46 @@ final class StepOneView: UIView {
     // MARK: - Set up
 
     private func setup() {
+        setupScrollView()
+        setupStackView()
         setupContentView()
         setupMealNameInputView()
         setupCategoryLabel()
-        setupLayout()
-        setupCollectionView()
+        setupCategoriesStackView()
         setupCategoryErrorLabel()
-        setupStackView()
-        setupScrollView()
         setupErrorView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
+    }
+
+    private func setupScrollView() {
+        addSubview(scrollView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
+        ])
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                recipeImageView,
+                mealNameInputView,
+                categoryLabel,
+                categoriesStackView,
+                categoryErrorLabel
+            ]
+        )
+        stackView.axis = .vertical
+        stackView.setCustomSpacing(48, after: recipeImageView)
+        stackView.setCustomSpacing(20, after: mealNameInputView)
+        stackView.setCustomSpacing(24, after: categoryLabel)
+        stackView.setCustomSpacing(8, after: categoriesStackView)
+        scrollView.addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
+        NSLayoutConstraint.activate([
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48)
+        ])
     }
 
     private func setupMealNameInputView() {
@@ -75,21 +97,9 @@ final class StepOneView: UIView {
         categoryLabel.setContentHuggingPriority(.required, for: .vertical)
     }
 
-    private func setupLayout() {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 20
-        collectionView.setCollectionViewLayout(flowLayout, animated: false)
-    }
-
-    private func setupCollectionView() {
-        collectionView.backgroundColor = nil
-        collectionView.isScrollEnabled = false
-        collectionView.delegate = self
-        collectionView.register(cell: CategoryCell.self)
-        collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 0)
-        NSLayoutConstraint.activate([
-            collectionViewHeightConstraint
-        ])
+    private func setupCategoriesStackView() {
+        categoriesStackView.axis = .vertical
+        categoriesStackView.spacing = 20
     }
 
     private func setupCategoryErrorLabel() {
@@ -98,28 +108,6 @@ final class StepOneView: UIView {
             color: .errorMain,
             typography: .bodyTwo
         )
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(
-            arrangedSubviews: [recipeImageView, mealNameInputView, categoryLabel, collectionView, categoryErrorLabel]
-        )
-        stackView.axis = .vertical
-        stackView.setCustomSpacing(48, after: recipeImageView)
-        stackView.setCustomSpacing(20, after: mealNameInputView)
-        stackView.setCustomSpacing(24, after: categoryLabel)
-        stackView.setCustomSpacing(8, after: collectionView)
-        scrollView.addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
-        NSLayoutConstraint.activate([
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48)
-        ])
-    }
-
-    private func setupScrollView() {
-        addSubview(scrollView, withEdgeInsets: .zero)
-        NSLayoutConstraint.activate([
-            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
-        ])
     }
 
     private func setupErrorView() {
@@ -137,42 +125,34 @@ final class StepOneView: UIView {
         errorView.render(props: props.errorViewProps)
         recipeImageView.render(props: props.recipeViewProps)
         mealNameInputView.render(props: props.mealNameInputViewProps)
-        collectionViewHeightConstraint.constant = CGFloat(props.items.count * 24 + (props.items.count - 1) * 20)
-        dataSource.apply(sections: [0], items: [props.items])
+        renderCategories(viewsProps: props.categoryViewsProps)
         categoryErrorLabel.isHidden = !props.isCategoryErrorLabelVisible
     }
 
     func updateBottomInset(keyboardHeight: CGFloat) {
         scrollView.contentInset.bottom = keyboardHeight
     }
-}
 
-// MARK: - Data Source
+    // MARK: - Private methods
 
-extension StepOneView {
-    func makeDataSource() -> DataSource {
-        return DataSource(
-            collectionView: collectionView,
-            cellProvider: { [weak self] collectionView, indexPath, props in
-                let cell: CategoryCell = collectionView.dequeueReusableCell(for: indexPath)
-                cell.render(props: props)
-                cell.onTapCheckmark = { [weak self] in
-                    self?.onTapCategory(indexPath)
-                }
-                return cell
-            }
-        )
+    private func renderCategories(viewsProps: [StepOneCategoryView.Props]) {
+        let categoryViews = categoriesStackView.subviews.compactMap { $0 as? StepOneCategoryView }
+        if categoryViews.count == viewsProps.count {
+            zip(categoryViews, viewsProps).forEach { view, props in view.render(props: props) }
+        } else {
+            categoriesStackView.subviews.forEach { $0.removeFromSuperview() }
+            viewsProps.enumerated()
+                .map(createCategoryView)
+                .forEach(categoriesStackView.addArrangedSubview)
+        }
     }
-}
 
-// MARK: - Delegate
-
-extension StepOneView: UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        CGSize(width: collectionView.bounds.width, height: 24)
+    private func createCategoryView(index: Int, props: StepOneCategoryView.Props) -> StepOneCategoryView {
+        let categoryView = StepOneCategoryView()
+        categoryView.render(props: props)
+        categoryView.onTapCheckmark = { [weak self] in
+            self?.onTapCategory(index)
+        }
+        return categoryView
     }
 }

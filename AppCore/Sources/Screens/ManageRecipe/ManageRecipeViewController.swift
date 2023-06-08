@@ -94,8 +94,8 @@ public final class ManageRecipeViewController: UIViewController {
             presenter.mealNameChanged(name: text)
         }
 
-        contentView.stepOneView.onTapCategory = { [presenter] indexPath in
-            presenter.categoryItemTapped(indexPath: indexPath)
+        contentView.stepOneView.onTapCategory = { [presenter] index in
+            presenter.categoryItemTapped(index: index)
         }
 
         contentView.stepTwoView.servingsView.onTap = { [presenter] in

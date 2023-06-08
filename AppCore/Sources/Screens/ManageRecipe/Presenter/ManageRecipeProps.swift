@@ -30,7 +30,7 @@ extension ManageRecipePresenter {
             ),
             recipeViewProps: makeRecipeViewProps(state: state),
             mealNameInputViewProps: makeMealNameInputViewProps(state: state),
-            items: makeCategoryItems(state: state),
+            categoryViewsProps: makeCategoryViewsProps(state: state),
             isCategoryErrorLabelVisible: !state.stepOneState.areCategoriesValid
         )
     }
@@ -49,9 +49,9 @@ extension ManageRecipePresenter {
         )
     }
 
-    private static func makeCategoryItems(state: State) -> [CategoryCell.Props] {
-        CategoryType.priorityOrder.map { category in
-            CategoryCell.Props(
+    private static func makeCategoryViewsProps(state: State) -> [StepOneCategoryView.Props] {
+        return CategoryType.priorityOrder.map { category in
+            StepOneCategoryView.Props(
                 name: category.name,
                 nameColorSource: .color(state.stepOneState.areCategoriesValid ? .textMain : .errorMain),
                 checkmarkImageSource: makeCheckmarkImageSource(state: state, category: category)
@@ -70,7 +70,7 @@ extension ManageRecipePresenter {
     }
 
     private static func makeStepTwoViewProps(state: State) -> StepTwoView.Props {
-        .init(
+        return .init(
             isVisible: state.step == 1,
             servingsViewProps: makeServingsViewProps(state: state),
             ingredientsViewProps: makeIngredientsViewProps(state: state)
