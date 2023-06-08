@@ -66,15 +66,15 @@ final class TabBarView: UIView {
     }
 
     private func setupFavoritesButton() {
-        favoritesButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapItem(0) }), for: .touchUpInside)
+        favoritesButton.addAction(UIAction(handler: { [unowned self] _ in onTapItem(0) }), for: .touchUpInside)
     }
 
     private func setupHomeButton() {
-        homeButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapItem(1) }), for: .touchUpInside)
+        homeButton.addAction(UIAction(handler: { [unowned self] _ in onTapItem(1) }), for: .touchUpInside)
     }
 
     private func setupProfileButton() {
-        profileButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapItem(2) }), for: .touchUpInside)
+        profileButton.addAction(UIAction(handler: { [unowned self] _ in onTapItem(2) }), for: .touchUpInside)
     }
 
     // MARK: - Public methods

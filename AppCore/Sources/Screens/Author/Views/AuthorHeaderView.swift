@@ -57,7 +57,7 @@ final class AuthorHeaderView: UIView {
     }
 
     private func setupBackButton() {
-        backButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapBack() }), for: .touchUpInside)
+        backButton.addAction(UIAction(handler: { [unowned self] _ in onTapBack() }), for: .touchUpInside)
         backButton.set(image: .circleBackButton)
         addSubview(backButton, constraints: [
             backButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 2),

@@ -72,7 +72,7 @@ public final class Button: UIControl {
         layer.borderColor = config.borderColor(for: .normal).cgColor
         layer.borderWidth = config.borderWidth
         layer.roundCornersContinuosly(radius: config.buttonSize.height / 2)
-        addAction(UIAction(handler: { [weak self] _ in self?.onTap() }), for: .touchUpInside)
+        addAction(UIAction(handler: { [unowned self] _ in onTap() }), for: .touchUpInside)
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: config.buttonSize.height)
         ])

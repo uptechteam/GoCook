@@ -49,7 +49,7 @@ final class StepOneCategoryView: UIView {
 
     private func setupCheckmarkButton() {
         checkmarkButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapCheckmark() }),
+            UIAction(handler: { [unowned self] _ in onTapCheckmark() }),
             for: .touchUpInside
         )
         checkmarkButton.set(image: .emptyCheckbox)

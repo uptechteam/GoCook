@@ -54,7 +54,7 @@ final class ProfileRecipesHeaderView: UIView {
     private func setupAddNewButton() {
         addNewButton.setTitle(.profileButtonAddMoreTitle)
         addNewButton.setImage(.addIcon)
-        addNewButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapAddNew() }), for: .touchUpInside)
+        addNewButton.addAction(UIAction(handler: { [unowned self] _ in onTapAddNew() }), for: .touchUpInside)
     }
 
     // MARK: - Public methods

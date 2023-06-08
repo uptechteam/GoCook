@@ -44,7 +44,7 @@ final class RecipeAuthorView: UIControl {
     }
 
     private func setupContentView() {
-        addAction(UIAction(handler: { [weak self] _ in self?.onTap() }), for: .touchUpInside)
+        addAction(UIAction(handler: { [unowned self] _ in onTap() }), for: .touchUpInside)
     }
 
     private func setupStackView() {

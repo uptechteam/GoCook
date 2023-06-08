@@ -153,7 +153,7 @@ final class LoginView: UIView {
     }
 
     private func setupLoginButton() {
-        loginButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapLogin() }), for: .touchUpInside)
+        loginButton.addAction(UIAction(handler: { [unowned self] _ in onTapLogin() }), for: .touchUpInside)
         loginButton.setTitle(.loginLogin)
     }
 
@@ -164,7 +164,7 @@ final class LoginView: UIView {
 
     private func setupLoginWithAppleButton() {
         loginWithAppleButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapLoginWithApple() }),
+            UIAction(handler: { [unowned self] _ in onTapLoginWithApple() }),
             for: .touchUpInside
         )
         loginWithAppleButton.setImage(.apple)
@@ -213,7 +213,7 @@ final class LoginView: UIView {
 
     private func setupSkipButton() {
         skipButton.layer.addShadow(opacitiy: 0.1, radius: 4, offset: CGSize(width: 0, height: 4))
-        skipButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSkip() }), for: .touchUpInside)
+        skipButton.addAction(UIAction(handler: { [unowned self] _ in onTapSkip() }), for: .touchUpInside)
         skipButton.setImage(.arrowForward)
         skipButton.setTitle(.loginSkip)
         addSubview(skipButton, constraints: [

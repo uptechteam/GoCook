@@ -78,7 +78,7 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
     }
 
     private func setupFavoriteButton() {
-        favoriteButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapFavorite() }), for: .touchUpInside)
+        favoriteButton.addAction(UIAction(handler: { [unowned self] _ in onTapFavorite() }), for: .touchUpInside)
         contentView.addSubview(favoriteButton, constraints: [
             favoriteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             favoriteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)

@@ -72,7 +72,7 @@ final class RecipeFeedbackView: UIView {
         (0...4)
             .map { index in
                 let button = UIButton()
-                button.addAction(UIAction(handler: { [weak self] _ in self?.onTapStar(index) }), for: .touchUpInside)
+                button.addAction(UIAction(handler: { [unowned self] _ in onTapStar(index) }), for: .touchUpInside)
                 return button
             }
             .forEach(starsStackView.addArrangedSubview)

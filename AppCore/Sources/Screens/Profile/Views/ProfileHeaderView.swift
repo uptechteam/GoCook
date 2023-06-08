@@ -68,7 +68,7 @@ final class ProfileHeaderView: UIView {
     }
 
     private func setupEditButton() {
-        editButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapEdit() }), for: .touchUpInside)
+        editButton.addAction(UIAction(handler: { [unowned self] _ in onTapEdit() }), for: .touchUpInside)
         editButton.set(image: .editFilled)
         addSubview(editButton, constraints: [
             editButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 14),
@@ -77,7 +77,7 @@ final class ProfileHeaderView: UIView {
     }
 
     private func setupSettingsButton() {
-        settingsButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSettings() }), for: .touchUpInside)
+        settingsButton.addAction(UIAction(handler: { [unowned self] _ in onTapSettings() }), for: .touchUpInside)
         settingsButton.set(image: .settings)
         addSubview(settingsButton, constraints: [
             settingsButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 12),
@@ -107,7 +107,7 @@ final class ProfileHeaderView: UIView {
     }
 
     private func setupSignInButton() {
-        signInButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSignIn() }), for: .touchUpInside)
+        signInButton.addAction(UIAction(handler: { [unowned self] _ in onTapSignIn() }), for: .touchUpInside)
         signInButton.setTitle(.profileSignIn)
     }
 

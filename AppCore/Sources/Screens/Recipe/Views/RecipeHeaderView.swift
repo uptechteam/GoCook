@@ -62,7 +62,7 @@ final class RecipeHeaderView: UIView {
 
     private func setupBackButton() {
         backButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapBack() }),
+            UIAction(handler: { [unowned self] _ in onTapBack() }),
             for: .touchUpInside
         )
         backButton.set(image: .backButton)
@@ -70,7 +70,7 @@ final class RecipeHeaderView: UIView {
 
     private func setupFavoriteButton() {
         favoriteButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapFavorite() }),
+            UIAction(handler: { [unowned self] _ in onTapFavorite() }),
             for: .touchUpInside
         )
     }

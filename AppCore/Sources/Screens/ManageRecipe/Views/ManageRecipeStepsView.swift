@@ -86,7 +86,7 @@ final class ManageRecipeStepsView: UIView {
     }
 
     private func setupBackButton() {
-        backButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapBack() }), for: .touchUpInside)
+        backButton.addAction(UIAction(handler: { [unowned self] _ in onTapBack() }), for: .touchUpInside)
         backButton.setImage(.arrowBack)
         backButton.setTitle(.manageRecipeNavigationBack)
     }
@@ -97,14 +97,14 @@ final class ManageRecipeStepsView: UIView {
     }
 
     private func setupNextButton() {
-        nextButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapNext() }), for: .touchUpInside)
+        nextButton.addAction(UIAction(handler: { [unowned self] _ in onTapNext() }), for: .touchUpInside)
         nextButton.setImage(.arrowForwardGreen)
         nextButton.setTitle(.manageRecipeNavigationNext)
     }
 
     private func setupFinishButton() {
         finishButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapFinish() }),
+            UIAction(handler: { [unowned self] _ in onTapFinish() }),
             for: .touchUpInside
         )
         finishButton.setTitle(.manageRecipeNavigationFinish)

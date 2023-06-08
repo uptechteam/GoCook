@@ -89,7 +89,7 @@ final class FiltersView: UIView {
     }
 
     private func setupApplyButton() {
-        applyButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapApply() }), for: .touchUpInside)
+        applyButton.addAction(UIAction(handler: { [unowned self] _ in onTapApply() }), for: .touchUpInside)
         applyButton.setTitle(.filtersApply)
     }
 

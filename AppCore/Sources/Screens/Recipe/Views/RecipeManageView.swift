@@ -63,7 +63,7 @@ final class RecipeManageView: UIView {
 
     private func setupShareButton() {
         shareButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapShare() }),
+            UIAction(handler: { [unowned self] _ in onTapShare() }),
             for: .touchUpInside
         )
         shareButton.setImage(.share)
@@ -72,7 +72,7 @@ final class RecipeManageView: UIView {
 
     private func setupEditButton() {
         editButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapEdit() }),
+            UIAction(handler: { [unowned self] _ in onTapEdit() }),
             for: .touchUpInside
         )
         editButton.setImage(.edit)
@@ -81,7 +81,7 @@ final class RecipeManageView: UIView {
 
     private func setupDeleteButton() {
         deleteButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapDelete() }),
+            UIAction(handler: { [unowned self] _ in onTapDelete() }),
             for: .touchUpInside
         )
         deleteButton.setImage(.delete)

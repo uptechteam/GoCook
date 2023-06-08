@@ -68,7 +68,7 @@ public final class UserInputView: UIView {
         textField.textColor = .appBlack
         textField.tintColor = .appBlack
         textField.addAction(
-            UIAction(handler: { [weak self] _ in self?.onChangeText(self?.textField.text ?? "") }),
+            UIAction(handler: { [unowned self] _ in onChangeText(textField.text ?? "") }),
             for: .editingChanged
         )
     }

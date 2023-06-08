@@ -48,7 +48,7 @@ final class EditProfileAvatarView: UIControl {
         backgroundColor = .gray100
         clipsToBounds = true
         layer.roundCornersContinuosly(radius: Constants.side / 2)
-        addAction(UIAction(handler: { [weak self] _ in self?.onTap() }), for: .touchUpInside)
+        addAction(UIAction(handler: { [unowned self] _ in onTap() }), for: .touchUpInside)
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalToConstant: Constants.side),
             heightAnchor.constraint(equalToConstant: Constants.side)

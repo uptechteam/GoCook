@@ -105,7 +105,7 @@ final class StepThreeInstructionView: UIView {
     private func setupDeleteButton() {
         deleteButton.set(image: .closeRed)
         deleteButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapDeleteButton() }),
+            UIAction(handler: { [unowned self] _ in onTapDeleteButton() }),
             for: .touchUpInside
         )
     }

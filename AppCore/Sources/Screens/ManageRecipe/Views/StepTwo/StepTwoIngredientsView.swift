@@ -69,7 +69,7 @@ final class StepTwoIngredientsView: UIView {
 
     private func setupAddIngredientButton() {
         addIngredientButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapAddIngredient() }),
+            UIAction(handler: { [unowned self] _ in onTapAddIngredient() }),
             for: .touchUpInside
         )
         addIngredientButton.setImage(.addIcon)

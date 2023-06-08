@@ -66,7 +66,7 @@ final class StepThreeInstructionsView: UIView {
 
     private func setupAddIngredientButton() {
         addInstructionButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapAddInstruction() }),
+            UIAction(handler: { [unowned self] _ in onTapAddInstruction() }),
             for: .touchUpInside
         )
         addInstructionButton.setImage(.addIcon)

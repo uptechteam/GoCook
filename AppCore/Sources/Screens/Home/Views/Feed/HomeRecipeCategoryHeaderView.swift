@@ -47,7 +47,7 @@ final class HomeRecipeCategoryHeaderView: UIView {
 
     private func setupViewAllButton() {
         viewAllButton.titleLabel?.font = Typography.buttonLarge.font
-        viewAllButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapViewAll() }), for: .touchUpInside)
+        viewAllButton.addAction(UIAction(handler: { [unowned self] _ in onTapViewAll() }), for: .touchUpInside)
         viewAllButton.setTitle(.homeCategoryViewAll, for: .normal)
         viewAllButton.setTitleColor(.primaryMain, for: .normal)
         viewAllButton.setTitleColor(.primaryPressed, for: .highlighted)

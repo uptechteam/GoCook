@@ -114,7 +114,7 @@ final class InputView: UIView {
 
     private func setupSaveButton() {
         saveButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapSave() }),
+            UIAction(handler: { [unowned self] _ in onTapSave() }),
             for: .touchUpInside
         )
         saveButton.setTitle("Save")
