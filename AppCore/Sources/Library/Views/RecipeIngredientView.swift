@@ -44,9 +44,16 @@ public final class RecipeIngredientView: UIView {
     // MARK: - Set up
 
     private func setup() {
+        setupStackView()
         setupPointView()
         setupNameLabel()
-        setupStackView()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [nameLabel, UIView(), weightLabel])
+        stackView.alignment = .top
+        stackView.setCustomSpacing(10, after: nameLabel)
+        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 0))
     }
 
     private func setupPointView() {
@@ -63,13 +70,6 @@ public final class RecipeIngredientView: UIView {
     private func setupNameLabel() {
         nameLabel.numberOfLines = 0
         nameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [nameLabel, UIView(), weightLabel])
-        stackView.alignment = .top
-        stackView.setCustomSpacing(10, after: nameLabel)
-        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 0))
     }
 
     // MARK: - Public methods

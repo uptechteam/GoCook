@@ -48,28 +48,9 @@ public final class UserInputView: UIView {
     // MARK: - Set up
 
     private func setup() {
+        setupStackView()
         setupTextField()
         setupDividerView()
-        setupStackView()
-    }
-
-    private func setupTextField() {
-        textField.font = Typography.subtitleThree.font
-        textField.textColor = .appBlack
-        textField.tintColor = .appBlack
-        textField.delegate = self
-        textField.addAction(
-            UIAction(handler: { [weak self] _ in
-                self?.onChangeText(self?.textField.text ?? "")
-            }),
-            for: .editingChanged
-        )
-    }
-
-    private func setupDividerView() {
-        NSLayoutConstraint.activate([
-            dividerView.heightAnchor.constraint(equalToConstant: 1)
-        ])
     }
 
     private func setupStackView() {
@@ -79,6 +60,23 @@ public final class UserInputView: UIView {
         stackView.setCustomSpacing(10, after: textField)
         stackView.setCustomSpacing(8, after: dividerView)
         addSubview(stackView, withEdgeInsets: .zero)
+    }
+
+    private func setupTextField() {
+        textField.delegate = self
+        textField.font = Typography.subtitleThree.font
+        textField.textColor = .appBlack
+        textField.tintColor = .appBlack
+        textField.addAction(
+            UIAction(handler: { [weak self] _ in self?.onChangeText(self?.textField.text ?? "") }),
+            for: .editingChanged
+        )
+    }
+
+    private func setupDividerView() {
+        NSLayoutConstraint.activate([
+            dividerView.heightAnchor.constraint(equalToConstant: 1)
+        ])
     }
 
     // MARK: - Public methods

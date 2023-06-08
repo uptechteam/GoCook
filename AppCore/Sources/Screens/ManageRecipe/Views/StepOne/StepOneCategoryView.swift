@@ -48,11 +48,11 @@ final class StepOneCategoryView: UIView {
     }
 
     private func setupCheckmarkButton() {
-        checkmarkButton.set(image: .emptyCheckbox)
         checkmarkButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onTapCheckmark() }),
             for: .touchUpInside
         )
+        checkmarkButton.set(image: .emptyCheckbox)
     }
 
     // MARK: - Public methods

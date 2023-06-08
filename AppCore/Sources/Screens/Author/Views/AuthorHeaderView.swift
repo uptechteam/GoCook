@@ -46,8 +46,8 @@ final class AuthorHeaderView: UIView {
     }
 
     private func setupBackgroundImageView() {
-        backgroundImageView.image = .profileBackground
         backgroundImageView.contentMode = .scaleAspectFill
+        backgroundImageView.image = .profileBackground
         addSubview(backgroundImageView, constraints: [
             backgroundImageView.topAnchor.constraint(equalTo: topAnchor),
             backgroundImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -57,8 +57,8 @@ final class AuthorHeaderView: UIView {
     }
 
     private func setupBackButton() {
-        backButton.set(image: .circleBackButton)
         backButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapBack() }), for: .touchUpInside)
+        backButton.set(image: .circleBackButton)
         addSubview(backButton, constraints: [
             backButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 2),
             backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12)
@@ -78,8 +78,8 @@ final class AuthorHeaderView: UIView {
     }
 
     private func setupAvatarImageView() {
-        avatarImageView.layer.roundCornersContinuosly(radius: 48)
         avatarImageView.clipsToBounds = true
+        avatarImageView.layer.roundCornersContinuosly(radius: 48)
         NSLayoutConstraint.activate([
             avatarImageView.widthAnchor.constraint(equalToConstant: 96),
             avatarImageView.heightAnchor.constraint(equalTo: avatarImageView.widthAnchor)

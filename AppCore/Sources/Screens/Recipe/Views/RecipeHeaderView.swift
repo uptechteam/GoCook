@@ -40,29 +40,14 @@ final class RecipeHeaderView: UIView {
 
     private func setup() {
         setupContentView()
+        setupStackView()
         setupBackButton()
         setupFavoriteButton()
-        setupStackView()
         setupSeparatorView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
-    }
-
-    private func setupBackButton() {
-        backButton.set(image: .backButton)
-        backButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapBack() }),
-            for: .touchUpInside
-        )
-    }
-
-    private func setupFavoriteButton() {
-        favoriteButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapFavorite() }),
-            for: .touchUpInside
-        )
     }
 
     private func setupStackView() {
@@ -73,6 +58,21 @@ final class RecipeHeaderView: UIView {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20)
         ])
+    }
+
+    private func setupBackButton() {
+        backButton.addAction(
+            UIAction(handler: { [weak self] _ in self?.onTapBack() }),
+            for: .touchUpInside
+        )
+        backButton.set(image: .backButton)
+    }
+
+    private func setupFavoriteButton() {
+        favoriteButton.addAction(
+            UIAction(handler: { [weak self] _ in self?.onTapFavorite() }),
+            for: .touchUpInside
+        )
     }
 
     private func setupSeparatorView() {

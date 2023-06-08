@@ -47,8 +47,15 @@ public final class RatingView: UIView {
     // MARK: - Set up
 
     private func setup() {
-        setupStarImageView()
         setupStackView()
+        setupStarImageView()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [starImageView, textLabel, reviewsLabelLabel, UIView()])
+        stackView.alignment = .center
+        stackView.spacing = 6
+        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupStarImageView() {
@@ -57,13 +64,6 @@ public final class RatingView: UIView {
             starImageView.widthAnchor.constraint(equalToConstant: 20),
             starImageView.heightAnchor.constraint(equalToConstant: 20)
         ])
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [starImageView, textLabel, reviewsLabelLabel, UIView()])
-        stackView.alignment = .center
-        stackView.spacing = 6
-        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     // MARK: - Public methods

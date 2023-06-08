@@ -38,17 +38,20 @@ final class StepThreeView: UIView {
 
     private func setup() {
         setupContentView()
-        setupSpaceView()
-        setupStackView()
         setupScrollView()
+        setupStackView()
+        setupSpaceView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
     }
 
-    private func setupSpaceView() {
-        spaceView.setContentHuggingPriority(.defaultLow, for: .vertical)
+    private func setupScrollView() {
+        addSubview(scrollView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
+        ])
     }
 
     private func setupStackView() {
@@ -61,11 +64,8 @@ final class StepThreeView: UIView {
         ])
     }
 
-    private func setupScrollView() {
-        addSubview(scrollView, withEdgeInsets: .zero)
-        NSLayoutConstraint.activate([
-            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
-        ])
+    private func setupSpaceView() {
+        spaceView.setContentHuggingPriority(.defaultLow, for: .vertical)
     }
 
     // MARK: - Public methods

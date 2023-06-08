@@ -57,12 +57,12 @@ final class ManageRecipeStepsView: UIView {
 
     private func setup() {
         setupDivider()
+        setupStackView()
         setupBackButton()
         setupTitleLabel()
         setupNextButton()
         setupFinishButton()
         setupSpinnerView()
-        setupStackView()
     }
 
     private func setupDivider() {
@@ -75,10 +75,20 @@ final class ManageRecipeStepsView: UIView {
         ])
     }
 
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [backButton, titleLabel, nextButton, finishButton, spinnerView])
+        stackView.alignment = .center
+        addSubview(stackView, constraints: [
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24)
+        ])
+    }
+
     private func setupBackButton() {
-        backButton.setTitle(.manageRecipeNavigationBack)
-        backButton.setImage(.arrowBack)
         backButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapBack() }), for: .touchUpInside)
+        backButton.setImage(.arrowBack)
+        backButton.setTitle(.manageRecipeNavigationBack)
     }
 
     private func setupTitleLabel() {
@@ -87,33 +97,23 @@ final class ManageRecipeStepsView: UIView {
     }
 
     private func setupNextButton() {
-        nextButton.setTitle(.manageRecipeNavigationNext)
-        nextButton.setImage(.arrowForwardGreen)
         nextButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapNext() }), for: .touchUpInside)
+        nextButton.setImage(.arrowForwardGreen)
+        nextButton.setTitle(.manageRecipeNavigationNext)
     }
 
     private func setupFinishButton() {
-        finishButton.setTitle(.manageRecipeNavigationFinish)
         finishButton.addAction(
             UIAction(handler: { [weak self] _ in self?.onTapFinish() }),
             for: .touchUpInside
         )
+        finishButton.setTitle(.manageRecipeNavigationFinish)
     }
 
     private func setupSpinnerView() {
         NSLayoutConstraint.activate([
             spinnerView.widthAnchor.constraint(equalToConstant: 20),
             spinnerView.heightAnchor.constraint(equalTo: spinnerView.widthAnchor)
-        ])
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [backButton, titleLabel, nextButton, finishButton, spinnerView])
-        stackView.alignment = .center
-        addSubview(stackView, constraints: [
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24)
         ])
     }
 

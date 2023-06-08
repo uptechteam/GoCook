@@ -35,22 +35,22 @@ final class HomeRecipeCategoryHeaderView: UIView {
     // MARK: - Set up
 
     private func setup() {
-        setupViewAllButton()
         setupStackView()
-    }
-
-    private func setupViewAllButton() {
-        viewAllButton.setTitle(.homeCategoryViewAll, for: .normal)
-        viewAllButton.setTitleColor(.primaryMain, for: .normal)
-        viewAllButton.setTitleColor(.primaryPressed, for: .highlighted)
-        viewAllButton.titleLabel?.font = Typography.buttonLarge.font
-        viewAllButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapViewAll() }), for: .touchUpInside)
+        setupViewAllButton()
     }
 
     private func setupStackView() {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, UIView(), viewAllButton])
         stackView.alignment = .center
         addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24))
+    }
+
+    private func setupViewAllButton() {
+        viewAllButton.titleLabel?.font = Typography.buttonLarge.font
+        viewAllButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapViewAll() }), for: .touchUpInside)
+        viewAllButton.setTitle(.homeCategoryViewAll, for: .normal)
+        viewAllButton.setTitleColor(.primaryMain, for: .normal)
+        viewAllButton.setTitleColor(.primaryPressed, for: .highlighted)
     }
 
     // MARK: - Public methods

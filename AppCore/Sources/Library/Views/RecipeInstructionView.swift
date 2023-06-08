@@ -43,9 +43,17 @@ public final class RecipeInstructionView: UIView {
     // MARK: - Set up
 
     private func setup() {
+        setupStackView()
         setupTitleLabel()
         setupDescriptionLabel()
-        setupStackView()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel])
+        stackView.axis = .vertical
+        stackView.alignment = .leading
+        stackView.spacing = 8
+        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupTitleLabel() {
@@ -55,14 +63,6 @@ public final class RecipeInstructionView: UIView {
     private func setupDescriptionLabel() {
         descriptionLabel.numberOfLines = 0
         descriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel])
-        stackView.axis = .vertical
-        stackView.alignment = .leading
-        stackView.spacing = 8
-        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     // MARK: - Public methods

@@ -39,12 +39,19 @@ final class StepFourView: UIView {
 
     private func setup() {
         setupContentView()
-        setupStackView()
         setupScrollView()
+        setupStackView()
     }
 
     private func setupContentView() {
         backgroundColor = .gray100
+    }
+
+    private func setupScrollView() {
+        addSubview(scrollView, withEdgeInsets: .zero)
+        NSLayoutConstraint.activate([
+            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
+        ])
     }
 
     private func setupStackView() {
@@ -54,13 +61,6 @@ final class StepFourView: UIView {
         scrollView.addSubview(stackView, withEdgeInsets: .zero)
         NSLayoutConstraint.activate([
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
-        ])
-    }
-
-    private func setupScrollView() {
-        addSubview(scrollView, withEdgeInsets: .zero)
-        NSLayoutConstraint.activate([
-            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
         ])
     }
 

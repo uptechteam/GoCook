@@ -67,11 +67,18 @@ public final class SmallRecipeCell: UICollectionViewCell, ReusableCell {
     // MARK: - Set up
 
     private func setup() {
+        setupStackView()
         setupRecipeImageView()
         setupNameStackView()
         setupNameLabel()
-        setupStackView()
         setupFavoriteButton()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [recipeImageView, nameStackView])
+        stackView.alignment = .center
+        stackView.spacing = 16
+        contentView.addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupRecipeImageView() {
@@ -92,13 +99,6 @@ public final class SmallRecipeCell: UICollectionViewCell, ReusableCell {
 
     private func setupNameLabel() {
         nameLabel.numberOfLines = 2
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [recipeImageView, nameStackView])
-        stackView.alignment = .center
-        stackView.spacing = 16
-        contentView.addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupFavoriteButton() {

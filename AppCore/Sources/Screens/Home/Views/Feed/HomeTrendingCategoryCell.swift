@@ -52,14 +52,10 @@ final class HomeTrendingCategoryCell: UICollectionViewCell, ReusableCell {
 
     private func setupCategoriesCollectionView() {
         categoriesCollectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
-        categoriesCollectionView.showsHorizontalScrollIndicator = false
         categoriesCollectionView.delegate = self
-        categoriesCollectionView.configureDataSource { collectionView, indexPath, props in
-            let cell: CategoryCell = collectionView.dequeueReusableCell(for: indexPath)
-            cell.render(props: props)
-            return cell
-        }
+        categoriesCollectionView.showsHorizontalScrollIndicator = false
         categoriesCollectionView.register(cell: CategoryCell.self)
+        configureDataSource()
         NSLayoutConstraint.activate([
             categoriesCollectionView.heightAnchor.constraint(equalToConstant: 32)
         ])
@@ -67,8 +63,8 @@ final class HomeTrendingCategoryCell: UICollectionViewCell, ReusableCell {
 
     private func setupCategoriesLayout() {
         let flowlayout = UICollectionViewFlowLayout()
-        flowlayout.scrollDirection = .horizontal
         flowlayout.minimumLineSpacing = 8
+        flowlayout.scrollDirection = .horizontal
         categoriesCollectionView.setCollectionViewLayout(flowlayout, animated: false)
     }
 
@@ -78,6 +74,16 @@ final class HomeTrendingCategoryCell: UICollectionViewCell, ReusableCell {
         headerView.render(props: props.headerProps)
         categoriesCollectionView.render(props: props.categoriesCollectionViewProps)
         recipesCollectionView.render(props: props.recipesCollectionViewProps)
+    }
+
+    // MARK: - Private methods
+
+    private func configureDataSource() {
+        categoriesCollectionView.configureDataSource { collectionView, indexPath, props in
+            let cell: CategoryCell = collectionView.dequeueReusableCell(for: indexPath)
+            cell.render(props: props)
+            return cell
+        }
     }
 }
 

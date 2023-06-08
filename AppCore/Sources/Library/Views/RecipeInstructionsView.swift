@@ -44,13 +44,21 @@ public final class RecipeInstructionsView: UIView {
 
     private func setup() {
         setupContentView()
+        setupStackView()
         setupTitleLabel()
         setupInstructionsStackView()
-        setupStackView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, instructionsStackView])
+        stackView.axis = .vertical
+        stackView.alignment = .leading
+        stackView.spacing = 24
+        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 32, left: 24, bottom: 32, right: 24))
     }
 
     private func setupTitleLabel() {
@@ -61,14 +69,6 @@ public final class RecipeInstructionsView: UIView {
     private func setupInstructionsStackView() {
         instructionsStackView.axis = .vertical
         instructionsStackView.spacing = 32
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, instructionsStackView])
-        stackView.axis = .vertical
-        stackView.alignment = .leading
-        stackView.spacing = 24
-        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 32, left: 24, bottom: 32, right: 24))
     }
 
     // MARK: - Public methods

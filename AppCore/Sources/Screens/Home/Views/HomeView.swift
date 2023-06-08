@@ -44,11 +44,11 @@ final class HomeView: UIView {
 
     private func setup() {
         setupContentView()
+        setupStackView()
         setupTopStackView()
         setupSearchTextField()
         setupFiltersButton()
         setupSearchResultsView()
-        setupStackView()
     }
 
     private func setupContentView() {
@@ -57,6 +57,24 @@ final class HomeView: UIView {
         tapGesture.cancelsTouchesInView = false
         tapGesture.delegate = self
         addGestureRecognizer(tapGesture)
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [topStackView, feedView, searchResultsView, homeStateView])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 24
+        addSubview(stackView, constraints: [
+            stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+        ])
+        NSLayoutConstraint.activate([
+            topStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
+            feedView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            searchResultsView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48)
+        ])
     }
 
     private func setupTopStackView() {
@@ -79,24 +97,6 @@ final class HomeView: UIView {
 
     private func setupSearchResultsView() {
         searchResultsView.isHidden = true
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [topStackView, feedView, searchResultsView, homeStateView])
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = 24
-        addSubview(stackView, constraints: [
-            stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
-        ])
-        NSLayoutConstraint.activate([
-            topStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
-            feedView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            searchResultsView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48)
-        ])
     }
 
     // MARK: - Public methods

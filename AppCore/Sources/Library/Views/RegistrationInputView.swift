@@ -68,23 +68,32 @@ public final class RegistrationInputView: UIView {
     // MARK: - Set up
 
     private func setup() {
-        setupTextField()
+        setupStackView()
         setupTextFieldStackView()
+        setupTextField()
         setupDividerView()
         setupDescriptionLabel()
-        setupStackView()
     }
 
-    private func setupTextField() {
-        textField.font = Typography.subtitleThree.font
-        textField.textColor = .appBlack
-        textField.delegate = self
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, textFieldStackView, dividerView, descriptionLabel])
+        stackView.axis = .vertical
+        stackView.setCustomSpacing(16, after: titleLabel)
+        stackView.setCustomSpacing(10, after: textFieldStackView)
+        stackView.setCustomSpacing(8, after: dividerView)
+        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupTextFieldStackView() {
         [textField, validationView].forEach(textFieldStackView.addArrangedSubview)
         textFieldStackView.alignment = .center
         textFieldStackView.spacing = 8
+    }
+
+    private func setupTextField() {
+        textField.delegate = self
+        textField.font = Typography.subtitleThree.font
+        textField.textColor = .appBlack
     }
 
     private func setupDividerView() {
@@ -95,15 +104,6 @@ public final class RegistrationInputView: UIView {
 
     private func setupDescriptionLabel() {
         descriptionLabel.numberOfLines = 0
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, textFieldStackView, dividerView, descriptionLabel])
-        stackView.axis = .vertical
-        stackView.setCustomSpacing(16, after: titleLabel)
-        stackView.setCustomSpacing(10, after: textFieldStackView)
-        stackView.setCustomSpacing(8, after: dividerView)
-        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     // MARK: - Public methods

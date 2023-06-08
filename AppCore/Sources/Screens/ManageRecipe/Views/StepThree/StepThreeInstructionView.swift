@@ -47,14 +47,27 @@ final class StepThreeInstructionView: UIView {
     // MARK: - Set up
 
     private func setup() {
+        setupStackView()
+        setupLeadingStackView()
         setupTitleLabel()
         setupTextView()
         setupToolBar()
         setupDividerView()
         setupErrorLabel()
         setupDeleteButton()
-        setupLeadingStackView()
-        setupStackView()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [leadingStackView, deleteButton])
+        stackView.spacing = 15
+        addSubview(stackView, withEdgeInsets: .zero)
+    }
+
+    private func setupLeadingStackView() {
+        [titleLabel, textView, dividerView, errorLabel].forEach(leadingStackView.addArrangedSubview)
+        leadingStackView.axis = .vertical
+        leadingStackView.setCustomSpacing(8, after: titleLabel)
+        leadingStackView.setCustomSpacing(8, after: dividerView)
     }
 
     private func setupTitleLabel() {
@@ -63,10 +76,10 @@ final class StepThreeInstructionView: UIView {
     }
 
     private func setupTextView() {
-        textView.font = Typography.subtitleThree.font
-        textView.textColor = .textMain
-        textView.isScrollEnabled = false
         textView.delegate = self
+        textView.font = Typography.subtitleThree.font
+        textView.isScrollEnabled = false
+        textView.textColor = .textMain
         textView.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
@@ -95,19 +108,6 @@ final class StepThreeInstructionView: UIView {
             UIAction(handler: { [weak self] _ in self?.onTapDeleteButton() }),
             for: .touchUpInside
         )
-    }
-
-    private func setupLeadingStackView() {
-        [titleLabel, textView, dividerView, errorLabel].forEach(leadingStackView.addArrangedSubview)
-        leadingStackView.axis = .vertical
-        leadingStackView.setCustomSpacing(8, after: titleLabel)
-        leadingStackView.setCustomSpacing(8, after: dividerView)
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [leadingStackView, deleteButton])
-        stackView.spacing = 15
-        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     // MARK: - Public methods

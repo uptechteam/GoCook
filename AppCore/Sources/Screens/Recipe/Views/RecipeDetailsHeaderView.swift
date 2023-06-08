@@ -44,14 +44,31 @@ final class RecipeDetailsHeaderView: UIView {
 
     private func setup() {
         setupContentView()
+        setupStackView()
         setupSeparatorView()
         setupNameLabel()
         setupBottomStackView()
-        setupStackView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(
+            arrangedSubviews: [separatorView, nameLabel, contentStateView, authorView, bottomStackView]
+        )
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.setCustomSpacing(14.5, after: separatorView)
+        stackView.setCustomSpacing(20, after: nameLabel)
+        stackView.setCustomSpacing(20, after: authorView)
+        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 14.5, left: 24, bottom: 32, right: 24))
+        NSLayoutConstraint.activate([
+            nameLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            authorView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            bottomStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor)
+        ])
     }
 
     private func setupSeparatorView() {
@@ -70,23 +87,6 @@ final class RecipeDetailsHeaderView: UIView {
     private func setupBottomStackView() {
         [ratingView, timeView, UIView()].forEach(bottomStackView.addArrangedSubview)
         bottomStackView.setCustomSpacing(16, after: ratingView)
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(
-            arrangedSubviews: [separatorView, nameLabel, contentStateView, authorView, bottomStackView]
-        )
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.setCustomSpacing(14.5, after: separatorView)
-        stackView.setCustomSpacing(20, after: nameLabel)
-        stackView.setCustomSpacing(20, after: authorView)
-        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 14.5, left: 24, bottom: 32, right: 24))
-        NSLayoutConstraint.activate([
-            nameLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            authorView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            bottomStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor)
-        ])
     }
 
     // MARK: - Public methods

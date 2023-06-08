@@ -44,41 +44,14 @@ final class RecipeManageView: UIView {
 
     private func setup() {
         setupContentView()
+        setupStackView()
         setupShareButton()
         setupEditButton()
         setupDeleteButton()
-        setupStackView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
-    }
-
-    private func setupShareButton() {
-        shareButton.setTitle(.recipeShare)
-        shareButton.setImage(.share)
-        shareButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapShare() }),
-            for: .touchUpInside
-        )
-    }
-
-    private func setupEditButton() {
-        editButton.setTitle(.recipeEdit)
-        editButton.setImage(.edit)
-        editButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapEdit() }),
-            for: .touchUpInside
-        )
-    }
-
-    private func setupDeleteButton() {
-        deleteButton.setTitle(.recipeDelete)
-        deleteButton.setImage(.delete)
-        deleteButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapDelete() }),
-            for: .touchUpInside
-        )
     }
 
     private func setupStackView() {
@@ -86,6 +59,33 @@ final class RecipeManageView: UIView {
         stackView.axis = .vertical
         stackView.spacing = 16
         addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 32, left: 24, bottom: 44, right: 24))
+    }
+
+    private func setupShareButton() {
+        shareButton.addAction(
+            UIAction(handler: { [weak self] _ in self?.onTapShare() }),
+            for: .touchUpInside
+        )
+        shareButton.setImage(.share)
+        shareButton.setTitle(.recipeShare)
+    }
+
+    private func setupEditButton() {
+        editButton.addAction(
+            UIAction(handler: { [weak self] _ in self?.onTapEdit() }),
+            for: .touchUpInside
+        )
+        editButton.setImage(.edit)
+        editButton.setTitle(.recipeEdit)
+    }
+
+    private func setupDeleteButton() {
+        deleteButton.addAction(
+            UIAction(handler: { [weak self] _ in self?.onTapDelete() }),
+            for: .touchUpInside
+        )
+        deleteButton.setImage(.delete)
+        deleteButton.setTitle(.recipeDelete)
     }
 
     // MARK: - Public methods
