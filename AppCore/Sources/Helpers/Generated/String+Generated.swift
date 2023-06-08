@@ -16,6 +16,9 @@ extension String {
   /// Unknown error occured
   public static let apiErrorUnknownError = L10n.tr("Localizable", "api.error.unknown.error")
 
+  /// Retry
+  public static let authorRetry = L10n.tr("Localizable", "author.retry")
+
   /// Recipes
   public static let authorRecipesTitle = L10n.tr("Localizable", "author.recipes.title")
 

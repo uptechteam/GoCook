@@ -64,7 +64,7 @@ public final class AuthorViewController: UIViewController, ErrorPresentable {
             presenter.backTapped()
         }
 
-        contentView.onScrollToRefresh = toSyncClosure { [presenter] in
+        contentView.collectionView.onScrollToRefresh = toSyncClosure { [presenter] in
             await presenter.scrolledToRefresh()
         }
 
@@ -78,6 +78,10 @@ public final class AuthorViewController: UIViewController, ErrorPresentable {
 
         contentView.onScrollToEnd = toSyncClosure { [presenter] in
             await presenter.scrolledToEnd()
+        }
+
+        contentView.recipesStateView.onTapAction = toSyncClosure { [presenter] in
+            await presenter.contentActionTapped()
         }
 
         let state = presenter.$state

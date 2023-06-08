@@ -11,6 +11,7 @@
 "author.recipes.title" = "Recipes";
 "author.recipes.no.reviews" = "No reviews yet:";
 "author.recipes.empty.text" = "This author has no recipes yet";
+"author.retry" = "Retry";
 
 // MARK: - Edit Profile
 

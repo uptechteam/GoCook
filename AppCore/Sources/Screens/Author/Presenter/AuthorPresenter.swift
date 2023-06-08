@@ -36,6 +36,12 @@ public final class AuthorPresenter {
         state.route = .init(value: .didTapBack)
     }
 
+    func contentActionTapped() async {
+        if state.isErrorPresent {
+            await getFirstPage()
+        }
+    }
+
     func isFavoriteTapped(indexPath: IndexPath) async {
         guard let recipe = state.recipes.items[safe: indexPath.item] else {
             return
