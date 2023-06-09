@@ -78,7 +78,7 @@ final class RecipeView: UIView {
 
     private func setupBackButton() {
         backButton.set(image: .circleBackButton)
-        backButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapBack() }), for: .touchUpInside)
+        backButton.addAction(UIAction(handler: { [unowned self] _ in onTapBack() }), for: .touchUpInside)
         addSubview(backButton, constraints: [
             backButton.topAnchor.constraint(equalTo: recipeImageView.topAnchor, constant: 46),
             backButton.leadingAnchor.constraint(equalTo: recipeImageView.leadingAnchor, constant: 12)
@@ -86,7 +86,7 @@ final class RecipeView: UIView {
     }
 
     private func setupFavoriteButton() {
-        favoriteButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapFavorite() }), for: .touchUpInside)
+        favoriteButton.addAction(UIAction(handler: { [unowned self] _ in onTapFavorite() }), for: .touchUpInside)
         addSubview(favoriteButton, constraints: [
             favoriteButton.topAnchor.constraint(equalTo: recipeImageView.topAnchor, constant: 46),
             favoriteButton.trailingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: -12)

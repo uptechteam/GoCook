@@ -42,8 +42,8 @@ extension RecipePresenter {
     // MARK: - Route
 
     enum Route {
-        case back
         case didTapAuthor(User)
+        case didTapBack
         case didTapEdit(RecipeDetails)
     }
 }

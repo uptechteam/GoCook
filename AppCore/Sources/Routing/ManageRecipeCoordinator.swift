@@ -15,14 +15,15 @@ protocol ManageRecipeCoordinatorDelegate: AnyObject {
     func didFinish(_ coordinator: ManageRecipeCoordinator)
 }
 
+@MainActor
 final class ManageRecipeCoordinator: Coordinating {
 
     // MARK: - Properties
 
     weak var delegate: ManageRecipeCoordinatorDelegate?
-    private let recipeDetails: RecipeDetails?
-    private let presentingViewController: UIViewController
     private let navigationController: UINavigationController
+    private let presentingViewController: UIViewController
+    private let recipeDetails: RecipeDetails?
 
     var rootViewController: UIViewController {
         presentingViewController
@@ -30,10 +31,10 @@ final class ManageRecipeCoordinator: Coordinating {
 
     // MARK: - Lifecycle
 
-    init(recipeDetails: RecipeDetails?, presentingViewController: UIViewController) {
-        self.recipeDetails = recipeDetails
-        self.presentingViewController = presentingViewController
+    init(presentingViewController: UIViewController, recipeDetails: RecipeDetails?) {
         self.navigationController = BaseNavigationController()
+        self.presentingViewController = presentingViewController
+        self.recipeDetails = recipeDetails
         setupUI()
     }
 
@@ -43,13 +44,13 @@ final class ManageRecipeCoordinator: Coordinating {
         let envelope = recipeDetails.flatMap(ManageRecipeEnvelope.edit) ?? .create
         let viewController = ManageRecipeViewController.resolve(envelope: envelope, coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
-        navigationController.modalPresentationStyle = .overFullScreen
         presentingViewController.present(navigationController, animated: true)
     }
 
     // MARK: - Private methods
 
     private func setupUI() {
+        navigationController.modalPresentationStyle = .overFullScreen
         navigationController.navigationBar.titleTextAttributes = [
             .font: Typography.subtitleTwo.font,
             .foregroundColor: UIColor.textMain
@@ -57,24 +58,7 @@ final class ManageRecipeCoordinator: Coordinating {
     }
 }
 
-// MARK: - Extensions
-
-extension ManageRecipeCoordinator: ManageRecipeCoordinating {
-    func didTapClose() {
-        presentingViewController.dismiss(animated: true) { [self] in
-            delegate?.didFinish(self)
-        }
-    }
-
-    @MainActor
-    func didTapInput(details: InputDetails) {
-        let envelope = InputEnvelope(details: details)
-        let viewController = InputViewController.resolve(envelope: envelope, coordinator: self)
-        viewController.modalPresentationStyle = .overFullScreen
-        viewController.modalTransitionStyle = .crossDissolve
-        navigationController.present(viewController, animated: true)
-    }
-}
+// MARK: - InputCoordinating
 
 extension ManageRecipeCoordinator: InputCoordinating {
     func didFinish(inputDetails: InputDetails) {
@@ -84,5 +68,23 @@ extension ManageRecipeCoordinator: InputCoordinating {
         }
 
         viewController.updateInput(details: inputDetails)
+    }
+}
+
+// MARK: - ManageRecipeCoordinating
+
+extension ManageRecipeCoordinator: ManageRecipeCoordinating {
+    func didTapClose() {
+        presentingViewController.dismiss(animated: true) { [self] in
+            delegate?.didFinish(self)
+        }
+    }
+
+    func didTapInput(details: InputDetails) {
+        let envelope = InputEnvelope(details: details)
+        let viewController = InputViewController.resolve(envelope: envelope, coordinator: self)
+        viewController.modalPresentationStyle = .overFullScreen
+        viewController.modalTransitionStyle = .crossDissolve
+        navigationController.present(viewController, animated: true)
     }
 }

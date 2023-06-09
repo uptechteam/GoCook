@@ -40,32 +40,20 @@ final class TabBarView: UIView {
 
     private func setup() {
         setupContentView()
+        setupStackView()
         setupFavoritesButton()
         setupHomeButton()
         setupProfileButton()
-        setupStackView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
-        layer.roundCornersContinuosly(radius: 28)
         layer.addShadow(opacitiy: 0.1, radius: 7, offset: CGSize(width: 0, height: 4))
+        layer.roundCornersContinuosly(radius: 28)
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalToConstant: 240),
             heightAnchor.constraint(equalToConstant: 56)
         ])
-    }
-
-    private func setupFavoritesButton() {
-        favoritesButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapItem(0) }), for: .touchUpInside)
-    }
-
-    private func setupHomeButton() {
-        homeButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapItem(1) }), for: .touchUpInside)
-    }
-
-    private func setupProfileButton() {
-        profileButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapItem(2) }), for: .touchUpInside)
     }
 
     private func setupStackView() {
@@ -75,6 +63,18 @@ final class TabBarView: UIView {
             stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             stackView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
+    }
+
+    private func setupFavoritesButton() {
+        favoritesButton.addAction(UIAction(handler: { [unowned self] _ in onTapItem(0) }), for: .touchUpInside)
+    }
+
+    private func setupHomeButton() {
+        homeButton.addAction(UIAction(handler: { [unowned self] _ in onTapItem(1) }), for: .touchUpInside)
+    }
+
+    private func setupProfileButton() {
+        profileButton.addAction(UIAction(handler: { [unowned self] _ in onTapItem(2) }), for: .touchUpInside)
     }
 
     // MARK: - Public methods

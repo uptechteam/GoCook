@@ -46,10 +46,10 @@ extension ProfilePresenter {
     // MARK: - Route
 
     enum Route {
-        case createRecipe
-        case edit
-        case recipe(Recipe)
-        case settings
-        case signIn
+        case didTapCreateRecipe
+        case didTapEdit
+        case didTapRecipe(Recipe)
+        case didTapSettings
+        case didTapSignIn
     }
 }

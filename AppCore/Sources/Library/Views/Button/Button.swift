@@ -61,37 +61,20 @@ public final class Button: UIControl {
 
     private func setup() {
         setupContentView()
+        setupStackView()
         setupImageView()
         setupTitleLabel()
         setupSpinnerView()
-        setupStackView()
     }
 
     private func setupContentView() {
-        layer.roundCornersContinuosly(radius: config.buttonSize.height / 2)
         backgroundColor = config.backgroundColor(for: .normal)
         layer.borderColor = config.borderColor(for: .normal).cgColor
         layer.borderWidth = config.borderWidth
-        addAction(UIAction(handler: { [weak self] _ in self?.onTap() }), for: .touchUpInside)
+        layer.roundCornersContinuosly(radius: config.buttonSize.height / 2)
+        addAction(UIAction(handler: { [unowned self] _ in onTap() }), for: .touchUpInside)
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: config.buttonSize.height)
-        ])
-    }
-
-    private func setupImageView() {
-        imageView.setContentHuggingPriority(.required, for: .horizontal)
-        imageView.isHidden = true
-        imageView.tintColor = config.titleColor(for: .normal)
-    }
-
-    private func setupTitleLabel() {
-        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
-    }
-
-    func setupSpinnerView() {
-        NSLayoutConstraint.activate([
-            spinnerView.widthAnchor.constraint(equalTo: spinnerView.heightAnchor),
-            spinnerView.heightAnchor.constraint(equalToConstant: config.buttonSize.height - 16)
         ])
     }
 
@@ -104,9 +87,10 @@ public final class Button: UIControl {
         case .right:
             [titleLabel, imageView, spinnerView].forEach(stackView.addArrangedSubview)
         }
-        stackView.isUserInteractionEnabled = false
-        stackView.spacing = 8
+
         stackView.alignment = .center
+        stackView.spacing = 8
+        stackView.isUserInteractionEnabled = false
         let contentInsets = config.buttonSize.contentInsets
         addSubview(stackView, constraints: [
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: contentInsets.left)
@@ -115,6 +99,23 @@ public final class Button: UIControl {
                 .prioritised(as: .defaultHigh),
             stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             stackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+    }
+
+    private func setupImageView() {
+        imageView.isHidden = true
+        imageView.tintColor = config.titleColor(for: .normal)
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
+    }
+
+    private func setupTitleLabel() {
+        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
+    }
+
+    func setupSpinnerView() {
+        NSLayoutConstraint.activate([
+            spinnerView.widthAnchor.constraint(equalTo: spinnerView.heightAnchor),
+            spinnerView.heightAnchor.constraint(equalToConstant: config.buttonSize.height - 16)
         ])
     }
 

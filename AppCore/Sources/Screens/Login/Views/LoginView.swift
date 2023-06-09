@@ -73,13 +73,13 @@ final class LoginView: UIView {
         setupContentView()
         setupDividerView()
         setupBackgroundImageView()
+        setupStackView()
         setupTitleLabel()
         setupPasswordInputView()
         setupLoginButton()
         setupOrLabel()
         setupLoginWithAppleButton()
         setupNewLabel()
-        setupStackView()
         setupScrollView()
         setupSkipButton()
     }
@@ -108,62 +108,6 @@ final class LoginView: UIView {
             backgroundImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             backgroundImageView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
-    }
-
-    private func setupTitleLabel() {
-        titleLabel.numberOfLines = 0
-        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
-
-    private func setupPasswordInputView() {
-        passwordInputView.textField.isSecureTextEntry = true
-        passwordInputView.textField.textContentType = .oneTimeCode
-    }
-
-    private func setupLoginButton() {
-        loginButton.setTitle(.loginLogin)
-        loginButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapLogin() }), for: .touchUpInside)
-    }
-
-    private func setupOrLabel() {
-        orLabel.render(title: .loginOr, color: .textSecondary, typography: .subtitleTwo)
-        orLabel.textAlignment = .center
-    }
-
-    private func setupLoginWithAppleButton() {
-        loginWithAppleButton.setTitle(.loginLoginWithApple)
-        loginWithAppleButton.setImage(.apple)
-        loginWithAppleButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapLoginWithApple() }),
-            for: .touchUpInside
-        )
-    }
-
-    private func setupNewLabel() {
-        let attributedText = NSMutableAttributedString()
-        attributedText.append(
-            NSAttributedString(
-                string: .loginNewFirst,
-                attributes: [
-                    .font: FontFamily.RedHatDisplay.medium.font(size: 14),
-                    .foregroundColor: UIColor.textSecondary
-                ]
-            )
-        )
-        attributedText.append(
-            NSAttributedString(
-                string: .loginNewSecond,
-                attributes: [
-                    .font: FontFamily.RedHatDisplay.regular.font(size: 14),
-                    .foregroundColor: UIColor.primaryMain
-                ]
-            )
-        )
-        newLabel.attributedText = attributedText
-        newLabel.textAlignment = .center
-        newLabel.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleNewTap))
-        newLabel.addGestureRecognizer(tapGesture)
     }
 
     private func setupStackView() {
@@ -198,6 +142,62 @@ final class LoginView: UIView {
         ])
     }
 
+    private func setupTitleLabel() {
+        titleLabel.numberOfLines = 0
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
+
+    private func setupPasswordInputView() {
+        passwordInputView.textField.isSecureTextEntry = true
+        passwordInputView.textField.textContentType = .oneTimeCode
+    }
+
+    private func setupLoginButton() {
+        loginButton.addAction(UIAction(handler: { [unowned self] _ in onTapLogin() }), for: .touchUpInside)
+        loginButton.setTitle(.loginLogin)
+    }
+
+    private func setupOrLabel() {
+        orLabel.textAlignment = .center
+        orLabel.render(title: .loginOr, color: .textSecondary, typography: .subtitleTwo)
+    }
+
+    private func setupLoginWithAppleButton() {
+        loginWithAppleButton.addAction(
+            UIAction(handler: { [unowned self] _ in onTapLoginWithApple() }),
+            for: .touchUpInside
+        )
+        loginWithAppleButton.setImage(.apple)
+        loginWithAppleButton.setTitle(.loginLoginWithApple)
+    }
+
+    private func setupNewLabel() {
+        let attributedText = NSMutableAttributedString()
+        attributedText.append(
+            NSAttributedString(
+                string: .loginNewFirst,
+                attributes: [
+                    .font: FontFamily.RedHatDisplay.medium.font(size: 14),
+                    .foregroundColor: UIColor.textSecondary
+                ]
+            )
+        )
+        attributedText.append(
+            NSAttributedString(
+                string: .loginNewSecond,
+                attributes: [
+                    .font: FontFamily.RedHatDisplay.regular.font(size: 14),
+                    .foregroundColor: UIColor.primaryMain
+                ]
+            )
+        )
+        newLabel.attributedText = attributedText
+        newLabel.isUserInteractionEnabled = true
+        newLabel.textAlignment = .center
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleNewTap))
+        newLabel.addGestureRecognizer(tapGesture)
+    }
+
     private func setupScrollView() {
         scrollView.contentInsetAdjustmentBehavior = .always
         addSubview(scrollView, constraints: [
@@ -212,10 +212,10 @@ final class LoginView: UIView {
     }
 
     private func setupSkipButton() {
-        skipButton.setTitle(.loginSkip)
-        skipButton.setImage(.arrowForward)
-        skipButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSkip() }), for: .touchUpInside)
         skipButton.layer.addShadow(opacitiy: 0.1, radius: 4, offset: CGSize(width: 0, height: 4))
+        skipButton.addAction(UIAction(handler: { [unowned self] _ in onTapSkip() }), for: .touchUpInside)
+        skipButton.setImage(.arrowForward)
+        skipButton.setTitle(.loginSkip)
         addSubview(skipButton, constraints: [
             skipButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8),
             skipButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24)

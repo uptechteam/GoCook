@@ -39,14 +39,28 @@ final class StepFourHeaderView: UIView {
 
     private func setup() {
         setupContentView()
+        setupStackView()
         setupRecipeImageView()
         setupNameLabel()
         setupTimeStackView()
-        setupStackView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [recipeImageView, nameLabel, timeStackView])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.setCustomSpacing(32, after: recipeImageView)
+        stackView.setCustomSpacing(20, after: nameLabel)
+        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 0, left: 0, bottom: 32, right: 0))
+        NSLayoutConstraint.activate([
+            recipeImageView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            nameLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
+            timeStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48)
+        ])
     }
 
     private func setupRecipeImageView() {
@@ -62,20 +76,6 @@ final class StepFourHeaderView: UIView {
 
     private func setupTimeStackView() {
         [timeView, UIView()].forEach(timeStackView.addArrangedSubview)
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [recipeImageView, nameLabel, timeStackView])
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.setCustomSpacing(32, after: recipeImageView)
-        stackView.setCustomSpacing(20, after: nameLabel)
-        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 0, left: 0, bottom: 32, right: 0))
-        NSLayoutConstraint.activate([
-            recipeImageView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            nameLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48),
-            timeStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48)
-        ])
     }
 
     // MARK: - Public methods

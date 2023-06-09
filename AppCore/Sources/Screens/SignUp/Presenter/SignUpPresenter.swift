@@ -48,7 +48,7 @@ public final class SignUpPresenter {
     // MARK: - Public methods
 
     func loginTapped() {
-        state.route = .init(value: .login)
+        state.route = .init(value: .didTapLogin)
     }
 
     func nameChanged(_ name: String) {
@@ -69,7 +69,7 @@ public final class SignUpPresenter {
 
         do {
             try await profileFacade.signUp(username: state.name, password: state.password)
-            state.route = .init(value: .finish)
+            state.route = .init(value: .didFinish)
         } catch {
             state.alert = .init(value: .error(error))
         }
@@ -80,7 +80,7 @@ public final class SignUpPresenter {
     }
 
     func skipTapped() {
-        state.route = .init(value: .finish)
+        state.route = .init(value: .didFinish)
     }
 
     // MARK: - Private methods

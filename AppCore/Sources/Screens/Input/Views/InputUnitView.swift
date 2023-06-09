@@ -40,10 +40,10 @@ final class InputUnitView: UIControl {
 
     private func setup() {
         setupContentView()
+        setupStackView()
         setupUnitTextField()
         setupUnitPickerView()
         setupBottomChevronImageView()
-        setupStackView()
     }
 
     private func setupContentView() {
@@ -55,13 +55,21 @@ final class InputUnitView: UIControl {
         )
     }
 
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [unitTextField, bottomChevronImageView])
+        stackView.alignment = .center
+        stackView.spacing = 8
+        stackView.isUserInteractionEnabled = false
+        addSubview(stackView, withEdgeInsets: .zero)
+    }
+
     private func setupUnitTextField() {
-        unitTextField.font = Typography.subtitleThree.font
-        unitTextField.textColor = .textMain
-        unitTextField.inputView = unitPickerView
-        unitTextField.inputAccessoryView = nil
         unitTextField.autocorrectionType = .no
+        unitTextField.font = Typography.subtitleThree.font
+        unitTextField.inputAccessoryView = nil
+        unitTextField.inputView = unitPickerView
         unitTextField.spellCheckingType = .no
+        unitTextField.textColor = .textMain
         unitTextField.tintColor = .clear
         NSLayoutConstraint.activate([
             unitTextField.heightAnchor.constraint(equalToConstant: 24)
@@ -75,14 +83,6 @@ final class InputUnitView: UIControl {
 
     private func setupBottomChevronImageView() {
         bottomChevronImageView.image = .bottomChevron
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [unitTextField, bottomChevronImageView])
-        stackView.isUserInteractionEnabled = false
-        stackView.alignment = .center
-        stackView.spacing = 8
-        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     // MARK: - Public methods

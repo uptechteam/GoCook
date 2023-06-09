@@ -34,6 +34,6 @@ public final class SettingsPresenter {
         state.isLoggingOut = true
         await profileFacade.logout()
         state.isLoggingOut = false
-        state.route = .init(value: .logout)
+        state.route = .init(value: .didLogout)
     }
 }

@@ -39,7 +39,7 @@ public final class RecipePresenter {
     }
 
     func backTapped() {
-        state.route = .init(value: .back)
+        state.route = .init(value: .didTapBack)
     }
 
     func editTapped() {

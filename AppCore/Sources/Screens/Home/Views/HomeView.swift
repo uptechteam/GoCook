@@ -44,11 +44,11 @@ final class HomeView: UIView {
 
     private func setup() {
         setupContentView()
+        setupStackView()
         setupTopStackView()
         setupSearchTextField()
         setupFiltersButton()
         setupSearchResultsView()
-        setupStackView()
     }
 
     private func setupContentView() {
@@ -57,28 +57,6 @@ final class HomeView: UIView {
         tapGesture.cancelsTouchesInView = false
         tapGesture.delegate = self
         addGestureRecognizer(tapGesture)
-    }
-
-    private func setupTopStackView() {
-        [searchTextField, filtersButton].forEach(topStackView.addArrangedSubview)
-        topStackView.alignment = .center
-        topStackView.spacing = 16
-    }
-
-    private func setupSearchTextField() {
-        searchTextField.placeholder = .homeSearchPlaceholder
-        searchTextField.tintColor = .appBlack
-    }
-
-    private func setupFiltersButton() {
-        filtersButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapFilters() }), for: .touchUpInside)
-        NSLayoutConstraint.activate([
-            filtersButton.widthAnchor.constraint(equalToConstant: 24)
-        ])
-    }
-
-    private func setupSearchResultsView() {
-        searchResultsView.isHidden = true
     }
 
     private func setupStackView() {
@@ -97,6 +75,28 @@ final class HomeView: UIView {
             feedView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             searchResultsView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -48)
         ])
+    }
+
+    private func setupTopStackView() {
+        [searchTextField, filtersButton].forEach(topStackView.addArrangedSubview)
+        topStackView.alignment = .center
+        topStackView.spacing = 16
+    }
+
+    private func setupSearchTextField() {
+        searchTextField.placeholder = .homeSearchPlaceholder
+        searchTextField.tintColor = .appBlack
+    }
+
+    private func setupFiltersButton() {
+        filtersButton.addAction(UIAction(handler: { [unowned self] _ in onTapFilters() }), for: .touchUpInside)
+        NSLayoutConstraint.activate([
+            filtersButton.widthAnchor.constraint(equalToConstant: 24)
+        ])
+    }
+
+    private func setupSearchResultsView() {
+        searchResultsView.isHidden = true
     }
 
     // MARK: - Public methods

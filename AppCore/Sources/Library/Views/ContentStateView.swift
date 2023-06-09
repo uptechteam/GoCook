@@ -72,7 +72,7 @@ public final class ContentStateView: UIView {
     }
 
     private func setupActionButton() {
-        actionButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapAction() }), for: .touchUpInside)
+        actionButton.addAction(UIAction(handler: { [unowned self] _ in onTapAction() }), for: .touchUpInside)
     }
 
     // MARK: - Public methods

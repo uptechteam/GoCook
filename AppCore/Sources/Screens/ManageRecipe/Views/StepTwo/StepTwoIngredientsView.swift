@@ -68,12 +68,12 @@ final class StepTwoIngredientsView: UIView {
     }
 
     private func setupAddIngredientButton() {
-        addIngredientButton.setTitle(.manageRecipeStepTwoAddIngredient)
-        addIngredientButton.setImage(.addIcon)
         addIngredientButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapAddIngredient() }),
+            UIAction(handler: { [unowned self] _ in onTapAddIngredient() }),
             for: .touchUpInside
         )
+        addIngredientButton.setImage(.addIcon)
+        addIngredientButton.setTitle(.manageRecipeStepTwoAddIngredient)
     }
 
     // MARK: - Public methods

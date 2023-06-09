@@ -75,7 +75,7 @@ final class FiltersSectionView: UIView {
     private func makeOptionView(index: Int, props: FiltersOptionView.Props) -> UIView {
         let optionView = FiltersOptionView()
         optionView.render(props: props)
-        optionView.addAction(UIAction(handler: { [weak self] _ in self?.onTapOption(index) }), for: .touchUpInside)
+        optionView.addAction(UIAction(handler: { [unowned self] _ in onTapOption(index) }), for: .touchUpInside)
         return optionView
     }
 }

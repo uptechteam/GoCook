@@ -9,7 +9,12 @@ import UIKit
 
 @MainActor
 protocol Coordinating: AnyObject {
+
+    // MARK: - Properties
+
     var rootViewController: UIViewController { get }
+
+    // MARK: - Public methods
 
     func start()
 }

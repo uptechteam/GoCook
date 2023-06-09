@@ -32,7 +32,6 @@ public extension UIImage {
             "Generate new image",
             metadata: ["Size in KB": .string("\((generatedImage?.pngData()?.count ?? 0) / 1024)")]
         )
-        print("Size in KB: \((generatedImage?.pngData()?.count ?? 0) / 1024)")
         return generatedImage
     }
 

@@ -40,7 +40,7 @@ public final class SearchTextField: UITextField {
         layer.roundCornersContinuosly(radius: 8)
         leftView = UIView()
         leftViewMode = .always
-        addAction(UIAction(handler: { [weak self] _ in self?.onChangeText(self?.text ?? "") }), for: .editingChanged)
+        addAction(UIAction(handler: { [unowned self] _ in onChangeText(text ?? "") }), for: .editingChanged)
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 41)
         ])

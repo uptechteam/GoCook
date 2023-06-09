@@ -120,10 +120,10 @@ public final class SignUpViewController: UIViewController, ErrorPresentable {
 
     private func navigate(by route: SignUpPresenter.Route) {
         switch route {
-        case .login:
+        case .didTapLogin:
             coordinator.didTapLogin()
 
-        case .finish:
+        case .didFinish:
             coordinator.didFinishSignUp()
         }
     }

@@ -41,9 +41,15 @@ public final class RecipeTimeView: UIView {
     // MARK: - Set up
 
     private func setup() {
+        setupStackView()
         setupTimeImageView()
         setupTimelabel()
-        setupStackView()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [timeImageView, timeLabel])
+        stackView.spacing = 6
+        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupTimeImageView() {
@@ -52,12 +58,6 @@ public final class RecipeTimeView: UIView {
 
     private func setupTimelabel() {
         timeLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [timeImageView, timeLabel])
-        stackView.spacing = 6
-        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     // MARK: - Public methods

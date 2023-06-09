@@ -120,10 +120,10 @@ public final class LoginViewController: UIViewController, ErrorPresentable {
 
     private func naviagte(by route: LoginPresenter.Route) {
         switch route {
-        case .finish:
+        case .didFinish:
             coordinator.didFinishLogin()
 
-        case .signUp:
+        case .didTapSignUp:
             coordinator.didTapSignUp()
         }
     }

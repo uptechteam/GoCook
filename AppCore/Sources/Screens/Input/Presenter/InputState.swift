@@ -36,6 +36,6 @@ extension InputPresenter {
     // MARK: - Route
 
     enum Route {
-        case finish(InputDetails)
+        case didFinish(InputDetails)
     }
 }

@@ -87,7 +87,7 @@ final class FavoritesView: UIView {
     }
 
     private func setupFiltersButton() {
-        filtersButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapFilters() }), for: .touchUpInside)
+        filtersButton.addAction(UIAction(handler: { [unowned self] _ in onTapFilters() }), for: .touchUpInside)
         NSLayoutConstraint.activate([
             filtersButton.widthAnchor.constraint(equalToConstant: 24)
         ])

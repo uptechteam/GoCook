@@ -72,11 +72,11 @@ final class StepTwoIngredientView: UIView {
 
     private func setupDeleteImageView() {
         deleteImageView.isHidden = true
-        deleteImageView.set(image: .closeRed)
         deleteImageView.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapDelete() }),
+            UIAction(handler: { [unowned self] _ in onTapDelete() }),
             for: .touchUpInside
         )
+        deleteImageView.set(image: .closeRed)
     }
 
     // MARK: - Public methods

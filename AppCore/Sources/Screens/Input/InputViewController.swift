@@ -91,7 +91,7 @@ public final class InputViewController: UIViewController {
 
     private func navigate(by route: InputPresenter.Route) {
         switch route {
-        case .finish(let details):
+        case .didFinish(let details):
             contentView.deactivateTextField()
             coordinator.didFinish(inputDetails: details)
         }

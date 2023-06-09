@@ -58,7 +58,7 @@ final class SettingsView: UIView {
 
     private func setupLogoutButton() {
         logoutButton.setTitle(.settingsLogout)
-        logoutButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapLogout() }), for: .touchUpInside)
+        logoutButton.addAction(UIAction(handler: { [unowned self] _ in onTapLogout() }), for: .touchUpInside)
         addSubview(logoutButton, constraints: [
             logoutButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
             logoutButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),

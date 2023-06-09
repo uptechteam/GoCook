@@ -47,16 +47,16 @@ public final class InputPresenter {
         switch state.inputDetails {
         case let .ingredientAmount(id, _, unit):
             let details = InputDetails.ingredientAmount(id: id, amount: state.text, unit: state.unit ?? unit)
-            state.route = .init(value: .finish(details))
+            state.route = .init(value: .didFinish(details))
 
         case let .ingredientName(id, _):
-            state.route = .init(value: .finish(.ingredientName(id: id, name: state.text)))
+            state.route = .init(value: .didFinish(.ingredientName(id: id, name: state.text)))
 
         case .numberOfServings:
-            state.route = .init(value: .finish(.numberOfServings(state.text)))
+            state.route = .init(value: .didFinish(.numberOfServings(state.text)))
 
         case .cookingTime:
-            state.route = .init(value: .finish(.cookingTime(state.text)))
+            state.route = .init(value: .didFinish(.cookingTime(state.text)))
         }
     }
 

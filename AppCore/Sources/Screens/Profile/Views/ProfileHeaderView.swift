@@ -50,15 +50,15 @@ final class ProfileHeaderView: UIView {
         setupBackgroundImageView()
         setupEditButton()
         setupSettingsButton()
+        setupStackView()
         setupAvatarImageView()
         setupSignInButton()
         setupNameLabel()
-        setupStackView()
     }
 
     private func setupBackgroundImageView() {
-        backgroundImageView.image = .profileBackground
         backgroundImageView.contentMode = .scaleAspectFill
+        backgroundImageView.image = .profileBackground
         addSubview(backgroundImageView, constraints: [
             backgroundImageView.topAnchor.constraint(equalTo: topAnchor),
             backgroundImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -68,8 +68,8 @@ final class ProfileHeaderView: UIView {
     }
 
     private func setupEditButton() {
+        editButton.addAction(UIAction(handler: { [unowned self] _ in onTapEdit() }), for: .touchUpInside)
         editButton.set(image: .editFilled)
-        editButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapEdit() }), for: .touchUpInside)
         addSubview(editButton, constraints: [
             editButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 14),
             editButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 23.5)
@@ -77,30 +77,12 @@ final class ProfileHeaderView: UIView {
     }
 
     private func setupSettingsButton() {
+        settingsButton.addAction(UIAction(handler: { [unowned self] _ in onTapSettings() }), for: .touchUpInside)
         settingsButton.set(image: .settings)
-        settingsButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSettings() }), for: .touchUpInside)
         addSubview(settingsButton, constraints: [
             settingsButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 12),
             settingsButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22)
         ])
-    }
-
-    private func setupAvatarImageView() {
-        avatarImageView.layer.roundCornersContinuosly(radius: 48)
-        avatarImageView.clipsToBounds = true
-        NSLayoutConstraint.activate([
-            avatarImageView.widthAnchor.constraint(equalToConstant: 96),
-            avatarImageView.heightAnchor.constraint(equalTo: avatarImageView.widthAnchor)
-        ])
-    }
-
-    private func setupSignInButton() {
-        signInButton.setTitle(.profileSignIn)
-        signInButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSignIn() }), for: .touchUpInside)
-    }
-
-    private func setupNameLabel() {
-        nameLabel.isHidden = true
     }
 
     private func setupStackView() {
@@ -113,6 +95,24 @@ final class ProfileHeaderView: UIView {
             withEdgeInsets: UIEdgeInsets(top: 56, left: 0, bottom: 32, right: 0),
             isSafeAreaRequired: true
         )
+    }
+
+    private func setupAvatarImageView() {
+        avatarImageView.clipsToBounds = true
+        avatarImageView.layer.roundCornersContinuosly(radius: 48)
+        NSLayoutConstraint.activate([
+            avatarImageView.widthAnchor.constraint(equalToConstant: 96),
+            avatarImageView.heightAnchor.constraint(equalTo: avatarImageView.widthAnchor)
+        ])
+    }
+
+    private func setupSignInButton() {
+        signInButton.addAction(UIAction(handler: { [unowned self] _ in onTapSignIn() }), for: .touchUpInside)
+        signInButton.setTitle(.profileSignIn)
+    }
+
+    private func setupNameLabel() {
+        nameLabel.isHidden = true
     }
 
     // MARK: - Public methods

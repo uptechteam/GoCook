@@ -1,32 +1,29 @@
 //
-//  FavoritesCoordinator.swift
+//  HomeCoordinator.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
-import TabBar
 import Author
+import BusinessLogic
 import DomainModels
-import Favorites
 import Filters
+import Foundation
+import Home
 import Library
 import Recipe
+import TabBar
 import UIKit
 
-protocol FavoritesCoordinatorDelegate: AnyObject {
-    func didTapExplore()
-}
-
 @MainActor
-final class FavoritesCoordinator: NSObject, Coordinating {
+final class HomeCoordinator: NSObject, Coordinating {
 
     // MARK: - Properties
 
     private var childCoordinators: [Coordinating]
-    private let navigationController: UINavigationController
     private var interactiveControllers: [Int: SwipeInteractionController]
-    weak var delegate: FavoritesCoordinatorDelegate?
+    private let navigationController: UINavigationController
 
     var rootViewController: UIViewController {
         navigationController
@@ -40,8 +37,8 @@ final class FavoritesCoordinator: NSObject, Coordinating {
 
     init(navigationController: UINavigationController) {
         self.childCoordinators = []
-        self.navigationController = navigationController
         self.interactiveControllers = [:]
+        self.navigationController = navigationController
         super.init()
         setupUI()
     }
@@ -49,7 +46,7 @@ final class FavoritesCoordinator: NSObject, Coordinating {
     // MARK: - Public methods
 
     func start() {
-        let viewController = FavoritesViewController.resolve(coordinator: self)
+        let viewController = HomeViewController.resolve(coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
     }
 
@@ -66,7 +63,7 @@ final class FavoritesCoordinator: NSObject, Coordinating {
 
 // MARK: - AuthorCoordinating
 
-extension FavoritesCoordinator: AuthorCoordinating {
+extension HomeCoordinator: AuthorCoordinating {
     func didTapBackOnAuthor() {
         navigationController.popViewController(animated: true)
     }
@@ -78,19 +75,15 @@ extension FavoritesCoordinator: AuthorCoordinating {
     }
 }
 
-// MARK: - FavoritesCoordinating
+// MARK: - HomeCoordinating
 
-extension FavoritesCoordinator: FavoritesCoordinating {
-    func didTapExplore() {
-        delegate?.didTapExplore()
-    }
-
-    func didTapFilters() {
-        let viewController = FiltersViewController.resolve(coordinator: self, envelope: .favorites)
+extension HomeCoordinator: HomeCoordinating {
+    func showFilters() {
+        let viewController = FiltersViewController.resolve(coordinator: self, envelope: .home)
         navigationController.pushViewController(viewController, animated: true)
     }
 
-    func didTapRecipe(_ recipe: Recipe) {
+    func show(recipe: Recipe) {
         let envelope = RecipeEnvelope(recipe: recipe)
         let viewController = RecipeViewController.resolve(envelope: envelope, coordinator: self)
         navigationController.pushViewController(viewController, animated: true)
@@ -99,7 +92,7 @@ extension FavoritesCoordinator: FavoritesCoordinating {
 
 // MARK: - FiltersCoordinating
 
-extension FavoritesCoordinator: FiltersCoordinating {
+extension HomeCoordinator: FiltersCoordinating {
     func didApplyFilters() {
         navigationController.popViewController(animated: true)
     }
@@ -107,7 +100,7 @@ extension FavoritesCoordinator: FiltersCoordinating {
 
 // MARK: - RecipeCoordinating
 
-extension FavoritesCoordinator: RecipeCoordinating {
+extension HomeCoordinator: RecipeCoordinating {
     func didTapAuthor(_ author: User) {
         let envelope = AuthorEnvelope(author: author)
         let viewController = AuthorViewController.resolve(coordinator: self, envelope: envelope)
@@ -120,8 +113,8 @@ extension FavoritesCoordinator: RecipeCoordinating {
 
     func didTapEditRecipe(_ recipeDetails: RecipeDetails) {
         let coordinator = ManageRecipeCoordinator(
-            recipeDetails: recipeDetails,
-            presentingViewController: navigationController
+            presentingViewController: navigationController,
+            recipeDetails: recipeDetails
         )
         childCoordinators.append(coordinator)
         coordinator.start()
@@ -130,7 +123,7 @@ extension FavoritesCoordinator: RecipeCoordinating {
 
 // MARK: - UINavigationControllerdelegate
 
-extension FavoritesCoordinator: UINavigationControllerDelegate {
+extension HomeCoordinator: UINavigationControllerDelegate {
     func navigationController(
         _ navigationController: UINavigationController,
         willShow viewController: UIViewController,
@@ -140,7 +133,7 @@ extension FavoritesCoordinator: UINavigationControllerDelegate {
             tabBarController?.toggleTabBarVisibility(on: false)
         }
 
-        let isNavigationBarHidden = viewController is FavoritesViewController
+        let isNavigationBarHidden = viewController is HomeViewController
         || viewController is RecipeViewController
         || viewController is AuthorViewController
         navigationController.setNavigationBarHidden(isNavigationBarHidden, animated: true)

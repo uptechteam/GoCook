@@ -110,11 +110,11 @@ public final class RecipeViewController: UIViewController {
 
     private func navigate(by route: RecipePresenter.Route) {
         switch route {
-        case .back:
-            coordinator.didTapBack()
-
         case .didTapAuthor(let author):
             coordinator.didTapAuthor(author)
+
+        case .didTapBack:
+            coordinator.didTapBack()
 
         case .didTapEdit(let recipe):
             coordinator.didTapEditRecipe(recipe)

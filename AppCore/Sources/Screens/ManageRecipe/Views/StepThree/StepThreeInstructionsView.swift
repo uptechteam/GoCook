@@ -40,10 +40,17 @@ final class StepThreeInstructionsView: UIView {
     // MARK: - Set up
 
     private func setup() {
+        setupStackView()
         setupTitleLabel()
         setupInstructionsStackView()
         setupAddIngredientButton()
-        setupStackView()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, instructionsStackView, addInstructionButton])
+        stackView.axis = .vertical
+        stackView.setCustomSpacing(24, after: titleLabel)
+        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupTitleLabel() {
@@ -58,19 +65,12 @@ final class StepThreeInstructionsView: UIView {
     }
 
     private func setupAddIngredientButton() {
-        addInstructionButton.setTitle(.manageRecipeStepThreeAddStep)
-        addInstructionButton.setImage(.addIcon)
         addInstructionButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapAddInstruction() }),
+            UIAction(handler: { [unowned self] _ in onTapAddInstruction() }),
             for: .touchUpInside
         )
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, instructionsStackView, addInstructionButton])
-        stackView.axis = .vertical
-        stackView.setCustomSpacing(24, after: titleLabel)
-        addSubview(stackView, withEdgeInsets: .zero)
+        addInstructionButton.setImage(.addIcon)
+        addInstructionButton.setTitle(.manageRecipeStepThreeAddStep)
     }
 
     // MARK: - Public methods

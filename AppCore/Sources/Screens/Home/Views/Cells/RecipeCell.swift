@@ -51,10 +51,17 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
     // MARK: - Set up
 
     private func setup() {
+        setupStackView()
         setupRecipeImageView()
         setupNameLabel()
-        setupStackView()
         setupFavoriteButton()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [recipeImageView, nameLabel, ratingView])
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        contentView.addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupRecipeImageView() {
@@ -70,15 +77,8 @@ final class RecipeCell: UICollectionViewCell, ReusableCell {
         nameLabel.numberOfLines = 2
     }
 
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [recipeImageView, nameLabel, ratingView])
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        contentView.addSubview(stackView, withEdgeInsets: .zero)
-    }
-
     private func setupFavoriteButton() {
-        favoriteButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapFavorite() }), for: .touchUpInside)
+        favoriteButton.addAction(UIAction(handler: { [unowned self] _ in onTapFavorite() }), for: .touchUpInside)
         contentView.addSubview(favoriteButton, constraints: [
             favoriteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             favoriteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)

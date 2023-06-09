@@ -44,7 +44,7 @@ final class RecipeAuthorView: UIControl {
     }
 
     private func setupContentView() {
-        addAction(UIAction(handler: { [weak self] _ in self?.onTap() }), for: .touchUpInside)
+        addAction(UIAction(handler: { [unowned self] _ in onTap() }), for: .touchUpInside)
     }
 
     private func setupStackView() {
@@ -56,10 +56,10 @@ final class RecipeAuthorView: UIControl {
     }
 
     private func setupAvatarImageView() {
-        avatarImageView.clipsToBounds = true
-        avatarImageView.layer.roundCornersContinuosly(radius: 9)
         avatarImageView.backgroundColor = .gray200
+        avatarImageView.clipsToBounds = true
         avatarImageView.contentMode = .scaleAspectFill
+        avatarImageView.layer.roundCornersContinuosly(radius: 9)
         NSLayoutConstraint.activate([
             avatarImageView.widthAnchor.constraint(equalToConstant: 18),
             avatarImageView.heightAnchor.constraint(equalTo: avatarImageView.widthAnchor)

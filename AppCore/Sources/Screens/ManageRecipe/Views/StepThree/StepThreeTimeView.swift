@@ -39,8 +39,8 @@ final class StepThreeTimeView: UIView {
 
     private func setup() {
         setupContentView()
-        setupTitleLabel()
         setupStackView()
+        setupTitleLabel()
     }
 
     private func setupContentView() {
@@ -48,15 +48,15 @@ final class StepThreeTimeView: UIView {
         addGestureRecognizer(tapGesture)
     }
 
-    private func setupTitleLabel() {
-        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-        titleLabel.render(title: .manageRecipeStepThreeTimeTitle, color: .textMain, typography: .subtitle)
-    }
-
     private func setupStackView() {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, UIView(), timeLabel])
         stackView.alignment = .bottom
         addSubview(stackView, withEdgeInsets: .zero)
+    }
+
+    private func setupTitleLabel() {
+        titleLabel.render(title: .manageRecipeStepThreeTimeTitle, color: .textMain, typography: .subtitle)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     // MARK: - Public methods

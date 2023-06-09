@@ -69,7 +69,6 @@ public final class FavoritesPresenter {
             state.pendingRecipe = nil
         } catch {
             state.pendingRecipe = nil
-            print("Error: \(error.localizedDescription)")
         }
     }
 

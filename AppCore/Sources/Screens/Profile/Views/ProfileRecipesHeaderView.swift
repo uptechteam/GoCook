@@ -37,9 +37,14 @@ final class ProfileRecipesHeaderView: UIView {
     // MARK: - Set up
 
     private func setup() {
+        setupStackView()
         setupMyRecipesLabel()
         setupAddNewButton()
-        setupStackView()
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [myRecipesLabel, UIView(), addNewButton])
+        addSubview(stackView, withEdgeInsets: .zero)
     }
 
     private func setupMyRecipesLabel() {
@@ -49,12 +54,7 @@ final class ProfileRecipesHeaderView: UIView {
     private func setupAddNewButton() {
         addNewButton.setTitle(.profileButtonAddMoreTitle)
         addNewButton.setImage(.addIcon)
-        addNewButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapAddNew() }), for: .touchUpInside)
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [myRecipesLabel, UIView(), addNewButton])
-        addSubview(stackView, withEdgeInsets: .zero)
+        addNewButton.addAction(UIAction(handler: { [unowned self] _ in onTapAddNew() }), for: .touchUpInside)
     }
 
     // MARK: - Public methods

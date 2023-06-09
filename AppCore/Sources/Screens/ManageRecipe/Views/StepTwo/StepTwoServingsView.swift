@@ -39,17 +39,13 @@ final class StepTwoServingsView: UIView {
 
     private func setup() {
         setupContentView()
-        setupTitleLabel()
         setupStackView()
+        setupTitleLabel()
     }
 
     private func setupContentView() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(tapGesture)
-    }
-
-    private func setupTitleLabel() {
-        titleLabel.render(title: .manageRecipeStepTwoServingsTitle, color: .textMain, typography: .subtitle)
     }
 
     private func setupStackView() {
@@ -59,6 +55,10 @@ final class StepTwoServingsView: UIView {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: stackView.topAnchor)
         ])
+    }
+
+    private func setupTitleLabel() {
+        titleLabel.render(title: .manageRecipeStepTwoServingsTitle, color: .textMain, typography: .subtitle)
     }
 
     // MARK: - Public methods

@@ -72,14 +72,14 @@ final class SignUpView: UIView {
         setupContentView()
         setupDividerView()
         setupBackgroundImageView()
+        setupScrollView()
+        setupStackView()
         setupTitleLabel()
         setupPasswordInputView()
         setupSignUpButton()
         setupOrLabel()
         setupSignUpWithAppleButton()
         setupHaveAccountLabel()
-        setupStackView()
-        setupScrollView()
         setupSkipButton()
     }
 
@@ -109,60 +109,17 @@ final class SignUpView: UIView {
         ])
     }
 
-    private func setupTitleLabel() {
-        titleLabel.numberOfLines = 0
-        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
-
-    private func setupPasswordInputView() {
-        passwordInputView.textField.isSecureTextEntry = true
-        passwordInputView.textField.textContentType = .oneTimeCode
-    }
-
-    private func setupSignUpButton() {
-        signUpButton.setTitle(.signUpSignUp)
-        signUpButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSignUp() }), for: .touchUpInside)
-    }
-
-    private func setupOrLabel() {
-        orLabel.render(title: .signUpOr, color: .textSecondary, typography: .subtitleTwo)
-        orLabel.textAlignment = .center
-    }
-
-    private func setupSignUpWithAppleButton() {
-        signUpWithAppleButton.setTitle(.signUpSignUpWithApple)
-        signUpWithAppleButton.setImage(.apple)
-        signUpWithAppleButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapSignUpWithApple() }),
-            for: .touchUpInside
-        )
-    }
-
-    private func setupHaveAccountLabel() {
-        let attributedText = NSMutableAttributedString()
-        attributedText.append(
-            NSAttributedString(
-                string: .signUpHaveAnAccountFirst,
-                attributes: [
-                    .font: FontFamily.RedHatDisplay.medium.font(size: 14),
-                    .foregroundColor: UIColor.textSecondary
-                ]
-            )
-        )
-        attributedText.append(
-            NSAttributedString(
-                string: .signUpHaveAnAccountSecond,
-                attributes: [
-                    .font: FontFamily.RedHatDisplay.regular.font(size: 14),
-                    .foregroundColor: UIColor.primaryMain
-                ]
-            )
-        )
-        haveAccountLabel.attributedText = attributedText
-        haveAccountLabel.textAlignment = .center
-        haveAccountLabel.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleHaveAccountTap))
-        haveAccountLabel.addGestureRecognizer(tapGesture)
+    private func setupScrollView() {
+        scrollView.contentInsetAdjustmentBehavior = .always
+        addSubview(scrollView, constraints: [
+            scrollView.topAnchor.constraint(equalTo: backgroundImageView.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+        NSLayoutConstraint.activate([
+            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
+        ])
     }
 
     private func setupStackView() {
@@ -197,24 +154,67 @@ final class SignUpView: UIView {
         ])
     }
 
-    private func setupScrollView() {
-        scrollView.contentInsetAdjustmentBehavior = .always
-        addSubview(scrollView, constraints: [
-            scrollView.topAnchor.constraint(equalTo: backgroundImageView.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-        NSLayoutConstraint.activate([
-            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
-        ])
+    private func setupTitleLabel() {
+        titleLabel.numberOfLines = 0
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
+
+    private func setupPasswordInputView() {
+        passwordInputView.textField.isSecureTextEntry = true
+        passwordInputView.textField.textContentType = .oneTimeCode
+    }
+
+    private func setupSignUpButton() {
+        signUpButton.addAction(UIAction(handler: { [unowned self] _ in onTapSignUp() }), for: .touchUpInside)
+        signUpButton.setTitle(.signUpSignUp)
+    }
+
+    private func setupOrLabel() {
+        orLabel.textAlignment = .center
+        orLabel.render(title: .signUpOr, color: .textSecondary, typography: .subtitleTwo)
+    }
+
+    private func setupSignUpWithAppleButton() {
+        signUpWithAppleButton.addAction(
+            UIAction(handler: { [unowned self] _ in onTapSignUpWithApple() }),
+            for: .touchUpInside
+        )
+        signUpWithAppleButton.setImage(.apple)
+        signUpWithAppleButton.setTitle(.signUpSignUpWithApple)
+    }
+
+    private func setupHaveAccountLabel() {
+        let attributedText = NSMutableAttributedString()
+        attributedText.append(
+            NSAttributedString(
+                string: .signUpHaveAnAccountFirst,
+                attributes: [
+                    .font: FontFamily.RedHatDisplay.medium.font(size: 14),
+                    .foregroundColor: UIColor.textSecondary
+                ]
+            )
+        )
+        attributedText.append(
+            NSAttributedString(
+                string: .signUpHaveAnAccountSecond,
+                attributes: [
+                    .font: FontFamily.RedHatDisplay.regular.font(size: 14),
+                    .foregroundColor: UIColor.primaryMain
+                ]
+            )
+        )
+        haveAccountLabel.attributedText = attributedText
+        haveAccountLabel.isUserInteractionEnabled = true
+        haveAccountLabel.textAlignment = .center
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleHaveAccountTap))
+        haveAccountLabel.addGestureRecognizer(tapGesture)
     }
 
     private func setupSkipButton() {
-        skipButton.setTitle(.signUpSkip)
-        skipButton.setImage(.arrowForward)
-        skipButton.addAction(UIAction(handler: { [weak self] _ in self?.onTapSkip() }), for: .touchUpInside)
         skipButton.layer.addShadow(opacitiy: 0.1, radius: 4, offset: CGSize(width: 0, height: 4))
+        skipButton.addAction(UIAction(handler: { [unowned self] _ in onTapSkip() }), for: .touchUpInside)
+        skipButton.setImage(.arrowForward)
+        skipButton.setTitle(.signUpSkip)
         addSubview(skipButton, constraints: [
             skipButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8),
             skipButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24)

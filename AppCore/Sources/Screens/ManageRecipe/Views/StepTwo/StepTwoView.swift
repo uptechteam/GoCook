@@ -38,20 +38,19 @@ final class StepTwoView: UIView {
 
     private func setup() {
         setupContentView()
-        setupSpaceView()
-        setupStackView()
         setupScrollView()
+        setupStackView()
+        setupSpaceView()
     }
 
     private func setupContentView() {
         backgroundColor = .appWhite
     }
 
-    private func setupSpaceView() {
-        spaceView.setContentHuggingPriority(.required, for: .vertical)
+    private func setupScrollView() {
+        addSubview(scrollView, withEdgeInsets: .zero)
         NSLayoutConstraint.activate([
-            spaceView.heightAnchor.constraint(equalToConstant: 0)
-                .prioritised(as: UILayoutPriority(249))
+            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
         ])
     }
 
@@ -65,10 +64,11 @@ final class StepTwoView: UIView {
         ])
     }
 
-    private func setupScrollView() {
-        addSubview(scrollView, withEdgeInsets: .zero)
+    private func setupSpaceView() {
+        spaceView.setContentHuggingPriority(.required, for: .vertical)
         NSLayoutConstraint.activate([
-            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
+            spaceView.heightAnchor.constraint(equalToConstant: 0)
+                .prioritised(as: UILayoutPriority(249))
         ])
     }
 

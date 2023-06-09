@@ -39,9 +39,9 @@ final class RecipeFeedbackView: UIView {
 
     private func setup() {
         setupContentView()
+        setupStackView()
         setupTextLabel()
         setupStarsStackView()
-        setupStackView()
     }
 
     private func setupContentView() {
@@ -49,6 +49,13 @@ final class RecipeFeedbackView: UIView {
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 158)
         ])
+    }
+
+    private func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [textContainerView, starsStackView])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 0, left: 24, bottom: 32, right: 24))
     }
 
     private func setupTextLabel() {
@@ -65,18 +72,11 @@ final class RecipeFeedbackView: UIView {
         (0...4)
             .map { index in
                 let button = UIButton()
-                button.addAction(UIAction(handler: { [weak self] _ in self?.onTapStar(index) }), for: .touchUpInside)
+                button.addAction(UIAction(handler: { [unowned self] _ in onTapStar(index) }), for: .touchUpInside)
                 return button
             }
             .forEach(starsStackView.addArrangedSubview)
         starsStackView.spacing = 20
-    }
-
-    private func setupStackView() {
-        let stackView = UIStackView(arrangedSubviews: [textContainerView, starsStackView])
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        addSubview(stackView, withEdgeInsets: UIEdgeInsets(top: 0, left: 24, bottom: 32, right: 24))
     }
 
     // MARK: - Public methods

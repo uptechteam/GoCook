@@ -41,19 +41,19 @@ public final class ProfilePresenter {
     // MARK: - Public methods
 
     func addNewRecipeTapped() {
-        state.route = .init(value: .createRecipe)
+        state.route = .init(value: .didTapCreateRecipe)
     }
 
     func contentActionTapped() async {
         if state.isEmptyContent {
-            state.route = .init(value: .createRecipe)
+            state.route = .init(value: .didTapCreateRecipe)
         } else if state.isErrorPresent {
             await getRecipes()
         }
     }
 
     func editTapped() {
-        state.route = .init(value: .edit)
+        state.route = .init(value: .didTapEdit)
     }
 
     func favoriteTapped(indexPath: IndexPath) async {
@@ -73,7 +73,7 @@ public final class ProfilePresenter {
             return
         }
 
-        state.route = .init(value: .recipe(recipe))
+        state.route = .init(value: .didTapRecipe(recipe))
     }
 
     func scrolledToEnd() async {
@@ -89,11 +89,11 @@ public final class ProfilePresenter {
     }
 
     func settingsTapped() {
-        state.route = .init(value: .settings)
+        state.route = .init(value: .didTapSettings)
     }
 
     func signInTapped() {
-        state.route = .init(value: .signIn)
+        state.route = .init(value: .didTapSignIn)
     }
 
     func viewDidLoad() async {

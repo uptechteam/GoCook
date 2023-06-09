@@ -50,7 +50,7 @@ public final class LoginPresenter {
         do {
             try await profileFacade.login(username: state.name, password: state.password)
             state.isLoggingIn = false
-            state.route = .init(value: .finish)
+            state.route = .init(value: .didFinish)
         } catch {
             state.isLoggingIn = false
             state.alert = .init(value: .error(message: error.localizedDescription))
@@ -70,10 +70,10 @@ public final class LoginPresenter {
     }
 
     func signUpTapped() {
-        state.route = .init(value: .signUp)
+        state.route = .init(value: .didTapSignUp)
     }
 
     func skipTapped() {
-        state.route = .init(value: .finish)
+        state.route = .init(value: .didFinish)
     }
 }

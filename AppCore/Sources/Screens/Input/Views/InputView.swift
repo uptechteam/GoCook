@@ -60,9 +60,9 @@ final class InputView: UIView {
         setupContentView()
         setupContainerView()
         setupBottomBackgroundView()
+        setupStackView()
         setupTextField()
         setupSaveButton()
-        setupStackView()
         setupUnitView()
     }
 
@@ -91,23 +91,6 @@ final class InputView: UIView {
         bringSubviewToFront(containerView)
     }
 
-    private func setupTextField() {
-        textField.autocorrectionType = .no
-        textField.spellCheckingType = .no
-        textField.delegate = self
-        textField.font = Typography.headerThree.font
-        textField.textColor = .textMain
-        textField.tintColor = .primaryMain
-    }
-
-    private func setupSaveButton() {
-        saveButton.setTitle("Save")
-        saveButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.onTapSave() }),
-            for: .touchUpInside
-        )
-    }
-
     private func setupStackView() {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, textField, saveButton])
         stackView.axis = .vertical
@@ -118,6 +101,23 @@ final class InputView: UIView {
         NSLayoutConstraint.activate([
             saveButton.widthAnchor.constraint(equalTo: stackView.widthAnchor)
         ])
+    }
+
+    private func setupTextField() {
+        textField.autocorrectionType = .no
+        textField.delegate = self
+        textField.font = Typography.headerThree.font
+        textField.spellCheckingType = .no
+        textField.textColor = .textMain
+        textField.tintColor = .primaryMain
+    }
+
+    private func setupSaveButton() {
+        saveButton.addAction(
+            UIAction(handler: { [unowned self] _ in onTapSave() }),
+            for: .touchUpInside
+        )
+        saveButton.setTitle("Save")
     }
 
     private func setupUnitView() {
