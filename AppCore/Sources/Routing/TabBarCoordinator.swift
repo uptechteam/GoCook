@@ -5,9 +5,9 @@
 //  Created by Oleksii Andriushchenko on 15.06.2022.
 //
 
-import TabBar
 import BusinessLogic
 import Library
+import TabBar
 import UIKit
 
 protocol TabBarCoordinatorDelegate: AnyObject {
@@ -18,9 +18,9 @@ final class TabBarCoordinator: Coordinating {
 
     // MARK: - Properties
 
-    private let tabBarController: TabBarController
     private var childCoordinators: [Coordinating]
     weak var delegate: TabBarCoordinatorDelegate?
+    private var tabBarController: TabBarController!
 
     var rootViewController: UIViewController {
         tabBarController
@@ -28,14 +28,14 @@ final class TabBarCoordinator: Coordinating {
 
     // MARK: - Lifecycle
 
-    init(tabBarController: TabBarController) {
-        self.tabBarController = tabBarController
+    init() {
         self.childCoordinators = []
     }
 
     // MARK: - Public methods
 
     func start() {
+        self.tabBarController = TabBarController.resolve(coordinator: self)
         makeFavoritesCoordinator()
         makeHomeCoordinator()
         makeProfileCoordinator()
@@ -78,4 +78,10 @@ extension TabBarCoordinator: ProfileCoordinatorDelegate {
     func profileCoordinatorDidFinish(_ coordinator: ProfileCoordinator) {
         delegate?.tabBarCoordinatorDidFinish()
     }
+}
+
+// MARK: - TabBarCoordinating
+
+extension TabBarCoordinator: TabBarCoordinating {
+
 }

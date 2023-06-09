@@ -17,15 +17,15 @@ public final class AppCoordinator {
     // MARK: - Properties
 
     private var childCoordinators: [Coordinating]
-    private let window: UIWindow
     private let storage: Storage
+    private let window: UIWindow
 
     // MARK: - Lifecycle
 
     public init(window: UIWindow) {
         self.childCoordinators = []
-        self.window = window
         self.storage = AppContainer.resolve()
+        self.window = window
         loadResources()
     }
 
@@ -42,13 +42,18 @@ public final class AppCoordinator {
 
     // MARK: - Private methods
 
+    private func isFirstSession() -> Bool {
+        let isFirstSession = (try? storage.getBool(forKey: Constants.isFirstSessionKey)) == nil
+        try? storage.store(bool: true, forKey: Constants.isFirstSessionKey)
+        return isFirstSession
+    }
+
     private func loadResources() {
         FontFamily.registerFonts()
     }
 
     private func showRegistration() {
-        let navigationController = UINavigationController()
-        let coordinator = RegistrationCoordinator(navigationController: navigationController)
+        let coordinator = RegistrationCoordinator(navigationController: BaseNavigationController())
         coordinator.delegate = self
         coordinator.start()
         childCoordinators.append(coordinator)
@@ -56,25 +61,12 @@ public final class AppCoordinator {
     }
 
     private func showTabBar() {
-        let tabBarController = TabBarController.resolve(coordinator: self)
-        let coordinator = TabBarCoordinator(tabBarController: tabBarController)
+        let coordinator = TabBarCoordinator()
         coordinator.delegate = self
         coordinator.start()
         childCoordinators.append(coordinator)
         window.rootViewController = coordinator.rootViewController
     }
-
-    private func isFirstSession() -> Bool {
-        let isFirstSession = (try? storage.getBool(forKey: Constants.isFirstSessionKey)) == nil
-        try? storage.store(bool: true, forKey: Constants.isFirstSessionKey)
-        return isFirstSession
-    }
-}
-
-// MARK: - TabBarCoordinating
-
-extension AppCoordinator: TabBarCoordinating {
-
 }
 
 // MARK: - TabBarCoordinatorDelegate

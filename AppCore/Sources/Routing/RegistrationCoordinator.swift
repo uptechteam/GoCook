@@ -14,13 +14,13 @@ protocol RegistrationCoordinatorDelegate: AnyObject {
     func registrationCoordiantorDidFinish(_ coordinator: RegistrationCoordinator)
 }
 
+@MainActor
 final class RegistrationCoordinator: Coordinating {
 
     // MARK: - Properties
 
-    private var childContainers: [Coordinating]
-    private let navigationController: UINavigationController
     weak var delegate: RegistrationCoordinatorDelegate?
+    private let navigationController: UINavigationController
 
     var rootViewController: UIViewController {
         navigationController
@@ -30,7 +30,6 @@ final class RegistrationCoordinator: Coordinating {
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
-        self.childContainers = []
         setupUI()
     }
 

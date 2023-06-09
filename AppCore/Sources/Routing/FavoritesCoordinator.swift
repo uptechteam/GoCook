@@ -1,5 +1,5 @@
 //
-//  ProfileCoordinator.swift
+//  FavoritesCoordinator.swift
 //  
 //
 //  Created by Oleksii Andriushchenko on 15.06.2022.
@@ -8,30 +8,25 @@
 import TabBar
 import Author
 import DomainModels
-import EditProfile
-import Foundation
-import Helpers
+import Favorites
+import Filters
 import Library
-import Login
-import ManageRecipe
-import Profile
 import Recipe
-import SignUp
-import Settings
 import UIKit
 
-protocol ProfileCoordinatorDelegate: AnyObject {
-    func profileCoordinatorDidFinish(_ coordinator: ProfileCoordinator)
+protocol FavoritesCoordinatorDelegate: AnyObject {
+    func didTapExplore()
 }
 
-final class ProfileCoordinator: NSObject, Coordinating {
+@MainActor
+final class FavoritesCoordinator: NSObject, Coordinating {
 
     // MARK: - Properties
 
     private var childCoordinators: [Coordinating]
+    weak var delegate: FavoritesCoordinatorDelegate?
     private var interactiveControllers: [Int: SwipeInteractionController]
     private let navigationController: UINavigationController
-    weak var delegate: ProfileCoordinatorDelegate?
 
     var rootViewController: UIViewController {
         navigationController
@@ -51,10 +46,10 @@ final class ProfileCoordinator: NSObject, Coordinating {
         setupUI()
     }
 
-    // MARK: - Lifecycle
+    // MARK: - Public methods
 
     func start() {
-        let viewController = ProfileViewController.resolve(coordinator: self)
+        let viewController = FavoritesViewController.resolve(coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
     }
 
@@ -71,7 +66,7 @@ final class ProfileCoordinator: NSObject, Coordinating {
 
 // MARK: - AuthorCoordinating
 
-extension ProfileCoordinator: AuthorCoordinating {
+extension FavoritesCoordinator: AuthorCoordinating {
     func didTapBackOnAuthor() {
         navigationController.popViewController(animated: true)
     }
@@ -83,29 +78,15 @@ extension ProfileCoordinator: AuthorCoordinating {
     }
 }
 
-// MARK: - EditProfileCoordinating
+// MARK: - FavoritesCoordinating
 
-extension ProfileCoordinator: EditProfileCoordinating {
-    func didTapClose() {
-        navigationController.popViewController(animated: true)
+extension FavoritesCoordinator: FavoritesCoordinating {
+    func didTapExplore() {
+        delegate?.didTapExplore()
     }
 
-    func didUpdateProfile() {
-        navigationController.popViewController(animated: true)
-    }
-}
-
-// MARK: - ProfileCoordinating
-
-extension ProfileCoordinator: ProfileCoordinating {
-    func didTapManageRecipe() {
-        let coordinator = ManageRecipeCoordinator(recipeDetails: nil, presentingViewController: navigationController)
-        childCoordinators.append(coordinator)
-        coordinator.start()
-    }
-
-    func didTapEdit() {
-        let viewController = EditProfileViewController.resolve(coordinator: self)
+    func didTapFilters() {
+        let viewController = FiltersViewController.resolve(coordinator: self, envelope: .favorites)
         navigationController.pushViewController(viewController, animated: true)
     }
 
@@ -114,22 +95,19 @@ extension ProfileCoordinator: ProfileCoordinating {
         let viewController = RecipeViewController.resolve(envelope: envelope, coordinator: self)
         navigationController.pushViewController(viewController, animated: true)
     }
+}
 
-    func didTapSettings() {
-        let viewController = SettingsViewController.resolve(coordinator: self)
-        navigationController.pushViewController(viewController, animated: true)
-    }
+// MARK: - FiltersCoordinating
 
-    func didTapSignIn() {
-        let envelope = LoginEnvelope.profile
-        let viewController = LoginViewController.resolve(envelope: envelope, coordinator: self)
-        navigationController.pushViewController(viewController, animated: true)
+extension FavoritesCoordinator: FiltersCoordinating {
+    func didApplyFilters() {
+        navigationController.popViewController(animated: true)
     }
 }
 
 // MARK: - RecipeCoordinating
 
-extension ProfileCoordinator: RecipeCoordinating {
+extension FavoritesCoordinator: RecipeCoordinating {
     func didTapAuthor(_ author: User) {
         let envelope = AuthorEnvelope(author: author)
         let viewController = AuthorViewController.resolve(coordinator: self, envelope: envelope)
@@ -142,60 +120,17 @@ extension ProfileCoordinator: RecipeCoordinating {
 
     func didTapEditRecipe(_ recipeDetails: RecipeDetails) {
         let coordinator = ManageRecipeCoordinator(
-            recipeDetails: recipeDetails,
-            presentingViewController: navigationController
+            presentingViewController: navigationController,
+            recipeDetails: recipeDetails
         )
         childCoordinators.append(coordinator)
         coordinator.start()
     }
 }
 
-// MARK: - SettingsCoordinating
-
-extension ProfileCoordinator: SettingsCoordinating {
-    func didLogout() {
-        delegate?.profileCoordinatorDidFinish(self)
-    }
-}
-
-// MARK: - SignUpCoordinating
-
-extension ProfileCoordinator: SignUpCoordinating {
-    func didFinishSignUp() {
-        navigationController.popToRootViewController(animated: true)
-    }
-
-    func didTapLogin() {
-        let viewController = LoginViewController.resolve(envelope: .profile, coordinator: self)
-        let viewControllers = [navigationController.viewControllers[0], viewController]
-        navigationController.setViewControllers(viewControllers, animated: true)
-    }
-}
-
-// MARK: - ManageRecipeCoordinatorDelegate
-
-extension ProfileCoordinator: ManageRecipeCoordinatorDelegate {
-    func didFinish(_ coordinator: ManageRecipeCoordinator) {
-        childCoordinators.removeAll(where: { $0 === coordinator })
-    }
-}
-
-extension ProfileCoordinator: LoginCoordinating {
-    func didFinishLogin() {
-        navigationController.popToRootViewController(animated: true)
-    }
-
-    func didTapSignUp() {
-        let envelope = SignUpEnvelope.profile
-        let viewController = SignUpViewController.resolve(envelope: envelope, coordinator: self)
-        let viewControllers = [navigationController.viewControllers[0], viewController]
-        navigationController.setViewControllers(viewControllers, animated: true)
-    }
-}
-
 // MARK: - UINavigationControllerdelegate
 
-extension ProfileCoordinator: UINavigationControllerDelegate {
+extension FavoritesCoordinator: UINavigationControllerDelegate {
     func navigationController(
         _ navigationController: UINavigationController,
         willShow viewController: UIViewController,
@@ -205,7 +140,7 @@ extension ProfileCoordinator: UINavigationControllerDelegate {
             tabBarController?.toggleTabBarVisibility(on: false)
         }
 
-        let isNavigationBarHidden = viewController is ProfileViewController
+        let isNavigationBarHidden = viewController is FavoritesViewController
         || viewController is RecipeViewController
         || viewController is AuthorViewController
         navigationController.setNavigationBarHidden(isNavigationBarHidden, animated: true)
