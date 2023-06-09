@@ -77,7 +77,7 @@ public final class SettingsViewController: UIViewController {
 
     private func navigate(by route: SettingsPresenter.Route) {
         switch route {
-        case .logout:
+        case .didLogout:
             coordinator.didLogout()
         }
     }

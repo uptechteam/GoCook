@@ -61,7 +61,7 @@ extension SignUpPresenter {
     // MARK: - Route
 
     enum Route {
-        case finish
-        case login
+        case didFinish
+        case didTapLogin
     }
 }

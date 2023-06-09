@@ -76,7 +76,7 @@ final class ManageRecipePresenter {
 
     func amountTapped() {
         let number = state.stepTwoState.numberOfServings.flatMap(String.init) ?? ""
-        state.route = .init(value: .inputTapped(.numberOfServings(number)))
+        state.route = .init(value: .didTapInput(.numberOfServings(number)))
     }
 
     func backTapped() {
@@ -98,12 +98,12 @@ final class ManageRecipePresenter {
     }
 
     func closeConfirmed() {
-        state.route = .init(value: .close)
+        state.route = .init(value: .didTapClose)
     }
 
     func closeTapped() {
         if state.step == 0 && state.stepOneState.isEmpty {
-            state.route = .init(value: .close)
+            state.route = .init(value: .didTapClose)
         } else {
             state.alert = .init(value: .deleteProgress)
         }
@@ -111,7 +111,7 @@ final class ManageRecipePresenter {
 
     func cookingTimeTapped() {
         let time = state.stepThreeState.cookingTime.flatMap(String.init) ?? ""
-        state.route = .init(value: .inputTapped(.cookingTime(time)))
+        state.route = .init(value: .didTapInput(.cookingTime(time)))
     }
 
     func cookingTimeChanged(amount: String) {
@@ -160,7 +160,7 @@ final class ManageRecipePresenter {
             }
 
             state.isUploadingRecipe = false
-            state.route = .init(value: .close)
+            state.route = .init(value: .didTapClose)
         } catch {
             state.isUploadingRecipe = false
         }
@@ -190,7 +190,7 @@ final class ManageRecipePresenter {
             amount: ingredient.amount.flatMap(String.init) ?? "",
             unit: ingredient.unit
         )
-        state.route = .init(value: .inputTapped(inputDetails))
+        state.route = .init(value: .didTapInput(inputDetails))
     }
 
     func ingredientAmountChanged(id: String, amount: String, unit: IngredientUnit) {
@@ -208,7 +208,7 @@ final class ManageRecipePresenter {
             return
         }
 
-        state.route = .init(value: .inputTapped(.ingredientName(id: ingredient.id, name: ingredient.name)))
+        state.route = .init(value: .didTapInput(.ingredientName(id: ingredient.id, name: ingredient.name)))
     }
 
     func ingredientNameChanged(id: String, name: String) {

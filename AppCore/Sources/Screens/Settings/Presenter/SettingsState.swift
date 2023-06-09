@@ -31,6 +31,6 @@ extension SettingsPresenter {
     // MARK: - Route
 
     enum Route {
-        case logout
+        case didLogout
     }
 }

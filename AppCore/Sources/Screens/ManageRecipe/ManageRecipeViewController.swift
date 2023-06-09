@@ -191,10 +191,10 @@ public final class ManageRecipeViewController: UIViewController {
 
     private func navigate(by route: ManageRecipePresenter.Route) {
         switch route {
-        case .close:
+        case .didTapClose:
             coordinator.didTapClose()
 
-        case .inputTapped(let details):
+        case .didTapInput(let details):
             coordinator.didTapInput(details: details)
         }
     }

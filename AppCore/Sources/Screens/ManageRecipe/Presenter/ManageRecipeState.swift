@@ -74,7 +74,7 @@ extension ManageRecipePresenter {
     }
 
     enum Route {
-        case close
-        case inputTapped(InputDetails)
+        case didTapClose
+        case didTapInput(InputDetails)
     }
 }

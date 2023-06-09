@@ -131,19 +131,19 @@ public final class ProfileViewController: UIViewController, TabBarPresentable {
 
     private func navigate(by route: ProfilePresenter.Route) {
         switch route {
-        case .createRecipe:
+        case .didTapCreateRecipe:
             coordinator.didTapManageRecipe()
 
-        case .edit:
+        case .didTapEdit:
             coordinator.didTapEdit()
 
-        case .recipe(let recipe):
+        case .didTapRecipe(let recipe):
             coordinator.didTapRecipe(recipe)
 
-        case .settings:
+        case .didTapSettings:
             coordinator.didTapSettings()
 
-        case .signIn:
+        case .didTapSignIn:
             coordinator.didTapSignIn()
         }
     }
