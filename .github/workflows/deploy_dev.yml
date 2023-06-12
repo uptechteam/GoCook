@@ -34,3 +34,6 @@ jobs:
 
     - name: Build and deploy dev
       run: bundle exec fastlane deploy_dev
+      env:
+        MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
+        GIT_AUTHORIZATION: '${{ secrets.GIT_AUTHORIZATION }}'
