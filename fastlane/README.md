@@ -29,7 +29,7 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 [bundle exec] fastlane ios sync_profiles
 ```
 
-Fetches certificates and profiles from the ios-certificates repository by SSH
+Fetches certificates and profiles from the ios-certificates repository by HTTPS
 
 ### ios test
 
@@ -39,13 +39,37 @@ Fetches certificates and profiles from the ios-certificates repository by SSH
 
 Runs all the tests
 
-### ios test_then_deploy
+### ios increase_build_version
 
 ```sh
-[bundle exec] fastlane ios test_then_deploy
+[bundle exec] fastlane ios increase_build_version
 ```
 
 
+
+### ios deploy_dev
+
+```sh
+[bundle exec] fastlane ios deploy_dev
+```
+
+
+
+### ios deploy_prod
+
+```sh
+[bundle exec] fastlane ios deploy_prod
+```
+
+
+
+### ios upload_dsyms
+
+```sh
+[bundle exec] fastlane ios upload_dsyms
+```
+
+upload dsyms to Sentry service
 
 ----
 
