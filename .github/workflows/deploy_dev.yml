@@ -36,4 +36,4 @@ jobs:
       run: bundle exec fastlane deploy_dev
       env:
         MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
-        GIT_AUTHORIZATION: '${{ secrets.GIT_AUTHORIZATION }}'
+        MATCH_GIT_BASIC_AUTHORIZATION: '${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}'
