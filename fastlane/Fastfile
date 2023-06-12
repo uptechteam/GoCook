@@ -5,8 +5,9 @@ platform :ios do
   # MARK: - Set up
   
   before_all do
-    setup_circle_ci
-    xcodebuild(xcargs: "-resolvePackageDependencies")
+    # ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
+    ENV["TARGET"] = "GoCook"
+    ENV["XCODEPROJ"] = "GoCook.xcodeproj"
   end
 
   # MARK: - Devices/Certificates
@@ -17,69 +18,65 @@ platform :ios do
     device_hash = {}
     device_hash[device_name] = device_udid
     register_devices(devices: device_hash)
-    match(
-      type: "development",
-      force_for_new_devices: true
-    )
+    match(type: "development", force_for_new_devices: true)
   end
 
-  desc "Fetches certificates and profiles from the ios-certificates repository by SSH"
+  desc "Fetches certificates and profiles from the ios-certificates repository by HTTPS"
   lane :sync_profiles do
-    match(
-      type: "development",
-      readonly: true
-    )
-
-    match(
-      type: "appstore",
-      readonly: true
-    )
+    match(type: "development", readonly: true)
+    match(type: "appstore", readonly: true)
   end
 
   # MARK: - Test project
 
   desc "Runs all the tests"
-  lane :test do
-    scheme = "GoCook"
+  lane :test do |options|
+    scheme = get_scheme(build_configuration: options[:build_configuration])
     run_tests(
       scheme: scheme,
-      device: 'iPhone 13 Pro',
+      device: 'iPhone 14 Pro',
       output_types: "junit",
       output_files: "results.xml",
       cloned_source_packages_path: "SourcePackages",
-      # slack_default_payloads: ['lane', 'test_result', 'git_branch', 'git_author', 'last_git_commit', 'last_git_commit_hash']
+      slack_default_payloads: ['lane', 'test_result', 'git_branch', 'git_author', 'last_git_commit', 'last_git_commit_hash']
     )
   end
 
-  # MARK: - Deployment
+  # MARK: - Increase build version
 
-  lane :test_then_deploy do
-    test
-    deploy
+  lane :increase_build_version do
+    build_number = get_build_number(xcodeproj: ENV["XCODEPROJ"]).to_i + 1
+    increment_build_number(build_number: build_number)
+    commit_version_bump(xcodeproj: ENV["XCODEPROJ"], message: "chore: bump build number #{build_number}")
   end
 
-  private_lane :deploy do
+  # MARK: - Development
+
+  lane :deploy_dev do
+    ENV["BUNDLE_ID"] = "com.uptech.gocook"
+    deploy_development
+  end
+
+  private_lane :deploy_development do
     # Fetch provisioning profiles
     match(
       type: "appstore",
       readonly: true
     )
 
-    # Bump build number before the build
-    build_number = get_build_number(xcodeproj: "GoCook.xcodeproj").to_i + 1
-    increment_build_number(build_number: build_number)
-
     # Build the project with Staging scheme
+    scheme = get_scheme(build_configuration: "development")
     build_ios_app(
-      scheme: "GoCook",
+      scheme: scheme,
       export_method: "app-store",
       cloned_source_packages_path: "SourcePackages"
     )
 
     # Upload the build
+    app_store_connect_api_key
     upload_to_testflight(
-      username: "oleksii.andriushchenko@uptech.team",
-      app_identifier: "com.uptech.gocook",
+      username: ENV["FASTLANE_USER"],
+      app_identifier: ENV["BUNDLE_ID"],
       skip_waiting_for_build_processing: true
     )
 
@@ -87,23 +84,102 @@ platform :ios do
 
     # Commit bump build number, add a tag and push
     clean_build_artifacts
-    commit_version_bump(
-      xcodeproj: "GoCook",
-      force: true,
-      message: "Bump build number #{build_number} [ci skip]"
-    )
-    push_to_git_remote(
-      remote: "origin",
-      local_branch: "main",
-      remote_branch: "main"
+
+    version = get_version_number(xcodeproj: ENV["XCODEPROJ"], target: ENV["TARGET"])
+    build = get_build_number(xcodeproj: ENV["XCODEPROJ"])
+    add_git_tag(tag: "development/v#{version}/#{build}")
+    push_git_tags
+
+    # post_to_slack(configuration: "Development")
+  end
+
+  # MARK: - Production
+
+  lane :deploy_prod do
+    ENV["BUNDLE_ID"] = "com.uptech.gocook"
+    deploy_production
+  end
+
+  private_lane :deploy_production do
+    # Fetch provisioning profiles
+    match(
+      type: "appstore",
+      readonly: true
     )
 
-    version = get_version_number(xcodeproj: "GoCook.xcodeproj", target: "GoCook")
-    build = get_build_number(xcodeproj: "GoCook.xcodeproj")
+    # Build the project with Staging scheme
+    scheme = get_scheme(build_configuration: "production")
+    build_ios_app(
+      scheme: scheme,
+      export_method: "app-store",
+      cloned_source_packages_path: "SourcePackages"
+    )
+
+    # Upload the build
+    app_store_connect_api_key
+    upload_to_testflight(
+      username: ENV["FASTLANE_USER"],
+      app_identifier: ENV["BUNDLE_ID"],
+      skip_waiting_for_build_processing: true
+    )
+
+    upload_dsyms
+
+    # Commit bump build number, add a tag and push
+    clean_build_artifacts
+
+    version = get_version_number(xcodeproj: ENV["XCODEPROJ"], target: ENV["TARGET"])
+    build = get_build_number(xcodeproj: ENV["XCODEPROJ"])
     add_git_tag(
-      tag: "release/v#{version}/#{build}"
+      tag: "production/v#{version}/#{build}"
     )
     push_git_tags
+
+    post_to_slack(configuration: "Production")
+  end
+
+  # MARK: - Sentry
+
+  desc "upload dsyms to Sentry service"
+  lane :upload_dsyms do
+    sentry_upload_dif(
+      auth_token: '0ad02a72fb91453aad9069bece55471c1a6433b9a5a54648ace1fe10bd6d312a',
+      org_slug: 'uptech-team',
+      project_slug: 'gocook-ios',
+      path: './GoCook.app.dSYM.zip',
+      include_sources: true
+    )
+  end
+
+  # MARK: - Helper methods
+
+  desc "Get project scheme (dev, staging or prod)"
+  private_lane :get_scheme do |options|
+    build_configuration = options[:build_configuration]
+    if !build_configuration 
+      UI.build_failure!("No build configuration was passed!")
+    end
+
+    case build_configuration
+    when "development"
+      "Development"
+    when "production"
+      "Production"
+    else
+      UI.build_failure!("Couldn't recognise passed build configuration!")
+    end
+  end
+
+  desc "Post message to Slack CI channel"
+  private_lane :post_to_slack do |options|
+    version = get_version_number(xcodeproj: ENV["XCODEPROJ"], target: ENV["TARGET"])
+    build = get_build_number(xcodeproj: ENV["XCODEPROJ"])
+    configuration = options[:configuration]
+
+    slack(
+      message: "New iOS #{configuration} build *#{version}* (#{build}) has been submitted to the TestFlight!",
+      use_webhook_configured_username_and_icon: true
+    )
   end
 
 end
