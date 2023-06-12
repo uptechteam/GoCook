@@ -38,7 +38,7 @@ platform :ios do
       output_types: "junit",
       output_files: "results.xml",
       cloned_source_packages_path: "SourcePackages",
-      slack_default_payloads: ['lane', 'test_result', 'git_branch', 'git_author', 'last_git_commit', 'last_git_commit_hash']
+      # slack_default_payloads: ['lane', 'test_result', 'git_branch', 'git_author', 'last_git_commit', 'last_git_commit_hash']
     )
   end
 
@@ -143,7 +143,7 @@ platform :ios do
   desc "upload dsyms to Sentry service"
   lane :upload_dsyms do
     sentry_upload_dif(
-      auth_token: '0ad02a72fb91453aad9069bece55471c1a6433b9a5a54648ace1fe10bd6d312a',
+      auth_token: 'not_a_token',
       org_slug: 'uptech-team',
       project_slug: 'gocook-ios',
       path: './GoCook.app.dSYM.zip',
