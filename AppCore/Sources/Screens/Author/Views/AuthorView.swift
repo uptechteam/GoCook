@@ -82,6 +82,7 @@ final class AuthorView: UIView {
         collectionView.contentInset.top = 24
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.enableRefreshControl()
         collectionView.register(cell: ShimmeringSmallRecipeCell.self)
         collectionView.register(cell: SmallRecipeCell.self)
         configureDataSource()
@@ -134,7 +135,22 @@ final class AuthorView: UIView {
 // MARK: - UICollectionViewDelegate
 
 extension AuthorView: UICollectionViewDelegate {
+
+    // MARK: - Collection view
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         onTapItem(indexPath)
+    }
+
+    // MARK: - Scroll view
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        collectionView.refreshProps()
+    }
+
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            collectionView.refreshProps()
+        }
     }
 }
