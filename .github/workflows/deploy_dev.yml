@@ -1,7 +1,9 @@
 name: Deploy development
 
 on:
-  workflow_dispatch:
+  push:
+    branches-ignore:
+      - main
 
 jobs:
   deploy_dev:
