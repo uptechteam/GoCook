@@ -12,6 +12,22 @@ public protocol KeyboardManaging {
     var change: AnyPublisher<KeyboardManager.Change, Never> { get }
 }
 
+public extension KeyboardManaging {
+    var keyboardHeightChange: any Publisher<CGFloat, Never> {
+        return change
+            .map { change -> CGFloat in
+                switch change.notificationName {
+                case UIResponder.keyboardWillHideNotification:
+                    return 0
+
+                default:
+                    return change.frame.height
+                }
+            }
+            .removeDuplicates()
+    }
+}
+
 public final class KeyboardManager: KeyboardManaging {
 
     public struct Change {
@@ -24,7 +40,10 @@ public final class KeyboardManager: KeyboardManaging {
     // MARK: - Properties
 
     private let changeSubject = PassthroughSubject<Change, Never>()
-    public var change: AnyPublisher<Change, Never> { changeSubject.eraseToAnyPublisher() }
+
+    public var change: AnyPublisher<Change, Never> {
+        changeSubject.eraseToAnyPublisher()
+    }
 
     // MARK: - Lifecycle
 
@@ -35,7 +54,6 @@ public final class KeyboardManager: KeyboardManaging {
             name: UIResponder.keyboardWillShowNotification,
             object: nil
         )
-
         notificationCenter.addObserver(
             self,
             selector: #selector(change(_:)),

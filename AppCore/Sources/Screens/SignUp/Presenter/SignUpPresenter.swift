@@ -23,18 +23,7 @@ public final class SignUpPresenter {
     private(set) var state: State
 
     var keyboardHeightChange: any Publisher<CGFloat, Never> {
-        return keyboardManager
-            .change
-            .map { change -> CGFloat in
-                switch change.notificationName {
-                case UIResponder.keyboardWillHideNotification:
-                    return 0
-
-                default:
-                    return change.frame.height
-                }
-            }
-            .removeDuplicates()
+        keyboardManager.keyboardHeightChange
     }
 
     // MARK: - Lifecycle
