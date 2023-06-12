@@ -1,8 +1,9 @@
-name: iOS Build
+name: Deploy development
 
 on:
   workflow_dispatch:
 
+jobs:
   deploy_dev:
     runs-on: macos-latest
     steps:
@@ -22,7 +23,6 @@ on:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3.0'
-        bundler-cache: true
 
     - name: Install Bundler
       run: gem install bundler
