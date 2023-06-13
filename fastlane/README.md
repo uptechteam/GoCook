@@ -71,6 +71,14 @@ Runs all the tests
 
 upload dsyms to Sentry service
 
+### ios connect_to_app_store
+
+```sh
+[bundle exec] fastlane ios connect_to_app_store
+```
+
+Get App Store Connect api key using env variables
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

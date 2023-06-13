@@ -73,7 +73,7 @@ platform :ios do
     )
 
     # Upload the build
-    app_store_connect_api_key
+    connect_to_app_store
     upload_to_testflight(
       username: ENV["FASTLANE_USER"],
       app_identifier: ENV["BUNDLE_ID"],
@@ -116,7 +116,7 @@ platform :ios do
     )
 
     # Upload the build
-    app_store_connect_api_key
+    connect_to_app_store
     upload_to_testflight(
       username: ENV["FASTLANE_USER"],
       app_identifier: ENV["BUNDLE_ID"],
@@ -152,6 +152,18 @@ platform :ios do
   end
 
   # MARK: - Helper methods
+
+  desc "Get App Store Connect api key using env variables"
+  lane :connect_to_app_store do
+    key_id = ENV["KEY_ID"]
+    issuer_id = ENV["ISSUER_ID"]
+    key_content = ENV["KEY_CONTENT"]
+    app_store_connect_api_key(
+      key_id: key_id,
+      issuer_id: issuer_id,
+      key_content: key_content
+    )
+  end
 
   desc "Get project scheme (dev, staging or prod)"
   private_lane :get_scheme do |options|
