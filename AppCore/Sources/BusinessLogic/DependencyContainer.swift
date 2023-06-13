@@ -116,6 +116,10 @@ public final class AppContainer {
 
             container.register(.singleton, type: KeyboardManaging.self, factory: KeyboardManager.init)
 
+            // MARK: - Other
+
+            container.register(.singleton, type: SentryConfigurating.self, factory: SentryConfigurator.init)
+
             // MARK: - Storages
 
             container.register(.singleton, type: ProfileStoraging.self) {

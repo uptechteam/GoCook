@@ -17,6 +17,7 @@ public final class AppCoordinator {
     // MARK: - Properties
 
     private var childCoordinators: [Coordinating]
+    private let sentryConfigurator: SentryConfigurating
     private let storage: Storage
     private let window: UIWindow
 
@@ -25,8 +26,10 @@ public final class AppCoordinator {
     public init(window: UIWindow) {
         self.childCoordinators = []
         self.storage = AppContainer.resolve()
+        self.sentryConfigurator = AppContainer.resolve()
         self.window = window
         loadResources()
+        setupDependencies()
     }
 
     // MARK: - Public methods
@@ -50,6 +53,10 @@ public final class AppCoordinator {
 
     private func loadResources() {
         FontFamily.registerFonts()
+    }
+
+    private func setupDependencies() {
+        sentryConfigurator.configure()
     }
 
     private func showRegistration() {
