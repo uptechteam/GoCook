@@ -1,0 +1,13 @@
+//
+//  Development.xcconfig
+//  GoCook
+//
+//  Created by Oleksii Andriushchenko on 12.06.2023.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+APP_NAME = Go Cook Dev
+APP_ENVIRONMENT = development
+PRODUCT_BUNDLE_IDENTIFIER = com.uptech.gocook

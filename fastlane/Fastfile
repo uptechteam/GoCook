@@ -5,6 +5,7 @@ platform :ios do
   # MARK: - Set up
   
   before_all do
+    setup_ci
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
     ENV["TARGET"] = "GoCook"
     ENV["XCODEPROJ"] = "GoCook.xcodeproj"
@@ -118,7 +119,6 @@ platform :ios do
     # Upload the build
     app_store_connect_api_key
     upload_to_testflight(
-      username: ENV["FASTLANE_USER"],
       app_identifier: ENV["BUNDLE_ID"],
       skip_waiting_for_build_processing: true
     )

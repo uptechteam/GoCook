@@ -1,4 +1,4 @@
-git_url "git@github.com:uptechteam/ios-certificates.git"
+git_url "https://github.com/uptechteam/ios-certificates.git"
 git_branch "recipes"
 app_identifier ["com.uptech.gocook"]
 team_id "ESG9RMF2GN"
