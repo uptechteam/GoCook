@@ -5,6 +5,7 @@ platform :ios do
   # MARK: - Set up
   
   before_all do
+    setup_ci
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
     ENV["TARGET"] = "GoCook"
     ENV["XCODEPROJ"] = "GoCook.xcodeproj"
