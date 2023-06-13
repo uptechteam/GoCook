@@ -70,12 +70,11 @@ platform :ios do
     build_ios_app(
       scheme: scheme,
       export_method: "app-store",
-      xcodebuild_formatter: "",
       cloned_source_packages_path: "SourcePackages"
     )
 
     # Upload the build
-    connect_to_app_store
+    app_store_connect_api_key
     upload_to_testflight(
       app_identifier: ENV["BUNDLE_ID"],
       skip_waiting_for_build_processing: true
@@ -117,7 +116,7 @@ platform :ios do
     )
 
     # Upload the build
-    connect_to_app_store
+    app_store_connect_api_key
     upload_to_testflight(
       app_identifier: ENV["BUNDLE_ID"],
       skip_waiting_for_build_processing: true
@@ -152,18 +151,6 @@ platform :ios do
   end
 
   # MARK: - Helper methods
-
-  desc "Get App Store Connect api key using env variables"
-  lane :connect_to_app_store do
-    key_id = ENV["KEY_ID"]
-    issuer_id = ENV["ISSUER_ID"]
-    key_content = ENV["KEY_CONTENT"]
-    app_store_connect_api_key(
-      key_id: key_id,
-      issuer_id: issuer_id,
-      key_content: key_content
-    )
-  end
 
   desc "Get project scheme (dev, staging or prod)"
   private_lane :get_scheme do |options|
