@@ -75,7 +75,6 @@ platform :ios do
     # Upload the build
     connect_to_app_store
     upload_to_testflight(
-      username: ENV["FASTLANE_USER"],
       app_identifier: ENV["BUNDLE_ID"],
       skip_waiting_for_build_processing: true
     )
@@ -116,9 +115,8 @@ platform :ios do
     )
 
     # Upload the build
-    # connect_to_app_store
+    connect_to_app_store
     upload_to_testflight(
-      username: ENV["FASTLANE_USER"],
       app_identifier: ENV["BUNDLE_ID"],
       skip_waiting_for_build_processing: true
     )
