@@ -69,6 +69,7 @@ platform :ios do
     build_ios_app(
       scheme: scheme,
       export_method: "app-store",
+      xcodebuild_formatter: "",
       cloned_source_packages_path: "SourcePackages"
     )
 
