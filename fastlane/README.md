@@ -47,6 +47,14 @@ Runs all the tests
 
 
 
+### ios check_key
+
+```sh
+[bundle exec] fastlane ios check_key
+```
+
+
+
 ### ios deploy_dev
 
 ```sh
@@ -70,14 +78,6 @@ Runs all the tests
 ```
 
 upload dsyms to Sentry service
-
-### ios connect_to_app_store
-
-```sh
-[bundle exec] fastlane ios connect_to_app_store
-```
-
-Get App Store Connect api key using env variables
 
 ----
 
