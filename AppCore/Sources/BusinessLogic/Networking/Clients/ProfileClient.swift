@@ -28,7 +28,7 @@ public final class ProfileClient: ProfileClienting {
     // MARK: - Lifecycle
 
     public init(networkClient: NetworkClient) {
-        self.api = UsersAPI(baseURL: AppEnvironment.current.baseURL)
+        self.api = UsersAPI(baseURL: AppSettings.current.baseURL)
         self.networkClient = networkClient
     }
 

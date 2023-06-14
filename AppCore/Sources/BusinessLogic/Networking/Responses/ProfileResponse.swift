@@ -15,7 +15,7 @@ struct ProfileResponse: Decodable {
 
     var domainModel: Profile {
         let avatarImageURL = avatarURL.flatMap { avatarURL in
-            AppEnvironment.current.baseURL.appendingPathComponent("files/avatar/\(avatarURL)")
+            AppSettings.current.baseURL.appendingPathComponent("files/avatar/\(avatarURL)")
         }
         return .init(
             id: .init(rawValue: id),

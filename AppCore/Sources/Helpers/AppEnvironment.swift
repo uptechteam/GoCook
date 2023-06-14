@@ -7,25 +7,34 @@
 
 import Foundation
 
-public struct AppEnvironment: Equatable {
+public enum AppEnvironment: Equatable {
 
-    public let baseURL: URL
-    public let name: String
+    case development
+    case production
+
+    // MARK: - Properties
 
     public static let current: AppEnvironment = {
-        #if DEBUG
-        return developemnt
-        #else
-        return production
-        #endif
-    }()
+        let appEnvironment = Bundle.main.object(forInfoDictionaryKey: Constants.appEnvironment) as? String
+        switch appEnvironment {
+        case "development":
+            return .development
 
-    private static let developemnt = AppEnvironment(
-        baseURL: URL(string: "http://127.0.0.1:8080")!,
-        name: "development"
-    )
-    private static let production = AppEnvironment(
-        baseURL: URL(string: "https://go-go-cook.herokuapp.com")!,
-        name: "production"
-    )
+        case "production":
+            return .production
+
+        default:
+            log.error(
+                "Can't get envrionemnt, use production.",
+                metadata: ["App environment": .string("\(appEnvironment as Any)")]
+            )
+            return .production
+        }
+    }()
+}
+
+// MARK: - Constants
+
+private enum Constants {
+    static let appEnvironment = "APP_ENVIRONMENT"
 }

@@ -24,7 +24,7 @@ public final class FileClient: FileClienting {
     // MARK: - Lifecycle
 
     public init(networkClient: NetworkClient) {
-        self.api = FilesAPI(baseURL: AppEnvironment.current.baseURL)
+        self.api = FilesAPI(baseURL: AppSettings.current.baseURL)
         self.networkClient = networkClient
     }
 
