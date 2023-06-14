@@ -4,7 +4,5 @@
 <dict>
 	<key>APP_ENVIRONMENT</key>
 	<string>$(APP_ENVIRONMENT)</string>
-	<key>XCODE_SENTRY_DSN</key>
-	<string>https://093b01659dcb45918f4897b79ef7949e@o4505324306825216.ingest.sentry.io/4505324327534592</string>
 </dict>
 </plist>

@@ -7,45 +7,30 @@
 
 import Foundation
 
-public struct AppEnvironment: Equatable {
+public enum AppEnvironment: Equatable {
 
-    public let baseURL: URL
-    public let isErrorReportingEnabled: Bool
-    public let name: String
+    case development
+    case production
 
-    private static var isDebug: Bool {
-#if DEBUG
-        true
-#else
-        false
-#endif
-    }
+    // MARK: - Properties
 
     public static let current: AppEnvironment = {
         let appEnvironment = Bundle.main.object(forInfoDictionaryKey: Constants.appEnvironment) as? String
         switch appEnvironment {
         case "development":
-            return developemnt
+            return .development
 
         case "production":
-            return production
+            return .production
 
         default:
-            log.error("Can't get envrionemnt", metadata: ["App environment": .string("\(appEnvironment as Any)")])
-            fatalError("Can't get environment")
+            log.error(
+                "Can't get envrionemnt, use production.",
+                metadata: ["App environment": .string("\(appEnvironment as Any)")]
+            )
+            return .production
         }
     }()
-
-    private static let developemnt = AppEnvironment(
-        baseURL: URL(string: "http://127.0.0.1:8080")!,
-        isErrorReportingEnabled: isDebug,
-        name: "development"
-    )
-    private static let production = AppEnvironment(
-        baseURL: URL(string: "https://go-go-cook.herokuapp.com")!,
-        isErrorReportingEnabled: isDebug,
-        name: "production"
-    )
 }
 
 // MARK: - Constants

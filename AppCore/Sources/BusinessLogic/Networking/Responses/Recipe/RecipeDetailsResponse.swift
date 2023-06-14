@@ -24,7 +24,7 @@ public struct RecipeDetailsResponse: Decodable {
     let tags: [String]
 
     var domainModel: RecipeDetails {
-        let recipeImageURL = AppEnvironment.current.baseURL.appendingPathComponent("files/recipe/\(imageID)")
+        let recipeImageURL = AppSettings.current.baseURL.appendingPathComponent("files/recipe/\(imageID)")
         return RecipeDetails(
             author: author.domainModel,
             duration: duration,

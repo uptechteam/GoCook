@@ -17,7 +17,7 @@ public struct RecipeResponse: Decodable {
     let rating: Double
 
     var domainModel: Recipe {
-        let recipeImageURL = AppEnvironment.current.baseURL.appendingPathComponent("files/recipe/\(imageID)")
+        let recipeImageURL = AppSettings.current.baseURL.appendingPathComponent("files/recipe/\(imageID)")
         return Recipe(
             id: .init(rawValue: id),
             isFavorite: isFavorite,

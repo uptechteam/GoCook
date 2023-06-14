@@ -38,7 +38,6 @@
 		869E69842857C0550000FA94 /* AppCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppCore; sourceTree = "<group>"; };
 		86C64A442A3744F80081DA54 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
 		86C64A472A37450A0081DA54 /* Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; };
-		86C64A502A38ADDD0081DA54 /* InjectSecrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectSecrets.swift; sourceTree = "<group>"; };
 		86EBF6E5287369030095BF4F /* GoCookTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GoCookTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		86EBF6E7287369030095BF4F /* GoCookTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoCookTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,7 +84,6 @@
 		8675EC7B2873132D009FCA4C /* GoCook */ = {
 			isa = PBXGroup;
 			children = (
-				86C64A4F2A38ADCD0081DA54 /* Scripts */,
 				86C64A432A3744EA0081DA54 /* Configs */,
 				8675EC7D2873132D009FCA4C /* Application */,
 			);
@@ -129,14 +127,6 @@
 			path = Configs;
 			sourceTree = "<group>";
 		};
-		86C64A4F2A38ADCD0081DA54 /* Scripts */ = {
-			isa = PBXGroup;
-			children = (
-				86C64A502A38ADDD0081DA54 /* InjectSecrets.swift */,
-			);
-			path = Scripts;
-			sourceTree = "<group>";
-		};
 		86EBF6E6287369030095BF4F /* GoCookTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,7 +143,6 @@
 			buildConfigurationList = 8666B4E52848EF790071CDDA /* Build configuration list for PBXNativeTarget "GoCook" */;
 			buildPhases = (
 				86EBF74828782B700095BF4F /* SwiftGen */,
-				86C64A4E2A38AD040081DA54 /* Inject secrets */,
 				8666B4B72848EF780071CDDA /* Sources */,
 				8666B4B82848EF780071CDDA /* Frameworks */,
 				8666B4B92848EF780071CDDA /* Resources */,
@@ -197,7 +186,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1400;
-				LastUpgradeCheck = 1340;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					8666B4BA2848EF780071CDDA = {
 						CreatedOnToolsVersion = 13.4;
@@ -250,25 +239,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		86C64A4E2A38AD040081DA54 /* Inject secrets */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/GoCook/Scripts/InjectSecrets.swift",
-			);
-			name = "Inject secrets";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "xcrun --sdk macosx swiftc -parse-as-library $SCRIPT_INPUT_FILE_0 -o GoCook/Scripts/InjectSecrets\nGoCook/Scripts/InjectSecrets\n\n";
-		};
 		86EBF74728782B400095BF4F /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -446,6 +416,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -457,6 +428,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";

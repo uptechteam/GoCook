@@ -23,15 +23,15 @@ public final class SentryConfigurator: SentryConfigurating {
     // MARK: - Public methods
 
     public func configure() {
-        guard AppEnvironment.current.isErrorReportingEnabled else {
+        guard AppSettings.current.isErrorReportingEnabled else {
             return
         }
 
         SentrySDK.start { options in
-            options.dsn = AppSecrets.shared.sentryDSN
+            options.dsn = AppSecrets.current.sentryDSN
             options.enableMetricKit = true
             options.enableWatchdogTerminationTracking = false
-            options.environment = AppEnvironment.current.name
+            options.environment = AppSettings.current.name
         }
     }
 }

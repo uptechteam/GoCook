@@ -47,10 +47,10 @@ Runs all the tests
 
 
 
-### ios check_key
+### ios only_build
 
 ```sh
-[bundle exec] fastlane ios check_key
+[bundle exec] fastlane ios only_build
 ```
 
 

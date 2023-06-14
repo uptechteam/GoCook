@@ -32,7 +32,7 @@ public final class RecipesClient: RecipesClienting {
     // MARK: - Lifecycle
 
     public init(networkClient: NetworkClient) {
-        self.recipesAPI = RecipesAPI(baseURL: AppEnvironment.current.baseURL)
+        self.recipesAPI = RecipesAPI(baseURL: AppSettings.current.baseURL)
         self.networkClient = networkClient
     }
 
