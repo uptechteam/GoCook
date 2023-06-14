@@ -28,7 +28,7 @@ public final class SentryConfigurator: SentryConfigurating {
         }
 
         SentrySDK.start { options in
-            options.dsn = AppEnvironment.current.sentryDSN
+            options.dsn = AppSecrets.shared.sentryDSN
             options.enableMetricKit = true
             options.enableWatchdogTerminationTracking = false
             options.environment = AppEnvironment.current.name

@@ -12,7 +12,6 @@ public struct AppEnvironment: Equatable {
     public let baseURL: URL
     public let isErrorReportingEnabled: Bool
     public let name: String
-    public let sentryDSN: String
 
     private static var isDebug: Bool {
 #if DEBUG
@@ -40,31 +39,17 @@ public struct AppEnvironment: Equatable {
     private static let developemnt = AppEnvironment(
         baseURL: URL(string: "http://127.0.0.1:8080")!,
         isErrorReportingEnabled: isDebug,
-        name: "development",
-        sentryDSN: getSentryDSN()
+        name: "development"
     )
     private static let production = AppEnvironment(
         baseURL: URL(string: "https://go-go-cook.herokuapp.com")!,
         isErrorReportingEnabled: isDebug,
-        name: "production",
-        sentryDSN: getSentryDSN()
+        name: "production"
     )
-
-    // MARK: - Private methods
-
-    private static func getSentryDSN() -> String {
-        guard let dsn = ProcessInfo.processInfo.environment[Constants.sentryDSN] else {
-            log.error("Can't obtain Sentry dsn. Add it to Xcode environment variables")
-            fatalError("Can't obtain Sentry dsn. Add it to Xcode environment variables")
-        }
-
-        return dsn
-    }
 }
 
 // MARK: - Constants
 
 private enum Constants {
     static let appEnvironment = "APP_ENVIRONMENT"
-    static let sentryDSN = "SENTRY_DSN"
 }
